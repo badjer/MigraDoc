@@ -216,30 +216,6 @@ namespace MigraDoc.DocumentObjectModel
 
     #region Internal
     /// <summary>
-    /// Converts Footnote into DDL.
-    /// </summary>
-    internal override void Serialize(Serializer serializer)
-    {
-      serializer.WriteLine("\\footnote");
-
-      int pos = serializer.BeginAttributes();
-      if (this.reference.Value != string.Empty)
-        serializer.WriteSimpleAttribute("Reference", this.Reference);
-      if (this.style.Value != string.Empty)
-        serializer.WriteSimpleAttribute("Style", this.Style);
-
-      if (!this.IsNull("Format"))
-        this.format.Serialize(serializer, "Format", null);
-
-      serializer.EndAttributes(pos);
-
-      pos = serializer.BeginContent();
-      if (!this.IsNull("Elements"))
-        this.elements.Serialize(serializer);
-      serializer.EndContent(pos);
-    }
-
-    /// <summary>
     /// Allows the visitor object to visit the document object and it's child objects.
     /// </summary>
     void IVisitable.AcceptVisitor(DocumentObjectVisitor visitor, bool visitChildren)

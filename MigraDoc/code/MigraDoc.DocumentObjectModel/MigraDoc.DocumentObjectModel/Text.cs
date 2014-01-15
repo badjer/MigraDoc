@@ -88,16 +88,6 @@ namespace MigraDoc.DocumentObjectModel
     #endregion
 
     #region Internal
-    /// <summary>
-    /// Converts Text into DDL.
-    /// </summary>
-    internal override void Serialize(Serializer serializer)
-    {
-      string text = DdlEncoder.StringToText(content.Value);
-      // To make DDL more readable write soft hypens as keywords.
-      text = text.Replace(new string((char)173, 1), "\\-");
-      serializer.Write(text);
-    }
 
     /// <summary>
     /// Returns the meta object of this instance.

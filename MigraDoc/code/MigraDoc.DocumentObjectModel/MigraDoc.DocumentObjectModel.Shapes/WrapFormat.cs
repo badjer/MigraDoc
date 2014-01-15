@@ -120,24 +120,6 @@ namespace MigraDoc.DocumentObjectModel.Shapes
     #endregion
 
     #region Internal
-    /// <summary>
-    /// Converts WrapFormat into DDL.
-    /// </summary>
-    internal override void Serialize(Serializer serializer)
-    {
-      int pos = serializer.BeginContent("WrapFormat");
-      if (!this.style.IsNull)
-        serializer.WriteSimpleAttribute("Style", this.Style);
-      if (!this.distanceTop.IsNull)
-        serializer.WriteSimpleAttribute("DistanceTop", this.DistanceTop);
-      if (!this.distanceLeft.IsNull)
-        serializer.WriteSimpleAttribute("DistanceLeft", this.DistanceLeft);
-      if (!this.distanceRight.IsNull)
-        serializer.WriteSimpleAttribute("DistanceRight", this.DistanceRight);
-      if (!this.distanceBottom.IsNull)
-        serializer.WriteSimpleAttribute("DistanceBottom", this.DistanceBottom);
-      serializer.EndContent();
-    }
 
     /// <summary>
     /// Returns the meta object of this instance.

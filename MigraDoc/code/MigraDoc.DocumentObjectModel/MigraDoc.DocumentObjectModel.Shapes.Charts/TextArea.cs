@@ -339,51 +339,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
     #endregion
 
     #region Internal
-    /// <summary>
-    /// Converts TextArea into DDL.
-    /// </summary>
-    internal override void Serialize(Serializer serializer)
-    {
-      Chart chartObject = this.parent as Chart;
-
-      serializer.WriteLine("\\" + chartObject.CheckTextArea(this));
-      int pos = serializer.BeginAttributes();
-
-      if (!this.style.IsNull)
-        serializer.WriteSimpleAttribute("Style", this.Style);
-      if (!this.IsNull("Format"))
-        this.format.Serialize(serializer, "Format", null);
-
-      if (!this.topPadding.IsNull)
-        serializer.WriteSimpleAttribute("TopPadding", this.TopPadding);
-      if (!this.leftPadding.IsNull)
-        serializer.WriteSimpleAttribute("LeftPadding", this.LeftPadding);
-      if (!this.rightPadding.IsNull)
-        serializer.WriteSimpleAttribute("RightPadding", this.RightPadding);
-      if (!this.bottomPadding.IsNull)
-        serializer.WriteSimpleAttribute("BottomPadding", this.BottomPadding);
-
-      if (!this.width.IsNull)
-        serializer.WriteSimpleAttribute("Width", this.Width);
-      if (!this.height.IsNull)
-        serializer.WriteSimpleAttribute("Height", this.Height);
-
-      if (!this.verticalAlignment.IsNull)
-        serializer.WriteSimpleAttribute("VerticalAlignment", this.VerticalAlignment);
-
-      if (!this.IsNull("LineFormat"))
-        this.lineFormat.Serialize(serializer);
-      if (!this.IsNull("FillFormat"))
-        this.fillFormat.Serialize(serializer);
-
-      serializer.EndAttributes(pos);
-
-      serializer.BeginContent();
-      if (this.elements != null)
-        this.elements.Serialize(serializer);
-      serializer.EndContent();
-    }
-
+    
     /// <summary>
     /// Returns the meta object of this instance.
     /// </summary>

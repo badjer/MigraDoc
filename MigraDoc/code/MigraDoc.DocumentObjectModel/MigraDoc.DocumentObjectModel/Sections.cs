@@ -84,18 +84,6 @@ namespace MigraDoc.DocumentObjectModel
     #endregion
 
     #region Internal
-    /// <summary>
-    /// Converts Sections into DDL.
-    /// </summary>
-    internal override void Serialize(Serializer serializer)
-    {
-      int count = Count;
-      for (int index = 0; index < count; ++index)
-      {
-        Section section = this[index];
-        section.Serialize(serializer);
-      }
-    }
 
     /// <summary>
     /// Allows the visitor object to visit the document object and it's child objects.

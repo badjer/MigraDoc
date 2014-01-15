@@ -384,68 +384,6 @@ namespace MigraDoc.DocumentObjectModel
     #endregion
 
     #region Internal
-    /// <summary>
-    /// Converts Borders into DDL.
-    /// </summary>
-    internal override void Serialize(Serializer serializer)
-    {
-      this.Serialize(serializer, null);
-    }
-
-    /// <summary>
-    /// Converts Borders into DDL.
-    /// </summary>
-    internal void Serialize(Serializer serializer, Borders refBorders)
-    {
-      if (this.clearAll)
-        serializer.WriteLine("Borders = null");
-
-      int pos = serializer.BeginContent("Borders");
-
-      if (!this.visible.IsNull && (refBorders == null || refBorders.visible.IsNull || (this.Visible != refBorders.Visible)))
-        serializer.WriteSimpleAttribute("Visible", this.Visible);
-
-      if (!this.style.IsNull && (refBorders == null || (this.Style != refBorders.Style)))
-        serializer.WriteSimpleAttribute("Style", this.Style);
-
-      if (!this.width.IsNull && (refBorders == null || (this.width.Value != refBorders.width.Value)))
-        serializer.WriteSimpleAttribute("Width", this.Width);
-
-      if (!this.color.IsNull && (refBorders == null || ((this.Color.Argb != refBorders.Color.Argb))))
-        serializer.WriteSimpleAttribute("Color", this.Color);
-
-      if (!this.distanceFromTop.IsNull && (refBorders == null || (this.DistanceFromTop.Point != refBorders.DistanceFromTop.Point)))
-        serializer.WriteSimpleAttribute("DistanceFromTop", this.DistanceFromTop);
-
-      if (!this.distanceFromBottom.IsNull && (refBorders == null || (this.DistanceFromBottom.Point != refBorders.DistanceFromBottom.Point)))
-        serializer.WriteSimpleAttribute("DistanceFromBottom", this.DistanceFromBottom);
-
-      if (!this.distanceFromLeft.IsNull && (refBorders == null || (this.DistanceFromLeft.Point != refBorders.DistanceFromLeft.Point)))
-        serializer.WriteSimpleAttribute("DistanceFromLeft", this.DistanceFromLeft);
-
-      if (!this.distanceFromRight.IsNull && (refBorders == null || (this.DistanceFromRight.Point != refBorders.DistanceFromRight.Point)))
-        serializer.WriteSimpleAttribute("DistanceFromRight", this.DistanceFromRight);
-
-      if (!this.IsNull("Top"))
-        this.top.Serialize(serializer, "Top", null);
-
-      if (!this.IsNull("Left"))
-        this.left.Serialize(serializer, "Left", null);
-
-      if (!this.IsNull("Bottom"))
-        this.bottom.Serialize(serializer, "Bottom", null);
-
-      if (!this.IsNull("Right"))
-        this.right.Serialize(serializer, "Right", null);
-
-      if (!this.IsNull("DiagonalDown"))
-        this.diagonalDown.Serialize(serializer, "DiagonalDown", null);
-
-      if (!this.IsNull("DiagonalUp"))
-        this.diagonalUp.Serialize(serializer, "DiagonalUp", null);
-
-      serializer.EndContent(pos);
-    }
 
     /// <summary>
     /// Gets a name of a border.

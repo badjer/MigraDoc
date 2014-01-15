@@ -170,34 +170,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
     #endregion
 
     #region Internal
-    /// <summary>
-    /// Converts PlotArea into DDL.
-    /// </summary>
-    internal override void Serialize(Serializer serializer)
-    {
-      serializer.WriteLine("\\plotarea");
-      int pos = serializer.BeginAttributes();
-
-      if (!this.topPadding.IsNull)
-        serializer.WriteSimpleAttribute("TopPadding", this.TopPadding);
-      if (!this.leftPadding.IsNull)
-        serializer.WriteSimpleAttribute("LeftPadding", this.LeftPadding);
-      if (!this.rightPadding.IsNull)
-        serializer.WriteSimpleAttribute("RightPadding", this.RightPadding);
-      if (!this.bottomPadding.IsNull)
-        serializer.WriteSimpleAttribute("BottomPadding", this.BottomPadding);
-
-      if (!this.IsNull("LineFormat"))
-        this.lineFormat.Serialize(serializer);
-      if (!this.IsNull("FillFormat"))
-        this.fillFormat.Serialize(serializer);
-
-      serializer.EndAttributes(pos);
-
-      serializer.BeginContent();
-      serializer.EndContent();
-    }
-
+    
     /// <summary>
     /// Returns the meta object of this instance.
     /// </summary>

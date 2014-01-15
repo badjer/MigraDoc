@@ -87,19 +87,6 @@ namespace MigraDoc.DocumentObjectModel.Shapes
 
     #region Internal
     /// <summary>
-    /// Converts FillFormat into DDL.
-    /// </summary>
-    internal override void Serialize(Serializer serializer)
-    {
-      int pos = serializer.BeginContent("FillFormat");
-      if (!this.visible.IsNull)
-        serializer.WriteSimpleAttribute("Visible", this.Visible);
-      if (!this.color.IsNull)
-        serializer.WriteSimpleAttribute("Color", this.Color);
-      serializer.EndContent();
-    }
-
-    /// <summary>
     /// Returns the meta object of this instance.
     /// </summary>
     internal override Meta Meta

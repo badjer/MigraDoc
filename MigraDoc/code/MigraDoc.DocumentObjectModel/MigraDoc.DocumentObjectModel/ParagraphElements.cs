@@ -434,18 +434,6 @@ namespace MigraDoc.DocumentObjectModel
     #endregion
 
     #region Internal
-    /// <summary>
-    /// Converts ParagraphElements into DDL.
-    /// </summary>
-    internal override void Serialize(Serializer serializer)
-    {
-      int count = Count;
-      for (int index = 0; index < count; ++index)
-      {
-        DocumentObject element = this[index];
-        element.Serialize(serializer);
-      }
-    }
 
     /// <summary>
     /// Returns the meta object of this instance.

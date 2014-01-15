@@ -498,24 +498,6 @@ namespace MigraDoc.DocumentObjectModel
     #endregion
 
     #region Internal
-    /// <summary>
-    /// Converts Hyperlink into DDL.
-    /// </summary>
-    internal override void Serialize(Serializer serializer)
-    {
-      if (this.name.Value == string.Empty)
-        throw new InvalidOperationException(DomSR.MissingObligatoryProperty("Name", "Hyperlink"));
-      serializer.Write("\\hyperlink");
-      string str = "[Name = \"" + this.Name.Replace("\\", "\\\\").Replace("\"", "\\\"") + "\"";
-      if (!this.type.IsNull)
-        str += " Type = " + this.Type;
-      str += "]";
-      serializer.Write(str);
-      serializer.Write("{");
-      if (this.elements != null)
-        elements.Serialize(serializer);
-      serializer.Write("}");
-    }
 
     /// <summary>
     /// Returns the meta object of this instance.

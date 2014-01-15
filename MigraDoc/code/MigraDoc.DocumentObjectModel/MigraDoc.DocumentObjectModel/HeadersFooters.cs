@@ -183,27 +183,6 @@ namespace MigraDoc.DocumentObjectModel
     #endregion
 
     #region Internal
-    /// <summary>
-    /// Converts HeadersFooters into DDL.
-    /// </summary>
-    internal override void Serialize(Serializer serializer)
-    {
-      bool hasPrimary = HasHeaderFooter(HeaderFooterIndex.Primary);
-      bool hasEvenPage = HasHeaderFooter(HeaderFooterIndex.EvenPage);
-      bool hasFirstPage = HasHeaderFooter(HeaderFooterIndex.FirstPage);
-
-      // \primary...
-      if (hasPrimary)
-        Primary.Serialize(serializer, "primary");
-
-      // \even... 
-      if (hasEvenPage)
-        EvenPage.Serialize(serializer, "evenpage");
-
-      // \firstpage...
-      if (hasFirstPage)
-        FirstPage.Serialize(serializer, "firstpage");
-    }
 
     /// <summary>
     /// Allows the visitor object to visit the document object and it's child objects.

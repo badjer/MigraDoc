@@ -439,49 +439,7 @@ namespace MigraDoc.DocumentObjectModel.Tables
     #endregion
 
     #region Internal
-    /// <summary>
-    /// Converts Table into DDL.
-    /// </summary>
-    internal override void Serialize(Serializer serializer)
-    {
-      serializer.WriteComment(this.comment.Value);
-
-      serializer.WriteLine("\\table");
-
-      int pos = serializer.BeginAttributes();
-
-      if (this.style.Value != String.Empty)
-        serializer.WriteSimpleAttribute("Style", this.Style);
-
-      if (!this.IsNull("Format"))
-        this.format.Serialize(serializer, "Format", null);
-
-      if (!this.topPadding.IsNull)
-        serializer.WriteSimpleAttribute("TopPadding", this.TopPadding);
-
-      if (!this.leftPadding.IsNull)
-        serializer.WriteSimpleAttribute("LeftPadding", this.LeftPadding);
-
-      if (!this.rightPadding.IsNull)
-        serializer.WriteSimpleAttribute("RightPadding", this.RightPadding);
-
-      if (!this.bottomPadding.IsNull)
-        serializer.WriteSimpleAttribute("BottomPadding", this.BottomPadding);
-
-      if (!this.IsNull("Borders"))
-        this.borders.Serialize(serializer, null);
-
-      if (!this.IsNull("Shading"))
-        this.shading.Serialize(serializer);
-
-      serializer.EndAttributes(pos);
-
-      serializer.BeginContent();
-      this.Columns.Serialize(serializer);
-      this.Rows.Serialize(serializer);
-      serializer.EndContent();
-    }
-
+    
     /// <summary>
     /// Allows the visitor object to visit the document object and it's child objects.
     /// </summary>

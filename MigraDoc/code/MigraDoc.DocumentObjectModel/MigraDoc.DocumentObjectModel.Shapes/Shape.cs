@@ -219,30 +219,6 @@ namespace MigraDoc.DocumentObjectModel.Shapes
     #endregion
 
     #region Internal
-    /// <summary>
-    /// Converts Shape into DDL.
-    /// </summary>
-    internal override void Serialize(Serializer serializer)
-    {
-      if (!this.height.IsNull)
-        serializer.WriteSimpleAttribute("Height", this.Height);
-      if (!this.width.IsNull)
-        serializer.WriteSimpleAttribute("Width", this.Width);
-      if (!this.relativeHorizontal.IsNull)
-        serializer.WriteSimpleAttribute("RelativeHorizontal", this.RelativeHorizontal);
-      if (!this.relativeVertical.IsNull)
-        serializer.WriteSimpleAttribute("RelativeVertical", this.RelativeVertical);
-      if (!this.IsNull("Left"))
-        this.left.Serialize(serializer);
-      if (!this.IsNull("Top"))
-        this.top.Serialize(serializer);
-      if (!this.IsNull("WrapFormat"))
-        this.wrapFormat.Serialize(serializer);
-      if (!this.IsNull("LineFormat"))
-        this.lineFormat.Serialize(serializer);
-      if (!this.IsNull("FillFormat"))
-        this.fillFormat.Serialize(serializer);
-    }
 
     /// <summary>
     /// Returns the meta object of this instance.

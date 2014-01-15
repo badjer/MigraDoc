@@ -112,23 +112,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes
     #endregion
 
     #region Internal
-    /// <summary>
-    /// Converts PictureFormat into DDL
-    /// </summary>
-    internal override void Serialize(Serializer serializer)
-    {
-      serializer.BeginContent("PictureFormat");
-      if (!this.cropLeft.IsNull)
-        serializer.WriteSimpleAttribute("CropLeft", this.CropLeft);
-      if (!this.cropRight.IsNull)
-        serializer.WriteSimpleAttribute("CropRight", this.CropRight);
-      if (!this.cropTop.IsNull)
-        serializer.WriteSimpleAttribute("CropTop", this.CropTop);
-      if (!this.cropBottom.IsNull)
-        serializer.WriteSimpleAttribute("CropBottom", this.CropBottom);
-      serializer.EndContent();
-    }
-
+    
     /// <summary>
     /// Returns the meta object of this instance.
     /// </summary>

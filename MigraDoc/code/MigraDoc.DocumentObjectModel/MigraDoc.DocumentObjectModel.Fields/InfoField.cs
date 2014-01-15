@@ -105,18 +105,6 @@ namespace MigraDoc.DocumentObjectModel.Fields
       return false;
     }
     #region Internal
-    /// <summary>
-    /// Converts InfoField into DDL.
-    /// </summary>
-    internal override void Serialize(Serializer serializer)
-    {
-      string str = "\\field(Info)";
-      if (this.Name == "")
-        throw new InvalidOperationException(DomSR.MissingObligatoryProperty("Name", "InfoField"));
-      str += "[Name = \"" + this.Name + "\"]";
-
-      serializer.Write(str);
-    }
 
     /// <summary>
     /// Returns the meta object of this instance.

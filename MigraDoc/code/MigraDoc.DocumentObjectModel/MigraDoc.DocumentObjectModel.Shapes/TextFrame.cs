@@ -251,31 +251,6 @@ namespace MigraDoc.DocumentObjectModel.Shapes
     }
 
     #region Internal
-    /// <summary>
-    /// Converts TextFrame into DDL.
-    /// </summary>
-    internal override void Serialize(Serializer serializer)
-    {
-      serializer.WriteLine("\\textframe");
-      int pos = serializer.BeginAttributes();
-      base.Serialize(serializer);
-      if (!this.marginLeft.IsNull)
-        serializer.WriteSimpleAttribute("MarginLeft", this.MarginLeft);
-      if (!this.marginRight.IsNull)
-        serializer.WriteSimpleAttribute("MarginRight", this.MarginRight);
-      if (!this.marginTop.IsNull)
-        serializer.WriteSimpleAttribute("MarginTop", this.MarginTop);
-      if (!this.marginBottom.IsNull)
-        serializer.WriteSimpleAttribute("MarginBottom", this.MarginBottom);
-      if (!this.orientation.IsNull)
-        serializer.WriteSimpleAttribute("Orientation", this.Orientation);
-      serializer.EndAttributes(pos);
-
-      serializer.BeginContent();
-      if (this.elements != null)
-        this.elements.Serialize(serializer);
-      serializer.EndContent();
-    }
 
     /// <summary>
     /// Returns the meta object of this instance.

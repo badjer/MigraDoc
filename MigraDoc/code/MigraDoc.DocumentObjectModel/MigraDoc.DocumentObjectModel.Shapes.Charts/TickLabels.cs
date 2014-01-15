@@ -122,24 +122,6 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
     #endregion
 
     #region Internal
-    /// <summary>
-    /// Converts TickLabels into DDL.
-    /// </summary>
-    internal override void Serialize(Serializer serializer)
-    {
-      int pos = serializer.BeginContent("TickLabels");
-
-      if (!this.style.IsNull)
-        serializer.WriteSimpleAttribute("Style", this.Style);
-
-      if (this.font != null)
-        this.font.Serialize(serializer);
-
-      if (!this.format.IsNull)
-        serializer.WriteSimpleAttribute("Format", this.Format);
-
-      serializer.EndContent();
-    }
 
     /// <summary>
     /// Returns the meta object of this instance.

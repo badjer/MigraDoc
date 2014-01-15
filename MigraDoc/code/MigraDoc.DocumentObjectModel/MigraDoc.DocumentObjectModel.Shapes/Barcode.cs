@@ -156,38 +156,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes
     #endregion
 
     #region Internal
-    /// <summary>
-    /// Converts Barcode into DDL.
-    /// </summary>
-    internal override void Serialize(Serializer serializer)
-    {
-      if (this.code.Value == "")
-        throw new InvalidOperationException(DomSR.MissingObligatoryProperty("Name", "BookmarkField"));
-
-      serializer.WriteLine("\\barcode(\"" + this.Code + "\")");
-
-      int pos = serializer.BeginAttributes();
-
-      base.Serialize(serializer);
-
-      if (!this.orientation.IsNull)
-        serializer.WriteSimpleAttribute("Orientation", this.Orientation);
-      if (!this.bearerBars.IsNull)
-        serializer.WriteSimpleAttribute("BearerBars", this.BearerBars);
-      if (!this.text.IsNull)
-        serializer.WriteSimpleAttribute("Text", this.Text);
-      if (!this.type.IsNull)
-        serializer.WriteSimpleAttribute("Type", this.Type);
-      if (!this.lineRatio.IsNull)
-        serializer.WriteSimpleAttribute("LineRatio", this.LineRatio);
-      if (!this.lineHeight.IsNull)
-        serializer.WriteSimpleAttribute("LineHeight", this.LineHeight);
-      if (!this.narrowLineWidth.IsNull)
-        serializer.WriteSimpleAttribute("NarrowLineWidth", this.NarrowLineWidth);
-
-      serializer.EndAttributes(pos);
-    }
-
+    
     /// <summary>
     /// Returns the meta object of this instance.
     /// </summary>

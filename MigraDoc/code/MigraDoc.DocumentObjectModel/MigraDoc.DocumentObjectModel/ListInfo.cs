@@ -101,18 +101,6 @@ namespace MigraDoc.DocumentObjectModel
     #endregion
 
     #region Internal
-    /// <summary>
-    /// Converts ListInfo into DDL.
-    /// </summary>
-    internal override void Serialize(Serializer serializer)
-    {
-      if (!this.listType.IsNull)
-        serializer.WriteSimpleAttribute("ListInfo.ListType", this.ListType);
-      if (!this.numberPosition.IsNull)
-        serializer.WriteSimpleAttribute("ListInfo.NumberPosition", this.NumberPosition);
-      if (!this.continuePreviousList.IsNull)
-        serializer.WriteSimpleAttribute("ListInfo.ContinuePreviousList", this.ContinuePreviousList);
-    }
 
     /// <summary>
     /// Returns the meta object of this instance.

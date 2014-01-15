@@ -306,51 +306,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
     }
 
     #region Internal
-    /// <summary>
-    /// Converts Axis into DDL.
-    /// </summary>
-    internal override void Serialize(Serializer serializer)
-    {
-      Chart chartObject = this.parent as Chart;
-
-      serializer.WriteLine("\\" + chartObject.CheckAxis(this));
-      int pos = serializer.BeginAttributes();
-
-      if (!this.minimumScale.IsNull)
-        serializer.WriteSimpleAttribute("MinimumScale", this.MinimumScale);
-      if (!this.maximumScale.IsNull)
-        serializer.WriteSimpleAttribute("MaximumScale", this.MaximumScale);
-      if (!this.majorTick.IsNull)
-        serializer.WriteSimpleAttribute("MajorTick", this.MajorTick);
-      if (!this.minorTick.IsNull)
-        serializer.WriteSimpleAttribute("MinorTick", this.MinorTick);
-      if (!this.hasMajorGridlines.IsNull)
-        serializer.WriteSimpleAttribute("HasMajorGridLines", this.HasMajorGridlines);
-      if (!this.hasMinorGridlines.IsNull)
-        serializer.WriteSimpleAttribute("HasMinorGridLines", this.HasMinorGridlines);
-      if (!this.majorTickMark.IsNull)
-        serializer.WriteSimpleAttribute("MajorTickMark", this.MajorTickMark);
-      if (!this.minorTickMark.IsNull)
-        serializer.WriteSimpleAttribute("MinorTickMark", this.MinorTickMark);
-
-      if (!this.IsNull("Title"))
-        this.title.Serialize(serializer);
-
-      if (!this.IsNull("LineFormat"))
-        this.lineFormat.Serialize(serializer);
-
-      if (!this.IsNull("MajorGridlines"))
-        this.majorGridlines.Serialize(serializer);
-
-      if (!this.IsNull("MinorGridlines"))
-        this.minorGridlines.Serialize(serializer);
-
-      if (!this.IsNull("TickLabels"))
-        this.tickLabels.Serialize(serializer);
-
-      serializer.EndAttributes(pos);
-    }
-
+    
     /// <summary>
     /// Returns the meta object of this instance.
     /// </summary>

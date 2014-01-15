@@ -225,19 +225,6 @@ namespace MigraDoc.DocumentObjectModel.Shapes
         return (ShapePosition)Enum.Parse(typeof(ShapePosition), value, true);
     }
 
-    #region Internal
-    /// <summary>
-    /// Converts LeftPosition into DDL.
-    /// </summary>  
-    internal void Serialize(Serializer serializer)
-    {
-      if (this.shapePosition == ShapePosition.Undefined)
-        serializer.WriteSimpleAttribute("Left", this.Position);
-      else
-        serializer.WriteSimpleAttribute("Left", this.ShapePosition);
-    }
-    #endregion
-
     /// <summary>
     /// Returns the unitialized LeftPosition object.
     /// </summary>

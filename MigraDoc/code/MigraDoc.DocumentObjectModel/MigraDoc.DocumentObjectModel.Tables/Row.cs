@@ -323,57 +323,6 @@ namespace MigraDoc.DocumentObjectModel.Tables
     #endregion
 
     #region Internal
-    /// <summary>
-    /// Converts Row into DDL.
-    /// </summary>
-    internal override void Serialize(Serializer serializer)
-    {
-      serializer.WriteComment(this.comment.Value);
-      serializer.WriteLine("\\row");
-
-      int pos = serializer.BeginAttributes();
-
-      if (this.style.Value != String.Empty)
-        serializer.WriteSimpleAttribute("Style", this.Style);
-
-      if (!this.IsNull("Format"))
-        this.format.Serialize(serializer, "Format", null);
-
-      if (!this.height.IsNull)
-        serializer.WriteSimpleAttribute("Height", this.Height);
-
-      if (!this.heightRule.IsNull)
-        serializer.WriteSimpleAttribute("HeightRule", this.HeightRule);
-
-      if (!this.topPadding.IsNull)
-        serializer.WriteSimpleAttribute("TopPadding", this.TopPadding);
-
-      if (!this.bottomPadding.IsNull)
-        serializer.WriteSimpleAttribute("BottomPadding", this.BottomPadding);
-
-      if (!this.headingFormat.IsNull)
-        serializer.WriteSimpleAttribute("HeadingFormat", this.HeadingFormat);
-
-      if (!this.verticalAlignment.IsNull)
-        serializer.WriteSimpleAttribute("VerticalAlignment", this.VerticalAlignment);
-
-      if (!this.keepWith.IsNull)
-        serializer.WriteSimpleAttribute("KeepWith", this.KeepWith);
-
-      //Borders & Shading
-      if (!this.IsNull("Borders"))
-        this.borders.Serialize(serializer, null);
-
-      if (!this.IsNull("Shading"))
-        this.shading.Serialize(serializer);
-
-      serializer.EndAttributes(pos);
-
-      serializer.BeginContent();
-      if (!IsNull("Cells"))
-        this.cells.Serialize(serializer);
-      serializer.EndContent();
-    }
 
     /// <summary>
     /// Allows the visitor object to visit the document object and it's child objects.

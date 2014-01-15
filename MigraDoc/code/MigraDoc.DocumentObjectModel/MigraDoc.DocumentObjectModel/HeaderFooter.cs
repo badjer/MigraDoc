@@ -294,38 +294,6 @@ namespace MigraDoc.DocumentObjectModel
     #endregion
 
     #region Internal
-    /// <summary>
-    /// Converts HeaderFooter into DDL.
-    /// </summary>
-    internal override void Serialize(Serializer serializer)
-    {
-      HeadersFooters headersfooters = this.parent as HeadersFooters;
-      if (headersfooters.Primary == this)
-        this.Serialize(serializer, "primary");
-      else if (headersfooters.EvenPage == this)
-        this.Serialize(serializer, "evenpage");
-      else if (headersfooters.FirstPage == this)
-        this.Serialize(serializer, "firstpage");
-    }
-
-    /// <summary>
-    /// Converts HeaderFooter into DDL.
-    /// </summary>
-    internal void Serialize(Serializer serializer, string prefix)
-    {
-      serializer.WriteComment(this.comment.Value);
-      serializer.WriteLine("\\" + prefix + (IsHeader ? "header" : "footer"));
-
-      int pos = serializer.BeginAttributes();
-      if (!IsNull("Format"))
-        this.format.Serialize(serializer, "Format", null);
-      serializer.EndAttributes(pos);
-
-      serializer.BeginContent();
-      if (!IsNull("Elements"))
-        this.elements.Serialize(serializer);
-      serializer.EndContent();
-    }
 
     /// <summary>
     /// Allows the visitor object to visit the document object and it's child objects.

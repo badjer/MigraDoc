@@ -155,34 +155,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
     #endregion
 
     #region Internal
-    /// <summary>
-    /// Converts AxisTitle into DDL.
-    /// </summary>
-    internal override void Serialize(Serializer serializer)
-    {
-      int pos = serializer.BeginContent("Title");
-
-      if (!this.style.IsNull)
-        serializer.WriteSimpleAttribute("Style", this.Style);
-
-      if (!this.IsNull("Font"))
-        this.font.Serialize(serializer);
-
-      if (!this.orientation.IsNull)
-        serializer.WriteSimpleAttribute("Orientation", this.Orientation);
-
-      if (!this.alignment.IsNull)
-        serializer.WriteSimpleAttribute("Alignment", this.Alignment);
-
-      if (!this.verticalAlignment.IsNull)
-        serializer.WriteSimpleAttribute("VerticalAlignment", this.VerticalAlignment);
-
-      if (!this.caption.IsNull)
-        serializer.WriteSimpleAttribute("Caption", this.Caption);
-
-      serializer.EndContent();
-    }
-
+    
     /// <summary>
     /// Returns the meta object of this instance.
     /// </summary>

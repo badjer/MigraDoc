@@ -88,16 +88,6 @@ namespace MigraDoc.DocumentObjectModel.Fields
     #endregion
 
     #region Internal
-    /// <summary>
-    /// Converts BookmarkField into DDL.
-    /// </summary>
-    internal override void Serialize(Serializer serializer)
-    {
-      if (this.name.Value == string.Empty)
-        throw new InvalidOperationException(DomSR.MissingObligatoryProperty("Name", "BookmarkField"));
-
-      serializer.Write("\\field(Bookmark)[Name = \"" + this.Name.Replace("\\", "\\\\").Replace("\"", "\\\"") + "\"]");
-    }
 
     /// <summary>
     /// Determines whether this instance is null (not set).

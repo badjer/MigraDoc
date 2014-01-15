@@ -100,21 +100,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
     #endregion
 
     #region Internal
-    /// <summary>
-    /// Converts Gridlines into DDL.
-    /// </summary>
-    internal override void Serialize(Serializer serializer)
-    {
-      Axis axisObject = this.parent as Axis;
-
-      int pos = serializer.BeginContent(axisObject.CheckGridlines(this));
-
-      if (!this.IsNull("LineFormat"))
-        this.lineFormat.Serialize(serializer);
-
-      serializer.EndContent();
-    }
-
+    
     /// <summary>
     /// Returns the meta object of this instance.
     /// </summary>

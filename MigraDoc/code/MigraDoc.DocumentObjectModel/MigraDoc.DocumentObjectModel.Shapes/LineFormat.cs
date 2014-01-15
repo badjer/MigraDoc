@@ -119,24 +119,6 @@ namespace MigraDoc.DocumentObjectModel.Shapes
     #endregion
 
     #region Internal
-    /// <summary>
-    /// Converts LineFormat into DDL.
-    /// </summary>
-    internal override void Serialize(Serializer serializer)
-    {
-      int pos = serializer.BeginContent("LineFormat");
-      if (!this.visible.IsNull)
-        serializer.WriteSimpleAttribute("Visible", this.Visible);
-      if (!this.style.IsNull)
-        serializer.WriteSimpleAttribute("Style", this.Style);
-      if (!this.dashStyle.IsNull)
-        serializer.WriteSimpleAttribute("DashStyle", this.DashStyle);
-      if (!this.width.IsNull)
-        serializer.WriteSimpleAttribute("Width", this.Width);
-      if (!this.color.IsNull)
-        serializer.WriteSimpleAttribute("Color", this.Color);
-      serializer.EndContent();
-    }
 
     /// <summary>
     /// Returns the meta object of this instance.

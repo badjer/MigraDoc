@@ -354,30 +354,7 @@ namespace MigraDoc.DocumentObjectModel
     #endregion
 
     #region Internal
-    /// <summary>
-    /// Converts Section into DDL.
-    /// </summary>
-    internal override void Serialize(Serializer serializer)
-    {
-      serializer.WriteComment(this.comment.Value);
-      serializer.WriteLine("\\section");
-
-      int pos = serializer.BeginAttributes();
-      if (!this.IsNull("PageSetup"))
-        this.PageSetup.Serialize(serializer);
-      serializer.EndAttributes(pos);
-
-      serializer.BeginContent();
-      if (!this.IsNull("headers"))
-        this.headers.Serialize(serializer);
-      if (!this.IsNull("footers"))
-        this.footers.Serialize(serializer);
-      if (!this.IsNull("elements"))
-        this.elements.Serialize(serializer);
-
-      serializer.EndContent();
-    }
-
+    
     /// <summary>
     /// Allows the visitor object to visit the document object and it's child objects.
     /// </summary>

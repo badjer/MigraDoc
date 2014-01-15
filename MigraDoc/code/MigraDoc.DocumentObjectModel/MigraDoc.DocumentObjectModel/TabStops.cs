@@ -210,21 +210,6 @@ namespace MigraDoc.DocumentObjectModel
     #endregion
 
     #region Internal
-    /// <summary>
-    /// Converts TabStops into DDL.
-    /// </summary>
-    internal override void Serialize(Serializer serializer)
-    {
-      if (fClearAll)
-        serializer.WriteLine("TabStops = null");
-
-      int count = Count;
-      for (int index = 0; index < count; index++)
-      {
-        TabStop tabstop = (TabStop)this[index];
-        tabstop.Serialize(serializer);
-      }
-    }
 
     /// <summary>
     /// Determines whether this instance is null (not set).

@@ -87,20 +87,6 @@ namespace MigraDoc.DocumentObjectModel.Fields
     #endregion
 
     #region Internal
-    /// <summary>
-    /// Converts PageRefField into DDL.
-    /// </summary>
-    internal override void Serialize(Serializer serializer)
-    {
-      string str = "\\field(PageRef)";
-      str += "[Name = \"" + this.Name + "\"";
-
-      if (this.format.Value != "")
-        str += " Format = \"" + this.Format + "\"";
-      str += "]";
-
-      serializer.Write(str);
-    }
 
     /// <summary>
     /// Returns the meta object of this instance.

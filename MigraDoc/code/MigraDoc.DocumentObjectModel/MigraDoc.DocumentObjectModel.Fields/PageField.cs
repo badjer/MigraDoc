@@ -66,21 +66,6 @@ namespace MigraDoc.DocumentObjectModel.Fields
 
     #region Internal
     /// <summary>
-    /// Converts PageField into DDL.
-    /// </summary>
-    internal override void Serialize(Serializer serializer)
-    {
-      string str = "\\field(Page)";
-
-      if (this.format.Value != "")
-        str += "[Format = \"" + this.Format + "\"]";
-      else
-        str += "[]"; //Has to be appended to avoid confusion with '[' in immediatly following text.
-
-      serializer.Write(str);
-    }
-
-    /// <summary>
     /// Returns the meta object of this instance.
     /// </summary>
     internal override Meta Meta

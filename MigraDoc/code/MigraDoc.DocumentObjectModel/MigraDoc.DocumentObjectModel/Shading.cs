@@ -108,24 +108,6 @@ namespace MigraDoc.DocumentObjectModel
     #endregion
 
     #region Internal
-    /// <summary>
-    /// Converts Shading into DDL.
-    /// </summary>
-    internal override void Serialize(Serializer serializer)
-    {
-      if (isCleared)
-        serializer.WriteLine("Shading = null");
-
-      int pos = serializer.BeginContent("Shading");
-
-      if (!this.visible.IsNull)
-        serializer.WriteSimpleAttribute("Visible", this.Visible);
-
-      if (!this.color.IsNull)
-        serializer.WriteSimpleAttribute("Color", this.Color);
-
-      serializer.EndContent(pos);
-    }
 
     /// <summary>
     /// Returns the meta object of this instance.

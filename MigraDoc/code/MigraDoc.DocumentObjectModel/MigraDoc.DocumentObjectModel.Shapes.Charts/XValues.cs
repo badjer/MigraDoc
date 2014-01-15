@@ -81,18 +81,6 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
     #endregion
 
     #region Internal
-    /// <summary>
-    /// Converts XValues into DDL.
-    /// </summary>
-    internal override void Serialize(Serializer serializer)
-    {
-      int count = Count;
-      for (int index = 0; index < count; ++index)
-      {
-        XSeries xSeries = this[index] as XSeries;
-        xSeries.Serialize(serializer);
-      }
-    }
 
     /// <summary>
     /// Returns the meta object of this instance.

@@ -141,32 +141,6 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
     #endregion
 
     #region Internal
-    /// <summary>
-    /// Converts Point into DDL.
-    /// </summary>
-    internal override void Serialize(Serializer serializer)
-    {
-      if (!this.IsNull("LineFormat") || !this.IsNull("FillFormat"))
-      {
-        serializer.WriteLine("");
-        serializer.WriteLine("\\point");
-        int pos = serializer.BeginAttributes();
-
-        if (!this.IsNull("LineFormat"))
-          this.lineFormat.Serialize(serializer);
-        if (!this.IsNull("FillFormat"))
-          this.fillFormat.Serialize(serializer);
-
-        serializer.EndAttributes(pos);
-        serializer.BeginContent();
-        serializer.WriteLine(this.Value.ToString(System.Globalization.CultureInfo.InvariantCulture));
-        serializer.EndContent();
-      }
-      else
-        serializer.Write(this.Value.ToString(System.Globalization.CultureInfo.InvariantCulture));
-
-      serializer.Write(", ");
-    }
 
     /// <summary>
     /// Returns the meta object of this instance.

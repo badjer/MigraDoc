@@ -278,47 +278,6 @@ namespace MigraDoc.DocumentObjectModel.Tables
     #endregion
 
     #region Internal
-    /// <summary>
-    /// Converts Column into DDL.
-    /// </summary>
-    internal override void Serialize(Serializer serializer)
-    {
-      serializer.WriteComment(this.comment.Value);
-      serializer.WriteLine("\\column");
-
-      int pos = serializer.BeginAttributes();
-
-      if (this.style.Value != String.Empty)
-        serializer.WriteSimpleAttribute("Style", this.Style);
-
-      if (!this.IsNull("Format"))
-        this.format.Serialize(serializer, "Format", null);
-
-      if (!this.headingFormat.IsNull)
-        serializer.WriteSimpleAttribute("HeadingFormat", HeadingFormat);
-
-      if (!this.leftPadding.IsNull)
-        serializer.WriteSimpleAttribute("LeftPadding", LeftPadding);
-
-      if (!this.rightPadding.IsNull)
-        serializer.WriteSimpleAttribute("RightPadding", RightPadding);
-
-      if (!this.width.IsNull)
-        serializer.WriteSimpleAttribute("Width", this.Width);
-
-      if (!this.keepWith.IsNull)
-        serializer.WriteSimpleAttribute("KeepWith", this.KeepWith);
-
-      if (!this.IsNull("Borders"))
-        this.borders.Serialize(serializer, null);
-
-      if (!this.IsNull("Shading"))
-        this.shading.Serialize(serializer);
-
-      serializer.EndAttributes(pos);
-
-      // columns has no content
-    }
 
     /// <summary>
     /// Returns the meta object of this instance.

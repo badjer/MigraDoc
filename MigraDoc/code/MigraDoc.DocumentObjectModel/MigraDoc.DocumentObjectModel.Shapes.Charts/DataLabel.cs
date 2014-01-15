@@ -145,26 +145,6 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
     #endregion
 
     #region Internal
-    /// <summary>
-    /// Converts DataLabel into DDL.
-    /// </summary>
-    internal override void Serialize(Serializer serializer)
-    {
-      int pos = serializer.BeginContent("DataLabel");
-
-      if (this.Style != string.Empty)
-        serializer.WriteSimpleAttribute("Style", this.Style);
-      if (this.Format != string.Empty)
-        serializer.WriteSimpleAttribute("Format", this.Format);
-      if (!this.position.IsNull)
-        serializer.WriteSimpleAttribute("Position", this.Position);
-      if (!this.type.IsNull)
-        serializer.WriteSimpleAttribute("Type", this.Type);
-      if (!this.IsNull("Font"))
-        this.font.Serialize(serializer);
-
-      serializer.EndContent(pos);
-    }
 
     /// <summary>
     /// Returns the meta object of this instance.

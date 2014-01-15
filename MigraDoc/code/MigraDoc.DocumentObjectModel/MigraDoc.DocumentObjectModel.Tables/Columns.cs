@@ -132,32 +132,6 @@ namespace MigraDoc.DocumentObjectModel.Tables
     #endregion
 
     #region Internal
-    /// <summary>
-    /// Converts Columns into DDL.
-    /// </summary>
-    internal override void Serialize(Serializer serializer)
-    {
-      serializer.WriteComment(this.comment.Value);
-      serializer.WriteLine("\\columns");
-
-      int pos = serializer.BeginAttributes();
-
-      if (!this.width.IsNull)
-        serializer.WriteSimpleAttribute("Width", this.Width);
-
-      serializer.EndAttributes(pos);
-
-      serializer.BeginContent();
-      int clms = Count;
-      if (clms > 0)
-      {
-        for (int clm = 0; clm < clms; clm++)
-          this[clm].Serialize(serializer);
-      }
-      else
-        serializer.WriteComment("Invalid - no columns defined. Table will not render.");
-      serializer.EndContent();
-    }
 
     /// <summary>
     /// Allows the visitor object to visit the document object and it's child objects.

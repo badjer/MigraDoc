@@ -65,21 +65,7 @@ namespace MigraDoc.DocumentObjectModel.Fields
     #endregion
 
     #region Internal
-    /// <summary>
-    /// Converts SectionPagesField into DDL.
-    /// </summary>
-    internal override void Serialize(Serializer serializer)
-    {
-      string str = "\\field(SectionPages)";
-
-      if (this.format.Value != "")
-        str += "[Format = \"" + this.Format + "\"]";
-      else
-        str += "[]"; //Has to be appended to avoid confusion with '[' in directly following text.
-
-      serializer.Write(str);
-    }
-
+    
     /// <summary>
     /// Returns the meta object of this instance.
     /// </summary>

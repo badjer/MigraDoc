@@ -164,44 +164,6 @@ namespace MigraDoc.DocumentObjectModel.Tables
     #endregion
 
     #region Internal
-    /// <summary>
-    /// Converts Rows into DDL.
-    /// </summary>
-    internal override void Serialize(Serializer serializer)
-    {
-      serializer.WriteComment(this.comment.Value);
-      serializer.WriteLine("\\rows");
-
-      int pos = serializer.BeginAttributes();
-
-      if (!this.alignment.IsNull)
-        serializer.WriteSimpleAttribute("Alignment", this.Alignment);
-
-      if (!this.height.IsNull)
-        serializer.WriteSimpleAttribute("Height", this.Height);
-
-      if (!this.heightRule.IsNull)
-        serializer.WriteSimpleAttribute("HeightRule", this.HeightRule);
-
-      if (!this.leftIndent.IsNull)
-        serializer.WriteSimpleAttribute("LeftIndent", this.LeftIndent);
-
-      if (!this.verticalAlignment.IsNull)
-        serializer.WriteSimpleAttribute("VerticalAlignment", this.VerticalAlignment);
-
-      serializer.EndAttributes(pos);
-
-      serializer.BeginContent();
-      int rows = Count;
-      if (rows > 0)
-      {
-        for (int row = 0; row < rows; row++)
-          this[row].Serialize(serializer);
-      }
-      else
-        serializer.WriteComment("Invalid - no rows defined. Table will not render.");
-      serializer.EndContent();
-    }
 
     /// <summary>
     /// Allows the visitor object to visit the document object and it's child objects.

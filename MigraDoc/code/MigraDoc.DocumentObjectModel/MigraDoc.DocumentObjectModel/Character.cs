@@ -130,62 +130,6 @@ namespace MigraDoc.DocumentObjectModel
     #endregion
 
     #region Internal
-    /// <summary>
-    /// Converts Character into DDL.
-    /// </summary>
-    internal override void Serialize(Serializer serializer)
-    {
-      string text = String.Empty;
-      if (count == 1)
-      {
-        if ((SymbolName)symbolName.Value == SymbolName.Tab)
-          text = "\\tab ";
-        else if ((SymbolName)symbolName.Value == SymbolName.LineBreak)
-          text = "\\linebreak\x0D\x0A";
-        else if ((SymbolName)symbolName.Value == SymbolName.ParaBreak)
-          text = "\x0D\x0A\x0D\x0A";
-        //else if (symbolType == SymbolName.MarginBreak)
-        //  text = "\\marginbreak ";
-
-        if (text != "")
-        {
-          serializer.Write(text);
-          return;
-        }
-      }
-
-      if (((uint)symbolName.Value & 0xF0000000) == 0xF0000000)
-      {
-        // SymbolName == SpaceType?
-        if (((uint)symbolName.Value & 0xF1000000) == 0xF1000000)
-        {
-          if ((SymbolName)symbolName.Value == SymbolName.Blank)
-          {
-            //Note: Don't try to optimize it by leaving away the braces in case a single space is added.
-            //This would lead to confusion with '(' in directly following text.
-            text = "\\space(" + Count + ")";
-          }
-          else
-          {
-            if (count == 1)
-              text = "\\space(" + SymbolName + ")";
-            else
-              text = "\\space(" + SymbolName + ", " + Count + ")";
-          }
-        }
-        else
-        {
-          text = "\\symbol(" + SymbolName + ")";
-        }
-      }
-      else
-      {
-        // symbolType is a (unicode) character
-        text = " \\chr(0x" + ((int)symbolName.Value).ToString("X") + ")";
-      }
-
-      serializer.Write(text);
-    }
 
     /// <summary>
     /// Returns the meta object of this instance.

@@ -403,65 +403,6 @@ namespace MigraDoc.DocumentObjectModel
 
     #region Internal
     /// <summary>
-    /// Converts PageSetup into DDL.
-    /// </summary>
-    internal override void Serialize(Serializer serializer)
-    {
-      serializer.WriteComment(this.comment.Value);
-      int pos = serializer.BeginContent("PageSetup");
-
-      if (!this.pageHeight.IsNull)
-        serializer.WriteSimpleAttribute("PageHeight", this.PageHeight);
-
-      if (!this.pageWidth.IsNull)
-        serializer.WriteSimpleAttribute("PageWidth", this.PageWidth);
-
-      if (!this.orientation.IsNull)
-        serializer.WriteSimpleAttribute("Orientation", this.Orientation);
-
-      if (!this.leftMargin.IsNull)
-        serializer.WriteSimpleAttribute("LeftMargin", this.LeftMargin);
-
-      if (!this.rightMargin.IsNull)
-        serializer.WriteSimpleAttribute("RightMargin", this.RightMargin);
-
-      if (!this.topMargin.IsNull)
-        serializer.WriteSimpleAttribute("TopMargin", this.TopMargin);
-
-      if (!this.bottomMargin.IsNull)
-        serializer.WriteSimpleAttribute("BottomMargin", this.BottomMargin);
-
-      if (!this.footerDistance.IsNull)
-        serializer.WriteSimpleAttribute("FooterDistance", this.FooterDistance);
-
-      if (!this.headerDistance.IsNull)
-        serializer.WriteSimpleAttribute("HeaderDistance", this.HeaderDistance);
-
-      if (!this.oddAndEvenPagesHeaderFooter.IsNull)
-        serializer.WriteSimpleAttribute("OddAndEvenPagesHeaderFooter", this.OddAndEvenPagesHeaderFooter);
-
-      if (!this.differentFirstPageHeaderFooter.IsNull)
-        serializer.WriteSimpleAttribute("DifferentFirstPageHeaderFooter", this.DifferentFirstPageHeaderFooter);
-
-      if (!this.sectionStart.IsNull)
-        serializer.WriteSimpleAttribute("SectionStart", this.SectionStart);
-
-      if (!this.pageFormat.IsNull)
-        serializer.WriteSimpleAttribute("PageFormat", this.PageFormat);
-
-      if (!this.mirrorMargins.IsNull)
-        serializer.WriteSimpleAttribute("MirrorMargins", this.MirrorMargins);
-
-      if (!this.horizontalPageBreak.IsNull)
-        serializer.WriteSimpleAttribute("HorizontalPageBreak", this.HorizontalPageBreak);
-
-      if (!this.startingNumber.IsNull)
-        serializer.WriteSimpleAttribute("StartingNumber", this.StartingNumber);
-
-      serializer.EndContent(pos);
-    }
-
-    /// <summary>
     /// Returns the meta object of this instance.
     /// </summary>
     internal override Meta Meta

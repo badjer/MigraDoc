@@ -140,38 +140,6 @@ namespace MigraDoc.DocumentObjectModel
     #endregion
 
     #region Internal
-    /// <summary>
-    /// Converts Border into DDL.
-    /// </summary>
-    internal override void Serialize(Serializer serializer)
-    {
-      throw new Exception("A Border cannot be serialized alone.");
-    }
-
-    /// <summary>
-    /// Converts Border into DDL.
-    /// </summary>
-    internal void Serialize(Serializer serializer, string name, Border refBorder)
-    {
-      if (this.fClear.Value)
-        serializer.WriteLine(name + " = null");
-
-      int pos = serializer.BeginContent(name);
-
-      if (!this.visible.IsNull && (refBorder == null || (this.Visible != refBorder.Visible)))
-        serializer.WriteSimpleAttribute("Visible", this.Visible);
-
-      if (!this.style.IsNull && (refBorder == null || (this.Style != refBorder.Style)))
-        serializer.WriteSimpleAttribute("Style", this.Style);
-
-      if (!this.width.IsNull && (refBorder == null || (this.Width != refBorder.Width)))
-        serializer.WriteSimpleAttribute("Width", this.Width);
-
-      if (!this.color.IsNull && (refBorder == null || (this.Color != refBorder.Color)))
-        serializer.WriteSimpleAttribute("Color", this.Color);
-
-      serializer.EndContent(pos);
-    }
 
     /// <summary>
     /// Returns the meta object of this instance.

@@ -520,9 +520,6 @@
     <Compile Include="MigraDoc.DocumentObjectModel\Sections.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel\Serializer.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="MigraDoc.DocumentObjectModel\Shading.cs">
       <SubType>Code</SubType>
     </Compile>

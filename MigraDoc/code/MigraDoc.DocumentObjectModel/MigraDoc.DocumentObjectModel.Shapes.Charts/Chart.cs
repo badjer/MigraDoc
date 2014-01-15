@@ -540,62 +540,6 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
 
     #region Internal
     /// <summary>
-    /// Converts Chart into DDL.
-    /// </summary>
-    internal override void Serialize(Serializer serializer)
-    {
-      serializer.WriteLine("\\chart(" + this.Type + ")");
-      int pos = serializer.BeginAttributes();
-
-      base.Serialize(serializer);
-      if (!this.displayBlanksAs.IsNull)
-        serializer.WriteSimpleAttribute("DisplayBlanksAs", this.DisplayBlanksAs);
-      if (!this.pivotChart.IsNull)
-        serializer.WriteSimpleAttribute("PivotChart", this.PivotChart);
-      if (!this.hasDataLabel.IsNull)
-        serializer.WriteSimpleAttribute("HasDataLabel", this.HasDataLabel);
-
-      if (!this.style.IsNull)
-        serializer.WriteSimpleAttribute("Style", this.Style);
-      if (!this.IsNull("Format"))
-        this.format.Serialize(serializer, "Format", null);
-      if (!this.IsNull("DataLabel"))
-        this.dataLabel.Serialize(serializer);
-      serializer.EndAttributes(pos);
-
-      serializer.BeginContent();
-
-      if (!this.IsNull("PlotArea"))
-        this.plotArea.Serialize(serializer);
-      if (!this.IsNull("HeaderArea"))
-        this.headerArea.Serialize(serializer);
-      if (!this.IsNull("FooterArea"))
-        this.footerArea.Serialize(serializer);
-      if (!this.IsNull("TopArea"))
-        this.topArea.Serialize(serializer);
-      if (!this.IsNull("BottomArea"))
-        this.bottomArea.Serialize(serializer);
-      if (!this.IsNull("LeftArea"))
-        this.leftArea.Serialize(serializer);
-      if (!this.IsNull("RightArea"))
-        this.rightArea.Serialize(serializer);
-
-      if (!this.IsNull("XAxis"))
-        this.xAxis.Serialize(serializer);
-      if (!this.IsNull("YAxis"))
-        this.yAxis.Serialize(serializer);
-      if (!this.IsNull("ZAxis"))
-        this.zAxis.Serialize(serializer);
-
-      if (!this.IsNull("SeriesCollection"))
-        this.seriesCollection.Serialize(serializer);
-      if (!this.IsNull("XValues"))
-        this.xValues.Serialize(serializer);
-
-      serializer.EndContent();
-    }
-
-    /// <summary>
     /// Allows the visitor object to visit the document object and it's child objects.
     /// </summary>
     void IVisitable.AcceptVisitor(DocumentObjectVisitor visitor, bool visitChildren)

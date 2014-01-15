@@ -169,29 +169,6 @@ namespace MigraDoc.DocumentObjectModel.Shapes
     //#endregion
 
     #region Internal
-    /// <summary>
-    /// Converts Image into DDL.
-    /// </summary>
-    internal override void Serialize(Serializer serializer)
-    {
-      serializer.WriteLine("\\image(\"" + this.name.Value.Replace("\\", "\\\\").Replace("\"", "\\\"") + "\")");
-
-      int pos = serializer.BeginAttributes();
-
-      base.Serialize(serializer);
-      if (!this.scaleWidth.IsNull)
-        serializer.WriteSimpleAttribute("ScaleWidth", this.ScaleWidth);
-      if (!this.scaleHeight.IsNull)
-        serializer.WriteSimpleAttribute("ScaleHeight", this.ScaleHeight);
-      if (!this.lockAspectRatio.IsNull)
-        serializer.WriteSimpleAttribute("LockAspectRatio", this.LockAspectRatio);
-      if (!this.resolution.IsNull)
-        serializer.WriteSimpleAttribute("Resolution", this.Resolution);
-      if (!this.IsNull("PictureFormat"))
-        this.pictureFormat.Serialize(serializer);
-
-      serializer.EndAttributes(pos);
-    }
 
     /// <summary>
     /// Gets the concrete image path, taking into account the DOM document's DdlFile and

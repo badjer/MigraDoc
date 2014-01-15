@@ -384,44 +384,6 @@ namespace MigraDoc.DocumentObjectModel.Tables
     #endregion
 
     #region Internal
-    /// <summary>
-    /// Converts Cell into DDL.
-    /// </summary>
-    internal override void Serialize(Serializer serializer)
-    {
-      serializer.WriteComment(this.comment.Value);
-      serializer.WriteLine("\\cell");
-
-      int pos = serializer.BeginAttributes();
-
-      if (this.style.Value != String.Empty)
-        serializer.WriteSimpleAttribute("Style", this.Style);
-
-      if (!this.IsNull("Format"))
-        this.format.Serialize(serializer, "Format", null);
-
-      if (!this.mergeDown.IsNull)
-        serializer.WriteSimpleAttribute("MergeDown", this.MergeDown);
-
-      if (!this.mergeRight.IsNull)
-        serializer.WriteSimpleAttribute("MergeRight", this.MergeRight);
-
-      if (!this.verticalAlignment.IsNull)
-        serializer.WriteSimpleAttribute("VerticalAlignment", this.VerticalAlignment);
-
-      if (!this.IsNull("Borders"))
-        this.borders.Serialize(serializer, null);
-
-      if (!this.IsNull("Shading"))
-        this.shading.Serialize(serializer);
-
-      serializer.EndAttributes(pos);
-
-      pos = serializer.BeginContent();
-      if (!this.IsNull("Elements"))
-        this.elements.Serialize(serializer);
-      serializer.EndContent(pos);
-    }
 
     /// <summary>
     /// Allows the visitor object to visit the document object and it's child objects.

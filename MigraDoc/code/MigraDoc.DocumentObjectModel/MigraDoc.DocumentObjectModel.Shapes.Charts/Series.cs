@@ -287,48 +287,6 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
     #endregion
 
     #region Internal
-    /// <summary>
-    /// Converts Series into DDL.
-    /// </summary>
-    internal override void Serialize(Serializer serializer)
-    {
-      serializer.WriteLine("\\series");
-
-      int pos = serializer.BeginAttributes();
-
-      if (!this.name.IsNull)
-        serializer.WriteSimpleAttribute("Name", this.Name);
-
-      if (!this.markerSize.IsNull)
-        serializer.WriteSimpleAttribute("MarkerSize", this.MarkerSize);
-      if (!this.markerStyle.IsNull)
-        serializer.WriteSimpleAttribute("MarkerStyle", this.MarkerStyle);
-
-      if (!this.markerBackgroundColor.IsNull)
-        serializer.WriteSimpleAttribute("MarkerBackgroundColor", this.MarkerBackgroundColor);
-      if (!this.markerForegroundColor.IsNull)
-        serializer.WriteSimpleAttribute("MarkerForegroundColor", this.MarkerForegroundColor);
-
-      if (!this.chartType.IsNull)
-        serializer.WriteSimpleAttribute("ChartType", this.ChartType);
-
-      if (!this.hasDataLabel.IsNull)
-        serializer.WriteSimpleAttribute("HasDataLabel", this.HasDataLabel);
-
-      if (!this.IsNull("LineFormat"))
-        this.lineFormat.Serialize(serializer);
-      if (!this.IsNull("FillFormat"))
-        this.fillFormat.Serialize(serializer);
-      if (!this.IsNull("DataLabel"))
-        this.dataLabel.Serialize(serializer);
-
-      serializer.EndAttributes(pos);
-
-      serializer.BeginContent();
-      this.seriesElements.Serialize(serializer);
-      serializer.WriteLine("");
-      serializer.EndContent();
-    }
 
     /// <summary>
     /// Returns the meta object of this instance.
