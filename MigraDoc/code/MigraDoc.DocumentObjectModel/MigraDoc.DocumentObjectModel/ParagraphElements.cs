@@ -435,19 +435,7 @@ namespace MigraDoc.DocumentObjectModel
 
     #region Internal
 
-    /// <summary>
-    /// Returns the meta object of this instance.
-    /// </summary>
-    internal override Meta Meta
-    {
-      get
-      {
-        if (meta == null)
-          meta = new Meta(typeof(ParagraphElements));
-        return meta;
-      }
-    }
-    static Meta meta;
+	  
     #endregion
   }
 }

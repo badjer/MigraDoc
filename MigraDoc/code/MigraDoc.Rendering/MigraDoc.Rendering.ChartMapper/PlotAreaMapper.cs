@@ -52,9 +52,9 @@ namespace MigraDoc.Rendering.ChartMapper
       plotArea.LeftPadding = domPlotArea.LeftPadding.Point;
       plotArea.TopPadding = domPlotArea.TopPadding.Point;
 
-      if (!domPlotArea.IsNull("LineFormat"))
+      if (domPlotArea.lineFormat != null)
         LineFormatMapper.Map(plotArea.LineFormat, domPlotArea.LineFormat);
-      if (!domPlotArea.IsNull("FillFormat"))
+      if (domPlotArea.fillFormat != null)
         FillFormatMapper.Map(plotArea.FillFormat, domPlotArea.FillFormat);
     }
 

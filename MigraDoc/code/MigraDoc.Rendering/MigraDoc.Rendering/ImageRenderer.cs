@@ -177,14 +177,14 @@ namespace MigraDoc.Rendering
         {
           XUnit usrWidth = image.Width.Point;
           XUnit usrHeight = image.Height.Point;
-          bool usrWidthSet = !this.image.IsNull("Width");
-          bool usrHeightSet = !this.image.IsNull("Height");
+          bool usrWidthSet = !this.image.width.IsNull;
+          bool usrHeightSet = !this.image.height.IsNull;
 
           XUnit resultWidth = usrWidth;
           XUnit resultHeight = usrHeight;
 
           double xPixels = xImage.PixelWidth;
-          bool usrResolutionSet = !image.IsNull("Resolution");
+          bool usrResolutionSet = !image.resolution.IsNull;
 
           double horzRes = usrResolutionSet ? (double)image.Resolution : xImage.HorizontalResolution;
           XUnit inherentWidth = XUnit.FromInch(xPixels / horzRes);
@@ -192,12 +192,12 @@ namespace MigraDoc.Rendering
           double vertRes = usrResolutionSet ? (double)image.Resolution : xImage.VerticalResolution;
           XUnit inherentHeight = XUnit.FromInch(yPixels / vertRes);
 
-          bool lockRatio = this.image.IsNull("LockAspectRatio") ? true : image.LockAspectRatio;
+          bool lockRatio = this.image.lockAspectRatio.IsNull ? true : image.LockAspectRatio;
 
           double scaleHeight = this.image.ScaleHeight;
           double scaleWidth = this.image.ScaleWidth;
-          bool scaleHeightSet = !this.image.IsNull("ScaleHeight");
-          bool scaleWidthSet = !this.image.IsNull("ScaleWidth");
+          bool scaleHeightSet = !this.image.scaleHeight.IsNull;
+          bool scaleWidthSet = !this.image.scaleWidth.IsNull;
 
           if (lockRatio && !(scaleHeightSet && scaleWidthSet))
           {
@@ -242,7 +242,7 @@ namespace MigraDoc.Rendering
 
           formatInfo.CropWidth = (int)xPixels;
           formatInfo.CropHeight = (int)yPixels;
-          if (!this.image.IsNull("PictureFormat"))
+          if (this.image.pictureFormat != null)
           {
             PictureFormat picFormat = this.image.PictureFormat;
             //Cropping in pixels.
@@ -293,12 +293,12 @@ namespace MigraDoc.Rendering
       }
       if (formatInfo.failure != ImageFailure.None)
       {
-        if (!this.image.IsNull("Width"))
+        if (!this.image.width.IsNull)
           formatInfo.Width = this.image.Width.Point;
         else
           formatInfo.Width = XUnit.FromCentimeter(2.5);
 
-        if (!this.image.IsNull("Height"))
+        if (!this.image.height.IsNull)
           formatInfo.Height = this.image.Height.Point;
         else
           formatInfo.Height = XUnit.FromCentimeter(2.5);

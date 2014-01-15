@@ -85,7 +85,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
       get { return this.style.Value; }
       set { this.style.Value = value; }
     }
-    [DV]
+    
     internal NString style = NString.NullValue;
 
     /// <summary>
@@ -96,7 +96,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
       get { return this.caption.Value; }
       set { this.caption.Value = value; }
     }
-    [DV]
+    
     internal NString caption = NString.NullValue;
 
     /// <summary>
@@ -117,7 +117,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
         this.font = value;
       }
     }
-    [DV]
+    
     internal Font font;
 
     /// <summary>
@@ -128,7 +128,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
       get { return this.orientation; }
       set { this.orientation = value; }
     }
-    [DV]
+    
     internal Unit orientation = Unit.NullValue;
 
     /// <summary>
@@ -139,7 +139,6 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
       get { return (HorizontalAlignment)this.alignment.Value; }
       set { this.alignment.Value = (int)value; }
     }
-    [DV(Type = typeof(HorizontalAlignment))]
     internal NEnum alignment = NEnum.NullValue(typeof(HorizontalAlignment));
 
     /// <summary>
@@ -150,25 +149,9 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
       get { return (VerticalAlignment)this.verticalAlignment.Value; }
       set { this.verticalAlignment.Value = (int)value; }
     }
-    [DV(Type = typeof(VerticalAlignment))]
+    
     internal NEnum verticalAlignment = NEnum.NullValue(typeof(VerticalAlignment));
     #endregion
 
-    #region Internal
-    
-    /// <summary>
-    /// Returns the meta object of this instance.
-    /// </summary>
-    internal override Meta Meta
-    {
-      get
-      {
-        if (meta == null)
-          meta = new Meta(typeof(AxisTitle));
-        return meta;
-      }
-    }
-    static Meta meta;
-    #endregion
   }
 }

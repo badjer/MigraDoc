@@ -152,7 +152,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return this.name.Value; }
       set { this.name.Value = value; }
     }
-    [DV]
+    
     internal NString name = NString.NullValue;
 
     /// <summary>
@@ -163,7 +163,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return this.size; }
       set { this.size = value; }
     }
-    [DV]
+    
     internal Unit size = Unit.NullValue;
 
     /// <summary>
@@ -174,7 +174,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return this.bold.Value; }
       set { this.bold.Value = value; }
     }
-    [DV]
+    
     internal NBool bold = NBool.NullValue;
 
     /// <summary>
@@ -185,7 +185,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return this.italic.Value; }
       set { this.italic.Value = value; }
     }
-    [DV]
+    
     internal NBool italic = NBool.NullValue;
 
     /// <summary>
@@ -196,7 +196,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return (Underline)this.underline.Value; }
       set { this.underline.Value = (int)value; }
     }
-    [DV(Type = typeof(Underline))]
+    
     internal NEnum underline = NEnum.NullValue(typeof(Underline));
 
     /// <summary>
@@ -207,7 +207,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return this.color; }
       set { this.color = value; }
     }
-    [DV]
+    
     internal Color color = Color.Empty;
 
     /// <summary>
@@ -222,7 +222,7 @@ namespace MigraDoc.DocumentObjectModel
         this.subscript.SetNull();
       }
     }
-    [DV]
+    
     internal NBool superscript = NBool.NullValue;
 
     /// <summary>
@@ -237,7 +237,7 @@ namespace MigraDoc.DocumentObjectModel
         this.superscript.SetNull();
       }
     }
-    [DV]
+    
     internal NBool subscript = NBool.NullValue;
 
     //  + .Name = "Verdana"
@@ -278,22 +278,5 @@ namespace MigraDoc.DocumentObjectModel
       }
       return false;
     }
-
-    #region Internal
-
-	  /// <summary>
-    /// Returns the meta object of this instance.
-    /// </summary>
-    internal override Meta Meta
-    {
-      get
-      {
-        if (meta == null)
-          meta = new Meta(typeof(Font));
-        return meta;
-      }
-    }
-    static Meta meta;
-    #endregion
   }
 }

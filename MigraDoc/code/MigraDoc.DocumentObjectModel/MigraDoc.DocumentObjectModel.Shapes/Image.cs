@@ -97,7 +97,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes
       get { return this.name.Value; }
       set { this.name.Value = value; }
     }
-    [DV]
+    
     internal NString name = NString.NullValue;
 
     /// <summary>
@@ -109,7 +109,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes
       get { return this.scaleWidth.Value; }
       set { this.scaleWidth.Value = value; }
     }
-    [DV]
+    
     internal NDouble scaleWidth = NDouble.NullValue;
 
     /// <summary>
@@ -121,7 +121,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes
       get { return this.scaleHeight.Value; }
       set { this.scaleHeight.Value = value; }
     }
-    [DV]
+    
     internal NDouble scaleHeight = NDouble.NullValue;
 
     /// <summary>
@@ -133,7 +133,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes
       get { return this.lockAspectRatio.Value; }
       set { this.lockAspectRatio.Value = value; }
     }
-    [DV]
+    
     internal NBool lockAspectRatio = NBool.NullValue;
 
     /// <summary>
@@ -153,7 +153,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes
         this.pictureFormat = value;
       }
     }
-    [DV]
+    
     internal PictureFormat pictureFormat;
 
     /// <summary>
@@ -164,7 +164,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes
       get { return this.resolution.Value; }
       set { this.resolution.Value = value; }
     }
-    [DV]
+    
     internal NDouble resolution = NDouble.NullValue;
     //#endregion
 
@@ -185,15 +185,12 @@ namespace MigraDoc.DocumentObjectModel.Shapes
         else
           filePath = Directory.GetCurrentDirectory() + "\\";
 
-        if (!Document.IsNull("ImagePath"))
-        {
-          string foundfile = ImageHelper.GetImageName(filePath, this.Name, Document.ImagePath);
-          if (foundfile != null)
-            filePath = foundfile;
-          else
-            filePath = Path.Combine(filePath, Name);
-        }
-        else
+		if (!string.IsNullOrEmpty(Document.ImagePath))
+		{
+			string foundfile = ImageHelper.GetImageName(filePath, this.Name, Document.ImagePath);
+			filePath = foundfile ?? Path.Combine(filePath, Name);
+		}
+		else
           filePath = Path.Combine(filePath, Name);
       }
       catch (Exception ex)
@@ -206,19 +203,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes
       return filePath;
     }
 
-    /// <summary>
-    /// Returns the meta object of this instance.
-    /// </summary>
-    internal override Meta Meta
-    {
-      get
-      {
-        if (meta == null)
-          meta = new Meta(typeof(Image));
-        return meta;
-      }
-    }
-    static Meta meta;
+	  
     #endregion
   }
 }

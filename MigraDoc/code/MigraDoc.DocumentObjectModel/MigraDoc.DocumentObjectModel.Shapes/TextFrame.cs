@@ -30,9 +30,6 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
-using System.Diagnostics;
-using System.Reflection;
 using MigraDoc.DocumentObjectModel.Internals;
 using MigraDoc.DocumentObjectModel.Visitors;
 using MigraDoc.DocumentObjectModel.Shapes.Charts;
@@ -170,7 +167,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes
       get { return this.marginLeft; }
       set { this.marginLeft = value; }
     }
-    [DV]
+    
     internal Unit marginLeft = Unit.NullValue;
 
     /// <summary>
@@ -181,7 +178,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes
       get { return this.marginRight; }
       set { this.marginRight = value; }
     }
-    [DV]
+    
     internal Unit marginRight = Unit.NullValue;
 
     /// <summary>
@@ -192,7 +189,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes
       get { return this.marginTop; }
       set { this.marginTop = value; }
     }
-    [DV]
+    
     internal Unit marginTop = Unit.NullValue;
 
     /// <summary>
@@ -203,7 +200,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes
       get { return this.marginBottom; }
       set { this.marginBottom = value; }
     }
-    [DV]
+    
     internal Unit marginBottom = Unit.NullValue;
 
     /// <summary>
@@ -214,7 +211,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes
       get { return (TextOrientation)this.orientation.Value; }
       set { this.orientation.Value = (int)value; }
     }
-    [DV(Type = typeof(TextOrientation))]
+    
     internal NEnum orientation = NEnum.NullValue(typeof(TextOrientation));
 
     /// <summary>
@@ -235,7 +232,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes
         this.elements = value;
       }
     }
-    [DV(ItemType = typeof(DocumentObject))]
+    
     protected DocumentElements elements;
     #endregion
 
@@ -252,19 +249,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes
 
     #region Internal
 
-    /// <summary>
-    /// Returns the meta object of this instance.
-    /// </summary>
-    internal override Meta Meta
-    {
-      get
-      {
-        if (meta == null)
-          meta = new Meta(typeof(TextFrame));
-        return meta;
-      }
-    }
-    static Meta meta;
+	  
     #endregion
   }
 }

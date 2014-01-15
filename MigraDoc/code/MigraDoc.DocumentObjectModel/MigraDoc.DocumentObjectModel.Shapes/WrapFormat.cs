@@ -71,7 +71,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes
       get { return (WrapStyle)this.style.Value; }
       set { this.style.Value = (int)value; }
     }
-    [DV(Type = typeof(WrapStyle))]
+    
     internal NEnum style = NEnum.NullValue(typeof(WrapStyle));
 
     /// <summary>
@@ -82,7 +82,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes
       get { return this.distanceTop; }
       set { this.distanceTop = value; }
     }
-    [DV]
+    
     protected Unit distanceTop = Unit.NullValue;
 
     /// <summary>
@@ -93,7 +93,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes
       get { return this.distanceBottom; }
       set { this.distanceBottom = value; }
     }
-    [DV]
+    
     protected Unit distanceBottom = Unit.NullValue;
 
     /// <summary>
@@ -104,7 +104,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes
       get { return this.distanceLeft; }
       set { this.distanceLeft = value; }
     }
-    [DV]
+    
     protected Unit distanceLeft = Unit.NullValue;
 
     /// <summary>
@@ -115,25 +115,13 @@ namespace MigraDoc.DocumentObjectModel.Shapes
       get { return this.distanceRight; }
       set { this.distanceRight = value; }
     }
-    [DV]
+    
     protected Unit distanceRight = Unit.NullValue;
     #endregion
 
     #region Internal
 
-    /// <summary>
-    /// Returns the meta object of this instance.
-    /// </summary>
-    internal override Meta Meta
-    {
-      get
-      {
-        if (meta == null)
-          meta = new Meta(typeof(WrapFormat));
-        return meta;
-      }
-    }
-    static Meta meta;
+	  
     #endregion
   }
 }

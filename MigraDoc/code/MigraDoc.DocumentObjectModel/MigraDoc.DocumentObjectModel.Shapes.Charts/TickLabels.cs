@@ -85,7 +85,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
       get { return this.style.Value; }
       set { this.style.Value = value; }
     }
-    [DV]
+    
     internal NString style = NString.NullValue;
 
     /// <summary>
@@ -96,7 +96,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
       get { return this.format.Value; }
       set { this.format.Value = value; }
     }
-    [DV]
+    
     internal NString format = NString.NullValue;
 
     /// <summary>
@@ -117,25 +117,13 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
         this.font = value;
       }
     }
-    [DV]
+    
     internal Font font;
     #endregion
 
     #region Internal
 
-    /// <summary>
-    /// Returns the meta object of this instance.
-    /// </summary>
-    internal override Meta Meta
-    {
-      get
-      {
-        if (meta == null)
-          meta = new Meta(typeof(TickLabels));
-        return meta;
-      }
-    }
-    static Meta meta;
+	  
     #endregion
   }
 }

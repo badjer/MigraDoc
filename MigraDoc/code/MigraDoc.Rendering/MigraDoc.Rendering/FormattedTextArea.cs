@@ -64,7 +64,7 @@ namespace MigraDoc.Rendering
       {
         if (double.IsNaN(this.innerWidth))
         {
-          if (!this.textArea.IsNull("Width"))
+          if (!this.textArea.width.IsNull)
             this.innerWidth = textArea.Width.Point;
           else
             this.innerWidth = CalcInherentWidth();
@@ -78,7 +78,7 @@ namespace MigraDoc.Rendering
     {
       get
       {
-        if (this.textArea.IsNull("Height"))
+        if (this.textArea.height.IsNull)
           return this.ContentHeight + this.textArea.TopPadding + this.textArea.BottomPadding;
         return this.textArea.Height.Point;
       }

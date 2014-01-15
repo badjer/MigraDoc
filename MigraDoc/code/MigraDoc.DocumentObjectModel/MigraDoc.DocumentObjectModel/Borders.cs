@@ -31,9 +31,6 @@
 #endregion
 
 using System;
-using System.Diagnostics;
-using System.Reflection;
-using System.Globalization;
 using System.Collections;
 using System.ComponentModel;
 using MigraDoc.DocumentObjectModel.Internals;
@@ -65,8 +62,45 @@ namespace MigraDoc.DocumentObjectModel
       if (!Enum.IsDefined(typeof(BorderType), type))
         throw new InvalidEnumArgumentException("type");
 
-      return !(this.IsNull(type.ToString()));
+	    Border border = GetByType(type);
+
+	    return border != null;
     }
+
+	public Border GetByType(BorderType type)
+	{
+		if (type == BorderType.Bottom)
+		{
+			return bottom;
+		}
+
+		if (type == BorderType.Top)
+		{
+			return top;
+		}
+
+		if (type == BorderType.Left)
+		{
+			return left;
+		}
+
+		if (type == BorderType.Right)
+		{
+			return right;
+		}
+
+		if (type == BorderType.DiagonalDown)
+		{
+			return diagonalDown;
+		}
+
+		if (type == BorderType.DiagonalUp)
+		{
+			return diagonalUp;
+		}
+
+		return null;
+	}
 
     #region Methods
     /// <summary>
@@ -132,14 +166,6 @@ namespace MigraDoc.DocumentObjectModel
       return new BorderEnumerator(ht);
     }
 
-    /// <summary>
-    /// Clears all Border objects from the collection. Additionally 'Borders = null'
-    /// is written to the DDL stream when serialized.
-    /// </summary>
-    public void ClearAll()
-    {
-      this.clearAll = true;
-    }
     #endregion
 
     #region Properties
@@ -161,7 +187,7 @@ namespace MigraDoc.DocumentObjectModel
         this.top = value;
       }
     }
-    [DV]
+    
     internal Border top;
 
     /// <summary>
@@ -182,7 +208,7 @@ namespace MigraDoc.DocumentObjectModel
         this.left = value;
       }
     }
-    [DV]
+    
     internal Border left;
 
     /// <summary>
@@ -203,7 +229,7 @@ namespace MigraDoc.DocumentObjectModel
         this.bottom = value;
       }
     }
-    [DV]
+    
     internal Border bottom;
 
     /// <summary>
@@ -224,7 +250,7 @@ namespace MigraDoc.DocumentObjectModel
         this.right = value;
       }
     }
-    [DV]
+    
     internal Border right;
 
     /// <summary>
@@ -245,7 +271,7 @@ namespace MigraDoc.DocumentObjectModel
         this.diagonalUp = value;
       }
     }
-    [DV]
+    
     internal Border diagonalUp;
 
     /// <summary>
@@ -266,7 +292,7 @@ namespace MigraDoc.DocumentObjectModel
         this.diagonalDown = value;
       }
     }
-    [DV]
+    
     internal Border diagonalDown;
 
     /// <summary>
@@ -277,7 +303,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return this.visible.Value; }
       set { this.visible.Value = value; }
     }
-    [DV]
+    
     internal NBool visible = NBool.NullValue;
 
     /// <summary>
@@ -288,7 +314,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return (BorderStyle)this.style.Value; }
       set { this.style.Value = (int)value; }
     }
-    [DV(Type = typeof(BorderStyle))]
+    
     internal NEnum style = NEnum.NullValue(typeof(BorderStyle));
 
     /// <summary>
@@ -299,7 +325,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return this.width; }
       set { this.width = value; }
     }
-    [DV]
+    
     internal Unit width = Unit.NullValue;
 
     /// <summary>
@@ -310,7 +336,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return this.color; }
       set { this.color = value; }
     }
-    [DV]
+    
     internal Color color = Color.Empty;
 
     /// <summary>
@@ -321,7 +347,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return this.distanceFromTop; }
       set { this.distanceFromTop = value; }
     }
-    [DV]
+    
     internal Unit distanceFromTop = Unit.NullValue;
 
     /// <summary>
@@ -332,7 +358,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return this.distanceFromBottom; }
       set { this.distanceFromBottom = value; }
     }
-    [DV]
+    
     internal Unit distanceFromBottom = Unit.NullValue;
 
     /// <summary>
@@ -343,7 +369,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return this.distanceFromLeft; }
       set { this.distanceFromLeft = value; }
     }
-    [DV]
+    
     internal Unit distanceFromLeft = Unit.NullValue;
 
     /// <summary>
@@ -354,7 +380,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return this.distanceFromRight; }
       set { this.distanceFromRight = value; }
     }
-    [DV]
+    
     internal Unit distanceFromRight = Unit.NullValue;
 
     /// <summary>
@@ -466,19 +492,6 @@ namespace MigraDoc.DocumentObjectModel
       }
     }
 
-    /// <summary>
-    /// Returns the meta object of this instance.
-    /// </summary>
-    internal override Meta Meta
-    {
-      get
-      {
-        if (meta == null)
-          meta = new Meta(typeof(Borders));
-        return meta;
-      }
-    }
-    static Meta meta;
     #endregion
   }
 }

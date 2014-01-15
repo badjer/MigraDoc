@@ -248,7 +248,7 @@ namespace MigraDoc.DocumentObjectModel.Tables
       get { return this.style.Value; }
       set { this.style.Value = value; }
     }
-    [DV]
+    
     internal NString style = NString.NullValue;
 
     /// <summary>
@@ -269,7 +269,7 @@ namespace MigraDoc.DocumentObjectModel.Tables
         this.format = value;
       }
     }
-    [DV]
+    
     internal ParagraphFormat format;
 
     /// <summary>
@@ -280,7 +280,7 @@ namespace MigraDoc.DocumentObjectModel.Tables
       get { return (VerticalAlignment)this.verticalAlignment.Value; }
       set { this.verticalAlignment.Value = (int)value; }
     }
-    [DV(Type = typeof(VerticalAlignment))]
+    
     internal NEnum verticalAlignment = NEnum.NullValue(typeof(VerticalAlignment));
 
     /// <summary>
@@ -304,7 +304,7 @@ namespace MigraDoc.DocumentObjectModel.Tables
         this.borders = value;
       }
     }
-    [DV]
+    
     internal Borders borders;
 
     /// <summary>
@@ -325,7 +325,7 @@ namespace MigraDoc.DocumentObjectModel.Tables
         this.shading = value;
       }
     }
-    [DV]
+    
     internal Shading shading;
 
     /// <summary>
@@ -336,7 +336,7 @@ namespace MigraDoc.DocumentObjectModel.Tables
       get { return this.mergeRight.Value; }
       set { this.mergeRight.Value = value; }
     }
-    [DV]
+    
     internal NInt mergeRight = NInt.NullValue;
 
     /// <summary>
@@ -347,7 +347,7 @@ namespace MigraDoc.DocumentObjectModel.Tables
       get { return this.mergeDown.Value; }
       set { this.mergeDown.Value = value; }
     }
-    [DV]
+    
     internal NInt mergeDown = NInt.NullValue;
 
     /// <summary>
@@ -368,7 +368,7 @@ namespace MigraDoc.DocumentObjectModel.Tables
         this.elements = value;
       }
     }
-    [DV(ItemType = typeof(DocumentObject))]
+    
     internal DocumentElements elements;
 
     /// <summary>
@@ -379,7 +379,7 @@ namespace MigraDoc.DocumentObjectModel.Tables
       get { return this.comment.Value; }
       set { this.comment.Value = value; }
     }
-    [DV]
+    
     internal NString comment = NString.NullValue;
     #endregion
 
@@ -395,20 +395,6 @@ namespace MigraDoc.DocumentObjectModel.Tables
       if (visitChildren && this.elements != null)
         ((IVisitable)this.elements).AcceptVisitor(visitor, visitChildren);
     }
-
-    /// <summary>
-    /// Returns the meta object of this instance.
-    /// </summary>
-    internal override Meta Meta
-    {
-      get
-      {
-        if (meta == null)
-          meta = new Meta(typeof(Cell));
-        return meta;
-      }
-    }
-    static Meta meta;
     #endregion
   }
 }

@@ -465,7 +465,7 @@ namespace MigraDoc.DocumentObjectModel
         this.font = value;
       }
     }
-    [DV]
+    
     internal Font font;
 
     /// <summary>
@@ -476,13 +476,13 @@ namespace MigraDoc.DocumentObjectModel
       get { return this.style.Value; }
       set { this.style.Value = value; }
     }
-    [DV]
+    
     internal NString style = NString.NullValue;
 
     /// <summary>
     /// Gets or sets the name of the font.
     /// </summary>
-    [DV]
+    
     public string FontName
     {
       get { return Font.Name; }
@@ -493,7 +493,7 @@ namespace MigraDoc.DocumentObjectModel
     /// Gets or sets the name of the font.
     /// For internal use only.
     /// </summary>
-    [DV]
+    
     internal string Name
     {
       get { return Font.Name; }
@@ -503,7 +503,7 @@ namespace MigraDoc.DocumentObjectModel
     /// <summary>
     /// Gets or sets the size in point.
     /// </summary>
-    [DV]
+    
     public Unit Size
     {
       get { return Font.Size; }
@@ -513,7 +513,7 @@ namespace MigraDoc.DocumentObjectModel
     /// <summary>
     /// Gets or sets the bold property.
     /// </summary>
-    [DV]
+    
     public bool Bold
     {
       get { return Font.Bold; }
@@ -523,7 +523,7 @@ namespace MigraDoc.DocumentObjectModel
     /// <summary>
     /// Gets or sets the italic property.
     /// </summary>
-    [DV]
+    
     public bool Italic
     {
       get { return Font.Italic; }
@@ -533,7 +533,7 @@ namespace MigraDoc.DocumentObjectModel
     /// <summary>
     /// Gets or sets the underline property.
     /// </summary>
-    [DV]
+    
     public Underline Underline
     {
       get { return Font.Underline; }
@@ -543,7 +543,7 @@ namespace MigraDoc.DocumentObjectModel
     /// <summary>
     /// Gets or sets the color property.
     /// </summary>
-    [DV]
+    
     public Color Color
     {
       get { return Font.Color; }
@@ -553,7 +553,7 @@ namespace MigraDoc.DocumentObjectModel
     /// <summary>
     /// Gets or sets the superscript property.
     /// </summary>
-    [DV]
+    
     public bool Superscript
     {
       get { return Font.Superscript; }
@@ -563,7 +563,7 @@ namespace MigraDoc.DocumentObjectModel
     /// <summary>
     /// Gets or sets the subscript property.
     /// </summary>
-    [DV]
+    
     public bool Subscript
     {
       get { return Font.Subscript; }
@@ -588,7 +588,7 @@ namespace MigraDoc.DocumentObjectModel
         this.elements = value;
       }
     }
-    [DV(ItemType = typeof(DocumentObject))]
+    
     internal ParagraphElements elements;
     #endregion
 
@@ -604,19 +604,7 @@ namespace MigraDoc.DocumentObjectModel
         ((IVisitable)this.elements).AcceptVisitor(visitor, visitChildren);
     }
 
-    /// <summary>
-    /// Returns the meta object of this instance.
-    /// </summary>
-    internal override Meta Meta
-    {
-      get
-      {
-        if (meta == null)
-          meta = new Meta(typeof(FormattedText));
-        return meta;
-      }
-    }
-    static Meta meta;
+	  
     #endregion
   }
 }

@@ -31,7 +31,6 @@
 #endregion
 
 using System;
-using MigraDoc.DocumentObjectModel.Internals;
 
 namespace MigraDoc.DocumentObjectModel.Shapes.Charts
 {
@@ -62,8 +61,8 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
     /// <summary>
     /// The actual value of the XValue.
     /// </summary>
-    [DV] // No Get- and Set -Property.
-    protected string Value;
+     // No Get- and Set -Property.
+    internal string Value;
 
     #region Methods
     /// <summary>
@@ -77,19 +76,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
 
     #region Internal
 
-    /// <summary>
-    /// Returns the meta object of this instance.
-    /// </summary>
-    internal override Meta Meta
-    {
-      get
-      {
-        if (meta == null)
-          meta = new Meta(typeof(XValue));
-        return meta;
-      }
-    }
-    static Meta meta;
+	  
     #endregion
   }
 }

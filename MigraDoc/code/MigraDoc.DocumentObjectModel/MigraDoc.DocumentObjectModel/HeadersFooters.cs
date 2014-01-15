@@ -33,7 +33,6 @@
 using System;
 using System.Diagnostics;
 using System.Reflection;
-using MigraDoc.DocumentObjectModel.Internals;
 using MigraDoc.DocumentObjectModel.Visitors;
 
 namespace MigraDoc.DocumentObjectModel
@@ -115,7 +114,21 @@ namespace MigraDoc.DocumentObjectModel
     /// </summary>
     public bool HasHeaderFooter(HeaderFooterIndex index)
     {
-      return !this.IsNull(index.ToString());
+		if (index == HeaderFooterIndex.Primary)
+		{
+			return primary != null;
+		}
+
+		if (index == HeaderFooterIndex.EvenPage)
+		{
+			return evenPage != null;
+		}
+
+		if (index == HeaderFooterIndex.FirstPage)
+		{
+			return firstPage != null;
+		}
+	    return false;
     }
 
     /// <summary>
@@ -136,7 +149,7 @@ namespace MigraDoc.DocumentObjectModel
         this.evenPage = value;
       }
     }
-    [DV]
+    
     internal HeaderFooter evenPage;
 
     /// <summary>
@@ -157,7 +170,7 @@ namespace MigraDoc.DocumentObjectModel
         this.firstPage = value;
       }
     }
-    [DV]
+    
     internal HeaderFooter firstPage;
 
     /// <summary>
@@ -178,7 +191,7 @@ namespace MigraDoc.DocumentObjectModel
         this.primary = value;
       }
     }
-    [DV]
+    
     internal HeaderFooter primary;
     #endregion
 
@@ -202,19 +215,7 @@ namespace MigraDoc.DocumentObjectModel
       }
     }
 
-    /// <summary>
-    /// Returns the meta object of this instance.
-    /// </summary>
-    internal override Meta Meta
-    {
-      get
-      {
-        if (meta == null)
-          meta = new Meta(typeof(HeadersFooters));
-        return meta;
-      }
-    }
-    static Meta meta;
+	  
     #endregion
   }
 }

@@ -147,18 +147,6 @@
     <Compile Include="MigraDoc.DocumentObjectModel.Fields\SectionPagesField.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel.Internals\Meta.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel.Internals\ValueDescriptor.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel.Internals\DomValueDescriptorCollection.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel.Internals\DVAttribute.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="MigraDoc.DocumentObjectModel.Internals\enums\GV.cs">
       <SubType>Code</SubType>
     </Compile>

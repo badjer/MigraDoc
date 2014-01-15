@@ -85,7 +85,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
       get { return this.format.Value; }
       set { this.format.Value = value; }
     }
-    [DV]
+    
     internal NString format = NString.NullValue;
 
     /// <summary>
@@ -106,7 +106,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
         this.font = value;
       }
     }
-    [DV]
+    
     internal Font font;
 
     /// <summary>
@@ -118,7 +118,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
       get { return this.style.Value; }
       set { this.style.Value = value; }
     }
-    [DV]
+    
     internal NString style = NString.NullValue;
 
     /// <summary>
@@ -129,7 +129,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
       get { return (DataLabelPosition)this.position.Value; }
       set { this.position.Value = (int)value; }
     }
-    [DV(Type = typeof(DataLabelPosition))]
+    
     internal NEnum position = NEnum.NullValue(typeof(DataLabelPosition));
 
     /// <summary>
@@ -140,25 +140,8 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
       get { return (DataLabelType)this.type.Value; }
       set { this.type.Value = (int)value; }
     }
-    [DV(Type = typeof(DataLabelType))]
+    
     internal NEnum type = NEnum.NullValue(typeof(DataLabelType));
-    #endregion
-
-    #region Internal
-
-    /// <summary>
-    /// Returns the meta object of this instance.
-    /// </summary>
-    internal override Meta Meta
-    {
-      get
-      {
-        if (meta == null)
-          meta = new Meta(typeof(DataLabel));
-        return meta;
-      }
-    }
-    static Meta meta;
     #endregion
   }
 }

@@ -32,7 +32,6 @@
 
 using System;
 using System.Diagnostics;
-using MigraDoc.DocumentObjectModel.Internals;
 
 namespace MigraDoc.DocumentObjectModel
 {
@@ -82,7 +81,7 @@ namespace MigraDoc.DocumentObjectModel
     {
       get { return this.parent; }
     }
-    [DV(RefOnly = true)]
+    
     protected internal DocumentObject parent;
 
     /// <summary>
@@ -122,39 +121,7 @@ namespace MigraDoc.DocumentObjectModel
         return null;
       }
     }
-
-    /// <summary>
-    /// Returns the value with the specified name.
-    /// </summary>
-    public virtual object GetValue(string name)
-    {
-      return GetValue(name, GV.ReadWrite);
-    }
-
-    /// <summary>
-    /// Returns the value with the specified name and value flags.
-    /// </summary>
-    public virtual object GetValue(string name, GV flags)
-    {
-      return Meta.GetValue(this, name, flags);
-    }
-
-    /// <summary>
-    /// Determines whether the value of the given name is null.
-    /// </summary>
-    public virtual bool IsNull(string name)
-    {
-      return Meta.IsNull(this, name);
-    }
-
-    /// <summary>
-    /// Determines whether this instance is null (not set).
-    /// </summary>
-    public virtual bool IsNull()
-    {
-      return Meta.IsNull(this);
-    }
-
+	
     /// <summary>
     /// Gets or sets a value that contains arbitrary information about this object.
     /// </summary>
@@ -165,15 +132,7 @@ namespace MigraDoc.DocumentObjectModel
     }
     object tag;
 
-    /// <summary>
-    /// Returns the meta object of this instance.
-    /// </summary>
-    internal abstract Meta Meta
-    {
-      get;
-    }
-
-    /// <summary>
+	  /// <summary>
     /// Sets the parent of the specified value.
     /// If a parent is already set, an ArgumentException will be thrown.
     /// </summary>

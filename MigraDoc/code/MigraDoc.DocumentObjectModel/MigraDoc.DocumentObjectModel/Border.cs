@@ -84,7 +84,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return this.visible.Value; }
       set { this.visible.Value = value; }
     }
-    [DV]
+    
     internal NBool visible = NBool.NullValue;
 
     /// <summary>
@@ -95,7 +95,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return (BorderStyle)this.style.Value; }
       set { this.style.Value = (int)value; }
     }
-    [DV(Type = typeof(BorderStyle))]
+    
     internal NEnum style = NEnum.NullValue(typeof(BorderStyle));
 
     /// <summary>
@@ -106,7 +106,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return this.width; }
       set { this.width = value; }
     }
-    [DV]
+    
     internal Unit width = Unit.NullValue;
 
     /// <summary>
@@ -117,7 +117,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return this.color; }
       set { this.color = value; }
     }
-    [DV]
+    
     internal Color color = Color.Empty;
 
     /// <summary>
@@ -137,23 +137,6 @@ namespace MigraDoc.DocumentObjectModel
       get { return this.fClear.Value; }
     }
     internal NBool fClear = new NBool(false);
-    #endregion
-
-    #region Internal
-
-    /// <summary>
-    /// Returns the meta object of this instance.
-    /// </summary>
-    internal override Meta Meta
-    {
-      get
-      {
-        if (meta == null)
-          meta = new Meta(typeof(Border));
-        return meta;
-      }
-    }
-    static Meta meta;
     #endregion
   }
 }

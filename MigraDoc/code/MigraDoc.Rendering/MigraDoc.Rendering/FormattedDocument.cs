@@ -138,7 +138,7 @@ namespace MigraDoc.Rendering
 
     void FormatHeadersFooters()
     {
-      HeadersFooters headers = (HeadersFooters)this.currentSection.GetValue("Headers", GV.ReadOnly);
+	    HeadersFooters headers = (HeadersFooters) this.currentSection.Headers;
       if (headers != null)
       {
         PagePosition pagePos = CurrentPagePosition;
@@ -147,7 +147,7 @@ namespace MigraDoc.Rendering
           FormatHeader(hfp, ChooseHeaderFooter(headers, pagePos));
       }
 
-      HeadersFooters footers = (HeadersFooters)this.currentSection.GetValue("Footers", GV.ReadOnly);
+	    HeadersFooters footers = (HeadersFooters) this.currentSection.Footers;
       if (footers != null)
       {
         PagePosition pagePos = CurrentPagePosition;
@@ -390,15 +390,15 @@ namespace MigraDoc.Rendering
 
       if (pagePos == PagePosition.First)
       {
-        if (pageSetup.DifferentFirstPageHeaderFooter)
-          return (HeaderFooter)hfs.GetValue("FirstPage", GV.ReadOnly);
+	      if (pageSetup.DifferentFirstPageHeaderFooter)
+		      return (HeaderFooter) hfs.FirstPage;
       }
       if (pagePos == PagePosition.Even || this.currentPage % 2 == 0)
       {
-        if (pageSetup.OddAndEvenPagesHeaderFooter)
-          return (HeaderFooter)hfs.GetValue("EvenPage", GV.ReadOnly);
+	      if (pageSetup.OddAndEvenPagesHeaderFooter)
+		      return (HeaderFooter) hfs.EvenPage;
       }
-      return (HeaderFooter)hfs.GetValue("Primary", GV.ReadOnly);
+	    return (HeaderFooter) hfs.Primary;
     }
 
     /// <summary>
@@ -452,7 +452,7 @@ namespace MigraDoc.Rendering
       this.currentFieldInfos.pyhsicalPageNr = this.currentPage;
       this.currentFieldInfos.section = this.sectionNumber;
 
-      if (this.isNewSection && !this.currentSection.PageSetup.IsNull("StartingNumber"))
+      if (this.isNewSection && !this.currentSection.PageSetup.startingNumber.IsNull)
         this.shownPageNumber = this.currentSection.PageSetup.StartingNumber;
 
       this.currentFieldInfos.displayPageNr = this.shownPageNumber;

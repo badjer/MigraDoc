@@ -173,7 +173,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
       get { return this.height; }
       set { this.height = value; }
     }
-    [DV]
+    
     internal Unit height = Unit.NullValue;
 
     /// <summary>
@@ -184,7 +184,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
       get { return this.width; }
       set { this.width = value; }
     }
-    [DV]
+    
     internal Unit width = Unit.NullValue;
 
     /// <summary>
@@ -195,7 +195,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
       get { return this.style.Value; }
       set { this.style.Value = value; }
     }
-    [DV]
+    
     internal NString style = NString.NullValue;
 
     /// <summary>
@@ -216,7 +216,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
         this.format = value;
       }
     }
-    [DV]
+    
     internal ParagraphFormat format;
 
     /// <summary>
@@ -237,7 +237,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
         this.lineFormat = value;
       }
     }
-    [DV]
+    
     internal LineFormat lineFormat;
 
     /// <summary>
@@ -258,7 +258,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
         this.fillFormat = value;
       }
     }
-    [DV]
+    
     internal FillFormat fillFormat;
 
     /// <summary>
@@ -269,7 +269,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
       get { return this.leftPadding; }
       set { this.leftPadding = value; }
     }
-    [DV]
+    
     internal Unit leftPadding = Unit.NullValue;
 
     /// <summary>
@@ -280,7 +280,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
       get { return this.rightPadding; }
       set { this.rightPadding = value; }
     }
-    [DV]
+    
     internal Unit rightPadding = Unit.NullValue;
 
     /// <summary>
@@ -291,7 +291,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
       get { return this.topPadding; }
       set { this.topPadding = value; }
     }
-    [DV]
+    
     internal Unit topPadding = Unit.NullValue;
 
     /// <summary>
@@ -302,7 +302,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
       get { return this.bottomPadding; }
       set { this.bottomPadding = value; }
     }
-    [DV]
+    
     internal Unit bottomPadding = Unit.NullValue;
 
     /// <summary>
@@ -313,7 +313,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
       get { return (VerticalAlignment)this.verticalAlignment.Value; }
       set { this.verticalAlignment.Value = (int)value; }
     }
-    [DV(Type = typeof(VerticalAlignment))]
+    
     internal NEnum verticalAlignment = NEnum.NullValue(typeof(VerticalAlignment));
 
     /// <summary>
@@ -334,25 +334,13 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
         this.elements = value;
       }
     }
-    [DV(ItemType = typeof(DocumentObject))]
+    
     internal DocumentElements elements;
     #endregion
 
     #region Internal
-    
-    /// <summary>
-    /// Returns the meta object of this instance.
-    /// </summary>
-    internal override Meta Meta
-    {
-      get
-      {
-        if (meta == null)
-          meta = new Meta(typeof(TextArea));
-        return meta;
-      }
-    }
-    static Meta meta;
+
+	  
     #endregion
 
     void IVisitable.AcceptVisitor(DocumentObjectVisitor visitor, bool visitChildren)

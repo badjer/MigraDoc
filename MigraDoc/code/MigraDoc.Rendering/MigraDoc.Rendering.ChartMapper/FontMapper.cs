@@ -54,9 +54,9 @@ namespace MigraDoc.Rendering.ChartMapper
 #endif
       }
       font.Italic = domFont.Italic;
-      if (!domFont.IsNull("Name"))
+      if (!domFont.name.IsNull)
         font.Name = domFont.Name;
-      if (!domFont.IsNull("Size"))
+      if (!domFont.size.IsNull)
         font.Size = domFont.Size.Point;
       font.Subscript = domFont.Subscript;
       font.Superscript = domFont.Superscript;

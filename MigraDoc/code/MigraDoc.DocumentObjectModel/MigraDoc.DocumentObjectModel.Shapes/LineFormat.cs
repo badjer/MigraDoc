@@ -70,7 +70,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes
       get { return this.visible.Value; }
       set { this.visible.Value = value; }
     }
-    [DV]
+    
     internal NBool visible = NBool.NullValue;
 
     /// <summary>
@@ -81,7 +81,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes
       get { return this.width; }
       set { this.width = value; }
     }
-    [DV]
+    
     internal Unit width = Unit.NullValue;
 
     /// <summary>
@@ -92,7 +92,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes
       get { return this.color; }
       set { this.color = value; }
     }
-    [DV]
+    
     internal Color color = Color.Empty;
 
     /// <summary>
@@ -103,7 +103,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes
       get { return (DashStyle)this.dashStyle.Value; }
       set { this.dashStyle.Value = (int)value; }
     }
-    [DV(Type = typeof(DashStyle))]
+    
     internal NEnum dashStyle = NEnum.NullValue(typeof(DashStyle));
 
     /// <summary>
@@ -114,25 +114,13 @@ namespace MigraDoc.DocumentObjectModel.Shapes
       get { return (LineStyle)this.style.Value; }
       set { this.style.Value = (int)value; }
     }
-    [DV(Type = typeof(LineStyle))]
+    
     internal NEnum style = NEnum.NullValue(typeof(LineStyle));
     #endregion
 
     #region Internal
 
-    /// <summary>
-    /// Returns the meta object of this instance.
-    /// </summary>
-    internal override Meta Meta
-    {
-      get
-      {
-        if (meta == null)
-          meta = new Meta(typeof(LineFormat));
-        return meta;
-      }
-    }
-    static Meta meta;
+	  
     #endregion
   }
 }

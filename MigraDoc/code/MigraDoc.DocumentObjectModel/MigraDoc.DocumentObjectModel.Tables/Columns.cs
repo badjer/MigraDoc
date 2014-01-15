@@ -116,7 +116,7 @@ namespace MigraDoc.DocumentObjectModel.Tables
       get { return this.width; }
       set { this.width = value; }
     }
-    [DV]
+    
     internal Unit width = Unit.NullValue;
 
     /// <summary>
@@ -127,7 +127,7 @@ namespace MigraDoc.DocumentObjectModel.Tables
       get { return this.comment.Value; }
       set { this.comment.Value = value; }
     }
-    [DV]
+    
     internal NString comment = NString.NullValue;
     #endregion
 
@@ -140,20 +140,6 @@ namespace MigraDoc.DocumentObjectModel.Tables
     {
       visitor.VisitColumns(this);
     }
-
-    /// <summary>
-    /// Returns the meta object of this instance.
-    /// </summary>
-    internal override Meta Meta
-    {
-      get
-      {
-        if (meta == null)
-          meta = new Meta(typeof(Columns));
-        return meta;
-      }
-    }
-    static Meta meta;
     #endregion
   }
 }

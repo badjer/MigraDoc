@@ -160,7 +160,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
       get { return (ChartType)this.type.Value; }
       set { this.type.Value = (int)value; }
     }
-    [DV(Type = typeof(ChartType))]
+    
     internal NEnum type = NEnum.NullValue(typeof(ChartType));
 
     /// <summary>
@@ -171,7 +171,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
       get { return this.style.Value; }
       set { this.style.Value = value; }
     }
-    [DV]
+    
     internal NString style = NString.NullValue;
 
     /// <summary>
@@ -192,7 +192,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
         this.format = value;
       }
     }
-    [DV]
+    
     internal ParagraphFormat format;
 
     /// <summary>
@@ -213,7 +213,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
         this.xAxis = value;
       }
     }
-    [DV]
+    
     internal Axis xAxis;
 
     /// <summary>
@@ -234,7 +234,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
         this.yAxis = value;
       }
     }
-    [DV]
+    
     internal Axis yAxis;
 
     /// <summary>
@@ -255,7 +255,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
         this.zAxis = value;
       }
     }
-    [DV]
+    
     internal Axis zAxis;
 
     /// <summary>
@@ -276,7 +276,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
         this.seriesCollection = value;
       }
     }
-    [DV(ItemType = typeof(Series))]
+    
     internal SeriesCollection seriesCollection;
 
     /// <summary>
@@ -297,7 +297,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
         this.xValues = value;
       }
     }
-    [DV(ItemType = typeof(Series))]
+    
     internal XValues xValues;
 
     /// <summary>
@@ -318,7 +318,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
         this.headerArea = value;
       }
     }
-    [DV]
+    
     internal TextArea headerArea;
 
     /// <summary>
@@ -339,7 +339,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
         this.bottomArea = value;
       }
     }
-    [DV]
+    
     internal TextArea bottomArea;
 
     /// <summary>
@@ -360,7 +360,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
         this.topArea = value;
       }
     }
-    [DV]
+    
     internal TextArea topArea;
 
     /// <summary>
@@ -381,7 +381,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
         this.footerArea = value;
       }
     }
-    [DV]
+    
     internal TextArea footerArea;
 
     /// <summary>
@@ -402,7 +402,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
         this.leftArea = value;
       }
     }
-    [DV]
+    
     internal TextArea leftArea;
 
     /// <summary>
@@ -423,7 +423,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
         this.rightArea = value;
       }
     }
-    [DV]
+    
     internal TextArea rightArea;
 
     /// <summary>
@@ -444,7 +444,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
         this.plotArea = value;
       }
     }
-    [DV]
+    
     internal PlotArea plotArea;
 
     /// <summary>
@@ -455,7 +455,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
       get { return (BlankType)this.displayBlanksAs.Value; }
       set { this.displayBlanksAs.Value = (int)value; }
     }
-    [DV(Type = typeof(BlankType))]
+    
     internal NEnum displayBlanksAs = NEnum.NullValue(typeof(BlankType));
 
     /// <summary>
@@ -466,7 +466,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
       get { return this.pivotChart.Value; }
       set { this.pivotChart.Value = value; }
     }
-    [DV]
+    
     internal NBool pivotChart = NBool.NullValue;
 
     /// <summary>
@@ -487,7 +487,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
         this.dataLabel = value;
       }
     }
-    [DV]
+    
     internal DataLabel dataLabel;
 
     /// <summary>
@@ -498,7 +498,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
       get { return this.hasDataLabel.Value; }
       set { this.hasDataLabel.Value = value; }
     }
-    [DV]
+    
     internal NBool hasDataLabel = NBool.NullValue;
     #endregion
 
@@ -567,19 +567,6 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
       }
     }
 
-    /// <summary>
-    /// Returns the meta object of this instance.
-    /// </summary>
-    internal override Meta Meta
-    {
-      get
-      {
-        if (meta == null)
-          meta = new Meta(typeof(Chart));
-        return meta;
-      }
-    }
-    static Meta meta;
     #endregion
   }
 }

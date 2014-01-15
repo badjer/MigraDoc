@@ -167,7 +167,7 @@ namespace MigraDoc.DocumentObjectModel
         this.elements = value;
       }
     }
-    [DV(ItemType = typeof(DocumentObject))]
+    
     internal DocumentElements elements;
 
     /// <summary>
@@ -178,7 +178,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return this.reference.Value; }
       set { this.reference.Value = value; }
     }
-    [DV]
+    
     internal NString reference = NString.NullValue;
 
     /// <summary>
@@ -189,7 +189,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return this.style.Value; }
       set { this.style.Value = value; }
     }
-    [DV]
+    
     internal NString style = NString.NullValue;
 
     /// <summary>
@@ -210,7 +210,7 @@ namespace MigraDoc.DocumentObjectModel
         this.format = value;
       }
     }
-    [DV]
+    
     internal ParagraphFormat format;
     #endregion
 
@@ -225,20 +225,6 @@ namespace MigraDoc.DocumentObjectModel
       if (visitChildren && this.elements != null)
         ((IVisitable)this.elements).AcceptVisitor(visitor, visitChildren);
     }
-
-    /// <summary>
-    /// Returns the meta object of this instance.
-    /// </summary>
-    internal override Meta Meta
-    {
-      get
-      {
-        if (meta == null)
-          meta = new Meta(typeof(Footnote));
-        return meta;
-      }
-    }
-    static Meta meta;
     #endregion
   }
 }

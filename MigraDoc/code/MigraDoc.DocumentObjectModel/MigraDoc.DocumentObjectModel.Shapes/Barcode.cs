@@ -74,7 +74,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes
       get { return (TextOrientation)this.orientation.Value; }
       set { this.orientation.Value = (int)value; }
     }
-    [DV(Type = typeof(TextOrientation))]
+
     internal NEnum orientation = NEnum.NullValue(typeof(TextOrientation));
 
     /// <summary>
@@ -85,7 +85,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes
       get { return (BarcodeType)this.type.Value; }
       set { this.type.Value = (int)value; }
     }
-    [DV(Type = typeof(BarcodeType))]
+    
     internal NEnum type = NEnum.NullValue(typeof(BarcodeType));
 
     /// <summary>
@@ -96,7 +96,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes
       get { return this.bearerBars.Value; }
       set { this.bearerBars.Value = value; }
     }
-    [DV]
+    
     internal NBool bearerBars = NBool.NullValue;
 
     /// <summary>
@@ -107,7 +107,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes
       get { return this.text.Value; }
       set { this.text.Value = value; }
     }
-    [DV]
+    
     internal NBool text = NBool.NullValue;
 
     /// <summary>
@@ -118,7 +118,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes
       get { return this.code.Value; }
       set { this.code.Value = value; }
     }
-    [DV]
+    
     internal NString code = NString.NullValue;
 
     /// <summary>
@@ -129,7 +129,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes
       get { return this.lineRatio.Value; }
       set { this.lineRatio.Value = value; }
     }
-    [DV]
+    
     internal NDouble lineRatio = NDouble.NullValue;
 
     /// <summary>
@@ -140,7 +140,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes
       get { return this.lineHeight.Value; }
       set { this.lineHeight.Value = value; }
     }
-    [DV]
+    
     internal NDouble lineHeight = NDouble.NullValue;
 
     /// <summary>
@@ -151,25 +151,9 @@ namespace MigraDoc.DocumentObjectModel.Shapes
       get { return this.narrowLineWidth.Value; }
       set { this.narrowLineWidth.Value = value; }
     }
-    [DV]
+    
     internal NDouble narrowLineWidth = NDouble.NullValue;
     #endregion
 
-    #region Internal
-    
-    /// <summary>
-    /// Returns the meta object of this instance.
-    /// </summary>
-    internal override Meta Meta
-    {
-      get
-      {
-        if (meta == null)
-          meta = new Meta(typeof(Barcode));
-        return meta;
-      }
-    }
-    static Meta meta;
-    #endregion
   }
 }

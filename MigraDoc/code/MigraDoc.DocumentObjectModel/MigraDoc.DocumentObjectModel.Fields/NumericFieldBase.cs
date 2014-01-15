@@ -98,7 +98,7 @@ namespace MigraDoc.DocumentObjectModel.Fields
           throw new ArgumentException(DomSR.InvalidFieldFormat(value));
       }
     }
-    [DV]
+    
     internal NString format = NString.NullValue;
     #endregion
 
@@ -112,14 +112,6 @@ namespace MigraDoc.DocumentObjectModel.Fields
         if (name == this.Format)
           return true;
       }
-      return false;
-    }
-
-    /// <summary>
-    /// Determines whether this instance is null (not set).
-    /// </summary>
-    public override bool IsNull()
-    {
       return false;
     }
   }

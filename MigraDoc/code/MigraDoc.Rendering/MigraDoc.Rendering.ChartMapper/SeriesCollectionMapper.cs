@@ -53,7 +53,7 @@ namespace MigraDoc.Rendering.ChartMapper
         Series series = seriesCollection.AddSeries();
         series.Name = domSeries.Name;
 
-        if (domSeries.IsNull("ChartType"))
+        if (domSeries.chartType.IsNull)
         {
           MigraDoc.DocumentObjectModel.Shapes.Charts.Chart chart = (MigraDoc.DocumentObjectModel.Shapes.Charts.Chart)MigraDoc.DocumentObjectModel.DocumentRelations.GetParentOfType(domSeries, typeof(MigraDoc.DocumentObjectModel.Shapes.Charts.Chart));
           series.ChartType = (ChartType)chart.Type;
@@ -61,11 +61,11 @@ namespace MigraDoc.Rendering.ChartMapper
         else
           series.ChartType = (ChartType)domSeries.ChartType;
 
-        if (!domSeries.IsNull("DataLabel"))
+        if (domSeries.dataLabel != null)
           DataLabelMapper.Map(series.DataLabel, domSeries.DataLabel);
-        if (!domSeries.IsNull("LineFormat"))
+        if (domSeries.lineFormat != null)
           LineFormatMapper.Map(series.LineFormat, domSeries.LineFormat);
-        if (!domSeries.IsNull("FillFormat"))
+        if (domSeries.fillFormat != null)
           FillFormatMapper.Map(series.FillFormat, domSeries.FillFormat);
 
         series.HasDataLabel = domSeries.HasDataLabel;
@@ -92,7 +92,7 @@ namespace MigraDoc.Rendering.ChartMapper
 #endif
         }
         series.MarkerSize = domSeries.MarkerSize.Point;
-        if (!domSeries.IsNull("MarkerStyle"))
+        if (!domSeries.markerStyle.IsNull)
           series.MarkerStyle = (MarkerStyle)domSeries.MarkerStyle;
 
         foreach (MigraDoc.DocumentObjectModel.Shapes.Charts.Point domPoint in domSeries.Elements)

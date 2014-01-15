@@ -202,20 +202,6 @@ namespace MigraDoc.DocumentObjectModel
           ((IVisitable)docObject).AcceptVisitor(visitor, visitChildren);
       }
     }
-
-    /// <summary>
-    /// Returns the meta object of this instance.
-    /// </summary>
-    internal override Meta Meta
-    {
-      get
-      {
-        if (meta == null)
-          meta = new Meta(typeof(DocumentElements));
-        return meta;
-      }
-    }
-    static Meta meta;
     #endregion
   }
 }

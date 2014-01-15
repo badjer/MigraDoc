@@ -122,22 +122,5 @@ namespace MigraDoc.DocumentObjectModel.Tables
       for (int currentIndex = this.Count; currentIndex <= index; currentIndex++)
         Add(new Cell());
     }
-
-    #region Internal
-
-    /// <summary>
-    /// Returns the meta object of this instance.
-    /// </summary>
-    internal override Meta Meta
-    {
-      get
-      {
-        if (meta == null)
-          meta = new Meta(typeof(Cells));
-        return meta;
-      }
-    }
-    static Meta meta;
-    #endregion
   }
 }

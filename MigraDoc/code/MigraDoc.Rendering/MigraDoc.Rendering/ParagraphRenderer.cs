@@ -614,14 +614,14 @@ namespace MigraDoc.Rendering
       }
       //Automatic tab stop: FirstLineIndent < 0 => automatic tab stop at LeftIndent.
 
-      if (format.FirstLineIndent < 0 || (!format.IsNull("ListInfo") && format.ListInfo.NumberPosition < format.LeftIndent))
+      if (format.FirstLineIndent < 0 || (format.listInfo != null && format.ListInfo.NumberPosition < format.LeftIndent))
       {
         XUnit leftIndent = format.LeftIndent.Point;
         if (this.isFirstLine && this.currentXPosition < leftIndent + this.formattingArea.X)
           return new TabStop(leftIndent.Point);
       }
       XUnit defaultTabStop = "1.25cm";
-      if (!this.paragraph.Document.IsNull("DefaultTabstop"))
+      if (!this.paragraph.Document.defaultTabStop.IsNull)
         defaultTabStop = this.paragraph.Document.DefaultTabStop.Point;
 
       XUnit currTabPos = defaultTabStop;
@@ -1277,7 +1277,7 @@ namespace MigraDoc.Rendering
       if (this.phase == Phase.Formatting)
       {
         ParagraphFormat format = this.paragraph.Format;
-        if (!format.IsNull("ListInfo"))
+        if (format.listInfo != null)
         {
           ListInfo listInfo = format.ListInfo;
           double size = format.Font.Size;
@@ -1343,14 +1343,14 @@ namespace MigraDoc.Rendering
         XUnit leftIndent = format.LeftIndent.Point;
         if (this.isFirstLine)
         {
-          if (!format.IsNull("ListInfo"))
+          if (format.listInfo != null)
           {
-            if (!format.ListInfo.IsNull("NumberPosition"))
+	          if (!format.ListInfo.numberPosition.IsNull)
               return format.ListInfo.NumberPosition.Point;
-            else if (format.IsNull("FirstLineIndent"))
-              return 0;
+	          if (format.firstLineIndent.IsNull)
+		          return 0;
           }
-          return leftIndent + this.paragraph.Format.FirstLineIndent.Point;
+	        return leftIndent + this.paragraph.Format.FirstLineIndent.Point;
         }
         else
           return leftIndent;
@@ -1722,17 +1722,16 @@ namespace MigraDoc.Rendering
 
     string GetDocumentInfo(string name)
     {
-      string docInfoValue = "";
       string[] enumNames = Enum.GetNames(typeof(InfoFieldType));
       foreach (string enumName in enumNames)
       {
-        if (String.Compare(name, enumName, true) == 0)
+        if (string.Compare(name, enumName, true) == 0)
         {
-          docInfoValue = paragraph.Document.Info.GetValue(enumName).ToString();
-          break;
+			InfoFieldType e = (InfoFieldType)Enum.Parse(typeof(InfoFieldType), enumName);
+			return paragraph.Document.Info.GetValueByEnum(e);
         }
       }
-      return docInfoValue;
+      return "";
     }
 
     Area GetShadingArea()
@@ -1749,7 +1748,7 @@ namespace MigraDoc.Rendering
       XUnit right = contentArea.X + contentArea.Width;
       right -= format.RightIndent;
 
-      if (!this.paragraph.Format.IsNull("Borders"))
+      if (this.paragraph.Format.borders != null)
       {
         Borders borders = format.Borders;
         BordersRenderer bordersRenderer = new BordersRenderer(borders, this.gfx);
@@ -1767,7 +1766,7 @@ namespace MigraDoc.Rendering
 
     void RenderShading()
     {
-      if (this.paragraph.Format.IsNull("Shading"))
+      if (this.paragraph.Format.shading == null)
         return;
 
       ShadingRenderer shadingRenderer = new ShadingRenderer(this.gfx, this.paragraph.Format.Shading);
@@ -1779,7 +1778,7 @@ namespace MigraDoc.Rendering
 
     void RenderBorders()
     {
-      if (this.paragraph.Format.IsNull("Borders"))
+      if (this.paragraph.Format.borders == null)
         return;
 
       Area shadingArea = GetShadingArea();
@@ -2202,10 +2201,10 @@ namespace MigraDoc.Rendering
       get
       {
         XUnit offset = 0;
-        if (this.isFirstLine && !this.paragraph.Format.IsNull("Borders"))
+        if (this.isFirstLine && this.paragraph.Format.borders != null)
         {
           offset += paragraph.Format.Borders.DistanceFromTop;
-          if (!paragraph.Format.IsNull("Borders"))
+          if (paragraph.Format.borders != null)
           {
             BordersRenderer bordersRenderer = new BordersRenderer(paragraph.Format.Borders, this.gfx);
             offset += bordersRenderer.GetWidth(BorderType.Top);
@@ -2238,7 +2237,7 @@ namespace MigraDoc.Rendering
         if ((this.phase == Phase.Formatting && (this.currentLeaf == null || this.IsLastVisibleLeaf))
           || (this.phase == Phase.Rendering && (this.isLastLine)))
         {
-          if (!this.paragraph.Format.IsNull("Borders"))
+          if (this.paragraph.Format.borders != null)
           {
             offset += paragraph.Format.Borders.DistanceFromBottom;
             BordersRenderer bordersRenderer = new BordersRenderer(paragraph.Format.Borders, this.gfx);

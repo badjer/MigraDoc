@@ -29,10 +29,8 @@
 #endregion
 
 using System;
-using MigraDoc.DocumentObjectModel;
 using PdfSharp.Drawing;
 using MigraDoc.DocumentObjectModel.Shapes;
-using MigraDoc.DocumentObjectModel.Internals;
 
 namespace MigraDoc.Rendering
 {
@@ -46,7 +44,7 @@ namespace MigraDoc.Rendering
       : base(gfx, shape, fieldInfos)
     {
       this.shape = shape;
-      LineFormat lf = (LineFormat)this.shape.GetValue("LineFormat", GV.ReadOnly);
+      LineFormat lf = this.shape.LineFormat;
       this.lineFormatRenderer = new LineFormatRenderer(lf, gfx);
     }
 
@@ -54,9 +52,9 @@ namespace MigraDoc.Rendering
       : base(gfx, renderInfo, fieldInfos)
     {
       this.shape = (Shape)renderInfo.DocumentObject;
-      LineFormat lf = (LineFormat)this.shape.GetValue("LineFormat", GV.ReadOnly);
+      LineFormat lf = this.shape.LineFormat;
       this.lineFormatRenderer = new LineFormatRenderer(lf, gfx);
-      FillFormat ff = (FillFormat)this.shape.GetValue("FillFormat", GV.ReadOnly);
+      FillFormat ff = this.shape.FillFormat;
       this.fillFormatRenderer = new FillFormatRenderer(ff, gfx);
     }
 

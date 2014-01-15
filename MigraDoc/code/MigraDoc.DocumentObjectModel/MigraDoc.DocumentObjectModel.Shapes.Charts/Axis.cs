@@ -116,7 +116,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
         this.title = value;
       }
     }
-    [DV]
+    
     internal AxisTitle title;
 
     /// <summary>
@@ -127,7 +127,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
       get { return this.minimumScale.Value; }
       set { this.minimumScale.Value = value; }
     }
-    [DV]
+    
     internal NDouble minimumScale = NDouble.NullValue;
 
     /// <summary>
@@ -138,7 +138,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
       get { return this.maximumScale.Value; }
       set { this.maximumScale.Value = value; }
     }
-    [DV]
+    
     internal NDouble maximumScale = NDouble.NullValue;
 
     /// <summary>
@@ -149,7 +149,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
       get { return this.majorTick.Value; }
       set { this.majorTick.Value = value; }
     }
-    [DV]
+    
     internal NDouble majorTick = NDouble.NullValue;
 
     /// <summary>
@@ -160,7 +160,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
       get { return this.minorTick.Value; }
       set { this.minorTick.Value = value; }
     }
-    [DV]
+    
     internal NDouble minorTick = NDouble.NullValue;
 
     /// <summary>
@@ -171,7 +171,6 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
       get { return (TickMarkType)this.majorTickMark.Value; }
       set { this.majorTickMark.Value = (int)value; }
     }
-    [DV(Type = typeof(TickMarkType))]
     internal NEnum majorTickMark = NEnum.NullValue(typeof(TickMarkType));
 
     /// <summary>
@@ -182,7 +181,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
       get { return (TickMarkType)this.minorTickMark.Value; }
       set { this.minorTickMark.Value = (int)value; }
     }
-    [DV(Type = typeof(TickMarkType))]
+    
     internal NEnum minorTickMark = NEnum.NullValue(typeof(TickMarkType));
 
     /// <summary>
@@ -203,7 +202,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
         this.tickLabels = value;
       }
     }
-    [DV]
+    
     internal TickLabels tickLabels;
 
     /// <summary>
@@ -224,7 +223,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
         this.lineFormat = value;
       }
     }
-    [DV]
+    
     internal LineFormat lineFormat;
 
     /// <summary>
@@ -245,7 +244,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
         this.majorGridlines = value;
       }
     }
-    [DV]
+    
     internal Gridlines majorGridlines;
 
     /// <summary>
@@ -266,7 +265,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
         this.minorGridlines = value;
       }
     }
-    [DV]
+    
     internal Gridlines minorGridlines;
 
     /// <summary>
@@ -277,7 +276,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
       get { return this.hasMajorGridlines.Value; }
       set { this.hasMajorGridlines.Value = value; }
     }
-    [DV]
+    
     internal NBool hasMajorGridlines = NBool.NullValue;
 
     /// <summary>
@@ -288,7 +287,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
       get { return this.hasMinorGridlines.Value; }
       set { this.hasMinorGridlines.Value = value; }
     }
-    [DV]
+    
     internal NBool hasMinorGridlines = NBool.NullValue;
     #endregion
 
@@ -304,22 +303,5 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
 
       return "";
     }
-
-    #region Internal
-    
-    /// <summary>
-    /// Returns the meta object of this instance.
-    /// </summary>
-    internal override Meta Meta
-    {
-      get
-      {
-        if (meta == null)
-          meta = new Meta(typeof(Axis));
-        return meta;
-      }
-    }
-    static Meta meta;
-    #endregion
   }
 }

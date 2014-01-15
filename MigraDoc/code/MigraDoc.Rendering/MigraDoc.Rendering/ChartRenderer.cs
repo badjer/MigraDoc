@@ -28,12 +28,8 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
-using MigraDoc.DocumentObjectModel;
-using MigraDoc.DocumentObjectModel.Internals;
 using MigraDoc.DocumentObjectModel.Tables;
 using PdfSharp.Drawing;
-using MigraDoc.Rendering.ChartMapper;
 using MigraDoc.DocumentObjectModel.Shapes;
 using MigraDoc.DocumentObjectModel.Shapes.Charts;
 
@@ -215,22 +211,22 @@ namespace MigraDoc.Rendering
     {
       ChartFormatInfo formatInfo = (ChartFormatInfo)this.renderInfo.FormatInfo;
 
-      TextArea textArea = (TextArea)this.chart.GetValue("HeaderArea", GV.ReadOnly);
+	    TextArea textArea = (TextArea) this.chart.HeaderArea;
       formatInfo.formattedHeader = GetFormattedTextArea(textArea, this.chart.Width.Point);
 
-      textArea = (TextArea)this.chart.GetValue("FooterArea", GV.ReadOnly);
+	    textArea = (TextArea) this.chart.FooterArea;
       formatInfo.formattedFooter = GetFormattedTextArea(textArea, this.chart.Width.Point);
 
-      textArea = (TextArea)this.chart.GetValue("LeftArea", GV.ReadOnly);
+      textArea = (TextArea)this.chart.LeftArea;
       formatInfo.formattedLeft = GetFormattedTextArea(textArea);
 
-      textArea = (TextArea)this.chart.GetValue("RightArea", GV.ReadOnly);
+      textArea = (TextArea)this.chart.RightArea;
       formatInfo.formattedRight = GetFormattedTextArea(textArea);
 
-      textArea = (TextArea)this.chart.GetValue("TopArea", GV.ReadOnly);
+      textArea = (TextArea)this.chart.TopArea;
       formatInfo.formattedTop = GetFormattedTextArea(textArea, GetTopBottomWidth());
 
-      textArea = (TextArea)this.chart.GetValue("BottomArea", GV.ReadOnly);
+      textArea = (TextArea)this.chart.BottomArea;
       formatInfo.formattedBottom = GetFormattedTextArea(textArea, GetTopBottomWidth());
 
       base.Format(area, previousFormatInfo);
@@ -295,7 +291,7 @@ namespace MigraDoc.Rendering
       TextArea textArea = area.textArea;
 
 
-      FillFormatRenderer fillFormatRenderer = new FillFormatRenderer((FillFormat)textArea.GetValue("FillFormat", GV.ReadOnly), this.gfx);
+      FillFormatRenderer fillFormatRenderer = new FillFormatRenderer((FillFormat)textArea.FillFormat, this.gfx);
       fillFormatRenderer.Render(rect.X, rect.Y, rect.Width, rect.Height);
 
       XUnit top = rect.Y;
@@ -310,7 +306,7 @@ namespace MigraDoc.Rendering
       RenderInfo[] renderInfos = area.GetRenderInfos();
       RenderByInfos(left, top, renderInfos);
 
-      LineFormatRenderer lineFormatRenderer = new LineFormatRenderer((LineFormat)textArea.GetValue("LineFormat", GV.ReadOnly), this.gfx);
+      LineFormatRenderer lineFormatRenderer = new LineFormatRenderer((LineFormat)textArea.LineFormat, this.gfx);
       lineFormatRenderer.Render(rect.X, rect.Y, rect.Width, rect.Height);
     }
 
@@ -338,7 +334,7 @@ namespace MigraDoc.Rendering
       if (formatInfo.formattedRight != null)
         RenderArea(formatInfo.formattedRight, GetRightRect());
 
-      PlotArea plotArea = (PlotArea)this.chart.GetValue("PlotArea", GV.ReadOnly);
+      PlotArea plotArea = (PlotArea)this.chart.PlotArea;
       if (plotArea != null)
         RenderPlotArea(plotArea, GetPlotRect());
 

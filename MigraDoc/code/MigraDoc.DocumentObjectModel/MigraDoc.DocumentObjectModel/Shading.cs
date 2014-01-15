@@ -82,7 +82,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return this.visible.Value; }
       set { this.visible.Value = value; }
     }
-    [DV]
+    
     internal NBool visible = NBool.NullValue;
 
     /// <summary>
@@ -93,7 +93,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return this.color; }
       set { this.color = value; }
     }
-    [DV]
+    
     internal Color color = Color.Empty;
 
     /// <summary>
@@ -109,19 +109,7 @@ namespace MigraDoc.DocumentObjectModel
 
     #region Internal
 
-    /// <summary>
-    /// Returns the meta object of this instance.
-    /// </summary>
-    internal override Meta Meta
-    {
-      get
-      {
-        if (meta == null)
-          meta = new Meta(typeof(Shading));
-        return meta;
-      }
-    }
-    static Meta meta;
+	  
     #endregion
   }
 }

@@ -38,38 +38,31 @@ namespace MigraDoc.Rendering.ChartMapper
   /// </summary>
   public class AxisMapper
   {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="AxisMapper"/> class.
-    /// </summary>
-    public AxisMapper()
+	  void MapObject(Axis axis, DocumentObjectModel.Shapes.Charts.Axis domAxis)
     {
-    }
-
-    void MapObject(Axis axis, MigraDoc.DocumentObjectModel.Shapes.Charts.Axis domAxis)
-    {
-      if (!domAxis.IsNull("TickLabels.Format"))
+      if (!domAxis.TickLabels.format.IsNull)
         axis.TickLabels.Format = domAxis.TickLabels.Format;
-      if (!domAxis.IsNull("TickLabels.Style"))
+      if (!domAxis.TickLabels.style.IsNull)
         FontMapper.Map(axis.TickLabels.Font, domAxis.TickLabels.Document, domAxis.TickLabels.Style);
-      if (!domAxis.IsNull("TickLabels.Font"))
+      if (domAxis.TickLabels.font != null)
         FontMapper.Map(axis.TickLabels.Font, domAxis.TickLabels.Font);
 
-      if (!domAxis.IsNull("MajorTickMark"))
+      if (!domAxis.majorTickMark.IsNull)
         axis.MajorTickMark = (TickMarkType)domAxis.MajorTickMark;
-      if (!domAxis.IsNull("MinorTickMark"))
+      if (!domAxis.minorTickMark.IsNull)
         axis.MinorTickMark = (TickMarkType)domAxis.MinorTickMark;
 
-      if (!domAxis.IsNull("MajorTick"))
+      if (!domAxis.majorTick.IsNull)
         axis.MajorTick = domAxis.MajorTick;
-      if (!domAxis.IsNull("MinorTick"))
+      if (!domAxis.minorTick.IsNull)
         axis.MinorTick = domAxis.MinorTick;
 
-      if (!domAxis.IsNull("Title"))
+      if (domAxis.title != null)
       {
         axis.Title.Caption = domAxis.Title.Caption;
-        if (!domAxis.IsNull("Title.Style"))
+        if (!domAxis.title.style.IsNull)
           FontMapper.Map(axis.Title.Font, domAxis.Title.Document, domAxis.Title.Style);
-        if (!domAxis.IsNull("Title.Font"))
+        if (domAxis.title.font != null)
           FontMapper.Map(axis.Title.Font, domAxis.Title.Font);
         axis.Title.Orientation = domAxis.Title.Orientation.Value;
         axis.Title.Alignment = (HorizontalAlignment)domAxis.Title.Alignment;
@@ -79,17 +72,17 @@ namespace MigraDoc.Rendering.ChartMapper
       axis.HasMajorGridlines = domAxis.HasMajorGridlines;
       axis.HasMinorGridlines = domAxis.HasMinorGridlines;
 
-      if (!domAxis.IsNull("MajorGridlines") && !domAxis.MajorGridlines.IsNull("LineFormat"))
+      if (domAxis.majorGridlines != null && domAxis.MajorGridlines.lineFormat != null)
         LineFormatMapper.Map(axis.MajorGridlines.LineFormat, domAxis.MajorGridlines.LineFormat);
-      if (!domAxis.IsNull("MinorGridlines") && !domAxis.MinorGridlines.IsNull("LineFormat"))
+      if (domAxis.minorGridlines != null && domAxis.MinorGridlines.lineFormat != null)
         LineFormatMapper.Map(axis.MinorGridlines.LineFormat, domAxis.MinorGridlines.LineFormat);
 
-      if (!domAxis.IsNull("MaximumScale"))
+      if (!domAxis.maximumScale.IsNull)
         axis.MaximumScale = domAxis.MaximumScale;
-      if (!domAxis.IsNull("MinimumScale"))
+      if (!domAxis.minimumScale.IsNull)
         axis.MinimumScale = domAxis.MinimumScale;
 
-      if (!domAxis.IsNull("LineFormat"))
+      if (domAxis.lineFormat != null)
         LineFormatMapper.Map(axis.LineFormat, domAxis.LineFormat);
     }
 

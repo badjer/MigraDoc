@@ -126,7 +126,7 @@ namespace MigraDoc.DocumentObjectModel.Tables
         return index;
       }
     }
-    [DV]
+    
     internal NInt index = NInt.NullValue;
 
     /// <summary>
@@ -145,7 +145,7 @@ namespace MigraDoc.DocumentObjectModel.Tables
       get { return this.style.Value; }
       set { this.style.Value = value; }
     }
-    [DV]
+    
     internal NString style = NString.NullValue;
 
     /// <summary>
@@ -166,7 +166,7 @@ namespace MigraDoc.DocumentObjectModel.Tables
         this.format = value;
       }
     }
-    [DV]
+    
     internal ParagraphFormat format;
 
     /// <summary>
@@ -177,7 +177,7 @@ namespace MigraDoc.DocumentObjectModel.Tables
       get { return (VerticalAlignment)this.verticalAlignment.Value; }
       set { this.verticalAlignment.Value = (int)value; }
     }
-    [DV(Type = typeof(VerticalAlignment))]
+    
     internal NEnum verticalAlignment = NEnum.NullValue(typeof(VerticalAlignment));
 
     /// <summary>
@@ -188,7 +188,7 @@ namespace MigraDoc.DocumentObjectModel.Tables
       get { return this.height; }
       set { this.height = value; }
     }
-    [DV]
+    
     internal Unit height = Unit.NullValue;
 
     /// <summary>
@@ -199,7 +199,7 @@ namespace MigraDoc.DocumentObjectModel.Tables
       get { return (RowHeightRule)this.heightRule.Value; }
       set { this.heightRule.Value = (int)value; }
     }
-    [DV(Type = typeof(RowHeightRule))]
+    
     internal NEnum heightRule = NEnum.NullValue(typeof(RowHeightRule));
 
     /// <summary>
@@ -210,7 +210,7 @@ namespace MigraDoc.DocumentObjectModel.Tables
       get { return this.topPadding; }
       set { this.topPadding = value; }
     }
-    [DV]
+    
     internal Unit topPadding = Unit.NullValue;
 
     /// <summary>
@@ -221,7 +221,7 @@ namespace MigraDoc.DocumentObjectModel.Tables
       get { return this.bottomPadding; }
       set { this.bottomPadding = value; }
     }
-    [DV]
+    
     internal Unit bottomPadding = Unit.NullValue;
 
     /// <summary>
@@ -232,7 +232,7 @@ namespace MigraDoc.DocumentObjectModel.Tables
       get { return this.headingFormat.Value; }
       set { this.headingFormat.Value = value; }
     }
-    [DV]
+    
     internal NBool headingFormat = NBool.NullValue;
 
     /// <summary>
@@ -253,7 +253,7 @@ namespace MigraDoc.DocumentObjectModel.Tables
         this.borders = value;
       }
     }
-    [DV]
+    
     internal Borders borders;
 
     /// <summary>
@@ -274,7 +274,7 @@ namespace MigraDoc.DocumentObjectModel.Tables
         this.shading = value;
       }
     }
-    [DV]
+    
     internal Shading shading;
 
     /// <summary>
@@ -286,7 +286,7 @@ namespace MigraDoc.DocumentObjectModel.Tables
       get { return this.keepWith.Value; }
       set { this.keepWith.Value = value; }
     }
-    [DV]
+    
     internal NInt keepWith = NInt.NullValue;
 
     /// <summary>
@@ -307,7 +307,7 @@ namespace MigraDoc.DocumentObjectModel.Tables
         this.cells = value;
       }
     }
-    [DV]
+    
     internal Cells cells;
 
     /// <summary>
@@ -318,7 +318,7 @@ namespace MigraDoc.DocumentObjectModel.Tables
       get { return this.comment.Value; }
       set { this.comment.Value = value; }
     }
-    [DV]
+    
     internal NString comment = NString.NullValue;
     #endregion
 
@@ -335,19 +335,7 @@ namespace MigraDoc.DocumentObjectModel.Tables
         ((IVisitable)cell).AcceptVisitor(visitor, visitChildren);
     }
 
-    /// <summary>
-    /// Returns the meta object of this instance.
-    /// </summary>
-    internal override Meta Meta
-    {
-      get
-      {
-        if (meta == null)
-          meta = new Meta(typeof(Row));
-        return meta;
-      }
-    }
-    static Meta meta;
+	  
     #endregion
   }
 }

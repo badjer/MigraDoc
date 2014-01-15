@@ -309,7 +309,7 @@ namespace MigraDoc.Rendering
       if (isNumberList)
       {
         listNumber = 1;
-        if (/*!listTypeChanged &&*/ (listInfo.IsNull("ContinuePreviousList") || listInfo.ContinuePreviousList))
+        if (/*!listTypeChanged &&*/ (listInfo.continuePreviousList.IsNull || listInfo.ContinuePreviousList))
           listNumber = (int)this.previousListNumbers[listType] + 1;
 
         this.previousListNumbers[listType] = listNumber;
@@ -368,7 +368,7 @@ namespace MigraDoc.Rendering
       get { return this.privateFonts; }
       set { this.privateFonts = value; }
     }
-    //[DV]
+    //
     internal XPrivateFontCollection privateFonts;
 #endif
   }

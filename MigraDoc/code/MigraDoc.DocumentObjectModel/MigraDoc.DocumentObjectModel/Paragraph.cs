@@ -455,7 +455,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return this.style.Value; }
       set { this.style.Value = value; }
     }
-    [DV]
+    
     internal NString style = NString.NullValue;
 
     /// <summary>
@@ -476,7 +476,7 @@ namespace MigraDoc.DocumentObjectModel
         this.format = value;
       }
     }
-    [DV]
+    
     internal ParagraphFormat format;
 
     /// <summary>
@@ -497,7 +497,7 @@ namespace MigraDoc.DocumentObjectModel
         this.elements = value;
       }
     }
-    [DV]
+    
     internal ParagraphElements elements;
 
     /// <summary>
@@ -508,7 +508,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return this.comment.Value; }
       set { this.comment.Value = value; }
     }
-    [DV]
+    
     internal NString comment = NString.NullValue;
     #endregion
 
@@ -524,20 +524,7 @@ namespace MigraDoc.DocumentObjectModel
         ((IVisitable)this.elements).AcceptVisitor(visitor, visitChildren);
     }
 
-    /// <summary>
-    /// Returns the meta object of this instance.
-    /// </summary>
-    internal override Meta Meta
-    {
-      get
-      {
-        if (meta == null)
-          meta = new Meta(typeof(Paragraph));
-        return meta;
-      }
-    }
-
-    /// <summary>
+	  /// <summary>
     /// Returns an array of Paragraphs that are separated by parabreaks. Null if no parabreak is found.
     /// </summary>
     internal Paragraph[] SplitOnParaBreak()
@@ -593,7 +580,7 @@ namespace MigraDoc.DocumentObjectModel
       }
       return paragraphElements;
     }
-    static Meta meta;
+    
     #endregion
   }
 }

@@ -192,14 +192,27 @@ namespace MigraDoc.DocumentObjectModel.Visitors
       DocumentObject parentElements = DocumentRelations.GetParent(obj);
       DocumentObject parentObject = DocumentRelations.GetParent(parentElements);
       Font parentFont = null;
-      if (parentObject is Paragraph)
+	  Paragraph o = parentObject as Paragraph;
+	  if (o != null)
       {
-        ParagraphFormat format = ((Paragraph)parentObject).Format;
+        ParagraphFormat format = o.Format;
         parentFont = format.font;
       }
       else //Hyperlink or FormattedText
-      {
-        parentFont = parentObject.GetValue("Font") as Font;
+	  {
+		  Hyperlink hl = parentObject as Hyperlink;
+		  if (hl != null)
+		  {
+			  parentFont = hl.Font;
+		  }
+		  else
+		  {
+			  FormattedText formattedText = parentObject as FormattedText;
+			  if (formattedText != null)
+			  {
+				  parentFont = formattedText.Font;
+			  }
+		  }
       }
       return parentFont;
     }

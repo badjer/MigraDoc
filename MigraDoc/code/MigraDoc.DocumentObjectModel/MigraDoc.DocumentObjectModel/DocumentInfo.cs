@@ -33,6 +33,7 @@
 using System;
 using System.Diagnostics;
 using System.Reflection;
+using MigraDoc.DocumentObjectModel.Fields;
 using MigraDoc.DocumentObjectModel.Internals;
 
 namespace MigraDoc.DocumentObjectModel
@@ -73,7 +74,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return this.title.Value; }
       set { this.title.Value = value; }
     }
-    [DV]
+    
     internal NString title = NString.NullValue;
 
     /// <summary>
@@ -84,7 +85,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return this.author.Value; }
       set { this.author.Value = value; }
     }
-    [DV]
+    
     internal NString author = NString.NullValue;
 
     /// <summary>
@@ -95,7 +96,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return this.keywords.Value; }
       set { this.keywords.Value = value; }
     }
-    [DV]
+    
     internal NString keywords = NString.NullValue;
 
     /// <summary>
@@ -106,7 +107,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return this.subject.Value; }
       set { this.subject.Value = value; }
     }
-    [DV]
+    
     internal NString subject = NString.NullValue;
 
     /// <summary>
@@ -117,25 +118,34 @@ namespace MigraDoc.DocumentObjectModel
       get { return this.comment.Value; }
       set { this.comment.Value = value; }
     }
-    [DV]
+    
     internal NString comment = NString.NullValue;
     #endregion
 
-    #region Internal
+	public string GetValueByEnum(InfoFieldType type)
+	{
+		if (type == InfoFieldType.Author)
+		{
+			return Author;
+		}
 
-    /// <summary>
-    /// Returns the meta object of this instance.
-    /// </summary>
-    internal override Meta Meta
-    {
-      get
-      {
-        if (meta == null)
-          meta = new Meta(typeof(DocumentInfo));
-        return meta;
-      }
-    }
-    static Meta meta;
-    #endregion
+		if (type == InfoFieldType.Keywords)
+		{
+			return Keywords;
+		}
+
+		if (type == InfoFieldType.Subject)
+		{
+			return Subject;
+		}
+
+		if (type == InfoFieldType.Title)
+		{
+			return Title;
+		}
+
+		return "";
+	}
+
   }
 }

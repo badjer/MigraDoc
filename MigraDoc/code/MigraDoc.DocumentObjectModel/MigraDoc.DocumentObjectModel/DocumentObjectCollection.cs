@@ -238,23 +238,6 @@ namespace MigraDoc.DocumentObjectModel
     }
 
     /// <summary>
-    /// Determines whether this instance is null.
-    /// </summary>
-    public override bool IsNull()
-    {
-      if (!Meta.IsNull(this))
-        return false;
-      if (this.elements == null)
-        return true;
-      foreach (DocumentObject docObject in elements)
-      {
-        if (docObject != null && !docObject.IsNull())
-          return false;
-      }
-      return true;
-    }
-
-    /// <summary>
     /// Allows the visitor object to visit the document object and it's child objects.
     /// </summary>
     void IVisitable.AcceptVisitor(DocumentObjectVisitor visitor, bool visitChildren)

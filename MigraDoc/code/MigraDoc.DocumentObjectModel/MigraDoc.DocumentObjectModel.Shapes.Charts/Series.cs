@@ -128,7 +128,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
         this.seriesElements = value;
       }
     }
-    [DV]
+    
     internal SeriesElements seriesElements;
 
     /// <summary>
@@ -139,7 +139,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
       get { return this.name.Value; }
       set { this.name.Value = value; }
     }
-    [DV]
+    
     internal NString name = NString.NullValue;
 
     /// <summary>
@@ -160,7 +160,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
         this.lineFormat = value;
       }
     }
-    [DV]
+    
     internal LineFormat lineFormat;
 
     /// <summary>
@@ -181,7 +181,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
         this.fillFormat = value;
       }
     }
-    [DV]
+    
     internal FillFormat fillFormat;
 
     /// <summary>
@@ -192,7 +192,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
       get { return this.markerSize; }
       set { this.markerSize = value; }
     }
-    [DV]
+    
     internal Unit markerSize = Unit.NullValue;
 
     /// <summary>
@@ -203,7 +203,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
       get { return (MarkerStyle)this.markerStyle.Value; }
       set { this.markerStyle.Value = (int)value; }
     }
-    [DV(Type = typeof(MarkerStyle))]
+    
     internal NEnum markerStyle = NEnum.NullValue(typeof(MarkerStyle));
 
     /// <summary>
@@ -214,7 +214,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
       get { return this.markerForegroundColor; }
       set { this.markerForegroundColor = value; }
     }
-    [DV]
+    
     internal Color markerForegroundColor = Color.Empty;
 
     /// <summary>
@@ -225,7 +225,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
       get { return this.markerBackgroundColor; }
       set { this.markerBackgroundColor = value; }
     }
-    [DV]
+    
     internal Color markerBackgroundColor = Color.Empty;
 
     /// <summary>
@@ -236,7 +236,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
       get { return (ChartType)this.chartType.Value; }
       set { this.chartType.Value = (int)value; }
     }
-    [DV(Type = typeof(ChartType))]
+    
     internal NEnum chartType = NEnum.NullValue(typeof(ChartType));
 
     /// <summary>
@@ -257,7 +257,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
         this.dataLabel = value;
       }
     }
-    [DV]
+    
     internal DataLabel dataLabel;
 
     /// <summary>
@@ -268,7 +268,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
       get { return this.hasDataLabel.Value; }
       set { this.hasDataLabel.Value = value; }
     }
-    [DV]
+    
     internal NBool hasDataLabel = NBool.NullValue;
 
     /// <summary>
@@ -288,19 +288,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
 
     #region Internal
 
-    /// <summary>
-    /// Returns the meta object of this instance.
-    /// </summary>
-    internal override Meta Meta
-    {
-      get
-      {
-        if (meta == null)
-          meta = new Meta(typeof(Series));
-        return meta;
-      }
-    }
-    static Meta meta;
+	  
     #endregion
   }
 }

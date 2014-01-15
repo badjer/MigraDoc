@@ -171,7 +171,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return this.comment.Value; }
       set { this.comment.Value = value; }
     }
-    [DV]
+    
     internal NString comment = NString.NullValue;
 
     /// <summary>
@@ -192,7 +192,7 @@ namespace MigraDoc.DocumentObjectModel
         this.info = value;
       }
     }
-    [DV]
+    
     internal DocumentInfo info;
 
     /// <summary>
@@ -213,7 +213,7 @@ namespace MigraDoc.DocumentObjectModel
         this.styles = value;
       }
     }
-    [DV]
+    
     internal Styles styles;
 
     /// <summary>
@@ -224,7 +224,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return this.defaultTabStop; }
       set { this.defaultTabStop = value; }
     }
-    [DV]
+    
     internal Unit defaultTabStop = Unit.NullValue;
 
     /// <summary>
@@ -243,7 +243,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return (FootnoteLocation)this.footnoteLocation.Value; }
       set { this.footnoteLocation.Value = (int)value; }
     }
-    [DV(Type = typeof(FootnoteLocation))]
+    
     internal NEnum footnoteLocation = NEnum.NullValue(typeof(FootnoteLocation));
 
     /// <summary>
@@ -254,7 +254,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return (FootnoteNumberingRule)this.footnoteNumberingRule.Value; }
       set { this.footnoteNumberingRule.Value = (int)value; }
     }
-    [DV(Type = typeof(FootnoteNumberingRule))]
+    
     internal NEnum footnoteNumberingRule = NEnum.NullValue(typeof(FootnoteNumberingRule));
 
     /// <summary>
@@ -265,7 +265,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return (FootnoteNumberStyle)this.footnoteNumberStyle.Value; }
       set { this.footnoteNumberStyle.Value = (int)value; }
     }
-    [DV(Type = typeof(FootnoteNumberStyle))]
+    
     internal NEnum footnoteNumberStyle = NEnum.NullValue(typeof(FootnoteNumberStyle));
 
     /// <summary>
@@ -276,7 +276,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return this.footnoteStartingNumber.Value; }
       set { this.footnoteStartingNumber.Value = value; }
     }
-    [DV]
+    
     internal NInt footnoteStartingNumber = NInt.NullValue;
 
     /// <summary>
@@ -287,7 +287,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return this.imagePath.Value; }
       set { this.imagePath.Value = value; }
     }
-    [DV]
+    
     internal NString imagePath = NString.NullValue;
 
     /// <summary>
@@ -298,7 +298,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return this.useCmykColor.Value; }
       set { this.useCmykColor.Value = value; }
     }
-    [DV]
+    
     internal NBool useCmykColor = NBool.NullValue;
 
     /// <summary>
@@ -318,7 +318,7 @@ namespace MigraDoc.DocumentObjectModel
         this.sections = value;
       }
     }
-    [DV]
+    
     internal Sections sections;
     #endregion
 
@@ -345,20 +345,6 @@ namespace MigraDoc.DocumentObjectModel
         ((IVisitable)Sections).AcceptVisitor(visitor, visitChildren);
       }
     }
-
-    /// <summary>
-    /// Returns the meta object of this instance.
-    /// </summary>
-    internal override Meta Meta
-    {
-      get
-      {
-        if (meta == null)
-          meta = new Meta(typeof(Document));
-        return meta;
-      }
-    }
-    static Meta meta;
     #endregion
   }
 }

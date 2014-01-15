@@ -142,7 +142,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return (BreakType)this.sectionStart.Value; }
       set { this.sectionStart.Value = (int)value; }
     }
-    [DV(Type = typeof(BreakType))]
+    
     internal NEnum sectionStart = NEnum.NullValue(typeof(BreakType));
 
     /// <summary>
@@ -153,7 +153,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return (Orientation)this.orientation.Value; }
       set { this.orientation.Value = (int)value; }
     }
-    [DV(Type = typeof(Orientation))]
+    
     internal NEnum orientation = NEnum.NullValue(typeof(Orientation));
 
     /// <summary>
@@ -164,7 +164,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return this.pageWidth; }
       set { this.pageWidth = value; }
     }
-    [DV]
+    
     internal Unit pageWidth = Unit.NullValue;
 
     /// <summary>
@@ -175,7 +175,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return this.startingNumber.Value; }
       set { this.startingNumber.Value = value; }
     }
-    [DV]
+    
     internal NInt startingNumber = NInt.NullValue;
 
     /// <summary>
@@ -186,7 +186,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return this.pageHeight; }
       set { this.pageHeight = value; }
     }
-    [DV]
+    
     internal Unit pageHeight = Unit.NullValue;
 
     /// <summary>
@@ -197,7 +197,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return this.topMargin; }
       set { this.topMargin = value; }
     }
-    [DV]
+    
     internal Unit topMargin = Unit.NullValue;
 
     /// <summary>
@@ -208,7 +208,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return this.bottomMargin; }
       set { this.bottomMargin = value; }
     }
-    [DV]
+    
     internal Unit bottomMargin = Unit.NullValue;
 
     /// <summary>
@@ -219,7 +219,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return this.leftMargin; }
       set { this.leftMargin = value; }
     }
-    [DV]
+    
     internal Unit leftMargin = Unit.NullValue;
 
     /// <summary>
@@ -230,7 +230,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return this.rightMargin; }
       set { this.rightMargin = value; }
     }
-    [DV]
+    
     internal Unit rightMargin = Unit.NullValue;
 
     /// <summary>
@@ -242,7 +242,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return this.oddAndEvenPagesHeaderFooter.Value; }
       set { this.oddAndEvenPagesHeaderFooter.Value = value; }
     }
-    [DV]
+    
     internal NBool oddAndEvenPagesHeaderFooter = NBool.NullValue;
 
     /// <summary>
@@ -254,7 +254,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return this.differentFirstPageHeaderFooter.Value; }
       set { this.differentFirstPageHeaderFooter.Value = value; }
     }
-    [DV]
+    
     internal NBool differentFirstPageHeaderFooter = NBool.NullValue;
 
     /// <summary>
@@ -266,7 +266,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return this.headerDistance; }
       set { this.headerDistance = value; }
     }
-    [DV]
+    
     internal Unit headerDistance = Unit.NullValue;
 
     /// <summary>
@@ -278,7 +278,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return this.footerDistance; }
       set { this.footerDistance = value; }
     }
-    [DV]
+    
     internal Unit footerDistance = Unit.NullValue;
 
     /// <summary>
@@ -290,7 +290,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return this.mirrorMargins.Value; }
       set { this.mirrorMargins.Value = value; }
     }
-    [DV]
+    
     internal NBool mirrorMargins = NBool.NullValue;
 
     /// <summary>
@@ -302,7 +302,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return this.horizontalPageBreak.Value; }
       set { this.horizontalPageBreak.Value = value; }
     }
-    [DV]
+    
     internal NBool horizontalPageBreak = NBool.NullValue;
 
     /// <summary>
@@ -313,7 +313,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return (PageFormat)this.pageFormat.Value; }
       set { this.pageFormat.Value = (int)value; }
     }
-    [DV(Type = typeof(PageFormat))]
+    
     internal NEnum pageFormat = NEnum.NullValue(typeof(PageFormat));
 
     /// <summary>
@@ -324,7 +324,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return this.comment.Value; }
       set { this.comment.Value = value; }
     }
-    [DV]
+    
     internal NString comment = NString.NullValue;
     #endregion
 
@@ -402,19 +402,8 @@ namespace MigraDoc.DocumentObjectModel
 #endif
 
     #region Internal
-    /// <summary>
-    /// Returns the meta object of this instance.
-    /// </summary>
-    internal override Meta Meta
-    {
-      get
-      {
-        if (meta == null)
-          meta = new Meta(typeof(PageSetup));
-        return meta;
-      }
-    }
-    static Meta meta;
+
+	  
     #endregion
   }
 }

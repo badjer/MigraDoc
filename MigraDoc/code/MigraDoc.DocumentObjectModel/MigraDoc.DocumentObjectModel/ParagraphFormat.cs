@@ -165,7 +165,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return (ParagraphAlignment)this.alignment.Value; }
       set { this.alignment.Value = (int)value; }
     }
-    [DV(Type = typeof(ParagraphAlignment))]
+    
     internal NEnum alignment = NEnum.NullValue(typeof(ParagraphAlignment));
 
     /// <summary>
@@ -186,7 +186,7 @@ namespace MigraDoc.DocumentObjectModel
         this.borders = value;
       }
     }
-    [DV]
+    
     internal Borders borders;
 
     /// <summary>
@@ -197,7 +197,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return this.firstLineIndent; }
       set { this.firstLineIndent = value; }
     }
-    [DV]
+    
     internal Unit firstLineIndent = Unit.NullValue;
 
     /// <summary>
@@ -218,7 +218,7 @@ namespace MigraDoc.DocumentObjectModel
         this.font = value;
       }
     }
-    [DV]
+    
     internal Font font;
 
     /// <summary>
@@ -229,7 +229,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return this.keepTogether.Value; }
       set { this.keepTogether.Value = value; }
     }
-    [DV]
+    
     internal NBool keepTogether = NBool.NullValue;
 
     /// <summary>
@@ -240,7 +240,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return this.keepWithNext.Value; }
       set { this.keepWithNext.Value = value; }
     }
-    [DV]
+    
     internal NBool keepWithNext = NBool.NullValue;
 
     /// <summary>
@@ -251,7 +251,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return this.leftIndent; }
       set { this.leftIndent = value; }
     }
-    [DV]
+    
     internal Unit leftIndent = Unit.NullValue;
 
     /// <summary>
@@ -262,7 +262,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return this.lineSpacing; }
       set { this.lineSpacing = value; }
     }
-    [DV]
+    
     internal Unit lineSpacing = Unit.NullValue;
 
     /// <summary>
@@ -273,7 +273,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return (LineSpacingRule)this.lineSpacingRule.Value; }
       set { this.lineSpacingRule.Value = (int)value; }
     }
-    [DV(Type = typeof(LineSpacingRule))]
+    
     internal NEnum lineSpacingRule = NEnum.NullValue(typeof(LineSpacingRule));
 
     /// <summary>
@@ -294,7 +294,7 @@ namespace MigraDoc.DocumentObjectModel
         this.listInfo = value;
       }
     }
-    [DV]
+    
     internal ListInfo listInfo;
 
     /// <summary>
@@ -305,7 +305,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return (OutlineLevel)this.outlineLevel.Value; }
       set { this.outlineLevel.Value = (int)value; }
     }
-    [DV(Type = typeof(OutlineLevel))]
+    
     internal NEnum outlineLevel = NEnum.NullValue(typeof(OutlineLevel));
 
     /// <summary>
@@ -316,7 +316,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return this.pageBreakBefore.Value; }
       set { this.pageBreakBefore.Value = value; }
     }
-    [DV]
+    
     internal NBool pageBreakBefore = NBool.NullValue;
 
     /// <summary>
@@ -327,7 +327,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return this.rightIndent; }
       set { this.rightIndent = value; }
     }
-    [DV]
+    
     internal Unit rightIndent = Unit.NullValue;
 
     /// <summary>
@@ -348,7 +348,7 @@ namespace MigraDoc.DocumentObjectModel
         this.shading = value;
       }
     }
-    [DV]
+    
     internal Shading shading;
 
     /// <summary>
@@ -359,7 +359,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return this.spaceAfter; }
       set { this.spaceAfter = value; }
     }
-    [DV]
+    
     internal Unit spaceAfter = Unit.NullValue;
 
     /// <summary>
@@ -370,7 +370,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return this.spaceBefore; }
       set { this.spaceBefore = value; }
     }
-    [DV]
+    
     internal Unit spaceBefore = Unit.NullValue;
 
     /// <summary>
@@ -399,7 +399,7 @@ namespace MigraDoc.DocumentObjectModel
         this.tabStops = value;
       }
     }
-    [DV]
+    
     internal TabStops tabStops;
 
     /// <summary>
@@ -410,25 +410,13 @@ namespace MigraDoc.DocumentObjectModel
       get { return this.widowControl.Value; }
       set { this.widowControl.Value = value; }
     }
-    [DV]
+    
     internal NBool widowControl = NBool.NullValue;
     #endregion
 
     #region Internal
 
-    /// <summary>
-    /// Returns the meta object of this instance.
-    /// </summary>
-    internal override Meta Meta
-    {
-      get
-      {
-        if (meta == null)
-          meta = new Meta(typeof(ParagraphFormat));
-        return meta;
-      }
-    }
-    static Meta meta;
+	  
     #endregion
   }
 }

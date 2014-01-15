@@ -132,10 +132,6 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MigraDoc.Rendering.Resources\Messages.cs" />
-    <Compile Include="MigraDoc.Rendering\ColorHelper.cs" />
-    <Compile Include="MigraDoc.Rendering\enums\PageRenderOptions.cs" />
-    <Compile Include="VersionInfo.cs" />
     <Compile Include="MigraDoc.Rendering.ChartMapper\AxisMapper.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -166,6 +162,13 @@
     <Compile Include="MigraDoc.Rendering.ChartMapper\XValuesMapper.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="MigraDoc.Rendering.Resources\Messages.cs" />
+    <Compile Include="MigraDoc.Rendering\ChartRenderer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MigraDoc.Rendering\ColorHelper.cs" />
+    <Compile Include="MigraDoc.Rendering\enums\PageRenderOptions.cs" />
+    <Compile Include="VersionInfo.cs" />
     <Compile Include="MigraDoc.Rendering.Forms\enums\Zoom.cs" />
     <Compile Include="MigraDoc.Rendering.Forms\DocumentPreview.cs">
       <SubType>UserControl</SubType>
@@ -180,9 +183,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MigraDoc.Rendering\ChartFormatInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.Rendering\ChartRenderer.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MigraDoc.Rendering\ChartRenderInfo.cs">

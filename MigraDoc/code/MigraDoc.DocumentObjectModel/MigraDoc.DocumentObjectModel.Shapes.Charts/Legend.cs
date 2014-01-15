@@ -90,7 +90,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
       get { return this.style.Value; }
       set { this.style.Value = value; }
     }
-    [DV]
+    
     internal NString style = NString.NullValue;
 
     /// <summary>
@@ -111,7 +111,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
         this.format = value;
       }
     }
-    [DV]
+    
     internal ParagraphFormat format;
 
     /// <summary>
@@ -132,35 +132,10 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
         this.lineFormat = value;
       }
     }
-    [DV]
+    
     internal LineFormat lineFormat;
     #endregion
 
-    #region Internal
-
-    /// <summary>
-    /// Determines whether this instance is null (not set).
-    /// </summary>
-    public override bool IsNull()
-    {
-      // legend objects are never null, i.e. the presence of this object is meaningful.
-      return false;
-    }
-
-    /// <summary>
-    /// Returns the meta object of this instance.
-    /// </summary>
-    internal override Meta Meta
-    {
-      get
-      {
-        if (meta == null)
-          meta = new Meta(typeof(Legend));
-        return meta;
-      }
-    }
-    static Meta meta;
-    #endregion
 
     #region IVisitable Members
 

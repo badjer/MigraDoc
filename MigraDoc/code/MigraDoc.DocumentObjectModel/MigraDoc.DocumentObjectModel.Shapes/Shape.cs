@@ -106,7 +106,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes
         this.wrapFormat = value;
       }
     }
-    [DV]
+    
     internal WrapFormat wrapFormat;
 
     /// <summary>
@@ -117,7 +117,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes
       get { return (RelativeVertical)this.relativeVertical.Value; }
       set { this.relativeVertical.Value = (int)value; }
     }
-    [DV(Type = typeof(RelativeVertical))]
+    
     internal NEnum relativeVertical = NEnum.NullValue(typeof(RelativeVertical));
 
     /// <summary>
@@ -128,7 +128,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes
       get { return (RelativeHorizontal)this.relativeHorizontal.Value; }
       set { this.relativeHorizontal.Value = (int)value; }
     }
-    [DV(Type = typeof(RelativeHorizontal))]
+    
     internal NEnum relativeHorizontal = NEnum.NullValue(typeof(RelativeHorizontal));
 
     /// <summary>
@@ -139,7 +139,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes
       get { return this.top; }
       set { this.top = value; }
     }
-    [DV]
+    
     internal TopPosition top = TopPosition.NullValue;
 
     /// <summary>
@@ -150,7 +150,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes
       get { return this.left; }
       set { this.left = value; }
     }
-    [DV]
+    
     internal LeftPosition left = LeftPosition.NullValue;
 
     /// <summary>
@@ -171,7 +171,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes
         this.lineFormat = value;
       }
     }
-    [DV]
+    
     internal LineFormat lineFormat;
 
     /// <summary>
@@ -192,7 +192,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes
         this.fillFormat = value;
       }
     }
-    [DV]
+    
     internal FillFormat fillFormat;
 
     /// <summary>
@@ -203,7 +203,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes
       get { return this.height; }
       set { this.height = value; }
     }
-    [DV]
+    
     internal Unit height = Unit.NullValue;
 
     /// <summary>
@@ -214,25 +214,13 @@ namespace MigraDoc.DocumentObjectModel.Shapes
       get { return this.width; }
       set { this.width = value; }
     }
-    [DV]
+    
     internal Unit width = Unit.NullValue;
     #endregion
 
     #region Internal
 
-    /// <summary>
-    /// Returns the meta object of this instance.
-    /// </summary>
-    internal override Meta Meta
-    {
-      get
-      {
-        if (meta == null)
-          meta = new Meta(typeof(Shape));
-        return meta;
-      }
-    }
-    static Meta meta;
+	  
     #endregion
   }
 }

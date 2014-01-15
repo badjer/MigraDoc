@@ -41,8 +41,6 @@ namespace MigraDoc.DocumentObjectModel
     Left,
     Bottom,
     Right,
-    Horizontal,  // not used in MigraDoc 1.2
-    Vertical,    // not used in MigraDoc 1.2
     DiagonalDown,
     DiagonalUp
   }

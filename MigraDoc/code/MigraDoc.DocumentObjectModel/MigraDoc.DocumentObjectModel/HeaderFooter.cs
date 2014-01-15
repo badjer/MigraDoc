@@ -238,7 +238,7 @@ namespace MigraDoc.DocumentObjectModel
           throw new ArgumentException("Invalid style name '" + value + "'.");
       }
     }
-    [DV]
+    
     internal NString style = NString.NullValue;
 
     /// <summary>
@@ -258,7 +258,7 @@ namespace MigraDoc.DocumentObjectModel
         this.format = value;
       }
     }
-    [DV]
+    
     internal ParagraphFormat format;
 
     /// <summary>
@@ -278,7 +278,7 @@ namespace MigraDoc.DocumentObjectModel
         this.elements = value;
       }
     }
-    [DV(ItemType = typeof(DocumentObject))]
+    
     internal DocumentElements elements;
 
     /// <summary>
@@ -289,7 +289,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return this.comment.Value; }
       set { this.comment.Value = value; }
     }
-    [DV]
+    
     internal NString comment = NString.NullValue;
     #endregion
 
@@ -305,28 +305,6 @@ namespace MigraDoc.DocumentObjectModel
       if (visitChildren && this.elements != null)
         ((IVisitable)this.elements).AcceptVisitor(visitor, visitChildren);
     }
-
-    /// <summary>
-    /// Determines whether this instance is null (not set).
-    /// </summary>
-    public override bool IsNull()
-    {
-      return false;
-    }
-
-    /// <summary>
-    /// Returns the meta object of this instance.
-    /// </summary>
-    internal override Meta Meta
-    {
-      get
-      {
-        if (meta == null)
-          meta = new Meta(typeof(HeaderFooter));
-        return meta;
-      }
-    }
-    static Meta meta;
     #endregion
   }
 }

@@ -192,21 +192,21 @@ namespace MigraDoc.Rendering
     /// </summary>
     private void WriteDocumentInformation()
     {
-      if (!this.document.IsNull("Info"))
+      if (this.document.info != null)
       {
         DocumentInfo docInfo = this.document.Info;
         PdfDocumentInformation pdfInfo = this.pdfDocument.Info;
 
-        if (!docInfo.IsNull("Author"))
+        if (!docInfo.author.IsNull)
           pdfInfo.Author = docInfo.Author;
 
-        if (!docInfo.IsNull("Keywords"))
+        if (!docInfo.keywords.IsNull)
           pdfInfo.Keywords = docInfo.Keywords;
 
-        if (!docInfo.IsNull("Subject"))
+        if (!docInfo.subject.IsNull)
           pdfInfo.Subject = docInfo.Subject;
 
-        if (!docInfo.IsNull("Title"))
+        if (!docInfo.title.IsNull)
           pdfInfo.Title = docInfo.Title;
       }
     }

@@ -241,7 +241,7 @@ namespace MigraDoc.DocumentObjectModel
         this.pageSetup = value;
       }
     }
-    [DV]
+    
     internal PageSetup pageSetup;
 
     /// <summary>
@@ -262,7 +262,7 @@ namespace MigraDoc.DocumentObjectModel
         this.headers = value;
       }
     }
-    [DV]
+    
     internal HeadersFooters headers;
 
     /// <summary>
@@ -283,7 +283,7 @@ namespace MigraDoc.DocumentObjectModel
         this.footers = value;
       }
     }
-    [DV]
+    
     internal HeadersFooters footers;
 
     /// <summary>
@@ -304,7 +304,7 @@ namespace MigraDoc.DocumentObjectModel
         this.elements = value;
       }
     }
-    [DV]
+    
     internal DocumentElements elements;
 
     /// <summary>
@@ -315,7 +315,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return this.comment.Value; }
       set { this.comment.Value = value; }
     }
-    [DV]
+    
     internal NString comment = NString.NullValue;
 
     /// <summary>
@@ -371,19 +371,7 @@ namespace MigraDoc.DocumentObjectModel
         ((IVisitable)this.elements).AcceptVisitor(visitor, visitChildren);
     }
 
-    /// <summary>
-    /// Returns the meta object of this instance.
-    /// </summary>
-    internal override Meta Meta
-    {
-      get
-      {
-        if (meta == null)
-          meta = new Meta(typeof(Section));
-        return meta;
-      }
-    }
-    static Meta meta;
+	  
     #endregion
   }
 }

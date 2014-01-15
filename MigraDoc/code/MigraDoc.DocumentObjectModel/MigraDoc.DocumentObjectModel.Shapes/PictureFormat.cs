@@ -33,7 +33,6 @@
 using System;
 using System.Diagnostics;
 using System.Reflection;
-using MigraDoc.DocumentObjectModel.Internals;
 
 namespace MigraDoc.DocumentObjectModel.Shapes
 {
@@ -74,7 +73,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes
       get { return this.cropLeft; }
       set { this.cropLeft = value; }
     }
-    [DV]
+    
     protected Unit cropLeft = Unit.NullValue;
 
     /// <summary>
@@ -85,7 +84,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes
       get { return this.cropRight; }
       set { this.cropRight = value; }
     }
-    [DV]
+    
     protected Unit cropRight = Unit.NullValue;
 
     /// <summary>
@@ -96,7 +95,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes
       get { return this.cropTop; }
       set { this.cropTop = value; }
     }
-    [DV]
+    
     protected Unit cropTop = Unit.NullValue;
 
     /// <summary>
@@ -107,25 +106,13 @@ namespace MigraDoc.DocumentObjectModel.Shapes
       get { return this.cropBottom; }
       set { this.cropBottom = value; }
     }
-    [DV]
+    
     protected Unit cropBottom = Unit.NullValue;
     #endregion
 
     #region Internal
-    
-    /// <summary>
-    /// Returns the meta object of this instance.
-    /// </summary>
-    internal override Meta Meta
-    {
-      get
-      {
-        if (meta == null)
-          meta = new Meta(typeof(PictureFormat));
-        return meta;
-      }
-    }
-    static Meta meta;
+
+	  
     #endregion
   }
 }

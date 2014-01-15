@@ -103,7 +103,7 @@ namespace MigraDoc.DocumentObjectModel.Tables
       get { return (RowAlignment)this.alignment.Value; }
       set { this.alignment.Value = (int)value; }
     }
-    [DV(Type = typeof(RowAlignment))]
+    
     internal NEnum alignment = NEnum.NullValue(typeof(RowAlignment));
 
     /// <summary>
@@ -115,7 +115,7 @@ namespace MigraDoc.DocumentObjectModel.Tables
       get { return this.leftIndent; }
       set { this.leftIndent = value; }
     }
-    [DV]
+    
     internal Unit leftIndent = Unit.NullValue;
 
     /// <summary>
@@ -126,7 +126,7 @@ namespace MigraDoc.DocumentObjectModel.Tables
       get { return (VerticalAlignment)this.verticalAlignment.Value; }
       set { this.verticalAlignment.Value = (int)value; }
     }
-    [DV(Type = typeof(VerticalAlignment))]
+    
     internal NEnum verticalAlignment = NEnum.NullValue(typeof(VerticalAlignment));
 
     /// <summary>
@@ -137,7 +137,7 @@ namespace MigraDoc.DocumentObjectModel.Tables
       get { return this.height; }
       set { this.height = value; }
     }
-    [DV]
+    
     internal Unit height = Unit.NullValue;
 
     /// <summary>
@@ -148,7 +148,7 @@ namespace MigraDoc.DocumentObjectModel.Tables
       get { return (RowHeightRule)this.heightRule.Value; }
       set { this.heightRule.Value = (int)value; }
     }
-    [DV(Type = typeof(RowHeightRule))]
+    
     internal NEnum heightRule = NEnum.NullValue(typeof(RowHeightRule));
 
     /// <summary>
@@ -159,7 +159,7 @@ namespace MigraDoc.DocumentObjectModel.Tables
       get { return this.comment.Value; }
       set { this.comment.Value = value; }
     }
-    [DV]
+    
     internal NString comment = NString.NullValue;
     #endregion
 
@@ -176,19 +176,7 @@ namespace MigraDoc.DocumentObjectModel.Tables
         ((IVisitable)row).AcceptVisitor(visitor, visitChildren);
     }
 
-    /// <summary>
-    /// Returns the meta object of this instance.
-    /// </summary>
-    internal override Meta Meta
-    {
-      get
-      {
-        if (meta == null)
-          meta = new Meta(typeof(Rows));
-        return meta;
-      }
-    }
-    static Meta meta;
+	  
     #endregion
   }
 }

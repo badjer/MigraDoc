@@ -55,10 +55,10 @@ namespace MigraDoc.Rendering
 
     private bool IsVisible()
     {
-      if (!this.shading.IsNull("Visible"))
+      if (!this.shading.visible.IsNull)
         return this.shading.Visible;
       else
-        return !this.shading.IsNull("Color");
+        return !this.shading.color.IsNull;
     }
 
     private void RealizeBrush()

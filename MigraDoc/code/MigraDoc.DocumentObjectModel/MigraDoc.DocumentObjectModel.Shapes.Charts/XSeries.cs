@@ -31,7 +31,6 @@
 #endregion
 
 using System;
-using MigraDoc.DocumentObjectModel.Internals;
 
 namespace MigraDoc.DocumentObjectModel.Shapes.Charts
 {
@@ -51,8 +50,8 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
     /// <summary>
     /// The actual value container of the XSeries.
     /// </summary>
-    [DV]
-    protected XSeriesElements xSeriesElements;
+    
+    internal XSeriesElements xSeriesElements;
 
     #region Methods
     /// <summary>
@@ -104,19 +103,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
 
     #region Internal
 
-    /// <summary>
-    /// Returns the meta object of this instance.
-    /// </summary>
-    internal override Meta Meta
-    {
-      get
-      {
-        if (meta == null)
-          meta = new Meta(typeof(XSeries));
-        return meta;
-      }
-    }
-    static Meta meta;
+	  
     #endregion
   }
 }

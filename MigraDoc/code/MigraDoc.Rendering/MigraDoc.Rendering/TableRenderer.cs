@@ -377,7 +377,7 @@ namespace MigraDoc.Rendering
       }
       layoutInfo.MinWidth = layoutInfo.ContentArea.Width;
 
-      if (!this.table.Rows.IsNull("LeftIndent"))
+      if (!this.table.Rows.leftIndent.IsNull)
         layoutInfo.Left = this.table.Rows.LeftIndent.Point;
 
       else if (this.table.Rows.Alignment == RowAlignment.Left)
@@ -541,7 +541,7 @@ namespace MigraDoc.Rendering
           if (rowCell.Row.Index > row)
             break;
 
-          if (!rowCell.IsNull("Borders"))
+          if (rowCell.borders != null)
           {
             BordersRenderer bordersRenderer = new BordersRenderer(rowCell.Borders, this.gfx);
             XUnit width = 0;

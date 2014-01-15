@@ -65,19 +65,8 @@ namespace MigraDoc.DocumentObjectModel.Fields
     #endregion
 
     #region Internal
-    /// <summary>
-    /// Returns the meta object of this instance.
-    /// </summary>
-    internal override Meta Meta
-    {
-      get
-      {
-        if (meta == null)
-          meta = new Meta(typeof(PageField));
-        return meta;
-      }
-    }
-    static Meta meta;
+
+	  
     #endregion
   }
 }

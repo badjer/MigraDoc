@@ -31,7 +31,6 @@
 #endregion
 
 using System;
-using MigraDoc.DocumentObjectModel.Internals;
 
 namespace MigraDoc.DocumentObjectModel.Shapes.Charts
 {
@@ -100,7 +99,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
         this.lineFormat = value;
       }
     }
-    [DV]
+    
     internal LineFormat lineFormat;
 
     /// <summary>
@@ -121,7 +120,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
         this.fillFormat = value;
       }
     }
-    [DV]
+    
     internal FillFormat fillFormat;
 
     /// <summary>
@@ -132,7 +131,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
       get { return this.leftPadding; }
       set { this.leftPadding = value; }
     }
-    [DV]
+    
     internal Unit leftPadding = Unit.NullValue;
 
     /// <summary>
@@ -143,7 +142,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
       get { return this.rightPadding; }
       set { this.rightPadding = value; }
     }
-    [DV]
+    
     internal Unit rightPadding = Unit.NullValue;
 
     /// <summary>
@@ -154,7 +153,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
       get { return this.topPadding; }
       set { this.topPadding = value; }
     }
-    [DV]
+    
     internal Unit topPadding = Unit.NullValue;
 
     /// <summary>
@@ -165,25 +164,13 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
       get { return this.bottomPadding; }
       set { this.bottomPadding = value; }
     }
-    [DV]
+    
     internal Unit bottomPadding = Unit.NullValue;
     #endregion
 
     #region Internal
-    
-    /// <summary>
-    /// Returns the meta object of this instance.
-    /// </summary>
-    internal override Meta Meta
-    {
-      get
-      {
-        if (meta == null)
-          meta = new Meta(typeof(PlotArea));
-        return meta;
-      }
-    }
-    static Meta meta;
+
+	  
     #endregion
   }
 }

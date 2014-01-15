@@ -95,23 +95,6 @@ namespace MigraDoc.DocumentObjectModel
     }
     #endregion
 
-    /// <summary>
-    /// Returns the value with the specified name and value access.
-    /// </summary>
-    public override object GetValue(string name, GV flags) //newStL
-    {
-      if (name == null)
-        throw new ArgumentNullException("name");
-      if (name == "")
-        throw new ArgumentException("name");
-
-      if (name.ToLower().StartsWith("font"))
-      {
-        return ParagraphFormat.GetValue(name);
-      }
-      return base.GetValue(name, flags);
-    }
-
     #region Properties
     /// <summary>
     /// Indicates whether the style is read-only. 
@@ -126,7 +109,7 @@ namespace MigraDoc.DocumentObjectModel
     /// Gets the font of ParagraphFormat. 
     /// Calling style.Font is just a shortcut to style.ParagraphFormat.Font.
     /// </summary>
-    [DV]
+    
     public Font Font
     {
       get { return ParagraphFormat.Font; }
@@ -141,7 +124,7 @@ namespace MigraDoc.DocumentObjectModel
     {
       get { return this.name.Value; }
     }
-    [DV]
+    
     internal NString name = NString.NullValue;
 
     /// <summary>
@@ -164,7 +147,7 @@ namespace MigraDoc.DocumentObjectModel
         this.paragraphFormat = value;
       }
     }
-    [DV]
+    
     internal ParagraphFormat paragraphFormat;
 
     /// <summary>
@@ -219,7 +202,7 @@ namespace MigraDoc.DocumentObjectModel
         baseStyle.Value = value;
       }
     }
-    [DV]
+    
     internal NString baseStyle = NString.NullValue;
 
     /// <summary>
@@ -261,7 +244,7 @@ namespace MigraDoc.DocumentObjectModel
         return (StyleType)this.styleType.Value;
       }
     }
-    [DV(Type = typeof(StyleType))]
+    
     internal NEnum styleType = NEnum.NullValue(typeof(StyleType));
 
     /// <summary>
@@ -306,7 +289,7 @@ namespace MigraDoc.DocumentObjectModel
     {
       get { return this.buildIn.Value; }
     }
-    [DV]
+    
     internal NBool buildIn = NBool.NullValue;
     // THHO: muss dass nicht builtIn heiﬂen?!?!?!?
 
@@ -318,7 +301,7 @@ namespace MigraDoc.DocumentObjectModel
       get { return this.comment.Value; }
       set { this.comment.Value = value; }
     }
-    [DV]
+    
     internal NString comment = NString.NullValue;
     #endregion
 
@@ -344,19 +327,7 @@ namespace MigraDoc.DocumentObjectModel
       visitor.VisitStyle(this);
     }
 
-    /// <summary>
-    /// Returns the meta object of this instance.
-    /// </summary>
-    internal override Meta Meta
-    {
-      get
-      {
-        if (meta == null)
-          meta = new Meta(typeof(Style));
-        return meta;
-      }
-    }
-    static Meta meta;
+	  
     #endregion
   }
 }

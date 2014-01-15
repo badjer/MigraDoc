@@ -208,33 +208,5 @@ namespace MigraDoc.DocumentObjectModel
     }
     internal bool fClearAll = false;
     #endregion
-
-    #region Internal
-
-    /// <summary>
-    /// Determines whether this instance is null (not set).
-    /// </summary>
-    public override bool IsNull()
-    {
-      // Only non empty and not cleared tabstops (TabStops = null) are null.
-      if (base.IsNull())
-        return !this.fClearAll;
-      return false;
-    }
-
-    /// <summary>
-    /// Returns the meta object of this instance.
-    /// </summary>
-    internal override Meta Meta
-    {
-      get
-      {
-        if (meta == null)
-          meta = new Meta(typeof(TabStops));
-        return meta;
-      }
-    }
-    static Meta meta;
-    #endregion
   }
 }

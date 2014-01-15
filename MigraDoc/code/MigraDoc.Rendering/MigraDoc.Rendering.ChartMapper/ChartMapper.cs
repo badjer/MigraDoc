@@ -54,9 +54,9 @@ namespace MigraDoc.Rendering.ChartMapper
 
       Chart chart = new Chart((ChartType)domChart.Type);
 
-      if (!domChart.IsNull("XAxis"))
+      if (domChart.xAxis != null)
         AxisMapper.Map(chart.XAxis, domChart.XAxis);
-      if (!domChart.IsNull("YAxis"))
+      if (domChart.yAxis != null)
         AxisMapper.Map(chart.YAxis, domChart.YAxis);
 
       PlotAreaMapper.Map(chart.PlotArea, domChart.PlotArea);
@@ -67,14 +67,14 @@ namespace MigraDoc.Rendering.ChartMapper
 
       chart.DisplayBlanksAs = (BlankType)domChart.DisplayBlanksAs;
       chart.HasDataLabel = domChart.HasDataLabel;
-      if (!domChart.IsNull("DataLabel"))
+      if (domChart.dataLabel != null)
         DataLabelMapper.Map(chart.DataLabel, domChart.DataLabel);
 
-      if (!domChart.IsNull("Style"))
+      if (!domChart.style.IsNull)
         FontMapper.Map(chart.Font, domChart.Document, domChart.Style);
-      if (!domChart.IsNull("Format.Font"))
+      if (domChart.Format.font != null)
         FontMapper.Map(chart.Font, domChart.Format.Font);
-      if (!domChart.IsNull("XValues"))
+      if (domChart.xValues != null)
         XValuesMapper.Map(chart.XValues, domChart.XValues);
 
       chartFrame.Add(chart);
