@@ -30,11 +30,6 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
-using System.Diagnostics;
-using System.Reflection;
-using MigraDoc.DocumentObjectModel.Internals;
-
 namespace MigraDoc.DocumentObjectModel.Fields
 {
   /// <summary>
@@ -42,7 +37,9 @@ namespace MigraDoc.DocumentObjectModel.Fields
   /// </summary>
   public class InfoField : DocumentObject
   {
-    /// <summary>
+	  private InfoFieldType _infoFieldType;
+
+	  /// <summary>
     /// Initializes a new instance of the InfoField class.
     /// </summary>
     internal InfoField()
@@ -64,37 +61,10 @@ namespace MigraDoc.DocumentObjectModel.Fields
     }
     #endregion
 
-    #region Properties
-    /// <summary>
-    /// Gets or sets the name of the information to be shown in the field.
-    /// </summary>
-    public string Name
-    {
-      get { return this.name.Value; }
-      set
-      {
-        if (IsValidName(value))
-          this.name.Value = value;
-        else
-          throw new ArgumentException(DomSR.InvalidInfoFieldName(value));
-      }
+    public InfoFieldType Type
+	{
+		get { return _infoFieldType; }
+	    set { _infoFieldType = value; } 
     }
-    
-    internal NString name = NString.NullValue;
-    #endregion
-
-    /// <summary>
-    /// Determines whether the name is a valid InfoFieldType.
-    /// </summary>
-    private bool IsValidName(string name)
-    {
-      foreach (string validName in validNames)
-      {
-        if (String.Compare(validName, name, true) == 0)
-          return true;
-      }
-      return false;
-    }
-    private static string[] validNames = Enum.GetNames(typeof(InfoFieldType));
   }
 }

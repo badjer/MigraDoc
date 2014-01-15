@@ -386,7 +386,7 @@ namespace MigraDoc.DocumentObjectModel
     public InfoField AddInfoField(InfoFieldType iType)
     {
       InfoField fieldInfo = new InfoField();
-      fieldInfo.Name = iType.ToString();
+      fieldInfo.Type = iType;
       this.Add(fieldInfo);
       return fieldInfo;
     }

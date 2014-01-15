@@ -216,7 +216,7 @@ namespace MigraDoc.Rendering
       }
       else if (field is InfoField)
       {
-        return GetDocumentInfo(((InfoField)field).Name);
+        return GetDocumentInfo(((InfoField)field).Type);
       }
       else
         Debug.Assert(false, "Given parameter must be a rendered Field");
@@ -877,7 +877,7 @@ namespace MigraDoc.Rendering
 
     void RenderInfoField(InfoField infoField)
     {
-      RenderWord(GetDocumentInfo(infoField.Name));
+      RenderWord(GetDocumentInfo(infoField.Type));
     }
 
     void RenderNumPagesField(NumPagesField numPagesField)
@@ -1713,25 +1713,16 @@ namespace MigraDoc.Rendering
 
     FormatResult FormatInfoField(InfoField infoField)
     {
-      string fieldValue = GetDocumentInfo(infoField.Name);
+      string fieldValue = GetDocumentInfo(infoField.Type);
       if (fieldValue != "")
         return FormatWord(fieldValue);
 
       return FormatResult.Continue;
     }
 
-    string GetDocumentInfo(string name)
+    string GetDocumentInfo(InfoFieldType type)
     {
-      string[] enumNames = Enum.GetNames(typeof(InfoFieldType));
-      foreach (string enumName in enumNames)
-      {
-        if (string.Compare(name, enumName, true) == 0)
-        {
-			InfoFieldType e = (InfoFieldType)Enum.Parse(typeof(InfoFieldType), enumName);
-			return paragraph.Document.Info.GetValueByEnum(e);
-        }
-      }
-      return "";
+	  return paragraph.Document.Info.GetValueByEnum(type);
     }
 
     Area GetShadingArea()
