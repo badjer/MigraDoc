@@ -211,25 +211,25 @@ namespace MigraDoc.DocumentObjectModel.Visitors
       {
         Borders nbrBrdrs = leftNeighbor.GetValue("Borders", GV.ReadWrite) as Borders;
         if (nbrBrdrs != null && GetEffectiveBorderWidth(nbrBrdrs, BorderType.Right) >= GetEffectiveBorderWidth(borders, BorderType.Left))
-          borders.SetValue("Left", GetBorderFromBorders(nbrBrdrs, BorderType.Right));
+          borders.Left = GetBorderFromBorders(nbrBrdrs, BorderType.Right);
       }
       if (rightNeighbor != null)
       {
         Borders nbrBrdrs = rightNeighbor.GetValue("Borders", GV.ReadWrite) as Borders;
         if (nbrBrdrs != null && GetEffectiveBorderWidth(nbrBrdrs, BorderType.Left) > GetEffectiveBorderWidth(borders, BorderType.Right))
-          borders.SetValue("Right", GetBorderFromBorders(nbrBrdrs, BorderType.Left));
+          borders.Right = GetBorderFromBorders(nbrBrdrs, BorderType.Left);
       }
       if (topNeighbor != null)
       {
         Borders nbrBrdrs = topNeighbor.GetValue("Borders", GV.ReadWrite) as Borders;
         if (nbrBrdrs != null && GetEffectiveBorderWidth(nbrBrdrs, BorderType.Bottom) >= GetEffectiveBorderWidth(borders, BorderType.Top))
-          borders.SetValue("Top", GetBorderFromBorders(nbrBrdrs, BorderType.Bottom));
+          borders.Top = GetBorderFromBorders(nbrBrdrs, BorderType.Bottom);
       }
       if (bottomNeighbor != null)
       {
         Borders nbrBrdrs = bottomNeighbor.GetValue("Borders", GV.ReadWrite) as Borders;
         if (nbrBrdrs != null && GetEffectiveBorderWidth(nbrBrdrs, BorderType.Top) > GetEffectiveBorderWidth(borders, BorderType.Bottom))
-          borders.SetValue("Bottom", GetBorderFromBorders(nbrBrdrs, BorderType.Top));
+          borders.Bottom = GetBorderFromBorders(nbrBrdrs, BorderType.Top);
       }
       return borders;
     }

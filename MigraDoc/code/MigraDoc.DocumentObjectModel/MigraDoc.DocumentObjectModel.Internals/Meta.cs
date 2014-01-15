@@ -45,16 +45,7 @@ namespace MigraDoc.DocumentObjectModel.Internals
     /// </summary>
     public Meta(Type documentObjectType)
     {
-      Meta.AddValueDescriptors(this, documentObjectType);
-    }
-
-    /// <summary>
-    /// Gets the meta object of the specified document object.
-    /// </summary>
-    /// <param name="documentObject">The document object the meta is returned for.</param>
-    public static Meta GetMeta(DocumentObject documentObject)
-    {
-      return documentObject.Meta;
+      AddValueDescriptors(this, documentObjectType);
     }
 
     /// <summary>
@@ -90,58 +81,6 @@ namespace MigraDoc.DocumentObjectModel.Internals
         value = doc.GetValue(trail, flags);
       }
       return value;
-    }
-
-    /// <summary>
-    /// Sets the member of dom specified by name to val.
-    /// If a member with the specified name does not exist an ArgumentException will be thrown.
-    /// </summary>
-    public void SetValue(DocumentObject dom, string name, object val)
-    {
-      int dot = name.IndexOf('.');
-      if (dot == 0)
-        throw new ArgumentException(DomSR.InvalidValueName(name));
-      string trail = null;
-      if (dot > 0)
-      {
-        trail = name.Substring(dot + 1);
-        name = name.Substring(0, dot);
-      }
-      ValueDescriptor vd = this.vds[name];
-      if (vd == null)
-        throw new ArgumentException(DomSR.InvalidValueName(name));
-
-      if (trail != null)
-      {
-        //REVIEW DaSt: dom.GetValue(name) und rekursiv SetValue aufrufen,
-        //             oder dom.GetValue(name.BisVorletzteElement) und erst SetValue aufrufen.
-        DocumentObject doc = dom.GetValue(name) as DocumentObject;
-        doc.SetValue(trail, val);
-      }
-      else
-        vd.SetValue(dom, val);
-    }
-
-    /// <summary>
-    /// Determines whether this meta contains a value with the specified name.
-    /// </summary>
-    public bool HasValue(string name)
-    {
-      ValueDescriptor vd = this.vds[name];
-      return vd != null;
-    }
-
-    /// <summary>
-    /// Sets the member of dom specified by name to null.
-    /// If a member with the specified name does not exist an ArgumentException will be thrown.
-    /// </summary>
-    public void SetNull(DocumentObject dom, string name)
-    {
-      ValueDescriptor vd = vds[name];
-      if (vd == null)
-        throw new ArgumentException(DomSR.InvalidValueName(name));
-
-      vd.SetNull(dom);
     }
 
     /// <summary>
@@ -183,19 +122,6 @@ namespace MigraDoc.DocumentObjectModel.Internals
       //        throw new ArgumentException(DomSR.InvalidValueName(name));
       //      
       //      return vd.IsNull(dom);
-    }
-
-    /// <summary>
-    /// Sets all members of the specified dom to null.
-    /// </summary>
-    public virtual void SetNull(DocumentObject dom)
-    {
-      int count = vds.Count;
-      for (int index = 0; index < count; index++)
-      {
-        if (!vds[index].IsRefOnly)
-          vds[index].SetNull(dom);
-      }
     }
 
     /// <summary>

@@ -121,7 +121,7 @@ namespace MigraDoc.DocumentObjectModel.Tables
         if (index.IsNull)
         {
           Rows rws = this.parent as Rows;
-          SetValue("Index", rws.IndexOf(this));
+          index = rws.IndexOf(this);
         }
         return index;
       }

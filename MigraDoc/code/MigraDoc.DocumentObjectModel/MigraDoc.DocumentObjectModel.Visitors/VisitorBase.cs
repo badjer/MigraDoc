@@ -30,8 +30,6 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
-using MigraDoc.DocumentObjectModel.Internals;
 using MigraDoc.DocumentObjectModel.Tables;
 using MigraDoc.DocumentObjectModel.Shapes;
 using MigraDoc.DocumentObjectModel.Shapes.Charts;
@@ -43,11 +41,7 @@ namespace MigraDoc.DocumentObjectModel.Visitors
   /// </summary>
   public abstract class VisitorBase : DocumentObjectVisitor
   {
-    public VisitorBase()
-    {
-    }
-
-    public override void Visit(DocumentObject documentObject)
+	public override void Visit(DocumentObject documentObject)
     {
       IVisitable visitable = documentObject as IVisitable;
       if (visitable != null)

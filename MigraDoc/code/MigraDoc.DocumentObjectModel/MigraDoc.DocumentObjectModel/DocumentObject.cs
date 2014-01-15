@@ -32,8 +32,6 @@
 
 using System;
 using System.Diagnostics;
-using System.Globalization;
-using System.Reflection;
 using MigraDoc.DocumentObjectModel.Internals;
 
 namespace MigraDoc.DocumentObjectModel
@@ -75,17 +73,6 @@ namespace MigraDoc.DocumentObjectModel
       DocumentObject value = (DocumentObject)MemberwiseClone();
       value.parent = null;
       return value;
-    }
-
-    /// <summary>
-    /// Creates an object using the default constructor.
-    /// </summary>
-    public object CreateValue(string name)
-    {
-      ValueDescriptor vd = Meta[name];
-      if (vd != null)
-        return vd.CreateValue();
-      return null;
     }
 
     /// <summary>
@@ -153,24 +140,6 @@ namespace MigraDoc.DocumentObjectModel
     }
 
     /// <summary>
-    /// Sets the given value and sets its parent afterwards.
-    /// </summary>
-    public virtual void SetValue(string name, object val)
-    {
-      Meta.SetValue(this, name, val);
-      if (val is DocumentObject)
-        ((DocumentObject)val).parent = this;
-    }
-
-    /// <summary>
-    /// Determines whether this instance has a value of the given name.
-    /// </summary>
-    public virtual bool HasValue(string name)
-    {
-      return Meta.HasValue(name);
-    }
-
-    /// <summary>
     /// Determines whether the value of the given name is null.
     /// </summary>
     public virtual bool IsNull(string name)
@@ -179,27 +148,11 @@ namespace MigraDoc.DocumentObjectModel
     }
 
     /// <summary>
-    /// Resets the value of the given name, i.e. IsNull(name) will return true afterwards.
-    /// </summary>
-    public virtual void SetNull(string name)
-    {
-      Meta.SetNull(this, name);
-    }
-
-    /// <summary>
     /// Determines whether this instance is null (not set).
     /// </summary>
     public virtual bool IsNull()
     {
       return Meta.IsNull(this);
-    }
-
-    /// <summary>
-    /// Resets this instance, i.e. IsNull() will return true afterwards.
-    /// </summary>
-    public virtual void SetNull()
-    {
-      Meta.SetNull(this);
     }
 
     /// <summary>

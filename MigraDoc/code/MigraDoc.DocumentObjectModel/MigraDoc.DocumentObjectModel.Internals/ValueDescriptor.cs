@@ -31,10 +31,7 @@
 #endregion
 
 using System;
-using System.ComponentModel;
-using System.Collections;
 using System.Diagnostics;
-using System.Globalization;
 using System.Reflection;
 
 namespace MigraDoc.DocumentObjectModel.Internals
@@ -62,7 +59,6 @@ namespace MigraDoc.DocumentObjectModel.Internals
 
     public abstract object GetValue(DocumentObject dom, GV flags);
     public abstract void SetValue(DocumentObject dom, object val);
-    public abstract void SetNull(DocumentObject dom);
     public abstract bool IsNull(DocumentObject dom);
 
     internal static ValueDescriptor CreateValueDescriptor(MemberInfo memberInfo, DVAttribute attr)
@@ -198,26 +194,6 @@ namespace MigraDoc.DocumentObjectModel.Internals
       }
     }
 
-    public override void SetNull(DocumentObject dom)
-    {
-      object val;
-      INullableValue ival;
-      if (FieldInfo != null)
-      {
-        val = FieldInfo.GetValue(dom);
-        ival = (INullableValue)val;
-        ival.SetNull();
-        FieldInfo.SetValue(dom, ival);
-      }
-      else
-      {
-        val = PropertyInfo.GetGetMethod(true).Invoke(dom, Type.EmptyTypes);
-        ival = (INullableValue)val;
-        ival.SetNull();
-        PropertyInfo.GetSetMethod(true).Invoke(dom, new object[] { ival });
-      }
-    }
-
     /// <summary>
     /// Determines whether the given DocumentObject is null (not set).
     /// </summary>
@@ -263,26 +239,6 @@ namespace MigraDoc.DocumentObjectModel.Internals
       else
       {
         PropertyInfo.GetSetMethod(true).Invoke(dom, new object[] { value });
-      }
-    }
-
-    public override void SetNull(DocumentObject dom)
-    {
-      object val;
-      INullableValue ival;
-      if (FieldInfo != null)
-      {
-        val = FieldInfo.GetValue(dom);
-        ival = (INullableValue)val;
-        ival.SetNull();
-        FieldInfo.SetValue(dom, ival);
-      }
-      else
-      {
-        val = PropertyInfo.GetGetMethod(true).Invoke(dom, Type.EmptyTypes);
-        ival = (INullableValue)val;
-        ival.SetNull();
-        PropertyInfo.GetSetMethod(true).Invoke(dom, new object[] { ival });
       }
     }
 
@@ -353,29 +309,6 @@ namespace MigraDoc.DocumentObjectModel.Internals
       throw new InvalidOperationException("This value cannot be set.");
     }
 
-    public override void SetNull(DocumentObject dom)
-    {
-      FieldInfo fieldInfo = FieldInfo;
-      DocumentObject val;
-      // Member is a field
-      if (fieldInfo != null)
-      {
-        val = FieldInfo.GetValue(dom) as DocumentObject;
-        if (val != null)
-          val.SetNull();
-      }
-      // Member is a property
-      //REVIEW KlPo4All: Wird das gebraucht?
-      if (PropertyInfo != null)
-      {
-        PropertyInfo propInfo = PropertyInfo;
-        val = propInfo.GetGetMethod(true).Invoke(dom, Type.EmptyTypes) as DocumentObject;
-        if (val != null)
-          val.SetNull();
-      }
-      return;
-    }
-
     /// <summary>
     /// Determines whether the given DocumentObject is null (not set).
     /// </summary>
@@ -431,13 +364,6 @@ namespace MigraDoc.DocumentObjectModel.Internals
     public override void SetValue(DocumentObject dom, object val)
     {
       FieldInfo.SetValue(dom, val);
-    }
-
-    public override void SetNull(DocumentObject dom)
-    {
-      DocumentObjectCollection val = FieldInfo.GetValue(dom) as DocumentObjectCollection;
-      if (val != null)
-        val.SetNull();
     }
 
     /// <summary>
