@@ -82,10 +82,6 @@
       <Project>{FEBBE5BE-9F58-4967-BBCF-801F1CFCD774}</Project>
       <Name>MigraDoc.Rendering</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MigraDoc.RtfRendering\MigraDoc.RtfRendering.csproj">
-      <Project>{22010032-52DC-464D-B8BB-6CD9BF230D1F}</Project>
-      <Name>MigraDoc.RtfRendering</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

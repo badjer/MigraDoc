@@ -33,7 +33,6 @@ using System.Collections;
 using MigraDoc.DocumentObjectModel;
 using PdfSharp.Drawing;
 using MigraDoc.DocumentObjectModel.Tables;
-using MigraDoc.DocumentObjectModel.IO;
 
 namespace MigraDoc.Rendering
 {

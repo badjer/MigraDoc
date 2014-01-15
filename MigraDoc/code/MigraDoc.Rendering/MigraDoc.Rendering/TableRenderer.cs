@@ -34,7 +34,6 @@ using PdfSharp.Drawing;
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.DocumentObjectModel.Visitors;
 using MigraDoc.DocumentObjectModel.Tables;
-using MigraDoc.DocumentObjectModel.IO;
 
 namespace MigraDoc.Rendering
 {

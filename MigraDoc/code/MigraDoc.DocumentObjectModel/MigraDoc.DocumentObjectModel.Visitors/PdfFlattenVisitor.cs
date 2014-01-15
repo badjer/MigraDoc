@@ -30,10 +30,7 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
 using System.Collections;
-using MigraDoc.DocumentObjectModel.Internals;
-using MigraDoc.DocumentObjectModel.IO;
 
 namespace MigraDoc.DocumentObjectModel.Visitors
 {
