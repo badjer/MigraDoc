@@ -79,7 +79,7 @@ namespace MigraDoc.DocumentObjectModel
     /// </summary>
     internal DocumentObject Parent
     {
-      get { return this.parent; }
+      get { return parent; }
     }
     
     protected internal DocumentObject parent;
