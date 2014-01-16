@@ -556,66 +556,6 @@ namespace PdfSharp.Pdf.Advanced
       }
     }
 
-    //[Obsolete]
-    ///// <summary>
-    ///// Encodes a bitonal bitmap using 2D group 3 CCITT fax encoding.
-    ///// </summary>
-    ///// <param name="imageData">Space reserved for the fax encoded bitmap. An exception will be thrown if this buffer is too small.</param>
-    ///// <param name="imageBits">The bitmap to be encoded.</param>
-    ///// <param name="bytesFileOffset">Offset of image data in bitmap file.</param>
-    ///// <param name="width">The width of the image.</param>
-    ///// <param name="height">The height of the image.</param>
-    ///// <param name="dpiY">The horizontal dpi of the image (needed to determine K).</param>
-    ///// <param name="k">The K parameter (passed to the PDF file).</param>
-    ///// <returns>The size of the fax encoded image (0 on failure).</returns>
-    //private static int DoFaxEncoding2D(ref byte[] imageData, byte[] imageBits, uint bytesFileOffset, uint width, uint height, uint dpiY, out uint k)
-    //{
-    //  // It seems that either pure 1D or pure 2D encoding creates smaller files than this mixed 1D/2D encoding.
-    //  // Therefore this routine is not currently in use, but is left here for further research.
-    //  try
-    //  {
-    //    k = (dpiY > 199) ? (uint)4 : (uint)2;
-    //    uint bytesPerLineBmp = ((width + 31) / 32) * 4;
-    //    BitWriter writer = new BitWriter(ref imageData);
-    //    uint kTmp = 0;
-    //    for (uint y = 0; y < height; ++y)
-    //    {
-    //      if (kTmp == 0)
-    //      {
-    //        kTmp = k - 1;
-    //        uint bytesOffsetRead = bytesFileOffset + (height - 1 - y) * bytesPerLineBmp;
-    //        BitReader reader = new BitReader(imageBits, bytesOffsetRead, width);
-    //        for (uint bitsRead = 0; bitsRead < width; )
-    //        {
-    //          uint white = CountOneBits(reader, width - bitsRead);
-    //          WriteSample(writer, white, true);
-    //          bitsRead += white;
-    //          if (bitsRead < width)
-    //          {
-    //            uint black = CountZeroBits(reader, width - bitsRead);
-    //            WriteSample(writer, black, false);
-    //            bitsRead += black;
-    //          }
-    //        }
-    //      }
-    //      else
-    //      {
-    //        uint refLine = y - 1;
-    //        FaxEncode2DRow(writer, bytesFileOffset, imageBits, y, refLine, width, height, bytesPerLineBmp);
-    //        --kTmp;
-    //      }
-    //    }
-    //    writer.FlushBuffer();
-    //    return writer.BytesWritten();
-    //  }
-    //  catch (Exception ex)
-    //  {
-    //    ex.GetType();
-    //    k = 0;
-    //    return 0;
-    //  }
-    //}
-
     /// <summary>
     /// Encodes a bitonal bitmap using 2D group 4 CCITT fax encoding.
     /// </summary>
@@ -878,13 +818,6 @@ namespace PdfSharp.Pdf.Advanced
       uint value = table[line * 2];
       uint bits = table[line * 2 + 1];
       WriteBits(value, bits);
-    }
-
-    [Obsolete]
-    internal void WriteEOL()
-    {
-      // Not needed for PDF.
-      WriteTableLine(PdfImage.WhiteMakeUpCodes, 40);
     }
 
     /// <summary>

@@ -48,9 +48,9 @@ namespace MigraDoc.DocumentObjectModel
     /// </summary>
     public Unit(double point)
     {
-      this.value = (float)point;
-      this.type = UnitType.Point;
-      this.initialized = true;
+      value = (float)point;
+      type = UnitType.Point;
+      initialized = true;
     }
 
     /// <summary>
@@ -64,7 +64,7 @@ namespace MigraDoc.DocumentObjectModel
 
       this.value = (float)value;
       this.type = type;
-      this.initialized = true;
+      initialized = true;
     }
 
     /// <summary>
@@ -103,9 +103,9 @@ namespace MigraDoc.DocumentObjectModel
     /// </summary>
     void INullableValue.SetNull()
     {
-      this.value = 0;
-      this.type = UnitType.Point;
-      this.initialized = false;
+      value = 0;
+      type = UnitType.Point;
+      initialized = false;
     }
 
     // Explicit interface implementations cannot contain access specifiers, i.e. they are accessible by a
@@ -124,7 +124,7 @@ namespace MigraDoc.DocumentObjectModel
     /// </summary>
     internal bool IsNull
     {
-      get { return !this.initialized; }
+      get { return !initialized; }
     }
 
     #region Properties
@@ -134,11 +134,11 @@ namespace MigraDoc.DocumentObjectModel
     /// </summary>
     public double Value
     {
-      get { return (IsNull ? 0 : this.value); }
+      get { return (IsNull ? 0 : value); }
       set
       {
         this.value = (float)value;
-        this.initialized = true;
+        initialized = true;
       }
     }
 
@@ -147,7 +147,7 @@ namespace MigraDoc.DocumentObjectModel
     /// </summary>
     public UnitType Type
     {
-      get { return this.type; }
+      get { return type; }
     }
 
     /// <summary>
@@ -185,16 +185,9 @@ namespace MigraDoc.DocumentObjectModel
       set
       {
         this.value = (float)value;
-        this.type = UnitType.Point;
-        this.initialized = true;
+        type = UnitType.Point;
+        initialized = true;
       }
-    }
-
-    [Obsolete("Use Point")]
-    public double Pt
-    {
-      get { return Point; }
-      set { Point = value; }
     }
 
     /// <summary>
@@ -237,13 +230,6 @@ namespace MigraDoc.DocumentObjectModel
       }
     }
 
-    [Obsolete("Use Centimeter")]
-    public double Cm
-    {
-      get { return Centimeter; }
-      set { Centimeter = value; }
-    }
-
     /// <summary>
     /// Gets or sets the value in inch.
     /// </summary>
@@ -282,13 +268,6 @@ namespace MigraDoc.DocumentObjectModel
         this.type = UnitType.Inch;
         this.initialized = true;
       }
-    }
-
-    [Obsolete("Use Inch")]
-    public double In
-    {
-      get { return Inch; }
-      set { Inch = value; }
     }
 
     /// <summary>
@@ -331,13 +310,6 @@ namespace MigraDoc.DocumentObjectModel
       }
     }
 
-    [Obsolete("Use Millimeter")]
-    public double Mm
-    {
-      get { return Millimeter; }
-      set { Millimeter = value; }
-    }
-
     /// <summary>
     /// Gets or sets the value in pica.
     /// </summary>
@@ -377,13 +349,6 @@ namespace MigraDoc.DocumentObjectModel
         this.initialized = true;
       }
     }
-
-    [Obsolete("Use Pica")]
-    public double Pc
-    {
-      get { return Pica; }
-      set { Pica = value; }
-    }
     #endregion
 
     #region Methods
@@ -391,7 +356,7 @@ namespace MigraDoc.DocumentObjectModel
     /// Returns the object as string using the format information.
     /// Measure will be added to the end of the string.
     /// </summary>
-    public string ToString(System.IFormatProvider formatProvider)
+    public string ToString(IFormatProvider formatProvider)
     {
       if (IsNull)
         return 0.ToString(formatProvider); // TODO: ?? can it be anything other than "0"??
@@ -419,7 +384,7 @@ namespace MigraDoc.DocumentObjectModel
     /// Returns the object as string using the specified format and format information.
     /// Measure will be added to the end of the string.
     /// </summary>
-    string System.IFormattable.ToString(string format, IFormatProvider formatProvider)
+    string IFormattable.ToString(string format, IFormatProvider formatProvider)
     {
       if (IsNull)
         return 0.ToString(format, formatProvider);
@@ -482,12 +447,6 @@ namespace MigraDoc.DocumentObjectModel
       return unit;
     }
 
-    [Obsolete("Use FromCentimer")]
-    public static Unit FromCm(double value)
-    {
-      return FromCentimeter(value);
-    }
-
     /// <summary>
     /// Returns an Unit object. Sets type to millimeter.
     /// </summary>
@@ -497,15 +456,6 @@ namespace MigraDoc.DocumentObjectModel
       unit.value = (float)value;
       unit.type = UnitType.Millimeter;
       return unit;
-    }
-
-    /// <summary>
-    /// Returns an Unit object. Sets type to millimeter.
-    /// </summary>
-    [Obsolete("Use FromMillimeter")]
-    public static Unit FromMm(double value)
-    {
-      return FromMillimeter(value);
     }
 
     /// <summary>
@@ -759,7 +709,7 @@ namespace MigraDoc.DocumentObjectModel
     /// <summary>
     /// Represents the uninitialized Unit object. Same as Unit.Empty.
     /// </summary>
-    internal static readonly Unit NullValue = Unit.Empty;
+    internal static readonly Unit NullValue = Empty;
 
     bool initialized;
     float value;

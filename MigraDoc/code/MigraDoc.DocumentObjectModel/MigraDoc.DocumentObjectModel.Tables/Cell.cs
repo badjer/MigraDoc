@@ -30,7 +30,6 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
 using MigraDoc.DocumentObjectModel.Internals;
 using MigraDoc.DocumentObjectModel.Visitors;
 using MigraDoc.DocumentObjectModel.Shapes;
@@ -98,8 +97,8 @@ namespace MigraDoc.DocumentObjectModel.Tables
     /// </summary>
     internal override void ResetCachedValues()
     {
-      this.row = null;
-      this.clm = null;
+      row = null;
+      clm = null;
     }
 
     /// <summary>

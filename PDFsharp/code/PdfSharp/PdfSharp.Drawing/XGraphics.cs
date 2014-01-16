@@ -4344,38 +4344,6 @@ namespace PdfSharp.Drawing
     /// <summary>
     /// Gets or sets the transformation matrix.
     /// </summary>
-    [Obsolete]
-    public XMatrix Transform
-    {
-      get { return this.transform; }
-      set
-      {
-        throw new InvalidOperationException(PSSR.ObsoleteFunktionCalled);
-        //        if (!this.transform.Equals(value))
-        //        {
-        //          this.transform = value;
-        //          XMatrix matrix = this.defaultViewMatrix;
-        //          matrix.Multiply(value);
-        //#if GDI
-        //          if (this.targetContext == XGraphicTargetContext.GDI)
-        //            this.gfx.Transform = (System.Drawing.Drawing2D.Matrix)matrix;
-        //#endif
-        //#if WPF
-        //          if (this.targetContext == XGraphicTargetContext.WPF)
-        //          {
-        //            MatrixTransform transform = new MatrixTransform(value.ToWpfMatrix());
-        //            this.gsStack.Current.SetTransform(transform);
-        //          }
-        //#endif
-        //          if (this.renderer != null)
-        //            this.renderer.Transform = value;
-        //        }
-      }
-    }
-
-    /// <summary>
-    /// Gets or sets the transformation matrix.
-    /// </summary>
     void AddTransform(XMatrix transform, XMatrixOrder order)
     {
       //if (!this.transform.Equals(value))

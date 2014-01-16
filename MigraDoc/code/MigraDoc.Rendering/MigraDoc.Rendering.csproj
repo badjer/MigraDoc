@@ -279,7 +279,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MigraDoc.Rendering\PdfDocumentRenderer.cs" />
-    <Compile Include="MigraDoc.Rendering\PdfPrinter.cs" />
     <Compile Include="MigraDoc.Rendering\Renderer.cs">
       <SubType>Code</SubType>
     </Compile>

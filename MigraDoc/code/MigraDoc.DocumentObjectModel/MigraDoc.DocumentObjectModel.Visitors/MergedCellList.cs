@@ -209,25 +209,25 @@ namespace MigraDoc.DocumentObjectModel.Visitors
       Cell bottomNeighbor = GetNeighbor(cellIdx, NeighborPosition.Bottom);
       if (leftNeighbor != null)
       {
-        Borders nbrBrdrs = leftNeighbor.Borders;
+        Borders nbrBrdrs = leftNeighbor.borders;
         if (nbrBrdrs != null && GetEffectiveBorderWidth(nbrBrdrs, BorderType.Right) >= GetEffectiveBorderWidth(borders, BorderType.Left))
           borders.Left = GetBorderFromBorders(nbrBrdrs, BorderType.Right);
       }
       if (rightNeighbor != null)
       {
-        Borders nbrBrdrs = rightNeighbor.Borders;
+        Borders nbrBrdrs = rightNeighbor.borders;
         if (nbrBrdrs != null && GetEffectiveBorderWidth(nbrBrdrs, BorderType.Left) > GetEffectiveBorderWidth(borders, BorderType.Right))
           borders.Right = GetBorderFromBorders(nbrBrdrs, BorderType.Left);
       }
       if (topNeighbor != null)
       {
-        Borders nbrBrdrs = topNeighbor.Borders;
+        Borders nbrBrdrs = topNeighbor.borders;
         if (nbrBrdrs != null && GetEffectiveBorderWidth(nbrBrdrs, BorderType.Bottom) >= GetEffectiveBorderWidth(borders, BorderType.Top))
           borders.Top = GetBorderFromBorders(nbrBrdrs, BorderType.Bottom);
       }
       if (bottomNeighbor != null)
       {
-        Borders nbrBrdrs = bottomNeighbor.Borders;
+        Borders nbrBrdrs = bottomNeighbor.borders;
         if (nbrBrdrs != null && GetEffectiveBorderWidth(nbrBrdrs, BorderType.Top) > GetEffectiveBorderWidth(borders, BorderType.Bottom))
           borders.Bottom = GetBorderFromBorders(nbrBrdrs, BorderType.Top);
       }
@@ -277,7 +277,7 @@ namespace MigraDoc.DocumentObjectModel.Visitors
     /// <summary>
     /// Returns the width of the border at the specified position.
     /// </summary>
-    private Unit GetEffectiveBorderWidth(Borders borders, BorderType type)
+    private static Unit GetEffectiveBorderWidth(Borders borders, BorderType type)
     {
       if (borders == null)
         return 0;
@@ -287,7 +287,7 @@ namespace MigraDoc.DocumentObjectModel.Visitors
 		NBool visible;
 		Unit width;
 
-	  if (border == null || border.Width.IsNull)
+	  if (border == null || border.width.IsNull)
 	  {
 		  visible = borders.visible;
 		  width = borders.width;
@@ -302,7 +302,7 @@ namespace MigraDoc.DocumentObjectModel.Visitors
       {
         if (!visible.IsNull && !visible.Value)
           return 0;
-        if (width != null)
+        if (!width.IsNull)
           return width;
 
         return 0.5;

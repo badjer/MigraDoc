@@ -29,12 +29,9 @@
 
 using System;
 using System.Diagnostics;
-using System.Collections;
 using System.Globalization;
 using System.Text;
 using PdfSharp.Drawing;
-using System.IO;
-using PdfSharp.Internal;
 using PdfSharp.Pdf.Security;
 
 namespace PdfSharp.Pdf.Internal
@@ -44,14 +41,6 @@ namespace PdfSharp.Pdf.Internal
   /// </summary>
   internal static class PdfEncoders
   {
-    // static char InvalidChar = '?';
-
-    //[Obsolete]
-    //public static void WriteAnsi(Stream stream, string text)
-    //{
-    //  stream.Write(PdfEncoders.WinAnsiEncoding.GetBytes(text), 0, text.Length);
-    //}
-
     /// <summary>
     /// Gets the raw encoding.
     /// </summary>
