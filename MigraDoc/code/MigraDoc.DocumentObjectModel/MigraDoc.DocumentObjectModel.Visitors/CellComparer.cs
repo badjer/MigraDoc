@@ -30,33 +30,32 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
 using System.Collections;
+using System.Collections.Generic;
 using MigraDoc.DocumentObjectModel.Tables;
 
 namespace MigraDoc.DocumentObjectModel.Visitors
 {
-  /// <summary>
-  /// Comparer for the cell positions within a table.
-  /// It compares the cell positions from top to bottom and left to right.
-  /// </summary>
-  public class CellComparer : IComparer
-  {
-    public int Compare(object lhs, object rhs)
-    {
-      if (!(lhs is Cell))
-        throw new ArgumentException(DomSR.CompareJustCells, "lhs");
+	/// <summary>
+	/// Comparer for the cell positions within a table.
+	/// It compares the cell positions from top to bottom and left to right.
+	/// </summary>
+	public class CellComparer : IComparer<Cell>, IComparer
+	{
+		public int Compare(Cell lhs, Cell rhs)
+		{
+			Cell cellLhs = lhs;
+			Cell cellRhs = rhs;
+			int rowCmpr = cellLhs.Row.Index - cellRhs.Row.Index;
+			if (rowCmpr != 0)
+				return rowCmpr;
 
-      if (!(rhs is Cell))
-        throw new ArgumentException(DomSR.CompareJustCells, "rhs");
+			return cellLhs.Column.Index - cellRhs.Column.Index;
+		}
 
-      Cell cellLhs = lhs as Cell;
-      Cell cellRhs = rhs as Cell;
-      int rowCmpr = cellLhs.Row.Index - cellRhs.Row.Index;
-      if (rowCmpr != 0)
-        return rowCmpr;
-
-      return cellLhs.Column.Index - cellRhs.Column.Index;
-    }
-  }
+		public int Compare(object lhs, object rhs)
+		{
+			return Compare((Cell) lhs, (Cell) rhs);
+		}
+	}
 }

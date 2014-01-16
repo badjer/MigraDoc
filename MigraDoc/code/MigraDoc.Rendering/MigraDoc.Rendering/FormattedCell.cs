@@ -141,7 +141,7 @@ namespace MigraDoc.Rendering
       }
     }
 
-    void IAreaProvider.StoreRenderInfos(System.Collections.ArrayList renderInfos)
+    void IAreaProvider.StoreRenderInfos(ArrayList renderInfos)
     {
       this.renderInfos = renderInfos;
     }

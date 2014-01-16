@@ -157,7 +157,6 @@ namespace MigraDoc.Rendering
 
       VerticalAlignment verticalAlignment = cell.VerticalAlignment;
       XUnit contentHeight = formattedCell.ContentHeight;
-      XUnit innerHeight = innerRect.Height;
       XUnit targetX = innerRect.X + cell.Column.LeftPadding;
 
       XUnit targetY;

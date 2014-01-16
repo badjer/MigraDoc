@@ -31,6 +31,7 @@
 #endregion
 
 using System.Collections;
+using System.Collections.Generic;
 
 namespace MigraDoc.DocumentObjectModel.Visitors
 {
@@ -79,7 +80,7 @@ namespace MigraDoc.DocumentObjectModel.Visitors
 
     internal override void VisitDocumentObjectCollection(DocumentObjectCollection elements)
     {
-      ArrayList textIndices = new ArrayList();
+		List<int> textIndices = new List<int>();
       if (elements is ParagraphElements)
       {
         for (int idx = 0; idx < elements.Count; ++idx)
@@ -89,7 +90,7 @@ namespace MigraDoc.DocumentObjectModel.Visitors
         }
       }
 
-      int[] indices = (int[])textIndices.ToArray(typeof(int));
+      int[] indices = textIndices.ToArray();
       if (indices != null)
       {
         int insertedObjects = 0;
