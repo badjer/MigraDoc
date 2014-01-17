@@ -144,18 +144,6 @@
     <Compile Include="MigraDoc.DocumentObjectModel.Fields\SectionPagesField.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel.Internals\Meta.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel.Internals\ValueDescriptor.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel.Internals\DomValueDescriptorCollection.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel.Internals\DVAttribute.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="MigraDoc.DocumentObjectModel.Internals\enums\GV.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -178,39 +166,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MigraDoc.DocumentObjectModel.Internals\NString.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel.IO\DdlParser.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel.IO\DdlParserException.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel.IO\DdlReader.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel.IO\DdlReaderError.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel.IO\DdlReaderErrors.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel.IO\DdlScanner.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel.IO\DdlWriter.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel.IO\enums\DdlErrorLevel.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel.IO\enums\Symbol.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel.IO\enums\TokenType.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel.IO\Symbols.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MigraDoc.DocumentObjectModel.Shapes.Charts\Axis.cs">
@@ -378,7 +333,6 @@
     <Compile Include="MigraDoc.DocumentObjectModel.Visitors\IDomVisitable.cs" />
     <Compile Include="MigraDoc.DocumentObjectModel.Visitors\MergedCellList.cs" />
     <Compile Include="MigraDoc.DocumentObjectModel.Visitors\PdfFlattenVisitor.cs" />
-    <Compile Include="MigraDoc.DocumentObjectModel.Visitors\RtfFlattenVisitor.cs" />
     <Compile Include="MigraDoc.DocumentObjectModel.Visitors\VisitorBase.cs" />
     <Compile Include="MigraDoc.DocumentObjectModel\Border.cs">
       <SubType>Code</SubType>
@@ -539,9 +493,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MigraDoc.DocumentObjectModel\Sections.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel\Serializer.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MigraDoc.DocumentObjectModel\Shading.cs">

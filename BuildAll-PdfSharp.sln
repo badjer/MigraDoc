@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfSharp", "PdfSharp\PdfSharp.csproj", "{5384CE57-1F94-4D22-860D-2E9C1AC12DDF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfSharp", "PDFsharp\code\PdfSharp\PdfSharp.csproj", "{5384CE57-1F94-4D22-860D-2E9C1AC12DDF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfSharp.Charting", "PdfSharp.Charting\PdfSharp.Charting.csproj", "{CFDB7D46-EA8D-47DE-B10A-9E755A1B48BA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfSharp.Charting", "PDFsharp\code\PdfSharp.Charting\PdfSharp.Charting.csproj", "{CFDB7D46-EA8D-47DE-B10A-9E755A1B48BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExtractFontData", "ExtractFontData\ExtractFontData.csproj", "{667CF7EE-3EE9-4D66-9C65-2DBBB3AEAD72}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExtractFontData", "PDFsharp\code\ExtractFontData\ExtractFontData.csproj", "{667CF7EE-3EE9-4D66-9C65-2DBBB3AEAD72}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

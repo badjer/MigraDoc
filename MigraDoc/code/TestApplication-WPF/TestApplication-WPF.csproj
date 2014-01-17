@@ -101,10 +101,6 @@
       <Project>{497784DA-4FDD-43E5-BC4E-6702C8F1AEE0}</Project>
       <Name>MigraDoc.Rendering-WPF</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MigraDoc.RtfRendering\MigraDoc.RtfRendering-WPF.csproj">
-      <Project>{00416AAB-3EEE-44A2-923B-86782560CE00}</Project>
-      <Name>MigraDoc.RtfRendering-WPF</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

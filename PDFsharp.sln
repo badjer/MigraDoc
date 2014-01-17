@@ -1,17 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfSharp", "..\code\PdfSharp\PdfSharp.csproj", "{5384CE57-1F94-4D22-860D-2E9C1AC12DDF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfSharp", "PdfSharp\code\PdfSharp\PdfSharp.csproj", "{5384CE57-1F94-4D22-860D-2E9C1AC12DDF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfSharp.Explorer", "PDFsharp.Explorer\PdfSharp.Explorer.csproj", "{2E8F09D6-EBCE-4A3C-BDDF-41D5B0DB87B8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfSharp.Explorer", "PdfSharp\dev\PDFsharp.Explorer\PdfSharp.Explorer.csproj", "{2E8F09D6-EBCE-4A3C-BDDF-41D5B0DB87B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XGraphicsLab", "XGraphicsLab\XGraphicsLab.csproj", "{C065BB11-6849-49E9-B099-AE99E7729E94}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XGraphicsLab", "PdfSharp\dev\XGraphicsLab\XGraphicsLab.csproj", "{C065BB11-6849-49E9-B099-AE99E7729E94}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfSharp.Charting", "..\code\PdfSharp.Charting\PdfSharp.Charting.csproj", "{CFDB7D46-EA8D-47DE-B10A-9E755A1B48BA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfSharp.Charting", "PdfSharp\code\PdfSharp.Charting\PdfSharp.Charting.csproj", "{CFDB7D46-EA8D-47DE-B10A-9E755A1B48BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfSharp.Charting.Demo", "PdfSharp.Charting.Demo\PdfSharp.Charting.Demo.csproj", "{A29FE2BF-7B39-4787-B318-77A68CBF9986}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfSharp.Charting.Demo", "PdfSharp\dev\PdfSharp.Charting.Demo\PdfSharp.Charting.Demo.csproj", "{A29FE2BF-7B39-4787-B318-77A68CBF9986}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrivateFonts", "..\samples\Samples C#\Based on GDI+\PrivateFonts\PrivateFonts.csproj", "{5047322B-A990-4FBE-BF8B-6181075DC93F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrivateFonts", "PdfSharp\samples\Samples C#\Based on GDI+\PrivateFonts\PrivateFonts.csproj", "{5047322B-A990-4FBE-BF8B-6181075DC93F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XGraphicsLab-WPF", "XGraphicsLab-WPF\XGraphicsLab-WPF.csproj", "{5EF574B7-2B8A-47B4-A82A-041B5B1F356B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XGraphicsLab-WPF", "PdfSharp\dev\XGraphicsLab-WPF\XGraphicsLab-WPF.csproj", "{5EF574B7-2B8A-47B4-A82A-041B5B1F356B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfSharp-Hybrid", "..\code\PdfSharp\PdfSharp-Hybrid.csproj", "{4C6B899E-D8F5-439E-ACA1-6C9D4CF79407}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfSharp-Hybrid", "PdfSharp\code\PdfSharp\PdfSharp-Hybrid.csproj", "{4C6B899E-D8F5-439E-ACA1-6C9D4CF79407}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

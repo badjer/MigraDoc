@@ -1,21 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.IO;
-using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.DocumentObjectModel.Shapes.Charts;
 using MigraDoc.Rendering;
-using MigraDoc.RtfRendering;
 
 namespace TestApplication_WPF
 {
@@ -31,8 +18,7 @@ namespace TestApplication_WPF
 
         private void RenderRtf(object sender, RoutedEventArgs e)
         {
-            var doc = CreateHelloWorld();
-            OpenRtf(doc);
+
         }
 
         private void RenderPdf(object sender, RoutedEventArgs e)
@@ -99,20 +85,11 @@ namespace TestApplication_WPF
             ShellExecute(filename, "");
         }
 
-        private static void OpenRtf(Document doc)
-        {
-            var filename = "c:\\temp\\test.rtf";
-            RtfDocumentRenderer rtf = new RtfDocumentRenderer();
-            var workingDir = System.IO.Path.GetDirectoryName(filename);
-            rtf.Render(doc, filename, workingDir);
-            ShellExecute(filename, "");
-        }
-
-        public static void ShellExecute(string file, string verb)
+	    public static void ShellExecute(string file, string verb)
         {
             if (file == null) throw new ArgumentNullException("file");
 
-            System.Diagnostics.ProcessStartInfo si = new System.Diagnostics.ProcessStartInfo();
+            var si = new System.Diagnostics.ProcessStartInfo();
             si.UseShellExecute = true;
             si.FileName = file;
             si.Verb = verb;
