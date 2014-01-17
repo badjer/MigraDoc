@@ -50,7 +50,7 @@ namespace MigraDoc.DocumentObjectModel.Visitors
 
     protected void FlattenParagraphFormat(ParagraphFormat format, ParagraphFormat refFormat)
     {
-      if (format.alignment.IsNull)
+      if (!format.alignment.HasValue)
         format.alignment = refFormat.alignment;
 
       if (format.firstLineIndent.IsNull)
@@ -68,24 +68,24 @@ namespace MigraDoc.DocumentObjectModel.Visitors
       if (format.spaceAfter.IsNull)
         format.spaceAfter = refFormat.spaceAfter;
 
-      if (format.lineSpacingRule.IsNull)
+      if (!format.lineSpacingRule.HasValue)
         format.lineSpacingRule = refFormat.lineSpacingRule;
       if (format.lineSpacing.IsNull)
         format.lineSpacing = refFormat.lineSpacing;
 
-      if (format.widowControl.IsNull)
+      if (!format.widowControl.HasValue)
         format.widowControl = refFormat.widowControl;
 
-      if (format.keepTogether.IsNull)
+	  if (!format.keepTogether.HasValue)
         format.keepTogether = refFormat.keepTogether;
 
-      if (format.keepWithNext.IsNull)
+	  if (!format.keepWithNext.HasValue)
         format.keepWithNext = refFormat.keepWithNext;
 
-      if (format.pageBreakBefore.IsNull)
+	  if (!format.pageBreakBefore.HasValue)
         format.pageBreakBefore = refFormat.pageBreakBefore;
 
-      if (format.outlineLevel.IsNull)
+      if (!format.outlineLevel.HasValue)
         format.outlineLevel = refFormat.outlineLevel;
 
       if (format.font == null)
@@ -128,9 +128,9 @@ namespace MigraDoc.DocumentObjectModel.Visitors
 
     protected void FlattenListInfo(ListInfo listInfo, ListInfo refListInfo)
     {
-      if (listInfo.continuePreviousList.IsNull)
+		if (!listInfo.continuePreviousList.HasValue)
         listInfo.continuePreviousList = refListInfo.continuePreviousList;
-      if (listInfo.listType.IsNull)
+      if (!listInfo.listType.HasValue)
         listInfo.listType = refListInfo.listType;
       if (listInfo.numberPosition.IsNull)
         listInfo.numberPosition = refListInfo.numberPosition;
@@ -138,28 +138,28 @@ namespace MigraDoc.DocumentObjectModel.Visitors
 
     protected void FlattenFont(Font font, Font refFont)
     {
-      if (font.name.IsNull)
+      if (string.IsNullOrEmpty(font.name))
         font.name = refFont.name;
       if (font.size.IsNull)
         font.size = refFont.size;
       if (font.color.IsNull)
         font.color = refFont.color;
-      if (font.underline.IsNull)
+      if (!font.underline.HasValue)
         font.underline = refFont.underline;
-      if (font.bold.IsNull)
+	  if (!font.bold.HasValue)
         font.bold = refFont.bold;
-      if (font.italic.IsNull)
+	  if (!font.italic.HasValue)
         font.italic = refFont.italic;
-      if (font.superscript.IsNull)
+	  if (!font.superscript.HasValue)
         font.superscript = refFont.superscript;
-      if (font.subscript.IsNull)
+	  if (!font.subscript.HasValue)
         font.subscript = refFont.subscript;
     }
 
     protected void FlattenShading(Shading shading, Shading refShading)
     {
       //fClear?
-      if (shading.visible.IsNull)
+		if (!shading.visible.HasValue)
         shading.visible = refShading.visible;
       if (shading.color.IsNull)
         shading.color = refShading.color;
@@ -170,10 +170,10 @@ namespace MigraDoc.DocumentObjectModel.Visitors
       if (border == null)
         border = new Border(parentBorders);
 
-      if (border.visible.IsNull)
+	  if (!border.visible.HasValue)
         border.visible = parentBorders.visible;
 
-      if (border.style.IsNull)
+      if (!border.style.HasValue)
         border.style = parentBorders.style;
 
       if (border.width.IsNull)
@@ -187,11 +187,11 @@ namespace MigraDoc.DocumentObjectModel.Visitors
 
     protected void FlattenBorders(Borders borders, Borders refBorders)
     {
-      if (borders.visible.IsNull)
+		if (!borders.visible.HasValue)
         borders.visible = refBorders.visible;
       if (borders.width.IsNull)
         borders.width = refBorders.width;
-      if (borders.style.IsNull)
+      if (!borders.style.HasValue)
         borders.style = refBorders.style;
       if (borders.color.IsNull)
         borders.color = refBorders.color;
@@ -229,11 +229,11 @@ namespace MigraDoc.DocumentObjectModel.Visitors
 
     protected void FlattenBorder(Border border, Border refBorder)
     {
-      if (border.visible.IsNull)
+		if (!border.visible.HasValue)
         border.visible = refBorder.visible;
       if (border.width.IsNull)
         border.width = refBorder.width;
-      if (border.style.IsNull)
+      if (!border.style.HasValue)
         border.style = refBorder.style;
       if (border.color.IsNull)
         border.color = refBorder.color;
@@ -266,7 +266,7 @@ namespace MigraDoc.DocumentObjectModel.Visitors
       Unit dummyUnit;
       if (pageSetup.pageWidth.IsNull && pageSetup.pageHeight.IsNull)
       {
-        if (pageSetup.pageFormat.IsNull)
+        if (!pageSetup.pageFormat.HasValue)
         {
           pageSetup.pageWidth = refPageSetup.pageWidth;
           pageSetup.pageHeight = refPageSetup.pageHeight;
@@ -279,14 +279,14 @@ namespace MigraDoc.DocumentObjectModel.Visitors
       {
         if (pageSetup.pageWidth.IsNull)
         {
-          if (pageSetup.pageFormat.IsNull)
+          if (!pageSetup.pageFormat.HasValue)
             pageSetup.pageHeight = refPageSetup.pageHeight;
           else
             PageSetup.GetPageSize(pageSetup.PageFormat, out dummyUnit, out pageSetup.pageHeight);
         }
         else if (pageSetup.pageHeight.IsNull)
         {
-          if (pageSetup.pageFormat.IsNull)
+          if (!pageSetup.pageFormat.HasValue)
             pageSetup.pageWidth = refPageSetup.pageWidth;
           else
             PageSetup.GetPageSize(pageSetup.PageFormat, out pageSetup.pageWidth, out dummyUnit);
@@ -298,9 +298,9 @@ namespace MigraDoc.DocumentObjectModel.Visitors
       //        pageSetup.pageHeight = refPageSetup.pageHeight;
       //      if (pageSetup.pageFormat.IsNull)
       //        pageSetup.pageFormat = refPageSetup.pageFormat;
-      if (pageSetup.sectionStart.IsNull)
+      if (!pageSetup.sectionStart.HasValue)
         pageSetup.sectionStart = refPageSetup.sectionStart;
-      if (pageSetup.orientation.IsNull)
+      if (!pageSetup.orientation.HasValue)
         pageSetup.orientation = refPageSetup.orientation;
       if (pageSetup.topMargin.IsNull)
         pageSetup.topMargin = refPageSetup.topMargin;
@@ -314,13 +314,13 @@ namespace MigraDoc.DocumentObjectModel.Visitors
         pageSetup.headerDistance = refPageSetup.headerDistance;
       if (pageSetup.footerDistance.IsNull)
         pageSetup.footerDistance = refPageSetup.footerDistance;
-      if (pageSetup.oddAndEvenPagesHeaderFooter.IsNull)
+	  if (!pageSetup.oddAndEvenPagesHeaderFooter.HasValue)
         pageSetup.oddAndEvenPagesHeaderFooter = refPageSetup.oddAndEvenPagesHeaderFooter;
-      if (pageSetup.differentFirstPageHeaderFooter.IsNull)
+	  if (!pageSetup.differentFirstPageHeaderFooter.HasValue)
         pageSetup.differentFirstPageHeaderFooter = refPageSetup.differentFirstPageHeaderFooter;
-      if (pageSetup.mirrorMargins.IsNull)
+	  if (!pageSetup.mirrorMargins.HasValue)
         pageSetup.mirrorMargins = refPageSetup.mirrorMargins;
-      if (pageSetup.horizontalPageBreak.IsNull)
+	  if (!pageSetup.horizontalPageBreak.HasValue)
         pageSetup.horizontalPageBreak = refPageSetup.horizontalPageBreak;
     }
 
@@ -382,9 +382,9 @@ namespace MigraDoc.DocumentObjectModel.Visitors
     internal override void VisitChart(Chart chart)
     {
       Document document = chart.Document;
-      if (chart.style.IsNull)
-        chart.style.Value = Style.DefaultParagraphName;
-      Style style = document.Styles[chart.style.Value];
+      if (string.IsNullOrEmpty(chart.style))
+        chart.style = Style.DefaultParagraphName;
+      Style style = document.Styles[chart.style];
       if (chart.format == null)
       {
         chart.format = style.paragraphFormat.Clone();
@@ -442,9 +442,9 @@ namespace MigraDoc.DocumentObjectModel.Visitors
     {
       Document document = footnote.Document;
 
-      ParagraphFormat format = null;
+      ParagraphFormat format;
 
-      Style style = document.styles[footnote.style.Value];
+      Style style = document.styles[footnote.style];
       if (style != null)
         format = ParagraphFormatFromStyle(style);
       else
@@ -470,7 +470,7 @@ namespace MigraDoc.DocumentObjectModel.Visitors
       ParagraphFormat format = null;
 
       DocumentObject currentElementHolder = GetDocumentElementHolder(paragraph);
-      Style style = document.styles[paragraph.style.Value];
+      Style style = document.styles[paragraph.style];
       if (style != null)
         format = ParagraphFormatFromStyle(style);
 
@@ -508,7 +508,7 @@ namespace MigraDoc.DocumentObjectModel.Visitors
       }
       else
       {
-        if (paragraph.style.Value != "")
+        if (paragraph.style != "")
           paragraph.Style = "InvalidStyleName";
         else
           paragraph.Style = "Normal";
@@ -536,7 +536,7 @@ namespace MigraDoc.DocumentObjectModel.Visitors
         styleString = "Footer";
 
       ParagraphFormat format;
-      Style style = document.styles[headerFooter.style.Value];
+      Style style = document.styles[headerFooter.style];
       if (style != null)
         format = ParagraphFormatFromStyle(style);
       else
@@ -624,7 +624,7 @@ namespace MigraDoc.DocumentObjectModel.Visitors
     {
       foreach (Cell cell in row.Cells)
       {
-        if (cell.verticalAlignment.IsNull)
+        if (!cell.verticalAlignment.HasValue)
           cell.verticalAlignment = row.verticalAlignment;
       }
     }
@@ -635,9 +635,9 @@ namespace MigraDoc.DocumentObjectModel.Visitors
       {
         if (row.height.IsNull)
           row.height = rows.height;
-        if (row.heightRule.IsNull)
+        if (!row.heightRule.HasValue)
           row.heightRule = rows.heightRule;
-        if (row.verticalAlignment.IsNull)
+        if (!row.verticalAlignment.HasValue)
           row.verticalAlignment = rows.verticalAlignment;
       }
     }
@@ -668,7 +668,7 @@ namespace MigraDoc.DocumentObjectModel.Visitors
         table.rightPadding = Unit.FromMillimeter(1.2);
 
       ParagraphFormat format;
-      Style style = document.styles[table.style.Value];
+      Style style = document.styles[table.style];
       if (style != null)
         format = ParagraphFormatFromStyle(style);
       else
@@ -692,7 +692,7 @@ namespace MigraDoc.DocumentObjectModel.Visitors
       {
         Column column = table.Columns[idxclm];
         ParagraphFormat colFormat;
-        style = document.styles[column.style.Value];
+        style = document.styles[column.style];
         if (style != null)
           colFormat = ParagraphFormatFromStyle(style);
         else
@@ -733,7 +733,7 @@ namespace MigraDoc.DocumentObjectModel.Visitors
         Row row = table.Rows[idxrow];
 
         ParagraphFormat rowFormat;
-        style = document.styles[row.style.Value];
+        style = document.styles[row.style];
         if (style != null)
         {
           rowFormat = ParagraphFormatFromStyle(style);
@@ -750,7 +750,7 @@ namespace MigraDoc.DocumentObjectModel.Visitors
           Cell cell = row[idxclm];
 
           ParagraphFormat cellFormat;
-          Style cellStyle = document.styles[cell.style.Value];
+          Style cellStyle = document.styles[cell.style];
           if (cellStyle != null)
           {
             cellFormat = ParagraphFormatFromStyle(cellStyle);
@@ -830,13 +830,10 @@ namespace MigraDoc.DocumentObjectModel.Visitors
     internal override void VisitLegend(Legend legend)
     {
       ParagraphFormat parentFormat;
-      if (!legend.style.IsNull)
+      if (!string.IsNullOrEmpty(legend.style))
       {
-        Style style = legend.Document.Styles[legend.Style];
-        if (style == null)
-          style = legend.Document.Styles["InvalidStyleName"];
-
-        parentFormat = style.paragraphFormat;
+        Style style = legend.Document.Styles[legend.Style] ?? legend.Document.Styles["InvalidStyleName"];
+	    parentFormat = style.paragraphFormat;
       }
       else
       {
@@ -859,7 +856,7 @@ namespace MigraDoc.DocumentObjectModel.Visitors
 
       ParagraphFormat parentFormat;
 
-      if (!textArea.style.IsNull)
+      if (!string.IsNullOrEmpty(textArea.style))
       {
         Style style = textArea.Document.Styles[textArea.Style];
         if (style == null)

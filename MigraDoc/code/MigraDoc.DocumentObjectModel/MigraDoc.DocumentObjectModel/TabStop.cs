@@ -88,24 +88,24 @@ namespace MigraDoc.DocumentObjectModel
     /// <summary>
     /// Gets or sets the alignment of the tabstop.
     /// </summary>
-    public TabAlignment Alignment
+    public TabAlignment? Alignment
     {
-      get { return (TabAlignment)this.alignment.Value; }
-      set { this.alignment.Value = (int)value; }
+      get { return this.alignment; }
+      set { this.alignment = value; }
     }
     
-    internal NEnum alignment = NEnum.NullValue(typeof(TabAlignment));
+    internal TabAlignment? alignment;
 
     /// <summary>
     /// Gets or sets the character which is used as a leader for the tabstop.
     /// </summary>
-    public TabLeader Leader
+    public TabLeader? Leader
     {
-      get { return (TabLeader)this.leader.Value; }
-      set { this.leader.Value = (int)value; }
+      get { return leader; }
+      set { this.leader = value; }
     }
     
-    internal NEnum leader = NEnum.NullValue(typeof(TabLeader));
+    internal TabLeader? leader;
 
     /// <summary>
     /// Generates a '+=' in DDL if it is true, otherwise '-='.

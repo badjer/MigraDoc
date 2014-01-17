@@ -71,88 +71,88 @@ namespace MigraDoc.DocumentObjectModel.Shapes
     /// </summary>
     public TextOrientation Orientation
     {
-      get { return (TextOrientation)this.orientation.Value; }
-      set { this.orientation.Value = (int)value; }
+      get { return (TextOrientation)this.orientation.GetValueOrDefault(); }
+      set { this.orientation = value; }
     }
 
-    internal NEnum orientation = NEnum.NullValue(typeof(TextOrientation));
+	internal TextOrientation? orientation;
 
     /// <summary>
     /// Gets or sets the type of the barcode.
     /// </summary>
-    public BarcodeType Type
+    public BarcodeType? Type
     {
-      get { return (BarcodeType)this.type.Value; }
-      set { this.type.Value = (int)value; }
+      get { return (BarcodeType)this.type; }
+      set { this.type = value; }
     }
-    
-    internal NEnum type = NEnum.NullValue(typeof(BarcodeType));
+
+	internal BarcodeType? type;
 
     /// <summary>
     /// Gets or sets a value indicating whether bars shall appear beside the barcode
     /// </summary>
     public bool BearerBars
     {
-      get { return this.bearerBars.Value; }
-      set { this.bearerBars.Value = value; }
+		get { return this.bearerBars.GetValueOrDefault(); }
+      set { this.bearerBars = value; }
     }
-    
-    internal NBool bearerBars = NBool.NullValue;
+
+	internal bool? bearerBars;
 
     /// <summary>
     /// Gets or sets the a value indicating whether the barcode's code is rendered.
     /// </summary>
     public bool Text
     {
-      get { return this.text.Value; }
-      set { this.text.Value = value; }
+		get { return this.text.GetValueOrDefault(); }
+      set { this.text = value; }
     }
-    
-    internal NBool text = NBool.NullValue;
+
+	internal bool? text;
 
     /// <summary>
     /// Gets or sets code the barcode represents.
     /// </summary>
     public string Code
     {
-      get { return this.code.Value; }
-      set { this.code.Value = value; }
+      get { return this.code; }
+      set { this.code = value; }
     }
-    
-    internal NString code = NString.NullValue;
+
+	internal string code;
 
     /// <summary>
     /// ???
     /// </summary>
     public double LineRatio
     {
-      get { return this.lineRatio.Value; }
-      set { this.lineRatio.Value = value; }
+		get { return this.lineRatio.GetValueOrDefault(); }
+      set { this.lineRatio = value; }
     }
-    
-    internal NDouble lineRatio = NDouble.NullValue;
+
+	internal double? lineRatio;
 
     /// <summary>
     /// ???
     /// </summary>
     public double LineHeight
     {
-      get { return this.lineHeight.Value; }
-      set { this.lineHeight.Value = value; }
+		get { return this.lineHeight.GetValueOrDefault(); }
+      set { this.lineHeight = value; }
     }
-    
-    internal NDouble lineHeight = NDouble.NullValue;
+
+	internal double? lineHeight;
 
     /// <summary>
     /// ???
     /// </summary>
     public double NarrowLineWidth
     {
-      get { return this.narrowLineWidth.Value; }
-      set { this.narrowLineWidth.Value = value; }
+		get { return this.narrowLineWidth.GetValueOrDefault(); }
+      set { this.narrowLineWidth = value; }
     }
-    
-    internal NDouble narrowLineWidth = NDouble.NullValue;
+
+	internal double? narrowLineWidth;
     #endregion
 
   }

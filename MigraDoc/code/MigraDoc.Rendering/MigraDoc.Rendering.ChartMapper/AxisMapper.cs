@@ -40,27 +40,27 @@ namespace MigraDoc.Rendering.ChartMapper
   {
 	  void MapObject(Axis axis, DocumentObjectModel.Shapes.Charts.Axis domAxis)
     {
-      if (!domAxis.TickLabels.format.IsNull)
+      if (!string.IsNullOrEmpty(domAxis.TickLabels.format))
         axis.TickLabels.Format = domAxis.TickLabels.Format;
-      if (!domAxis.TickLabels.style.IsNull)
+      if (!string.IsNullOrEmpty(domAxis.TickLabels.style))
         FontMapper.Map(axis.TickLabels.Font, domAxis.TickLabels.Document, domAxis.TickLabels.Style);
       if (domAxis.TickLabels.font != null)
         FontMapper.Map(axis.TickLabels.Font, domAxis.TickLabels.Font);
 
-      if (!domAxis.majorTickMark.IsNull)
-        axis.MajorTickMark = (TickMarkType)domAxis.MajorTickMark;
-      if (!domAxis.minorTickMark.IsNull)
-        axis.MinorTickMark = (TickMarkType)domAxis.MinorTickMark;
+      if (domAxis.majorTickMark.HasValue)
+        axis.MajorTickMark = (TickMarkType)domAxis.MajorTickMark.Value;
+      if (domAxis.minorTickMark.HasValue)
+        axis.MinorTickMark = (TickMarkType)domAxis.MinorTickMark.Value;
 
-      if (!domAxis.majorTick.IsNull)
+      if (domAxis.majorTick.HasValue)
         axis.MajorTick = domAxis.MajorTick;
-      if (!domAxis.minorTick.IsNull)
+	  if (domAxis.minorTick.HasValue)
         axis.MinorTick = domAxis.MinorTick;
 
       if (domAxis.title != null)
       {
         axis.Title.Caption = domAxis.Title.Caption;
-        if (!domAxis.title.style.IsNull)
+        if (!string.IsNullOrEmpty(domAxis.title.style))
           FontMapper.Map(axis.Title.Font, domAxis.Title.Document, domAxis.Title.Style);
         if (domAxis.title.font != null)
           FontMapper.Map(axis.Title.Font, domAxis.Title.Font);
@@ -77,9 +77,9 @@ namespace MigraDoc.Rendering.ChartMapper
       if (domAxis.minorGridlines != null && domAxis.MinorGridlines.lineFormat != null)
         LineFormatMapper.Map(axis.MinorGridlines.LineFormat, domAxis.MinorGridlines.LineFormat);
 
-      if (!domAxis.maximumScale.IsNull)
+	  if (domAxis.maximumScale.HasValue)
         axis.MaximumScale = domAxis.MaximumScale;
-      if (!domAxis.minimumScale.IsNull)
+	  if (domAxis.minimumScale.HasValue)
         axis.MinimumScale = domAxis.MinimumScale;
 
       if (domAxis.lineFormat != null)

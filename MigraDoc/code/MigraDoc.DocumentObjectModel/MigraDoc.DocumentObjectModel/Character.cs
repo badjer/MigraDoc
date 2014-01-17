@@ -44,28 +44,28 @@ namespace MigraDoc.DocumentObjectModel
   public class Character : DocumentObject
   {
     // \space
-    public static readonly Character Blank = new Character(SymbolName.Blank);
-    public static readonly Character En = new Character(SymbolName.En);
-    public static readonly Character Em = new Character(SymbolName.Em);
-    public static readonly Character EmQuarter = new Character(SymbolName.EmQuarter);
-    public static readonly Character Em4 = new Character(SymbolName.Em4);
+    public static readonly Character Blank = new Character(MigraDoc.DocumentObjectModel.SymbolName.Blank);
+	public static readonly Character En = new Character(MigraDoc.DocumentObjectModel.SymbolName.En);
+	public static readonly Character Em = new Character(MigraDoc.DocumentObjectModel.SymbolName.Em);
+	public static readonly Character EmQuarter = new Character(MigraDoc.DocumentObjectModel.SymbolName.EmQuarter);
+	public static readonly Character Em4 = new Character(MigraDoc.DocumentObjectModel.SymbolName.Em4);
 
     // used to serialize as \tab, \linebreak
-    public static readonly Character Tab = new Character(SymbolName.Tab);
-    public static readonly Character LineBreak = new Character(SymbolName.LineBreak);
+	public static readonly Character Tab = new Character(MigraDoc.DocumentObjectModel.SymbolName.Tab);
+	public static readonly Character LineBreak = new Character(MigraDoc.DocumentObjectModel.SymbolName.LineBreak);
     //public static readonly Character MarginBreak         = new Character(SymbolName.MarginBreak);
 
     // \symbol
-    public static readonly Character Euro = new Character(SymbolName.Euro);
-    public static readonly Character Copyright = new Character(SymbolName.Copyright);
-    public static readonly Character Trademark = new Character(SymbolName.Trademark);
-    public static readonly Character RegisteredTrademark = new Character(SymbolName.RegisteredTrademark);
-    public static readonly Character Bullet = new Character(SymbolName.Bullet);
-    public static readonly Character Not = new Character(SymbolName.Not);
-    public static readonly Character EmDash = new Character(SymbolName.EmDash);
-    public static readonly Character EnDash = new Character(SymbolName.EnDash);
-    public static readonly Character NonBreakableBlank = new Character(SymbolName.NonBreakableBlank);
-    public static readonly Character HardBlank = new Character(SymbolName.HardBlank);
+	public static readonly Character Euro = new Character(MigraDoc.DocumentObjectModel.SymbolName.Euro);
+	public static readonly Character Copyright = new Character(MigraDoc.DocumentObjectModel.SymbolName.Copyright);
+	public static readonly Character Trademark = new Character(MigraDoc.DocumentObjectModel.SymbolName.Trademark);
+	public static readonly Character RegisteredTrademark = new Character(MigraDoc.DocumentObjectModel.SymbolName.RegisteredTrademark);
+	public static readonly Character Bullet = new Character(MigraDoc.DocumentObjectModel.SymbolName.Bullet);
+	public static readonly Character Not = new Character(MigraDoc.DocumentObjectModel.SymbolName.Not);
+	public static readonly Character EmDash = new Character(MigraDoc.DocumentObjectModel.SymbolName.EmDash);
+	public static readonly Character EnDash = new Character(MigraDoc.DocumentObjectModel.SymbolName.EnDash);
+	public static readonly Character NonBreakableBlank = new Character(MigraDoc.DocumentObjectModel.SymbolName.NonBreakableBlank);
+	public static readonly Character HardBlank = new Character(MigraDoc.DocumentObjectModel.SymbolName.HardBlank);
 
     /// <summary>
     /// Initializes a new instance of the Character class.
@@ -85,22 +85,20 @@ namespace MigraDoc.DocumentObjectModel
     Character(SymbolName name)
       : this()
     {
-      //DaSt: uint wird nicht akzeptiert, muss auf int casten
-      //SetValue("SymbolName", (int)(uint)name);
-      this.symbolName.Value = (int)name;
+      symbolName = name;
     }
 
     #region Properties
     /// <summary>
     /// Gets or sets the SymbolName. Returns 0 if the type is defined by a character.
     /// </summary>
-    public SymbolName SymbolName
+    public SymbolName? SymbolName
     {
-      get { return (SymbolName)this.symbolName.Value; }
-      set { this.symbolName.Value = (int)value; }
+      get { return this.symbolName; }
+      set { this.symbolName = value; }
     }
     
-    internal NEnum symbolName = NEnum.NullValue(typeof(SymbolName));
+    internal SymbolName? symbolName;
 
     /// <summary>
     /// Gets or sets the SymbolName as character. Returns 0 if the type is defined via an enum.
@@ -114,7 +112,7 @@ namespace MigraDoc.DocumentObjectModel
         else
           return '\0';
       }
-      set { this.symbolName.Value = (int)value; }
+	  //set { this.symbolName = value; }
     }
 
     /// <summary>
@@ -122,11 +120,11 @@ namespace MigraDoc.DocumentObjectModel
     /// </summary>
     public int Count
     {
-      get { return this.count.Value; }
-      set { this.count.Value = value; }
+      get { return count.GetValueOrDefault(); }
+      set { count = value; }
     }
     
-    internal NInt count = new NInt(1);
+    internal int? count = 1;
     #endregion
   }
 }

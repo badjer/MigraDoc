@@ -301,11 +301,11 @@ namespace MigraDoc.DocumentObjectModel.Tables
     /// </summary>
     public string Style
     {
-      get { return this.style.Value; }
-      set { this.style.Value = value; }
+      get { return this.style; }
+      set { this.style = value; }
     }
-    
-    internal NString style = NString.NullValue;
+
+	internal string style;
 
     /// <summary>
     /// Gets the default ParagraphFormat for all rows and columns of the table.
@@ -420,22 +420,22 @@ namespace MigraDoc.DocumentObjectModel.Tables
     /// </summary>
     public bool KeepTogether
     {
-      get { return this.keepTogether.Value; }
-      set { this.keepTogether.Value = value; }
+		get { return this.keepTogether.GetValueOrDefault(); }
+      set { this.keepTogether = value; }
     }
-    
-    internal NBool keepTogether = NBool.NullValue;
+
+	internal bool? keepTogether;
 
     /// <summary>
     /// Gets or sets a comment associated with this object.
     /// </summary>
     public string Comment
     {
-      get { return this.comment.Value; }
-      set { this.comment.Value = value; }
+      get { return this.comment; }
+      set { this.comment = value; }
     }
-    
-    internal NString comment = NString.NullValue;
+
+	internal string comment;
     #endregion
 
     #region Internal

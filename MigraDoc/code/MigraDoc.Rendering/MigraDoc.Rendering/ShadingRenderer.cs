@@ -55,7 +55,7 @@ namespace MigraDoc.Rendering
 
     private bool IsVisible()
     {
-      if (!this.shading.visible.IsNull)
+      if (this.shading.visible.HasValue)
         return this.shading.Visible;
       else
         return !this.shading.color.IsNull;

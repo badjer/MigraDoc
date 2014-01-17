@@ -296,16 +296,16 @@ namespace MigraDoc.Rendering
         DocumentInfo docInfo = this.document.Info;
         PdfDocumentInformation pdfInfo = this.pdfDocument.Info;
 
-        if (!docInfo.author.IsNull)
+        if (!string.IsNullOrEmpty(docInfo.author))
           pdfInfo.Author = docInfo.Author;
 
-        if (!docInfo.keywords.IsNull)
+        if (!string.IsNullOrEmpty(docInfo.keywords))
           pdfInfo.Keywords = docInfo.Keywords;
 
-        if (!docInfo.subject.IsNull)
+        if (!string.IsNullOrEmpty(docInfo.subject))
           pdfInfo.Subject = docInfo.Subject;
 
-        if (!docInfo.title.IsNull)
+        if (!string.IsNullOrEmpty(docInfo.title))
           pdfInfo.Title = docInfo.Title;
       }
     }

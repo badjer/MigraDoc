@@ -80,11 +80,11 @@ namespace MigraDoc.DocumentObjectModel.Fields
     /// </summary>
     public string Name
     {
-      get { return this.name.Value; }
-      set { this.name.Value = value; }
+      get { return this.name; }
+      set { this.name = value; }
     }
-    
-    internal NString name = NString.NullValue;
+
+	internal string name;
     #endregion
   }
 }

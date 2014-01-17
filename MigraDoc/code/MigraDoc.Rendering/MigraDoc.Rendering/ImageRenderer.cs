@@ -184,7 +184,7 @@ namespace MigraDoc.Rendering
           XUnit resultHeight = usrHeight;
 
           double xPixels = xImage.PixelWidth;
-          bool usrResolutionSet = !image.resolution.IsNull;
+		  bool usrResolutionSet = image.resolution.HasValue;
 
           double horzRes = usrResolutionSet ? (double)image.Resolution : xImage.HorizontalResolution;
           XUnit inherentWidth = XUnit.FromInch(xPixels / horzRes);
@@ -192,12 +192,12 @@ namespace MigraDoc.Rendering
           double vertRes = usrResolutionSet ? (double)image.Resolution : xImage.VerticalResolution;
           XUnit inherentHeight = XUnit.FromInch(yPixels / vertRes);
 
-          bool lockRatio = this.image.lockAspectRatio.IsNull ? true : image.LockAspectRatio;
+          bool lockRatio = !this.image.lockAspectRatio.HasValue ? true : image.LockAspectRatio;
 
           double scaleHeight = this.image.ScaleHeight;
           double scaleWidth = this.image.ScaleWidth;
-          bool scaleHeightSet = !this.image.scaleHeight.IsNull;
-          bool scaleWidthSet = !this.image.scaleWidth.IsNull;
+		  bool scaleHeightSet = this.image.scaleHeight.HasValue;
+		  bool scaleWidthSet = this.image.scaleWidth.HasValue;
 
           if (lockRatio && !(scaleHeightSet && scaleWidthSet))
           {

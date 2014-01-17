@@ -108,7 +108,7 @@ namespace MigraDoc.Rendering.ChartMapper
       {
         if (domLegend.lineFormat != null)
           LineFormatMapper.Map(chart.Legend.LineFormat, domLegend.LineFormat);
-        if (!textArea.style.IsNull)
+        if (!string.IsNullOrEmpty(textArea.style))
           FontMapper.Map(chart.Legend.Font, textArea.Document, textArea.Style);
         if (domLegend.Format.font != null)
           FontMapper.Map(chart.Legend.Font, domLegend.Format.Font);

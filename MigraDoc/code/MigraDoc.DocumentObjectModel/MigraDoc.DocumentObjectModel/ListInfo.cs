@@ -68,13 +68,13 @@ namespace MigraDoc.DocumentObjectModel
     /// <summary>
     /// Gets or sets the type of the list.
     /// </summary>
-    public ListType ListType
+    public ListType? ListType
     {
-      get { return (ListType)this.listType.Value; }
-      set { this.listType.Value = (int)value; }
+      get { return this.listType; }
+      set { this.listType = value; }
     }
     
-    internal NEnum listType = NEnum.NullValue(typeof(ListType));
+    internal ListType? listType;
 
     /// <summary>
     /// Gets or sets the left indent of the list symbol.
@@ -93,11 +93,11 @@ namespace MigraDoc.DocumentObjectModel
     /// </summary>
     public bool ContinuePreviousList
     {
-      get { return this.continuePreviousList.Value; }
-      set { this.continuePreviousList.Value = value; }
+		get { return this.continuePreviousList.GetValueOrDefault(); }
+      set { this.continuePreviousList = value; }
     }
-    
-    internal NBool continuePreviousList = NBool.NullValue;
+
+	internal bool? continuePreviousList;
     #endregion
 
     #region Internal

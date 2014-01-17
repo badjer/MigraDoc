@@ -71,55 +71,55 @@ namespace MigraDoc.DocumentObjectModel
     /// </summary>
     public string Title
     {
-      get { return this.title.Value; }
-      set { this.title.Value = value; }
+      get { return this.title; }
+      set { this.title = value; }
     }
-    
-    internal NString title = NString.NullValue;
+
+	internal string title;
 
     /// <summary>
     /// Gets or sets the document author.
     /// </summary>
     public string Author
     {
-      get { return this.author.Value; }
-      set { this.author.Value = value; }
+      get { return this.author; }
+      set { this.author = value; }
     }
-    
-    internal NString author = NString.NullValue;
+
+	internal string author;
 
     /// <summary>
     /// Gets or sets keywords related to the document.
     /// </summary>
     public string Keywords
     {
-      get { return this.keywords.Value; }
-      set { this.keywords.Value = value; }
+      get { return this.keywords; }
+      set { this.keywords = value; }
     }
-    
-    internal NString keywords = NString.NullValue;
+
+	internal string keywords;
 
     /// <summary>
     /// Gets or sets the subject of the document.
     /// </summary>
     public string Subject
     {
-      get { return this.subject.Value; }
-      set { this.subject.Value = value; }
+      get { return this.subject; }
+      set { this.subject = value; }
     }
-    
-    internal NString subject = NString.NullValue;
+
+	internal string subject;
 
     /// <summary>
     /// Gets or sets a comment associated with this object.
     /// </summary>
     public string Comment
     {
-      get { return this.comment.Value; }
-      set { this.comment.Value = value; }
+      get { return this.comment; }
+      set { this.comment = value; }
     }
-    
-    internal NString comment = NString.NullValue;
+
+	internal string comment;
     #endregion
 
 	public string GetValueByEnum(InfoFieldType type)

@@ -473,11 +473,11 @@ namespace MigraDoc.DocumentObjectModel
     /// </summary>
     public string Style
     {
-      get { return this.style.Value; }
-      set { this.style.Value = value; }
+      get { return this.style; }
+      set { this.style = value; }
     }
-    
-    internal NString style = NString.NullValue;
+
+	internal string style;
 
     /// <summary>
     /// Gets or sets the name of the font.
@@ -534,7 +534,7 @@ namespace MigraDoc.DocumentObjectModel
     /// Gets or sets the underline property.
     /// </summary>
     
-    public Underline Underline
+    public Underline? Underline
     {
       get { return Font.Underline; }
       set { Font.Underline = value; }

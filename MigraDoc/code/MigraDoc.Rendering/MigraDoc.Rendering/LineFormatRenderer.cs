@@ -63,13 +63,13 @@ namespace MigraDoc.Rendering
     {
       if (this.lineFormat == null)
         return 0;
-      if (!this.lineFormat.visible.IsNull && !this.lineFormat.Visible)
+	  if (this.lineFormat.visible.HasValue && !this.lineFormat.Visible)
         return 0;
 
       if (!this.lineFormat.width.IsNull)
         return this.lineFormat.Width.Point;
 
-      if (!this.lineFormat.color.IsNull || !this.lineFormat.style.IsNull || this.lineFormat.Visible)
+      if (!this.lineFormat.color.IsNull || this.lineFormat.style.HasValue || this.lineFormat.Visible)
         return 1;
 
       return 0;

@@ -160,13 +160,13 @@ namespace MigraDoc.DocumentObjectModel
     /// <summary>
     /// Gets or sets the Alignment of the paragraph.
     /// </summary>
-    public ParagraphAlignment Alignment
+	public ParagraphAlignment? Alignment
     {
-      get { return (ParagraphAlignment)this.alignment.Value; }
-      set { this.alignment.Value = (int)value; }
+      get { return this.alignment; }
+      set { this.alignment = value; }
     }
     
-    internal NEnum alignment = NEnum.NullValue(typeof(ParagraphAlignment));
+    internal ParagraphAlignment? alignment;
 
     /// <summary>
     /// Gets the Borders object.
@@ -226,22 +226,22 @@ namespace MigraDoc.DocumentObjectModel
     /// </summary>
     public bool KeepTogether
     {
-      get { return this.keepTogether.Value; }
-      set { this.keepTogether.Value = value; }
+		get { return this.keepTogether.GetValueOrDefault(); }
+      set { this.keepTogether = value; }
     }
-    
-    internal NBool keepTogether = NBool.NullValue;
+
+	internal bool? keepTogether;
 
     /// <summary>
     /// Gets or sets a value indicating whether this and the next paragraph stay on the same page.
     /// </summary>
     public bool KeepWithNext
     {
-      get { return this.keepWithNext.Value; }
-      set { this.keepWithNext.Value = value; }
+		get { return this.keepWithNext.GetValueOrDefault(); }
+      set { this.keepWithNext = value; }
     }
-    
-    internal NBool keepWithNext = NBool.NullValue;
+
+	internal bool? keepWithNext;
 
     /// <summary>
     /// Gets or sets the left indent of the paragraph.
@@ -268,13 +268,13 @@ namespace MigraDoc.DocumentObjectModel
     /// <summary>
     /// Gets or sets the rule which is used to define the line spacing.
     /// </summary>
-    public LineSpacingRule LineSpacingRule
+    public LineSpacingRule? LineSpacingRule
     {
-      get { return (LineSpacingRule)this.lineSpacingRule.Value; }
-      set { this.lineSpacingRule.Value = (int)value; }
+      get { return this.lineSpacingRule; }
+      set { this.lineSpacingRule = value; }
     }
     
-    internal NEnum lineSpacingRule = NEnum.NullValue(typeof(LineSpacingRule));
+    internal LineSpacingRule? lineSpacingRule;
 
     /// <summary>
     /// Gets or sets the ListInfo object of the paragraph.
@@ -300,24 +300,24 @@ namespace MigraDoc.DocumentObjectModel
     /// <summary>
     /// Gets or sets the out line level of the paragraph.
     /// </summary>
-    public OutlineLevel OutlineLevel
+    public OutlineLevel? OutlineLevel
     {
-      get { return (OutlineLevel)this.outlineLevel.Value; }
-      set { this.outlineLevel.Value = (int)value; }
+      get { return this.outlineLevel; }
+      set { this.outlineLevel = value; }
     }
     
-    internal NEnum outlineLevel = NEnum.NullValue(typeof(OutlineLevel));
+    internal OutlineLevel? outlineLevel;
 
     /// <summary>
     /// Gets or sets a value indicating whether a page break is inserted before the paragraph.
     /// </summary>
     public bool PageBreakBefore
     {
-      get { return this.pageBreakBefore.Value; }
-      set { this.pageBreakBefore.Value = value; }
+		get { return this.pageBreakBefore.GetValueOrDefault(); }
+      set { this.pageBreakBefore = value; }
     }
-    
-    internal NBool pageBreakBefore = NBool.NullValue;
+
+	internal bool? pageBreakBefore;
 
     /// <summary>
     /// Gets or sets the right indent of the paragraph.
@@ -407,11 +407,11 @@ namespace MigraDoc.DocumentObjectModel
     /// </summary>
     public bool WidowControl
     {
-      get { return this.widowControl.Value; }
-      set { this.widowControl.Value = value; }
+		get { return this.widowControl.GetValueOrDefault(); }
+      set { this.widowControl = value; }
     }
-    
-    internal NBool widowControl = NBool.NullValue;
+
+	internal bool? widowControl;
     #endregion
 
     #region Internal

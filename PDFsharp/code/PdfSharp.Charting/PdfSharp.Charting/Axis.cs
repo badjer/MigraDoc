@@ -147,36 +147,28 @@ namespace PdfSharp.Charting
     /// <summary>
     /// Gets or sets the type of the primary tick mark.
     /// </summary>
-    public TickMarkType MajorTickMark
+    public TickMarkType? MajorTickMark
     {
       get {return this.majorTickMark;}
       set
       {
-        if (!Enum.IsDefined(typeof(TickMarkType), value))
-          throw new InvalidEnumArgumentException("value", (int)value, typeof(TickMarkType));
-        this.majorTickMark = value;
-        this.majorTickMarkInitialized = true;
+        majorTickMark = value;
       }
     }
-    internal TickMarkType majorTickMark;
-    internal bool majorTickMarkInitialized;
+    internal TickMarkType? majorTickMark;
 
     /// <summary>
     /// Gets or sets the type of the secondary tick mark.
     /// </summary>
-    public TickMarkType MinorTickMark
+    public TickMarkType? MinorTickMark
     {
       get {return this.minorTickMark;}
       set
       {
-        if (!Enum.IsDefined(typeof(TickMarkType), value))
-          throw new InvalidEnumArgumentException("value", (int)value, typeof(TickMarkType));
         this.minorTickMark = value;
-        this.minorTickMarkInitialized = true;
       }
     }
-    internal TickMarkType minorTickMark;
-    internal bool minorTickMarkInitialized;
+    internal TickMarkType? minorTickMark;
 
     /// <summary>
     /// Gets the label of the primary tick.

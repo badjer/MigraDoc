@@ -148,7 +148,7 @@ namespace MigraDoc.DocumentObjectModel
     /// <summary>
     /// Adds a TabStop object to the collection and sets its alignment and leader.
     /// </summary>
-    public TabStop AddTabStop(Unit position, TabAlignment alignment, TabLeader leader)
+    public TabStop AddTabStop(Unit position, TabAlignment? alignment, TabLeader? leader)
     {
       TabStop tab = AddTabStop(position);
       tab.Alignment = alignment;

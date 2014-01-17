@@ -244,11 +244,11 @@ namespace MigraDoc.DocumentObjectModel.Tables
     /// </summary>
     public string Style
     {
-      get { return this.style.Value; }
-      set { this.style.Value = value; }
+      get { return this.style; }
+      set { this.style = value; }
     }
-    
-    internal NString style = NString.NullValue;
+
+	internal string style;
 
     /// <summary>
     /// Gets the ParagraphFormat object of the paragraph.
@@ -274,13 +274,13 @@ namespace MigraDoc.DocumentObjectModel.Tables
     /// <summary>
     /// Gets or sets the vertical alignment of the cell.
     /// </summary>
-    public VerticalAlignment VerticalAlignment
+    public VerticalAlignment? VerticalAlignment
     {
-      get { return (VerticalAlignment)this.verticalAlignment.Value; }
-      set { this.verticalAlignment.Value = (int)value; }
+      get { return this.verticalAlignment; }
+      set { this.verticalAlignment = value; }
     }
     
-    internal NEnum verticalAlignment = NEnum.NullValue(typeof(VerticalAlignment));
+    internal VerticalAlignment? verticalAlignment;
 
     /// <summary>
     /// Gets the Borders object.
@@ -332,22 +332,22 @@ namespace MigraDoc.DocumentObjectModel.Tables
     /// </summary>
     public int MergeRight
     {
-      get { return this.mergeRight.Value; }
-      set { this.mergeRight.Value = value; }
+      get { return mergeRight.GetValueOrDefault(); }
+      set { mergeRight = value; }
     }
     
-    internal NInt mergeRight = NInt.NullValue;
+    internal int? mergeRight;
 
     /// <summary>
     /// Gets or sets the number of cells to be merged down.
     /// </summary>
     public int MergeDown
     {
-      get { return this.mergeDown.Value; }
-      set { this.mergeDown.Value = value; }
+      get { return this.mergeDown.GetValueOrDefault(); }
+      set { this.mergeDown = value; }
     }
     
-    internal NInt mergeDown = NInt.NullValue;
+    internal int? mergeDown;
 
     /// <summary>
     /// Gets the collection of document objects that defines the cell.
@@ -375,11 +375,11 @@ namespace MigraDoc.DocumentObjectModel.Tables
     /// </summary>
     public string Comment
     {
-      get { return this.comment.Value; }
-      set { this.comment.Value = value; }
+      get { return this.comment; }
+      set { this.comment = value; }
     }
-    
-    internal NString comment = NString.NullValue;
+
+	internal string comment;
     #endregion
 
     #region Internal

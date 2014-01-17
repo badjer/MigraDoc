@@ -82,11 +82,11 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
     /// </summary>
     public string Format
     {
-      get { return this.format.Value; }
-      set { this.format.Value = value; }
+      get { return this.format; }
+      set { this.format = value; }
     }
-    
-    internal NString format = NString.NullValue;
+
+	internal string format;
 
     /// <summary>
     /// Gets the Font for the DataLabel.
@@ -115,33 +115,33 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
     /// </summary>
     public string Style
     {
-      get { return this.style.Value; }
-      set { this.style.Value = value; }
+      get { return this.style; }
+      set { this.style = value; }
     }
-    
-    internal NString style = NString.NullValue;
+
+	internal string style;
 
     /// <summary>
     /// Gets or sets the position of the DataLabel.
     /// </summary>
-    public DataLabelPosition Position
+    public DataLabelPosition? Position
     {
-      get { return (DataLabelPosition)this.position.Value; }
-      set { this.position.Value = (int)value; }
+      get { return (DataLabelPosition) this.position; }
+      set { this.position = value; }
     }
     
-    internal NEnum position = NEnum.NullValue(typeof(DataLabelPosition));
+    internal DataLabelPosition? position;
 
     /// <summary>
     /// Gets or sets the type of the DataLabel.
     /// </summary>
-    public DataLabelType Type
+    public DataLabelType? Type
     {
-      get { return (DataLabelType)this.type.Value; }
-      set { this.type.Value = (int)value; }
+      get { return (DataLabelType)this.type; }
+      set { this.type = value; }
     }
     
-    internal NEnum type = NEnum.NullValue(typeof(DataLabelType));
+    internal DataLabelType? type;
     #endregion
   }
 }

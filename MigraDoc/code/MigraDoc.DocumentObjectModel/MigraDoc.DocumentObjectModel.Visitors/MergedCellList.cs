@@ -33,7 +33,6 @@
 using System;
 using System.Collections.Generic;
 using MigraDoc.DocumentObjectModel.Tables;
-using MigraDoc.DocumentObjectModel.Internals;
 
 namespace MigraDoc.DocumentObjectModel.Visitors
 {
@@ -124,18 +123,18 @@ namespace MigraDoc.DocumentObjectModel.Visitors
 			if (!(cellIdx >= 0 && cellIdx < Count))
 				throw new ArgumentException("cell is not a relevant cell", "cell");
 
-			if (cell.mergeRight > 0)
+			if (cell.mergeRight.HasValue && cell.mergeRight > 0)
 			{
-				Cell rightBorderCell = cell.Table[cell.Row.Index, cell.Column.Index + cell.mergeRight];
+				Cell rightBorderCell = cell.Table[cell.Row.Index, cell.Column.Index + cell.mergeRight.Value];
 				if (rightBorderCell.borders != null && rightBorderCell.borders.right != null)
 					borders.Right = rightBorderCell.borders.right.Clone();
 				else
 					borders.right = null;
 			}
 
-			if (cell.mergeDown > 0)
+			if (cell.mergeDown.HasValue && cell.mergeDown > 0)
 			{
-				Cell bottomBorderCell = cell.Table[cell.Row.Index + cell.mergeDown, cell.Column.Index];
+				Cell bottomBorderCell = cell.Table[cell.Row.Index + cell.mergeDown.Value, cell.Column.Index];
 				if (bottomBorderCell.borders != null && bottomBorderCell.borders.bottom != null)
 					borders.Bottom = bottomBorderCell.borders.bottom.Clone();
 				else
@@ -224,7 +223,7 @@ namespace MigraDoc.DocumentObjectModel.Visitors
 
 			Border border = borders.GetByType(type);
 
-			NBool visible;
+			bool? visible;
 			Unit width;
 
 			if (border == null || border.width.IsNull)
@@ -238,9 +237,9 @@ namespace MigraDoc.DocumentObjectModel.Visitors
 				width = border.width;
 			}
 
-			if (!visible.IsNull || !width.IsNull)
+			if (visible.HasValue || !width.IsNull)
 			{
-				if (!visible.IsNull && !visible.Value)
+				if (visible.HasValue && !visible.Value)
 					return 0;
 				if (!width.IsNull)
 					return width;

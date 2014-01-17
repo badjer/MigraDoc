@@ -94,11 +94,11 @@ namespace MigraDoc.DocumentObjectModel.Shapes
     /// </summary>
     public string Name
     {
-      get { return this.name.Value; }
-      set { this.name.Value = value; }
+      get { return this.name; }
+      set { this.name = value; }
     }
-    
-    internal NString name = NString.NullValue;
+
+	internal string name;
 
     /// <summary>
     /// Gets or sets the ScaleWidth of the image.
@@ -106,11 +106,11 @@ namespace MigraDoc.DocumentObjectModel.Shapes
     /// </summary>
     public double ScaleWidth
     {
-      get { return this.scaleWidth.Value; }
-      set { this.scaleWidth.Value = value; }
+		get { return this.scaleWidth.GetValueOrDefault(); }
+      set { this.scaleWidth = value; }
     }
-    
-    internal NDouble scaleWidth = NDouble.NullValue;
+
+	internal double? scaleWidth;
 
     /// <summary>
     /// Gets or sets the ScaleHeight of the image.
@@ -118,11 +118,11 @@ namespace MigraDoc.DocumentObjectModel.Shapes
     /// </summary>
     public double ScaleHeight
     {
-      get { return this.scaleHeight.Value; }
-      set { this.scaleHeight.Value = value; }
+		get { return this.scaleHeight.GetValueOrDefault(); }
+      set { this.scaleHeight = value; }
     }
-    
-    internal NDouble scaleHeight = NDouble.NullValue;
+
+	internal double? scaleHeight;
 
     /// <summary>
     /// Gets or sets whether the AspectRatio of the image is kept unchanged.
@@ -130,11 +130,11 @@ namespace MigraDoc.DocumentObjectModel.Shapes
     /// </summary>
     public bool LockAspectRatio
     {
-      get { return this.lockAspectRatio.Value; }
-      set { this.lockAspectRatio.Value = value; }
+		get { return this.lockAspectRatio.GetValueOrDefault(); }
+      set { this.lockAspectRatio = value; }
     }
-    
-    internal NBool lockAspectRatio = NBool.NullValue;
+
+	internal bool? lockAspectRatio;
 
     /// <summary>
     /// Gets or sets the PictureFormat for the image
@@ -161,11 +161,11 @@ namespace MigraDoc.DocumentObjectModel.Shapes
     /// </summary>
     public double Resolution
     {
-      get { return this.resolution.Value; }
-      set { this.resolution.Value = value; }
+      get { return this.resolution.GetValueOrDefault(); }
+      set { this.resolution = value; }
     }
     
-    internal NDouble resolution = NDouble.NullValue;
+    internal double? resolution;
     //#endregion
 
     #region Internal

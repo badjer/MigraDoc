@@ -71,7 +71,7 @@ namespace MigraDoc.DocumentObjectModel
     /// </summary>
     public void Clear()
     {
-      this.fClear.Value = true;
+      this.fClear = true;
     }
     #endregion
 
@@ -81,22 +81,22 @@ namespace MigraDoc.DocumentObjectModel
     /// </summary>
     public bool Visible
     {
-      get { return this.visible.Value; }
-      set { this.visible.Value = value; }
+		get { return this.visible.GetValueOrDefault(); }
+      set { this.visible = value; }
     }
-    
-    internal NBool visible = NBool.NullValue;
+
+	internal bool? visible;
 
     /// <summary>
     /// Gets or sets the line style of the border.
     /// </summary>
-    public BorderStyle Style
+    public BorderStyle? Style
     {
-      get { return (BorderStyle)this.style.Value; }
-      set { this.style.Value = (int)value; }
+      get { return this.style; }
+      set { this.style = value; }
     }
-    
-    internal NEnum style = NEnum.NullValue(typeof(BorderStyle));
+
+	internal BorderStyle? style;
 
     /// <summary>
     /// Gets or sets the line width of the border.
@@ -136,7 +136,7 @@ namespace MigraDoc.DocumentObjectModel
     {
       get { return this.fClear.Value; }
     }
-    internal NBool fClear = new NBool(false);
+	internal bool? fClear = false;
     #endregion
   }
 }

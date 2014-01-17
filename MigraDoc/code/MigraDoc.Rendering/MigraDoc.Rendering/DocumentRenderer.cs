@@ -291,7 +291,7 @@ namespace MigraDoc.Rendering
 
     internal int NextListNumber(ListInfo listInfo)
     {
-      ListType listType = listInfo.ListType;
+      ListType listType = listInfo.ListType.GetValueOrDefault();
       bool isNumberList = listType == ListType.NumberList1 ||
         listType == ListType.NumberList2 ||
         listType == ListType.NumberList3;
@@ -309,7 +309,7 @@ namespace MigraDoc.Rendering
       if (isNumberList)
       {
         listNumber = 1;
-        if (/*!listTypeChanged &&*/ (listInfo.continuePreviousList.IsNull || listInfo.ContinuePreviousList))
+        if (/*!listTypeChanged &&*/ (!listInfo.continuePreviousList.HasValue || listInfo.ContinuePreviousList))
           listNumber = (int)this.previousListNumbers[listType] + 1;
 
         this.previousListNumbers[listType] = listNumber;

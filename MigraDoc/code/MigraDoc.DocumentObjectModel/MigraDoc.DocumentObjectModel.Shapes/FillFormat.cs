@@ -78,11 +78,11 @@ namespace MigraDoc.DocumentObjectModel.Shapes
     /// </summary>
     public bool Visible
     {
-      get { return this.visible.Value; }
-      set { this.visible.Value = value; }
+		get { return this.visible.GetValueOrDefault(); }
+      set { this.visible = value; }
     }
-    
-    internal NBool visible = NBool.NullValue;
+
+	internal bool? visible;
     #endregion
   }
 }

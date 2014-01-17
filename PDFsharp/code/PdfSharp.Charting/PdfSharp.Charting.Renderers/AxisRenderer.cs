@@ -101,10 +101,10 @@ namespace PdfSharp.Charting.Renderers
     /// </summary>
     protected void InitAxisLineFormat(AxisRendererInfo rendererInfo)
     {
-      if (rendererInfo.axis.minorTickMarkInitialized)
+      if (rendererInfo.axis.minorTickMark.HasValue)
         rendererInfo.MinorTickMark = rendererInfo.axis.MinorTickMark;
 
-      if (rendererInfo.axis.majorTickMarkInitialized)
+      if (rendererInfo.axis.majorTickMark.HasValue)
         rendererInfo.MajorTickMark = rendererInfo.axis.MajorTickMark;
       else
         rendererInfo.MajorTickMark = TickMarkType.Outside;
@@ -118,7 +118,7 @@ namespace PdfSharp.Charting.Renderers
       if (rendererInfo.axis.lineFormat != null)
       {
         rendererInfo.LineFormat = Converter.ToXPen(rendererInfo.axis.LineFormat, XColors.Black, DefaultLineWidth);
-        if (!rendererInfo.axis.majorTickMarkInitialized)
+        if (!rendererInfo.axis.majorTickMark.HasValue)
           rendererInfo.MajorTickMark = TickMarkType.Outside;
       }
     }

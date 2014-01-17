@@ -66,7 +66,7 @@ namespace MigraDoc.DocumentObjectModel
     /// <summary>
     /// Gets the page's size and height for the given PageFormat.
     /// </summary>
-    public static void GetPageSize(PageFormat pageFormat, out Unit pageWidth, out Unit pageHeight)
+    public static void GetPageSize(PageFormat? pageFormat, out Unit pageWidth, out Unit pageHeight)
     {
       //Sizes in mm:
       pageWidth = 0;
@@ -77,51 +77,51 @@ namespace MigraDoc.DocumentObjectModel
       int width = 0;
       switch (pageFormat)
       {
-        case PageFormat.A0:
+        case DocumentObjectModel.PageFormat.A0:
           height = A0Height;
           width = A0Width;
           break;
-        case PageFormat.A1:
+		case DocumentObjectModel.PageFormat.A1:
           height = A0Width;
           width = A0Height / 2;
           break;
-        case PageFormat.A2:
+		case DocumentObjectModel.PageFormat.A2:
           height = A0Height / 2;
           width = A0Width / 2;
           break;
-        case PageFormat.A3:
+		case DocumentObjectModel.PageFormat.A3:
           height = A0Width / 2;
           width = A0Height / 4;
           break;
-        case PageFormat.A4:
+		case DocumentObjectModel.PageFormat.A4:
           height = A0Height / 4;
           width = A0Width / 4;
           break;
-        case PageFormat.A5:
+		case DocumentObjectModel.PageFormat.A5:
           height = A0Width / 4;
           width = A0Height / 8;
           break;
-        case PageFormat.A6:
+		case DocumentObjectModel.PageFormat.A6:
           height = A0Height / 8;
           width = A0Width / 8;
           break;
-        case PageFormat.B5:
+		case DocumentObjectModel.PageFormat.B5:
           height = 257;
           width = 182;
           break;
-        case PageFormat.Letter:
+		case DocumentObjectModel.PageFormat.Letter:
           pageWidth = Unit.FromPoint(612);
           pageHeight = Unit.FromPoint(792);
           break;
-        case PageFormat.Legal:
+		case DocumentObjectModel.PageFormat.Legal:
           pageWidth = Unit.FromPoint(612);
           pageHeight = Unit.FromPoint(1008);
           break;
-        case PageFormat.Ledger:
+		case DocumentObjectModel.PageFormat.Ledger:
           pageWidth = Unit.FromPoint(1224);
           pageHeight = Unit.FromPoint(792);
           break;
-        case PageFormat.P11x17:
+		case DocumentObjectModel.PageFormat.P11x17:
           pageWidth = Unit.FromPoint(792);
           pageHeight = Unit.FromPoint(1224);
           break;
@@ -137,24 +137,24 @@ namespace MigraDoc.DocumentObjectModel
     /// <summary>
     /// Gets or sets a value which defines whether the section starts on next, odd or even page.
     /// </summary>
-    public BreakType SectionStart
+    public BreakType? SectionStart
     {
-      get { return (BreakType)this.sectionStart.Value; }
-      set { this.sectionStart.Value = (int)value; }
+      get { return this.sectionStart; }
+      set { this.sectionStart = value; }
     }
     
-    internal NEnum sectionStart = NEnum.NullValue(typeof(BreakType));
+    internal BreakType? sectionStart;
 
     /// <summary>
     /// Gets or sets the page orientation of the section.
     /// </summary>
-    public Orientation Orientation
+    public Orientation? Orientation
     {
-      get { return (Orientation)this.orientation.Value; }
-      set { this.orientation.Value = (int)value; }
+      get { return this.orientation; }
+      set { this.orientation = value; }
     }
     
-    internal NEnum orientation = NEnum.NullValue(typeof(Orientation));
+    internal Orientation? orientation;
 
     /// <summary>
     /// Gets or sets the page width.
@@ -172,11 +172,11 @@ namespace MigraDoc.DocumentObjectModel
     /// </summary>
     public int StartingNumber
     {
-      get { return this.startingNumber.Value; }
-      set { this.startingNumber.Value = value; }
+      get { return this.startingNumber.GetValueOrDefault(); }
+      set { this.startingNumber = value; }
     }
     
-    internal NInt startingNumber = NInt.NullValue;
+    internal int? startingNumber;
 
     /// <summary>
     /// Gets or sets the page height.
@@ -239,11 +239,11 @@ namespace MigraDoc.DocumentObjectModel
     /// </summary>
     public bool OddAndEvenPagesHeaderFooter
     {
-      get { return this.oddAndEvenPagesHeaderFooter.Value; }
-      set { this.oddAndEvenPagesHeaderFooter.Value = value; }
+		get { return this.oddAndEvenPagesHeaderFooter.GetValueOrDefault(); }
+      set { this.oddAndEvenPagesHeaderFooter = value; }
     }
-    
-    internal NBool oddAndEvenPagesHeaderFooter = NBool.NullValue;
+
+	internal bool? oddAndEvenPagesHeaderFooter;
 
     /// <summary>
     /// Gets or sets a value which define whether the section has a different
@@ -251,11 +251,11 @@ namespace MigraDoc.DocumentObjectModel
     /// </summary>
     public bool DifferentFirstPageHeaderFooter
     {
-      get { return this.differentFirstPageHeaderFooter.Value; }
-      set { this.differentFirstPageHeaderFooter.Value = value; }
+		get { return this.differentFirstPageHeaderFooter.GetValueOrDefault(); }
+      set { this.differentFirstPageHeaderFooter = value; }
     }
-    
-    internal NBool differentFirstPageHeaderFooter = NBool.NullValue;
+
+	internal bool? differentFirstPageHeaderFooter;
 
     /// <summary>
     /// Gets or sets the distance between the header and the page top
@@ -287,11 +287,11 @@ namespace MigraDoc.DocumentObjectModel
     /// </summary>
     public bool MirrorMargins
     {
-      get { return this.mirrorMargins.Value; }
-      set { this.mirrorMargins.Value = value; }
+		get { return this.mirrorMargins.GetValueOrDefault(); }
+      set { this.mirrorMargins = value; }
     }
-    
-    internal NBool mirrorMargins = NBool.NullValue;
+
+	internal bool? mirrorMargins;
 
     /// <summary>
     /// Gets or sets a value which defines whether a page should break horizontally.
@@ -299,33 +299,33 @@ namespace MigraDoc.DocumentObjectModel
     /// </summary>
     public bool HorizontalPageBreak
     {
-      get { return this.horizontalPageBreak.Value; }
-      set { this.horizontalPageBreak.Value = value; }
+		get { return this.horizontalPageBreak.GetValueOrDefault(); }
+      set { this.horizontalPageBreak = value; }
     }
-    
-    internal NBool horizontalPageBreak = NBool.NullValue;
+
+	internal bool? horizontalPageBreak;
 
     /// <summary>
     /// Gets or sets the page format of the section.
     /// </summary>
-    public PageFormat PageFormat
+    public PageFormat? PageFormat
     {
-      get { return (PageFormat)this.pageFormat.Value; }
-      set { this.pageFormat.Value = (int)value; }
+      get { return this.pageFormat; }
+      set { this.pageFormat = value; }
     }
     
-    internal NEnum pageFormat = NEnum.NullValue(typeof(PageFormat));
+    internal PageFormat? pageFormat;
 
     /// <summary>
     /// Gets or sets a comment associated with this object.
     /// </summary>
     public string Comment
     {
-      get { return this.comment.Value; }
-      set { this.comment.Value = value; }
+      get { return this.comment; }
+      set { this.comment = value; }
     }
-    
-    internal NString comment = NString.NullValue;
+
+	internal string comment;
     #endregion
 
     /// <summary>
@@ -354,9 +354,9 @@ namespace MigraDoc.DocumentObjectModel
         if (PageSetup.defaultPageSetup == null)
         {
           PageSetup.defaultPageSetup = new PageSetup();
-          PageSetup.defaultPageSetup.PageFormat = PageFormat.A4;
+		  PageSetup.defaultPageSetup.PageFormat = DocumentObjectModel.PageFormat.A4;
           PageSetup.defaultPageSetup.SectionStart = BreakType.BreakNextPage;
-          PageSetup.defaultPageSetup.Orientation = Orientation.Portrait;
+          PageSetup.defaultPageSetup.Orientation = MigraDoc.DocumentObjectModel.Orientation.Portrait;
           PageSetup.defaultPageSetup.PageWidth = "21cm";
           PageSetup.defaultPageSetup.PageHeight = "29.7cm";
           PageSetup.defaultPageSetup.TopMargin = "2.5cm";

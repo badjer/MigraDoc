@@ -234,7 +234,7 @@ namespace MigraDoc.Rendering
     }
 
 
-    XUnit AlignVertically(VerticalAlignment vAlign, XUnit top, XUnit bottom, XUnit height)
+    XUnit AlignVertically(VerticalAlignment? vAlign, XUnit top, XUnit bottom, XUnit height)
     {
       switch (vAlign)
       {

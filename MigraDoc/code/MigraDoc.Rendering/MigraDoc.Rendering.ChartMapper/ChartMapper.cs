@@ -70,7 +70,7 @@ namespace MigraDoc.Rendering.ChartMapper
       if (domChart.dataLabel != null)
         DataLabelMapper.Map(chart.DataLabel, domChart.DataLabel);
 
-      if (!domChart.style.IsNull)
+      if (!string.IsNullOrEmpty(domChart.style))
         FontMapper.Map(chart.Font, domChart.Document, domChart.Style);
       if (domChart.Format.font != null)
         FontMapper.Map(chart.Font, domChart.Format.Font);

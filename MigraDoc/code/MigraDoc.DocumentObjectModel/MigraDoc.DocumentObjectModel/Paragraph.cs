@@ -452,11 +452,11 @@ namespace MigraDoc.DocumentObjectModel
     /// </summary>
     public string Style
     {
-      get { return this.style.Value; }
-      set { this.style.Value = value; }
+      get { return this.style; }
+      set { this.style = value; }
     }
-    
-    internal NString style = NString.NullValue;
+
+	internal string style;
 
     /// <summary>
     /// Gets or sets the ParagraphFormat object of the paragraph.
@@ -505,11 +505,11 @@ namespace MigraDoc.DocumentObjectModel
     /// </summary>
     public string Comment
     {
-      get { return this.comment.Value; }
-      set { this.comment.Value = value; }
+      get { return this.comment; }
+      set { this.comment = value; }
     }
-    
-    internal NString comment = NString.NullValue;
+
+	internal string comment;
     #endregion
 
     #region Internal

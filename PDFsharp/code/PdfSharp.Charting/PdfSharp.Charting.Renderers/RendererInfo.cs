@@ -266,8 +266,8 @@ namespace PdfSharp.Charting.Renderers
     internal double MaximumScale;
     internal double MajorTick;
     internal double MinorTick;
-    internal TickMarkType MinorTickMark;
-    internal TickMarkType MajorTickMark;
+    internal TickMarkType? MinorTickMark;
+    internal TickMarkType? MajorTickMark;
     internal double MajorTickMarkWidth;
     internal double MinorTickMarkWidth;
     internal XPen MajorTickMarkLineFormat;

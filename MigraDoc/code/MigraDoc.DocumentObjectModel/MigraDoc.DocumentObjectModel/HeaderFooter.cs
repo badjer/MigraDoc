@@ -227,19 +227,19 @@ namespace MigraDoc.DocumentObjectModel
     /// </summary>
     public string Style
     {
-      get { return this.style.Value; }
+      get { return this.style; }
       set
       {
         // Just save style name. 
         Style style = Document.Styles[value];
         if (style != null)
-          this.style.Value = value;
+          this.style = value;
         else
           throw new ArgumentException("Invalid style name '" + value + "'.");
       }
     }
-    
-    internal NString style = NString.NullValue;
+
+	internal string style;
 
     /// <summary>
     /// Gets or sets the paragraph format.
@@ -286,11 +286,11 @@ namespace MigraDoc.DocumentObjectModel
     /// </summary>
     public string Comment
     {
-      get { return this.comment.Value; }
-      set { this.comment.Value = value; }
+      get { return this.comment; }
+      set { this.comment = value; }
     }
-    
-    internal NString comment = NString.NullValue;
+
+	internal string comment;
     #endregion
 
     #region Internal

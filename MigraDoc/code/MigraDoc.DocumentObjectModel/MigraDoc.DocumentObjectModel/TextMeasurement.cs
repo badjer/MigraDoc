@@ -62,12 +62,9 @@ namespace MigraDoc.DocumentObjectModel
       if (text == null)
         throw new ArgumentNullException("text");
 
-      if (!Enum.IsDefined(typeof(UnitType), unitType))
-        throw new InvalidEnumArgumentException();
+      Graphics graphics = Realize();
 
-      System.Drawing.Graphics graphics = Realize();
-
-      SizeF size = graphics.MeasureString(text, this.gdiFont, new PointF(0, 0), System.Drawing.StringFormat.GenericTypographic);
+      SizeF size = graphics.MeasureString(text, this.gdiFont, new PointF(0, 0), StringFormat.GenericTypographic);
       switch (unitType)
       {
         case UnitType.Point:

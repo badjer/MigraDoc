@@ -124,65 +124,65 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
     /// </summary>
     public double MinimumScale
     {
-      get { return this.minimumScale.Value; }
-      set { this.minimumScale.Value = value; }
+      get { return this.minimumScale.GetValueOrDefault(); }
+      set { this.minimumScale = value; }
     }
     
-    internal NDouble minimumScale = NDouble.NullValue;
+    internal double? minimumScale;
 
     /// <summary>
     /// Gets or sets the maximum value of the axis.
     /// </summary>
     public double MaximumScale
     {
-      get { return this.maximumScale.Value; }
-      set { this.maximumScale.Value = value; }
+		get { return this.maximumScale.GetValueOrDefault(); }
+      set { this.maximumScale = value; }
     }
-    
-    internal NDouble maximumScale = NDouble.NullValue;
+
+	internal double? maximumScale;
 
     /// <summary>
     /// Gets or sets the interval of the primary tick.
     /// </summary>
     public double MajorTick
     {
-      get { return this.majorTick.Value; }
-      set { this.majorTick.Value = value; }
+		get { return this.majorTick.GetValueOrDefault(); }
+      set { this.majorTick = value; }
     }
-    
-    internal NDouble majorTick = NDouble.NullValue;
+
+	internal double? majorTick;
 
     /// <summary>
     /// Gets or sets the interval of the secondary tick.
     /// </summary>
     public double MinorTick
     {
-      get { return this.minorTick.Value; }
-      set { this.minorTick.Value = value; }
+		get { return this.minorTick.GetValueOrDefault(); }
+      set { this.minorTick = value; }
     }
-    
-    internal NDouble minorTick = NDouble.NullValue;
+
+	internal double? minorTick;
 
     /// <summary>
     /// Gets or sets the type of the primary tick mark.
     /// </summary>
-    public TickMarkType MajorTickMark
+    public TickMarkType? MajorTickMark
     {
-      get { return (TickMarkType)this.majorTickMark.Value; }
-      set { this.majorTickMark.Value = (int)value; }
+      get { return this.majorTickMark; }
+      set { this.majorTickMark = value; }
     }
-    internal NEnum majorTickMark = NEnum.NullValue(typeof(TickMarkType));
+	internal TickMarkType? majorTickMark;
 
     /// <summary>
     /// Gets or sets the type of the secondary tick mark.
     /// </summary>
-    public TickMarkType MinorTickMark
+    public TickMarkType? MinorTickMark
     {
-      get { return (TickMarkType)this.minorTickMark.Value; }
-      set { this.minorTickMark.Value = (int)value; }
+      get { return this.minorTickMark; }
+      set { this.minorTickMark = value; }
     }
     
-    internal NEnum minorTickMark = NEnum.NullValue(typeof(TickMarkType));
+    internal TickMarkType? minorTickMark;
 
     /// <summary>
     /// Gets the label of the primary tick.
@@ -273,22 +273,22 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
     /// </summary>
     public bool HasMajorGridlines
     {
-      get { return this.hasMajorGridlines.Value; }
-      set { this.hasMajorGridlines.Value = value; }
+      get { return this.hasMajorGridlines.GetValueOrDefault(); }
+      set { this.hasMajorGridlines = value; }
     }
     
-    internal NBool hasMajorGridlines = NBool.NullValue;
+    internal bool? hasMajorGridlines;
 
     /// <summary>
     /// Gets or sets, whether the axis has a secondary gridline object.
     /// </summary>
     public bool HasMinorGridlines
     {
-      get { return this.hasMinorGridlines.Value; }
-      set { this.hasMinorGridlines.Value = value; }
+		get { return this.hasMinorGridlines.GetValueOrDefault(); }
+      set { this.hasMinorGridlines = value; }
     }
-    
-    internal NBool hasMinorGridlines = NBool.NullValue;
+
+	internal bool? hasMinorGridlines;
     #endregion
 
     /// <summary>

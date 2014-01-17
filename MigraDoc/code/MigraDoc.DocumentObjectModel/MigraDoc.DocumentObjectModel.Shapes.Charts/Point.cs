@@ -133,11 +133,11 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
     /// </summary>
     public double Value
     {
-      get { return this.value.Value; }
-      set { this.value.Value = value; }
+		get { return this.value.GetValueOrDefault(); }
+      set { this.value = value; }
     }
-    
-    internal NDouble value = NDouble.NullValue;
+
+	internal double? value;
     #endregion
 
     #region Internal

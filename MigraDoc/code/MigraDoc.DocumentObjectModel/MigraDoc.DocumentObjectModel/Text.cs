@@ -80,11 +80,11 @@ namespace MigraDoc.DocumentObjectModel
     /// </summary>
     public string Content
     {
-      get { return this.content.Value; }
-      set { this.content.Value = value; }
+      get { return this.content; }
+      set { this.content = value; }
     }
-    
-    internal NString content = NString.NullValue;
+
+	internal string content;
     #endregion
 
     #region Internal

@@ -41,14 +41,14 @@ namespace MigraDoc.Rendering.ChartMapper
 
     void MapObject(DataLabel dataLabel, MigraDoc.DocumentObjectModel.Shapes.Charts.DataLabel domDataLabel)
     {
-      if (!domDataLabel.style.IsNull)
+      if (!string.IsNullOrEmpty(domDataLabel.style))
         FontMapper.Map(dataLabel.Font, domDataLabel.Document, domDataLabel.Style);
       if (domDataLabel.font != null)
         FontMapper.Map(dataLabel.Font, domDataLabel.Font);
       dataLabel.Format = domDataLabel.Format;
-      if (!domDataLabel.position.IsNull)
+      if (domDataLabel.position.HasValue)
         dataLabel.Position = (DataLabelPosition)domDataLabel.Position;
-      if (!domDataLabel.type.IsNull)
+	  if (domDataLabel.type.HasValue)
         dataLabel.Type = (DataLabelType)domDataLabel.Type;
     }
 

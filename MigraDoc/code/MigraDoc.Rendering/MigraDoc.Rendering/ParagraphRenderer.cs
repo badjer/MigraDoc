@@ -42,12 +42,12 @@ namespace MigraDoc.Rendering
 {
   internal struct TabOffset
   {
-    internal TabOffset(TabLeader leader, XUnit offset)
+    internal TabOffset(TabLeader? leader, XUnit offset)
     {
       this.leader = leader;
       this.offset = offset;
     }
-    internal TabLeader leader;
+    internal TabLeader? leader;
     internal XUnit offset;
   }
 
@@ -2247,7 +2247,7 @@ namespace MigraDoc.Rendering
     VerticalLineInfo CalcVerticalInfo(XFont font)
     {
       ParagraphFormat paragraphFormat = this.paragraph.Format;
-      LineSpacingRule spacingRule = paragraphFormat.LineSpacingRule;
+      LineSpacingRule spacingRule = paragraphFormat.LineSpacingRule.GetValueOrDefault();
       XUnit lineHeight = 0;
 
       XUnit descent = FontHandler.GetDescent(font);
@@ -2439,7 +2439,7 @@ namespace MigraDoc.Rendering
     XPen GetUnderlinePen(bool isWord)
     {
       Font font = CurrentDomFont;
-      Underline underlineType = font.Underline;
+      Underline underlineType = font.Underline.GetValueOrDefault();
       if (underlineType == Underline.None)
         return null;
 

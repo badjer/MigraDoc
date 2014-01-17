@@ -155,7 +155,7 @@ namespace MigraDoc.Rendering
       if (renderInfos == null)
         return;
 
-      VerticalAlignment verticalAlignment = cell.VerticalAlignment;
+      VerticalAlignment verticalAlignment = cell.VerticalAlignment.GetValueOrDefault();
       XUnit contentHeight = formattedCell.ContentHeight;
       XUnit targetX = innerRect.X + cell.Column.LeftPadding;
 
@@ -640,7 +640,7 @@ namespace MigraDoc.Rendering
     int CalcLastConnectedRow(int row)
     {
       int lastConnectedRow = row;
-      foreach (Cell cell in this.mergedCells)
+      foreach (Cell cell in mergedCells)
       {
         if (cell.Row.Index <= lastConnectedRow)
         {

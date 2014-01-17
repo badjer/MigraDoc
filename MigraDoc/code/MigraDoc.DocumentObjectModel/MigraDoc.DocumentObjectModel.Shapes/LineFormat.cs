@@ -67,11 +67,11 @@ namespace MigraDoc.DocumentObjectModel.Shapes
     /// </summary>
     public bool Visible
     {
-      get { return this.visible.Value; }
-      set { this.visible.Value = value; }
+		get { return this.visible.GetValueOrDefault(); }
+      set { this.visible = value; }
     }
-    
-    internal NBool visible = NBool.NullValue;
+
+	internal bool? visible;
 
     /// <summary>
     /// Gets or sets the width of the line in Unit.
@@ -98,24 +98,24 @@ namespace MigraDoc.DocumentObjectModel.Shapes
     /// <summary>
     /// Gets or sets the dash style of the line.
     /// </summary>
-    public DashStyle DashStyle
+    public DashStyle? DashStyle
     {
-      get { return (DashStyle)this.dashStyle.Value; }
-      set { this.dashStyle.Value = (int)value; }
+      get { return (DashStyle)this.dashStyle; }
+      set { this.dashStyle = value; }
     }
     
-    internal NEnum dashStyle = NEnum.NullValue(typeof(DashStyle));
+    internal DashStyle? dashStyle;
 
     /// <summary>
     /// Gets or sets the style of the line.
     /// </summary>
     public LineStyle Style
     {
-      get { return (LineStyle)this.style.Value; }
-      set { this.style.Value = (int)value; }
+      get { return (LineStyle)this.style; }
+      set { this.style = value; }
     }
     
-    internal NEnum style = NEnum.NullValue(typeof(LineStyle));
+    internal LineStyle? style;
     #endregion
 
     #region Internal

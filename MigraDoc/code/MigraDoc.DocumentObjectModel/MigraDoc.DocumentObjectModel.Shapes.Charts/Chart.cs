@@ -155,24 +155,24 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
     /// Gets or sets the base type of the chart.
     /// ChartType of the series can be overwritten.
     /// </summary>
-    public ChartType Type
+    public ChartType? Type
     {
-      get { return (ChartType)this.type.Value; }
-      set { this.type.Value = (int)value; }
+      get { return (ChartType)this.type; }
+      set { this.type = value; }
     }
     
-    internal NEnum type = NEnum.NullValue(typeof(ChartType));
+    internal ChartType? type;
 
     /// <summary>
     /// Gets or sets the default style name of the whole chart.
     /// </summary>
     public string Style
     {
-      get { return this.style.Value; }
-      set { this.style.Value = value; }
+      get { return this.style; }
+      set { this.style = value; }
     }
-    
-    internal NString style = NString.NullValue;
+
+	internal string style;
 
     /// <summary>
     /// Gets the default paragraph format of the whole chart.
@@ -450,24 +450,24 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
     /// <summary>
     /// Gets or sets a value defining how blanks in the data series should be shown.
     /// </summary>
-    public BlankType DisplayBlanksAs
+    public BlankType? DisplayBlanksAs
     {
-      get { return (BlankType)this.displayBlanksAs.Value; }
-      set { this.displayBlanksAs.Value = (int)value; }
+      get { return (BlankType)this.displayBlanksAs; }
+      set { this.displayBlanksAs = value; }
     }
-    
-    internal NEnum displayBlanksAs = NEnum.NullValue(typeof(BlankType));
+
+	internal BlankType? displayBlanksAs;
 
     /// <summary>
     /// Gets or sets whether XAxis Labels should be merged.
     /// </summary>
     public bool PivotChart
     {
-      get { return this.pivotChart.Value; }
-      set { this.pivotChart.Value = value; }
+		get { return this.pivotChart.GetValueOrDefault(); }
+      set { this.pivotChart = value; }
     }
-    
-    internal NBool pivotChart = NBool.NullValue;
+
+	internal bool? pivotChart;
 
     /// <summary>
     /// Gets the DataLabel of the chart.
@@ -495,11 +495,11 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
     /// </summary>
     public bool HasDataLabel
     {
-      get { return this.hasDataLabel.Value; }
-      set { this.hasDataLabel.Value = value; }
+		get { return this.hasDataLabel.GetValueOrDefault(); }
+      set { this.hasDataLabel = value; }
     }
     
-    internal NBool hasDataLabel = NBool.NullValue;
+    internal bool? hasDataLabel;
     #endregion
 
     /// <summary>

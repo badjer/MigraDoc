@@ -58,13 +58,14 @@ namespace MigraDoc.Rendering
 
     private bool IsVisible()
     {
-      if (!this.fillFormat.visible.IsNull)
-        return this.fillFormat.Visible;
-      else
-        return !this.fillFormat.color.IsNull;
+	    if (this.fillFormat.visible.HasValue)
+	    {
+		    return this.fillFormat.Visible;
+	    }
+	    return !this.fillFormat.color.IsNull;
     }
 
-    private XBrush GetBrush()
+	  private XBrush GetBrush()
     {
       if (this.fillFormat == null || !IsVisible())
         return null;

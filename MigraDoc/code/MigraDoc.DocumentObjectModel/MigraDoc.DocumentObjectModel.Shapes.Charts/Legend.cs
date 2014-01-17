@@ -87,11 +87,11 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
     /// </summary>
     public string Style
     {
-      get { return this.style.Value; }
-      set { this.style.Value = value; }
+      get { return this.style; }
+      set { this.style = value; }
     }
-    
-    internal NString style = NString.NullValue;
+
+	internal string style;
 
     /// <summary>
     /// Gets the paragraph format of the legend's text.

@@ -31,8 +31,6 @@
 #endregion
 
 using System;
-using System.Diagnostics;
-using System.Reflection;
 using MigraDoc.DocumentObjectModel.Internals;
 using MigraDoc.DocumentObjectModel.Visitors;
 
@@ -67,8 +65,8 @@ namespace MigraDoc.DocumentObjectModel
       if (name == "")
         throw new ArgumentException("name");
 
-      this.name.Value = name;
-      this.baseStyle.Value = baseStyleName;
+      this.name = name;
+      this.baseStyle = baseStyleName;
     }
 
     #region Methods
@@ -122,10 +120,10 @@ namespace MigraDoc.DocumentObjectModel
     /// </summary>
     public string Name
     {
-      get { return this.name.Value; }
+      get { return this.name; }
     }
     
-    internal NString name = NString.NullValue;
+    internal string name;
 
     /// <summary>
     /// Gets the ParagraphFormat. To prevent read-only styles from being modified, a copy of its ParagraphFormat
@@ -155,21 +153,21 @@ namespace MigraDoc.DocumentObjectModel
     /// </summary>
     public string BaseStyle
     {
-      get { return baseStyle.Value; }
+      get { return baseStyle; }
       set
       {
-        if (value == null || value == "" && baseStyle.Value != "") //!!!modTHHO 17.07.2007: Self assignment is allowed
+        if (value == null || value == "" && baseStyle != "") //!!!modTHHO 17.07.2007: Self assignment is allowed
           throw new ArgumentException(DomSR.EmptyBaseStyle);
 
         // Self assignment is allowed
-        if (String.Compare(baseStyle.Value, value, true) == 0)
+        if (String.Compare(baseStyle, value, true) == 0)
         {
-          baseStyle.Value = value;  // character case may change...
+          baseStyle = value;  // character case may change...
           return;
         }
 
-        if (String.Compare(this.name.Value, Style.DefaultParagraphName, true) == 0 ||
-            String.Compare(this.name.Value, Style.DefaultParagraphFontName, true) == 0)
+        if (String.Compare(this.name, Style.DefaultParagraphName, true) == 0 ||
+            String.Compare(this.name, Style.DefaultParagraphFontName, true) == 0)
         {
           string msg = String.Format("Style '{0}' has no base style and that cannot be altered.", this.name);
           throw new ArgumentException(msg);
@@ -199,11 +197,11 @@ namespace MigraDoc.DocumentObjectModel
         }
 
         // Now setting new base style is save
-        baseStyle.Value = value;
+        baseStyle = value;
       }
     }
     
-    internal NString baseStyle = NString.NullValue;
+    internal string baseStyle;
 
     /// <summary>
     /// Gets the StyleType of the style.
@@ -212,40 +210,24 @@ namespace MigraDoc.DocumentObjectModel
     {
       get
       {
-        //old
-        //if (IsNull("Type"))
-        //{
-        //  if (String.Compare (this.baseStyle.Value, DefaultParagraphFontName, true) == 0)
-        //    SetValue("Type", StyleType.Character);
-        //  else
-        //  {
-        //    Style bsStyle = GetBaseStyle();
-        //    if (bsStyle == null)
-        //      throw new ArgumentException("User defined style has no valid base Style.");
-        //
-        //    SetValue("Type", bsStyle.Type);
-        //  }
-        //}
-        //return styleType;
-
-        if (this.styleType.IsNull)
+        if (!this.styleType.HasValue)
         {
-          if (String.Compare(this.baseStyle.Value, DefaultParagraphFontName, true) == 0)
-            this.styleType.Value = (int)StyleType.Character;
+          if (String.Compare(this.baseStyle, DefaultParagraphFontName, true) == 0)
+            this.styleType = StyleType.Character;
           else
           {
             Style baseStyle = GetBaseStyle();
             if (baseStyle == null)
               throw new InvalidOperationException("User defined style has no valid base Style.");
 
-            this.styleType.Value = (int)baseStyle.Type;
+            this.styleType = baseStyle.Type;
           }
         }
-        return (StyleType)this.styleType.Value;
+        return this.styleType.Value;
       }
     }
     
-    internal NEnum styleType = NEnum.NullValue(typeof(StyleType));
+    internal StyleType? styleType;
 
     /// <summary>
     /// Determines whether the style is the style Normal or DefaultParagraphFont.
@@ -271,15 +253,15 @@ namespace MigraDoc.DocumentObjectModel
       if (styles == null)
         //??? 'owner of a parent'? eher 'owned by a parent' oder einfach: "A parent object is required for this operation."
         throw new InvalidOperationException("This instance of 'style' is currently not owner of a parent; access failed");
-      if (this.baseStyle.Value == "")
+      if (this.baseStyle == "")
         throw new ArgumentException("User defined Style defined without a BaseStyle");
 
       //REVIEW KlPo4StLa Spezialbehandlung f¸r den DefaultParagraphFont kr¸ppelig(DefaultParagraphFont wird bei zugrif ¸ber styles["name"] nicht zur¸ckgeliefert).
       //Da hast Du Recht -> siehe IsReadOnly
-      if (this.baseStyle.Value == DefaultParagraphFontName)
+      if (this.baseStyle == DefaultParagraphFontName)
         return styles[0];
 
-      return styles[this.baseStyle.Value];
+      return styles[this.baseStyle];
     }
 
     /// <summary>
@@ -287,10 +269,10 @@ namespace MigraDoc.DocumentObjectModel
     /// </summary>
     public bool BuildIn
     {
-      get { return this.buildIn.Value; }
+      get { return this.buildIn; }
     }
     
-    internal NBool buildIn = NBool.NullValue;
+    internal bool buildIn;
     // THHO: muss dass nicht builtIn heiﬂen?!?!?!?
 
     /// <summary>
@@ -298,11 +280,11 @@ namespace MigraDoc.DocumentObjectModel
     /// </summary>
     public string Comment
     {
-      get { return this.comment.Value; }
-      set { this.comment.Value = value; }
+      get { return this.comment; }
+      set { this.comment = value; }
     }
-    
-    internal NString comment = NString.NullValue;
+
+	  internal string comment;
     #endregion
 
     // Names of the root styles. Root styles have no BaseStyle.

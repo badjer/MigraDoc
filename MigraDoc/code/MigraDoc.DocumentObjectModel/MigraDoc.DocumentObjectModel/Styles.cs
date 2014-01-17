@@ -32,9 +32,6 @@
 
 using System;
 using System.Collections;
-using System.Diagnostics;
-using System.Reflection;
-using MigraDoc.DocumentObjectModel.Internals;
 using MigraDoc.DocumentObjectModel.Visitors;
 
 namespace MigraDoc.DocumentObjectModel
@@ -130,8 +127,8 @@ namespace MigraDoc.DocumentObjectModel
         throw new ArgumentException(name == "" ? "name" : "baseStyleName");
 
       Style style = new Style();
-      style.name.Value = name;
-      style.baseStyle.Value = baseStyleName;
+      style.name = name;
+      style.baseStyle = baseStyleName;
       this.Add(style);
       return style;
     }
@@ -157,12 +154,12 @@ namespace MigraDoc.DocumentObjectModel
       int styleIndex = GetIndex(style.BaseStyle);
 
       if (styleIndex != -1)
-        baseStyle = this[styleIndex] as Style;
+        baseStyle = this[styleIndex];
       else if (!isRootStyle)
         throw new ArgumentException(DomSR.UndefinedBaseStyle(style.BaseStyle));
 
       if (baseStyle != null)
-        style.styleType.Value = (int)baseStyle.Type;
+        style.styleType = baseStyle.Type;
 
       int index = GetIndex(style.Name);
 
@@ -191,11 +188,11 @@ namespace MigraDoc.DocumentObjectModel
     /// </summary>
     public string Comment
     {
-      get { return this.comment.Value; }
-      set { this.comment.Value = value; }
+      get { return this.comment; }
+      set { this.comment = value; }
     }
-    
-    internal NString comment = NString.NullValue;
+
+	internal string comment;
     #endregion
 
     /// <summary>
@@ -203,19 +200,17 @@ namespace MigraDoc.DocumentObjectModel
     /// </summary>
     internal void SetupStyles()
     {
-      Style style;
-
-      // First standard style
-      style = new Style(Style.DefaultParagraphFontName, null);
+	    // First standard style
+      Style style = new Style(Style.DefaultParagraphFontName, "");
       style.readOnly = true;
-      style.styleType.Value = (int)StyleType.Character;
-      style.buildIn.Value = true;
+      style.styleType = StyleType.Character;
+      style.buildIn = true;
       this.Add(style);
 
       // Normal 'Standard' (Paragraph Style)
-      style = new Style(Style.DefaultParagraphName, null);
-      style.styleType.Value = (int)StyleType.Paragraph;
-      style.buildIn.Value = true;
+	  style = new Style(Style.DefaultParagraphName, "");
+      style.styleType = StyleType.Paragraph;
+      style.buildIn = true;
       style.Font.Name = "Verdana";
       style.Font.Size = 10;
       style.Font.Bold = false;
@@ -241,86 +236,86 @@ namespace MigraDoc.DocumentObjectModel
 
       // Heading1 'Überschrift 1' (Paragraph Style)
       style = new Style("Heading1", "Normal");
-      style.buildIn.Value = true;
+      style.buildIn = true;
       style.ParagraphFormat.OutlineLevel = OutlineLevel.Level1;
       this.Add(style);
 
       // Heading2 'Überschrift 2' (Paragraph Style)
       style = new Style("Heading2", "Heading1");
-      style.buildIn.Value = true;
+      style.buildIn = true;
       style.ParagraphFormat.OutlineLevel = OutlineLevel.Level2;
       this.Add(style);
 
       // Heading3 'Überschrift 3' (Paragraph Style)
       style = new Style("Heading3", "Heading2");
-      style.buildIn.Value = true;
+      style.buildIn = true;
       style.ParagraphFormat.OutlineLevel = OutlineLevel.Level3;
       this.Add(style);
 
       // Heading4 'Überschrift 4' (Paragraph Style)
       style = new Style("Heading4", "Heading3");
-      style.buildIn.Value = true;
+      style.buildIn = true;
       style.ParagraphFormat.OutlineLevel = OutlineLevel.Level4;
       this.Add(style);
 
       // Heading5 'Überschrift 5' (Paragraph Style)
       style = new Style("Heading5", "Heading4");
-      style.buildIn.Value = true;
+      style.buildIn = true;
       style.ParagraphFormat.OutlineLevel = OutlineLevel.Level5;
       this.Add(style);
 
       // Heading6 'Überschrift 6' (Paragraph Style)
       style = new Style("Heading6", "Heading5");
-      style.buildIn.Value = true;
+      style.buildIn = true;
       style.ParagraphFormat.OutlineLevel = OutlineLevel.Level6;
       this.Add(style);
 
       // Heading7 'Überschrift 7' (Paragraph Style)
       style = new Style("Heading7", "Heading6");
-      style.buildIn.Value = true;
+      style.buildIn = true;
       style.ParagraphFormat.OutlineLevel = OutlineLevel.Level7;
       this.Add(style);
 
       // Heading8 'Überschrift 8' (Paragraph Style)
       style = new Style("Heading8", "Heading7");
-      style.buildIn.Value = true;
+      style.buildIn = true;
       style.ParagraphFormat.OutlineLevel = OutlineLevel.Level8;
       this.Add(style);
 
       // Heading9 'Überschrift 9' (Paragraph Style)
       style = new Style("Heading9", "Heading8");
-      style.buildIn.Value = true;
+      style.buildIn = true;
       style.ParagraphFormat.OutlineLevel = OutlineLevel.Level9;
       this.Add(style);
 
       // List 'Liste' (Paragraph Style)
       style = new Style("List", "Normal");
-      style.buildIn.Value = true;
+      style.buildIn = true;
       this.Add(style);
 
       // Footnote 'Fußnote' (Paragraph Style)
       style = new Style("Footnote", "Normal");
-      style.buildIn.Value = true;
+      style.buildIn = true;
       this.Add(style);
 
       // Header 'Kopfzeile' (Paragraph Style)
       style = new Style("Header", "Normal");
-      style.buildIn.Value = true;
+      style.buildIn = true;
       this.Add(style);
 
       // -33: Footer 'Fußzeile' (Paragraph Style)
       style = new Style("Footer", "Normal");
-      style.buildIn.Value = true;
+      style.buildIn = true;
       this.Add(style);
 
       // Hyperlink 'Hyperlink' (Character Style)
       style = new Style("Hyperlink", "DefaultParagraphFont");
-      style.buildIn.Value = true;
+      style.buildIn = true;
       this.Add(style);
 
       // InvalidStyleName 'Ungültiger Formatvorlagenname' (Paragraph Style)
       style = new Style("InvalidStyleName", "Normal");
-      style.buildIn.Value = true;
+      style.buildIn = true;
       style.Font.Bold = true;
       style.Font.Underline = Underline.Dash;
       style.Font.Color = new Color(0xFF00FF00);

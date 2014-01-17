@@ -168,11 +168,11 @@ namespace MigraDoc.DocumentObjectModel
     /// </summary>
     public string Comment
     {
-      get { return this.comment.Value; }
-      set { this.comment.Value = value; }
+      get { return this.comment; }
+      set { this.comment = value; }
     }
-    
-    internal NString comment = NString.NullValue;
+
+	internal string comment;
 
     /// <summary>
     /// Gets the document info.
@@ -238,68 +238,68 @@ namespace MigraDoc.DocumentObjectModel
     /// <summary>
     /// Gets or sets the location of the Footnote.
     /// </summary>
-    public FootnoteLocation FootnoteLocation
+	public FootnoteLocation? FootnoteLocation
     {
-      get { return (FootnoteLocation)this.footnoteLocation.Value; }
-      set { this.footnoteLocation.Value = (int)value; }
+      get { return this.footnoteLocation; }
+      set { this.footnoteLocation = value; }
     }
     
-    internal NEnum footnoteLocation = NEnum.NullValue(typeof(FootnoteLocation));
+    internal FootnoteLocation? footnoteLocation;
 
     /// <summary>
     /// Gets or sets the rule which is used to determine the footnote number on a new page.
     /// </summary>
-    public FootnoteNumberingRule FootnoteNumberingRule
+    public FootnoteNumberingRule? FootnoteNumberingRule
     {
-      get { return (FootnoteNumberingRule)this.footnoteNumberingRule.Value; }
-      set { this.footnoteNumberingRule.Value = (int)value; }
+      get { return this.footnoteNumberingRule; }
+      set { this.footnoteNumberingRule = value; }
     }
-    
-    internal NEnum footnoteNumberingRule = NEnum.NullValue(typeof(FootnoteNumberingRule));
+
+	internal FootnoteNumberingRule? footnoteNumberingRule;
 
     /// <summary>
     /// Gets or sets the type of number which is used for the footnote.
     /// </summary>
-    public FootnoteNumberStyle FootnoteNumberStyle
+    public FootnoteNumberStyle? FootnoteNumberStyle
     {
-      get { return (FootnoteNumberStyle)this.footnoteNumberStyle.Value; }
-      set { this.footnoteNumberStyle.Value = (int)value; }
+      get { return this.footnoteNumberStyle; }
+      set { this.footnoteNumberStyle = value; }
     }
-    
-    internal NEnum footnoteNumberStyle = NEnum.NullValue(typeof(FootnoteNumberStyle));
+
+	internal FootnoteNumberStyle? footnoteNumberStyle;
 
     /// <summary>
     /// Gets or sets the starting number of the footnote.
     /// </summary>
     public int FootnoteStartingNumber
     {
-      get { return this.footnoteStartingNumber.Value; }
-      set { this.footnoteStartingNumber.Value = value; }
+      get { return this.footnoteStartingNumber.GetValueOrDefault(); }
+      set { this.footnoteStartingNumber = value; }
     }
     
-    internal NInt footnoteStartingNumber = NInt.NullValue;
+    internal int? footnoteStartingNumber;
 
     /// <summary>
     /// Gets or sets the path for images used by the document.
     /// </summary>
     public string ImagePath
     {
-      get { return this.imagePath.Value; }
-      set { this.imagePath.Value = value; }
+      get { return this.imagePath; }
+      set { this.imagePath = value; }
     }
-    
-    internal NString imagePath = NString.NullValue;
+
+	internal string imagePath;
 
     /// <summary>
     /// Gets or sets a value indicating whether to use the CMYK color model when rendered as PDF.
     /// </summary>
     public bool UseCmykColor
     {
-      get { return this.useCmykColor.Value; }
-      set { this.useCmykColor.Value = value; }
+		get { return this.useCmykColor.GetValueOrDefault(); }
+      set { this.useCmykColor = value; }
     }
-    
-    internal NBool useCmykColor = NBool.NullValue;
+
+	internal bool? useCmykColor;
 
     /// <summary>
     /// Gets the sections of the document.

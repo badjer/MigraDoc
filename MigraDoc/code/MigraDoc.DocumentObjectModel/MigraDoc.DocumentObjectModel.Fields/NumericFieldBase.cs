@@ -89,17 +89,17 @@ namespace MigraDoc.DocumentObjectModel.Fields
     /// </summary>
     public string Format
     {
-      get { return this.format.Value; }
+      get { return this.format; }
       set
       {
         if (IsValidFormat(value))
-          this.format.Value = value;
+          this.format = value;
         else
           throw new ArgumentException(DomSR.InvalidFieldFormat(value));
       }
     }
-    
-    internal NString format = NString.NullValue;
+
+	internal string format;
     #endregion
 
     /// <summary>

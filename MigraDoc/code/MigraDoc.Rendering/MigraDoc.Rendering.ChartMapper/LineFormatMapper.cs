@@ -87,7 +87,7 @@ namespace MigraDoc.Rendering.ChartMapper
           break;
       }
       lineFormat.Visible = domLineFormat.Visible;
-      if (domLineFormat.visible.IsNull)
+      if (!domLineFormat.visible.HasValue)
         lineFormat.Visible = true;
       lineFormat.Width = domLineFormat.Width.Point;
     }

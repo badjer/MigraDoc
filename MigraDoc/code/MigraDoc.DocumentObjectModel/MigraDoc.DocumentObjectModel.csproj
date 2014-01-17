@@ -150,28 +150,7 @@
     <Compile Include="MigraDoc.DocumentObjectModel.Fields\SectionPagesField.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel.Internals\enums\GV.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel.Internals\enums\VDFlags.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="MigraDoc.DocumentObjectModel.Internals\INullableValue.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel.Internals\NBool.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel.Internals\NDouble.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel.Internals\NEnum.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel.Internals\NInt.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel.Internals\NString.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MigraDoc.DocumentObjectModel.Shapes.Charts\Axis.cs">
@@ -363,9 +342,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MigraDoc.DocumentObjectModel\Color.cs" />
-    <Compile Include="MigraDoc.DocumentObjectModel\Color.backup.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="MigraDoc.DocumentObjectModel\Colors.cs">
       <SubType>Code</SubType>
     </Compile>

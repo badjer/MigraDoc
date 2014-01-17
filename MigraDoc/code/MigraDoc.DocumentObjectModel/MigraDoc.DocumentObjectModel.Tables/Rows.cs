@@ -31,9 +31,6 @@
 #endregion
 
 using System;
-using System.Diagnostics;
-using System.Reflection;
-using MigraDoc.DocumentObjectModel.Internals;
 using MigraDoc.DocumentObjectModel.Visitors;
 
 namespace MigraDoc.DocumentObjectModel.Tables
@@ -98,13 +95,13 @@ namespace MigraDoc.DocumentObjectModel.Tables
     /// <summary>
     /// Gets or sets the row alignment of the table.
     /// </summary>
-    public RowAlignment Alignment
+    public RowAlignment? Alignment
     {
-      get { return (RowAlignment)this.alignment.Value; }
-      set { this.alignment.Value = (int)value; }
+      get { return this.alignment; }
+      set { this.alignment = value; }
     }
     
-    internal NEnum alignment = NEnum.NullValue(typeof(RowAlignment));
+    internal RowAlignment? alignment;
 
     /// <summary>
     /// Gets or sets the left indent of the table. If row alignment is not Left, 
@@ -121,13 +118,13 @@ namespace MigraDoc.DocumentObjectModel.Tables
     /// <summary>
     /// Gets or sets the default vertical alignment for all rows.
     /// </summary>
-    public VerticalAlignment VerticalAlignment
+    public VerticalAlignment? VerticalAlignment
     {
-      get { return (VerticalAlignment)this.verticalAlignment.Value; }
-      set { this.verticalAlignment.Value = (int)value; }
+      get { return this.verticalAlignment; }
+      set { this.verticalAlignment = value; }
     }
     
-    internal NEnum verticalAlignment = NEnum.NullValue(typeof(VerticalAlignment));
+    internal VerticalAlignment? verticalAlignment;
 
     /// <summary>
     /// Gets or sets the height of the rows.
@@ -143,24 +140,24 @@ namespace MigraDoc.DocumentObjectModel.Tables
     /// <summary>
     /// Gets or sets the rule which is used to determine the height of the rows.
     /// </summary>
-    public RowHeightRule HeightRule
+    public RowHeightRule? HeightRule
     {
-      get { return (RowHeightRule)this.heightRule.Value; }
-      set { this.heightRule.Value = (int)value; }
+      get { return this.heightRule; }
+      set { this.heightRule = value; }
     }
     
-    internal NEnum heightRule = NEnum.NullValue(typeof(RowHeightRule));
+    internal RowHeightRule? heightRule;
 
     /// <summary>
     /// Gets or sets a comment associated with this object.
     /// </summary>
     public string Comment
     {
-      get { return this.comment.Value; }
-      set { this.comment.Value = value; }
+      get { return this.comment; }
+      set { this.comment = value; }
     }
-    
-    internal NString comment = NString.NullValue;
+
+	internal string comment;
     #endregion
 
     #region Internal

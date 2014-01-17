@@ -192,11 +192,11 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
     /// </summary>
     public string Style
     {
-      get { return this.style.Value; }
-      set { this.style.Value = value; }
+      get { return this.style; }
+      set { this.style = value; }
     }
-    
-    internal NString style = NString.NullValue;
+
+	internal string style;
 
     /// <summary>
     /// Gets or sets the default paragraph format of the area.
@@ -308,13 +308,13 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
     /// <summary>
     /// Gets or sets the Vertical alignment of the area.
     /// </summary>
-    public VerticalAlignment VerticalAlignment
+    public VerticalAlignment? VerticalAlignment
     {
-      get { return (VerticalAlignment)this.verticalAlignment.Value; }
-      set { this.verticalAlignment.Value = (int)value; }
+      get { return this.verticalAlignment; }
+      set { this.verticalAlignment = value; }
     }
     
-    internal NEnum verticalAlignment = NEnum.NullValue(typeof(VerticalAlignment));
+    internal VerticalAlignment? verticalAlignment;
 
     /// <summary>
     /// Gets the document objects that creates the text area.

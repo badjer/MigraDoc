@@ -458,22 +458,22 @@ namespace MigraDoc.DocumentObjectModel
     /// </summary>
     public string Name
     {
-      get { return this.name.Value; }
-      set { this.name.Value = value; }
+      get { return this.name; }
+      set { this.name = value; }
     }
-    
-    internal NString name = NString.NullValue;
+
+	internal string name;
 
     /// <summary>
     /// Gets or sets the target type of the Hyperlink.
     /// </summary>
-    public HyperlinkType Type
+    public HyperlinkType? Type
     {
-      get { return (HyperlinkType)this.type.Value; }
-      set { this.type.Value = (int)value; }
+      get { return this.type; }
+      set { this.type = value; }
     }
     
-    internal NEnum type = NEnum.NullValue(typeof(HyperlinkType));
+    internal HyperlinkType? type;
 
     /// <summary>
     /// Gets the ParagraphElements of the Hyperlink specifying its 'clickable area'.

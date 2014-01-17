@@ -118,16 +118,16 @@ namespace MigraDoc.DocumentObjectModel.Tables
     {
       get
       {
-        if (index.IsNull)
+        if (!index.HasValue)
         {
-          Rows rws = this.parent as Rows;
+          Rows rws = (Rows)parent;
           index = rws.IndexOf(this);
         }
-        return index;
+        return index.GetValueOrDefault();
       }
     }
     
-    internal NInt index = NInt.NullValue;
+    internal int? index;
 
     /// <summary>
     /// Gets a cell by its column index. The first cell has index 0.
@@ -142,11 +142,11 @@ namespace MigraDoc.DocumentObjectModel.Tables
     /// </summary>
     public string Style
     {
-      get { return this.style.Value; }
-      set { this.style.Value = value; }
+      get { return this.style; }
+      set { this.style = value; }
     }
-    
-    internal NString style = NString.NullValue;
+
+	internal string style;
 
     /// <summary>
     /// Gets the default ParagraphFormat for all cells of the row.
@@ -172,13 +172,13 @@ namespace MigraDoc.DocumentObjectModel.Tables
     /// <summary>
     /// Gets or sets the default vertical alignment for all cells of the row.
     /// </summary>
-    public VerticalAlignment VerticalAlignment
+    public VerticalAlignment? VerticalAlignment
     {
-      get { return (VerticalAlignment)this.verticalAlignment.Value; }
-      set { this.verticalAlignment.Value = (int)value; }
+      get { return this.verticalAlignment; }
+      set { this.verticalAlignment = value; }
     }
     
-    internal NEnum verticalAlignment = NEnum.NullValue(typeof(VerticalAlignment));
+    internal VerticalAlignment? verticalAlignment;
 
     /// <summary>
     /// Gets or sets the height of the row.
@@ -194,13 +194,13 @@ namespace MigraDoc.DocumentObjectModel.Tables
     /// <summary>
     /// Gets or sets the rule which is used to determine the height of the row.
     /// </summary>
-    public RowHeightRule HeightRule
+    public RowHeightRule? HeightRule
     {
-      get { return (RowHeightRule)this.heightRule.Value; }
-      set { this.heightRule.Value = (int)value; }
+      get { return this.heightRule; }
+      set { this.heightRule = value; }
     }
     
-    internal NEnum heightRule = NEnum.NullValue(typeof(RowHeightRule));
+    internal RowHeightRule? heightRule;
 
     /// <summary>
     /// Gets or sets the default value for all cells of the row.
@@ -229,11 +229,11 @@ namespace MigraDoc.DocumentObjectModel.Tables
     /// </summary>
     public bool HeadingFormat
     {
-      get { return this.headingFormat.Value; }
-      set { this.headingFormat.Value = value; }
+		get { return this.headingFormat.GetValueOrDefault(); }
+      set { this.headingFormat = value; }
     }
-    
-    internal NBool headingFormat = NBool.NullValue;
+
+	internal bool? headingFormat;
 
     /// <summary>
     /// Gets the default Borders object for all cells of the row.
@@ -283,11 +283,11 @@ namespace MigraDoc.DocumentObjectModel.Tables
     /// </summary>
     public int KeepWith
     {
-      get { return this.keepWith.Value; }
-      set { this.keepWith.Value = value; }
+      get { return this.keepWith.GetValueOrDefault(); }
+      set { this.keepWith = value; }
     }
     
-    internal NInt keepWith = NInt.NullValue;
+    internal int? keepWith;
 
     /// <summary>
     /// Gets the Cells collection of the table.
@@ -315,11 +315,11 @@ namespace MigraDoc.DocumentObjectModel.Tables
     /// </summary>
     public string Comment
     {
-      get { return this.comment.Value; }
-      set { this.comment.Value = value; }
+      get { return this.comment; }
+      set { this.comment = value; }
     }
-    
-    internal NString comment = NString.NullValue;
+
+	internal string comment;
     #endregion
 
     #region Internal

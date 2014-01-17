@@ -81,10 +81,10 @@ namespace MigraDoc.Rendering
       BorderStyle style = BorderStyle.Single;
 
       Border border = GetBorder(type);
-      if (border != null && !border.style.IsNull)
-        style = border.Style;
-      else if (!this.borders.style.IsNull)
-        style = this.borders.Style;
+      if (border != null && border.style.HasValue)
+        style = border.Style.GetValueOrDefault();
+      else if (this.borders.style.HasValue)
+        style = this.borders.Style.GetValueOrDefault();
 
       return style;
     }
@@ -98,13 +98,13 @@ namespace MigraDoc.Rendering
 
       if (border != null)
       {
-        if (!border.visible.IsNull && !border.Visible)
+        if (border.visible.HasValue && !border.Visible)
           return 0;
 
         if (border != null && !border.width.IsNull)
           return border.Width.Point;
 
-        if (!border.color.IsNull || !border.style.IsNull || border.Visible)
+        if (!border.color.IsNull || border.style.HasValue || border.Visible)
         {
           if (!this.borders.width.IsNull)
             return this.borders.Width.Point;
@@ -114,13 +114,13 @@ namespace MigraDoc.Rendering
       }
       else if (!(type == BorderType.DiagonalDown || type == BorderType.DiagonalUp))
       {
-        if (!this.borders.visible.IsNull && !this.borders.Visible)
+		  if (borders.visible.HasValue && !this.borders.Visible)
           return 0;
 
         if (!this.borders.width.IsNull)
           return this.borders.Width.Point;
 
-        if (!this.borders.color.IsNull || !this.borders.style.IsNull || this.borders.Visible)
+        if (!this.borders.color.IsNull || this.borders.style.HasValue || this.borders.Visible)
           return 0.5;
       }
       return 0;

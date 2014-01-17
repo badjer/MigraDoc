@@ -54,13 +54,13 @@ namespace MigraDoc.Rendering.ChartMapper
 #endif
       }
       font.Italic = domFont.Italic;
-      if (!domFont.name.IsNull)
+      if (!string.IsNullOrEmpty(domFont.name))
         font.Name = domFont.Name;
       if (!domFont.size.IsNull)
         font.Size = domFont.Size.Point;
       font.Subscript = domFont.Subscript;
       font.Superscript = domFont.Superscript;
-      font.Underline = (Underline)domFont.Underline;
+      font.Underline = (Underline)domFont.Underline.GetValueOrDefault();
     }
 
     internal static void Map(Font font, MigraDoc.DocumentObjectModel.Document domDocument, string domStyleName)

@@ -115,12 +115,12 @@ namespace PdfSharp.Charting
     /// <summary>
     /// Gets or sets the underline property.
     /// </summary>
-    public Underline Underline
+    public Underline? Underline
     {
       get {return this.underline;}
       set {this.underline = value;}
     }
-    internal Underline underline;
+    internal Underline? underline;
 
     /// <summary>
     /// Gets or sets the color property.

@@ -82,22 +82,22 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
     /// </summary>
     public string Style
     {
-      get { return this.style.Value; }
-      set { this.style.Value = value; }
+      get { return this.style; }
+      set { this.style = value; }
     }
     
-    internal NString style = NString.NullValue;
+    internal string style;
 
     /// <summary>
     /// Gets or sets the caption of the title.
     /// </summary>
     public string Caption
     {
-      get { return this.caption.Value; }
-      set { this.caption.Value = value; }
+      get { return this.caption; }
+      set { this.caption = value; }
     }
-    
-    internal NString caption = NString.NullValue;
+
+	internal string caption;
 
     /// <summary>
     /// Gets the font object of the title.
@@ -134,23 +134,23 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
     /// <summary>
     /// Gets or sets the alignment of the caption.
     /// </summary>
-    public HorizontalAlignment Alignment
+    public HorizontalAlignment? Alignment
     {
-      get { return (HorizontalAlignment)this.alignment.Value; }
-      set { this.alignment.Value = (int)value; }
+      get { return alignment; }
+      set { this.alignment = value; }
     }
-    internal NEnum alignment = NEnum.NullValue(typeof(HorizontalAlignment));
+    internal HorizontalAlignment? alignment;
 
     /// <summary>
     /// Gets or sets the alignment of the caption.
     /// </summary>
-    public VerticalAlignment VerticalAlignment
+    public VerticalAlignment? VerticalAlignment
     {
-      get { return (VerticalAlignment)this.verticalAlignment.Value; }
-      set { this.verticalAlignment.Value = (int)value; }
+		get { return this.verticalAlignment; }
+      set { this.verticalAlignment = value; }
     }
-    
-    internal NEnum verticalAlignment = NEnum.NullValue(typeof(VerticalAlignment));
+
+	internal VerticalAlignment? verticalAlignment;
     #endregion
 
   }

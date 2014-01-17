@@ -206,13 +206,13 @@ namespace MigraDoc.DocumentObjectModel.Shapes
     /// <summary>
     /// Gets or sets the text orientation for the texframe content.
     /// </summary>
-    public TextOrientation Orientation
+    public TextOrientation? Orientation
     {
-      get { return (TextOrientation)this.orientation.Value; }
-      set { this.orientation.Value = (int)value; }
+      get { return (TextOrientation)this.orientation; }
+      set { this.orientation = value; }
     }
     
-    internal NEnum orientation = NEnum.NullValue(typeof(TextOrientation));
+    internal TextOrientation? orientation;
 
     /// <summary>
     /// The document elements that build the textframe's content.

@@ -59,9 +59,6 @@ namespace MigraDoc.DocumentObjectModel
     /// </summary>
     public bool HasBorder(BorderType type)
     {
-      if (!Enum.IsDefined(typeof(BorderType), type))
-        throw new InvalidEnumArgumentException("type");
-
 	    Border border = GetByType(type);
 
 	    return border != null;
@@ -300,22 +297,22 @@ namespace MigraDoc.DocumentObjectModel
     /// </summary>
     public bool Visible
     {
-      get { return this.visible.Value; }
-      set { this.visible.Value = value; }
+		get { return this.visible.GetValueOrDefault(); }
+      set { this.visible = value; }
     }
-    
-    internal NBool visible = NBool.NullValue;
+
+	internal bool? visible;
 
     /// <summary>
     /// Gets or sets the line style of the borders.
     /// </summary>
-    public BorderStyle Style
+	public BorderStyle? Style
     {
-      get { return (BorderStyle)this.style.Value; }
-      set { this.style.Value = (int)value; }
+      get { return this.style; }
+      set { this.style = value; }
     }
     
-    internal NEnum style = NEnum.NullValue(typeof(BorderStyle));
+    internal BorderStyle? style;
 
     /// <summary>
     /// Gets or sets the standard width of the borders.

@@ -57,7 +57,7 @@ namespace MigraDoc.DocumentObjectModel
     /// </summary>
     public Font(string name, Unit size)
     {
-      this.name.Value = name;
+      this.name = name;
       this.size.Value = size;
     }
 
@@ -66,7 +66,7 @@ namespace MigraDoc.DocumentObjectModel
     /// </summary>
     public Font(string name)
     {
-      this.name.Value = name;
+      this.name = name;
     }
 
     #region Methods
@@ -86,24 +86,24 @@ namespace MigraDoc.DocumentObjectModel
       if (font == null)
         throw new ArgumentNullException("font");
 
-      if ((!font.name.IsNull && font.name.Value != "") && (refFont == null || font.Name != refFont.Name))
+      if ((!string.IsNullOrEmpty(font.name)) && (refFont == null || font.Name != refFont.Name))
         this.Name = font.Name;
 
       if (!font.size.IsNull && (refFont == null || font.Size != refFont.Size))
         this.Size = font.Size;
 
-      if (!font.bold.IsNull && (refFont == null || font.Bold != refFont.Bold))
+      if (font.bold.HasValue && (refFont == null || font.Bold != refFont.Bold))
         this.Bold = font.Bold;
 
-      if (!font.italic.IsNull && (refFont == null || font.Italic != refFont.Italic))
+      if (font.italic.HasValue && (refFont == null || font.Italic != refFont.Italic))
         this.Italic = font.Italic;
 
-      if (!font.subscript.IsNull && (refFont == null || font.Subscript != refFont.Subscript))
+      if (font.subscript.HasValue && (refFont == null || font.Subscript != refFont.Subscript))
         this.Subscript = font.Subscript;
-      else if (!font.superscript.IsNull && (refFont == null || font.Superscript != refFont.Superscript))
+      else if (font.superscript.HasValue && (refFont == null || font.Superscript != refFont.Superscript))
         this.Superscript = font.Superscript;
 
-      if (!font.underline.IsNull && (refFont == null || font.Underline != refFont.Underline))
+      if (font.underline.HasValue && (refFont == null || font.Underline != refFont.Underline))
         this.Underline = font.Underline;
 
       if (!font.color.IsNull && (refFont == null || font.Color.Argb != refFont.Color.Argb))
@@ -118,24 +118,24 @@ namespace MigraDoc.DocumentObjectModel
       if (font == null)
         throw new ArgumentNullException("font");
 
-      if (!font.name.IsNull && font.name.Value != "")
+      if (!string.IsNullOrEmpty(font.name))
         this.Name = font.Name;
 
       if (!font.size.IsNull)
         this.Size = font.Size;
 
-      if (!font.bold.IsNull)
+      if (font.bold.HasValue)
         this.Bold = font.Bold;
 
-      if (!font.italic.IsNull)
+      if (font.italic.HasValue)
         this.Italic = font.Italic;
 
-      if (!font.subscript.IsNull)
+      if (font.subscript.HasValue)
         this.Subscript = font.Subscript;
-      else if (!font.superscript.IsNull)
+      else if (font.superscript.HasValue)
         this.Superscript = font.Superscript;
 
-      if (!font.underline.IsNull)
+      if (font.underline.HasValue)
         this.Underline = font.Underline;
 
       if (!font.color.IsNull)
@@ -149,11 +149,11 @@ namespace MigraDoc.DocumentObjectModel
     /// </summary>
     public string Name
     {
-      get { return this.name.Value; }
-      set { this.name.Value = value; }
+      get { return this.name; }
+      set { this.name = value; }
     }
-    
-    internal NString name = NString.NullValue;
+
+	internal string name;
 
     /// <summary>
     /// Gets or sets the size of the font.
@@ -171,33 +171,33 @@ namespace MigraDoc.DocumentObjectModel
     /// </summary>
     public bool Bold
     {
-      get { return this.bold.Value; }
-      set { this.bold.Value = value; }
+		get { return this.bold.GetValueOrDefault(); }
+      set { this.bold = value; }
     }
-    
-    internal NBool bold = NBool.NullValue;
+
+	internal bool? bold;
 
     /// <summary>
     /// Gets or sets the italic property.
     /// </summary>
     public bool Italic
     {
-      get { return this.italic.Value; }
-      set { this.italic.Value = value; }
+		get { return this.italic.GetValueOrDefault(); }
+      set { this.italic = value; }
     }
-    
-    internal NBool italic = NBool.NullValue;
+
+	internal bool? italic;
 
     /// <summary>
     /// Gets or sets the underline property.
     /// </summary>
-    public Underline Underline
+    public Underline? Underline
     {
-      get { return (Underline)this.underline.Value; }
-      set { this.underline.Value = (int)value; }
+      get { return this.underline; }
+      set { this.underline = value; }
     }
     
-    internal NEnum underline = NEnum.NullValue(typeof(Underline));
+    internal Underline? underline;
 
     /// <summary>
     /// Gets or sets the color property.
@@ -215,30 +215,30 @@ namespace MigraDoc.DocumentObjectModel
     /// </summary>
     public bool Superscript
     {
-      get { return this.superscript.Value; }
+		get { return this.superscript.GetValueOrDefault(); }
       set
       {
-        this.superscript.Value = value;
-        this.subscript.SetNull();
+        this.superscript = value;
+	      this.subscript = null;
       }
     }
-    
-    internal NBool superscript = NBool.NullValue;
+
+	internal bool? superscript;
 
     /// <summary>
     /// Gets or sets the subscript property.
     /// </summary>
     public bool Subscript
     {
-      get { return this.subscript.Value; }
+      get { return this.subscript.GetValueOrDefault(); }
       set
       {
-        this.subscript.Value = value;
-        this.superscript.SetNull();
+        this.subscript = value;
+        this.superscript = null;
       }
     }
-    
-    internal NBool subscript = NBool.NullValue;
+
+	internal bool? subscript;
 
     //  + .Name = "Verdana"
     //  + .Size = 8
