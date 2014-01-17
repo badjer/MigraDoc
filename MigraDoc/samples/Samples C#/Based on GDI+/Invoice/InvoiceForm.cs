@@ -35,7 +35,6 @@ using System.Xml.XPath;
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.DocumentObjectModel.Tables;
 using MigraDoc.DocumentObjectModel.Shapes;
-using MigraDoc.Rendering;
 using System.Diagnostics;
 
 namespace Invoice

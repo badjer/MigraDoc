@@ -1,29 +1,27 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MigraDoc", "MigraDoc", "{BBA18443-DA8A-4774-86C4-7DCF7A215071}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloWorld", "HelloWorld\HelloWorld.csproj", "{8DA531F0-1581-46DB-B910-3B411F711D77}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloWorld", "MigraDoc\samples\Samples C#\Based on GDI+\HelloWorld\HelloWorld.csproj", "{8DA531F0-1581-46DB-B910-3B411F711D77}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloMigraDoc", "HelloMigraDoc\HelloMigraDoc.csproj", "{242B1C00-9785-4219-B550-9E3421D503CE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloMigraDoc", "MigraDoc\samples\Samples C#\Based on GDI+\HelloMigraDoc\HelloMigraDoc.csproj", "{242B1C00-9785-4219-B550-9E3421D503CE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Invoice", "Invoice\Invoice.csproj", "{77C0F1C7-00F1-4337-A6CA-55DF2928A716}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Invoice", "MigraDoc\samples\Samples C#\Based on GDI+\Invoice\Invoice.csproj", "{77C0F1C7-00F1-4337-A6CA-55DF2928A716}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentViewer", "DocumentViewer\DocumentViewer.csproj", "{22C94B24-0DAA-4772-81A5-54C3FEE647D0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentViewer", "MigraDoc\samples\Samples C#\Based on GDI+\DocumentViewer\DocumentViewer.csproj", "{22C94B24-0DAA-4772-81A5-54C3FEE647D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MixMigraDocAndPdfSharp", "MixMigraDocAndPdfSharp\MixMigraDocAndPdfSharp.csproj", "{D1D1E6B2-FD8F-4082-BCF5-EF51A6BE0546}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MixMigraDocAndPdfSharp", "MigraDoc\samples\Samples C#\Based on GDI+\MixMigraDocAndPdfSharp\MixMigraDocAndPdfSharp.csproj", "{D1D1E6B2-FD8F-4082-BCF5-EF51A6BE0546}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Images", "Images\Images.csproj", "{2DE61EFE-C97D-481D-945E-4D2157D0D576}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Images", "MigraDoc\samples\Samples C#\Based on GDI+\Images\Images.csproj", "{2DE61EFE-C97D-481D-945E-4D2157D0D576}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfSharp", "..\..\..\..\PDFsharp\code\PdfSharp\PdfSharp.csproj", "{5384CE57-1F94-4D22-860D-2E9C1AC12DDF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfSharp", "PDFsharp\code\PdfSharp\PdfSharp.csproj", "{5384CE57-1F94-4D22-860D-2E9C1AC12DDF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MigraDoc.DocumentObjectModel", "..\..\..\code\MigraDoc.DocumentObjectModel\MigraDoc.DocumentObjectModel.csproj", "{4666ABF3-EFE5-49BD-B2E8-9E04F5949145}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MigraDoc.DocumentObjectModel", "MigraDoc\code\MigraDoc.DocumentObjectModel\MigraDoc.DocumentObjectModel.csproj", "{4666ABF3-EFE5-49BD-B2E8-9E04F5949145}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MigraDoc.Rendering", "..\..\..\code\MigraDoc.Rendering\MigraDoc.Rendering.csproj", "{FEBBE5BE-9F58-4967-BBCF-801F1CFCD774}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MigraDoc.Rendering", "MigraDoc\code\MigraDoc.Rendering\MigraDoc.Rendering.csproj", "{FEBBE5BE-9F58-4967-BBCF-801F1CFCD774}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MigraDoc.RtfRendering", "..\..\..\code\MigraDoc.RtfRendering\MigraDoc.RtfRendering.csproj", "{22010032-52DC-464D-B8BB-6CD9BF230D1F}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfSharp.Charting", "..\..\..\..\PDFsharp\code\PdfSharp.Charting\PdfSharp.Charting.csproj", "{CFDB7D46-EA8D-47DE-B10A-9E755A1B48BA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfSharp.Charting", "PDFsharp\code\PdfSharp.Charting\PdfSharp.Charting.csproj", "{CFDB7D46-EA8D-47DE-B10A-9E755A1B48BA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -67,10 +65,6 @@ Global
 		{FEBBE5BE-9F58-4967-BBCF-801F1CFCD774}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FEBBE5BE-9F58-4967-BBCF-801F1CFCD774}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FEBBE5BE-9F58-4967-BBCF-801F1CFCD774}.Release|Any CPU.Build.0 = Release|Any CPU
-		{22010032-52DC-464D-B8BB-6CD9BF230D1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{22010032-52DC-464D-B8BB-6CD9BF230D1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{22010032-52DC-464D-B8BB-6CD9BF230D1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{22010032-52DC-464D-B8BB-6CD9BF230D1F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CFDB7D46-EA8D-47DE-B10A-9E755A1B48BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CFDB7D46-EA8D-47DE-B10A-9E755A1B48BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CFDB7D46-EA8D-47DE-B10A-9E755A1B48BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -83,7 +77,6 @@ Global
 		{5384CE57-1F94-4D22-860D-2E9C1AC12DDF} = {BBA18443-DA8A-4774-86C4-7DCF7A215071}
 		{4666ABF3-EFE5-49BD-B2E8-9E04F5949145} = {BBA18443-DA8A-4774-86C4-7DCF7A215071}
 		{FEBBE5BE-9F58-4967-BBCF-801F1CFCD774} = {BBA18443-DA8A-4774-86C4-7DCF7A215071}
-		{22010032-52DC-464D-B8BB-6CD9BF230D1F} = {BBA18443-DA8A-4774-86C4-7DCF7A215071}
 		{CFDB7D46-EA8D-47DE-B10A-9E755A1B48BA} = {BBA18443-DA8A-4774-86C4-7DCF7A215071}
 	EndGlobalSection
 EndGlobal

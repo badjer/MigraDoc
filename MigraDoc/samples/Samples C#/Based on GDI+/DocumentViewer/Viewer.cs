@@ -33,19 +33,14 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Drawing.Printing;
-using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
-using System.Data;
 using System.IO;
 using PdfSharp.Drawing;
 using PdfSharp.Forms;
 using MigraDoc.DocumentObjectModel;
-using MigraDoc.DocumentObjectModel.IO;
 using MigraDoc.Rendering;
 using MigraDoc.Rendering.Printing;
-using MigraDoc.Rendering.Forms;
-using MigraDoc.RtfRendering;
 
 namespace DocumentViewer
 {
@@ -101,10 +96,6 @@ namespace DocumentViewer
 
       // Create a new MigraDoc document
       Document document = SampleDocuments.CreateSample1();
-
-      // HACK
-      string ddl = MigraDoc.DocumentObjectModel.IO.DdlWriter.WriteToString(document);
-      this.pagePreview.Ddl = ddl;
 
       UpdateStatusBar();
     }
@@ -431,7 +422,6 @@ namespace DocumentViewer
       // pagePreview
       // 
       this.pagePreview.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-      this.pagePreview.Ddl = null;
       this.pagePreview.DesktopColor = System.Drawing.SystemColors.ControlDark;
       this.pagePreview.Dock = System.Windows.Forms.DockStyle.Fill;
       this.pagePreview.Document = null;
@@ -481,15 +471,12 @@ namespace DocumentViewer
         //dialog.RestoreDirectory = true;
         if (dialog.ShowDialog() == DialogResult.OK)
         {
-          Document document = MigraDoc.DocumentObjectModel.IO.DdlReader.DocumentFromFile(dialog.FileName);
-          string ddl = MigraDoc.DocumentObjectModel.IO.DdlWriter.WriteToString(document);
-          this.pagePreview.Ddl = ddl;
+          
         }
       }
       catch (Exception ex)
       {
         MessageBox.Show(ex.Message, this.Text);
-        this.pagePreview.Ddl = null; // TODO has no effect
       }
       finally
       {
@@ -601,10 +588,7 @@ namespace DocumentViewer
     /// </summary>
     private void miRtf_Click(object sender, System.EventArgs e)
     {
-      RtfDocumentRenderer rtf = new RtfDocumentRenderer();
-      rtf.Render(this.pagePreview.Document, "test.rtf", null);
-
-      Process.Start("test.rtf");
+      
     }
 
     /// <summary>
@@ -768,14 +752,12 @@ namespace DocumentViewer
     private void miSample1_Click(object sender, EventArgs e)
     {
       Document document = SampleDocuments.CreateSample1();
-      this.pagePreview.Ddl = DdlWriter.WriteToString(document);
     }
 
     private void miSample2_Click(object sender, EventArgs e)
     {
       Directory.SetCurrentDirectory(GetProgramDirectory());
       Document document = SampleDocuments.CreateSample2();
-      this.pagePreview.Ddl = DdlWriter.WriteToString(document);
     }
 
     private void miExit_Click(object sender, System.EventArgs e)

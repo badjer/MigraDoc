@@ -1,15 +1,15 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DD962E24-DA75-4E4D-87AE-C75781411459}"
 	ProjectSection(SolutionItems) = preProject
-		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
+		PDFsharp\testing\PdfSharp.UnitTests\PDFsharpTests-GDI\LocalTestRun.testrunconfig = PDFsharp\testing\PdfSharp.UnitTests\PDFsharpTests-GDI\LocalTestRun.testrunconfig
 		PDFsharpTests-GDI.vsmdi = PDFsharpTests-GDI.vsmdi
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PDFsharpTests-GDI", "PDFsharpTests-GDI.csproj", "{890837F6-2F9E-482E-A395-9330D92A1070}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PDFsharpTests-GDI", "PDFsharp\testing\PdfSharp.UnitTests\PDFsharpTests-GDI\PDFsharpTests-GDI.csproj", "{890837F6-2F9E-482E-A395-9330D92A1070}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfSharp", "..\..\..\code\PdfSharp\PdfSharp.csproj", "{5384CE57-1F94-4D22-860D-2E9C1AC12DDF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfSharp", "pdfsharp\code\PdfSharp\PdfSharp.csproj", "{5384CE57-1F94-4D22-860D-2E9C1AC12DDF}"
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution

@@ -28,11 +28,9 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
 using System.Diagnostics;
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.Rendering;
-using MigraDoc.RtfRendering;
 using PdfSharp.Pdf;
 
 namespace HelloWorld
@@ -47,13 +45,6 @@ namespace HelloWorld
       // Create a MigraDoc document
       Document document = CreateDocument();
       document.UseCmykColor = true;
-
-     // string ddl = MigraDoc.DocumentObjectModel.IO.DdlWriter.WriteToString(document);
-
-#if true_
-      RtfDocumentRenderer renderer = new RtfDocumentRenderer();
-      renderer.Render(document, "HelloWorld.rtf", null);
-#endif
       
       // ----- Unicode encoding and font program embedding in MigraDoc is demonstrated here -----
 

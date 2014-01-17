@@ -52,12 +52,6 @@ namespace Invoice
         Document document = invoice.CreateDocument();
         document.UseCmykColor = true;
 
-#if DEBUG
-        // for debugging only...
-        MigraDoc.DocumentObjectModel.IO.DdlWriter.WriteToFile(document, "MigraDoc.mdddl");
-        document = MigraDoc.DocumentObjectModel.IO.DdlReader.DocumentFromFile("MigraDoc.mdddl");
-#endif
-
         // Create a renderer for PDF that uses Unicode font encoding
         PdfDocumentRenderer pdfRenderer = new PdfDocumentRenderer(true);
 

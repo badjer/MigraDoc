@@ -29,10 +29,6 @@
 
 using System;
 using System.Diagnostics;
-using System.Collections;
-using System.Text;
-using System.IO;
-using PdfSharp.Internal;
 using PdfSharp.Pdf.IO;
 
 namespace PdfSharp.Pdf
@@ -53,17 +49,9 @@ namespace PdfSharp.Pdf
     /// <summary>
     /// Initializes a new instance of the <see cref="PdfDate"/> class.
     /// </summary>
-    public PdfDate(string value)
-    {
-      this.value = Parser.ParseDateTime(value, DateTime.MinValue);
-    }
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="PdfDate"/> class.
-    /// </summary>
     public PdfDate(DateTime value)
     {
-      this.value = value;
+      _value = value;
     }
 
     /// <summary>
@@ -72,17 +60,17 @@ namespace PdfSharp.Pdf
     public DateTime Value
     {
       // This class must behave like a value type. Therefore it cannot be changed (like System.String).
-      get { return this.value; }
+      get { return _value; }
     }
-    DateTime value;
+    private DateTime _value;
 
     /// <summary>
     /// Returns the value in the PDF date format.
     /// </summary>
     public override string ToString()
     {
-      string delta = this.value.ToString("zzz").Replace(':', '\'');
-      return String.Format("D:{0:yyyyMMddHHmmss}{1}'", this.value, delta);
+      string delta = _value.ToString("zzz").Replace(':', '\'');
+      return String.Format("D:{0:yyyyMMddHHmmss}{1}'", _value, delta);
     }
 
     /// <summary>
