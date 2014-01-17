@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfSharp-WPF", "PdfSharp\PdfSharp-WPF.csproj", "{02FCC0BB-2AA2-43BA-8D2F-66D168B87A1D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfSharp.Charting-WPF", "PdfSharp.Charting\PdfSharp.Charting-WPF.csproj", "{E6A2734E-0CD6-4210-8AEC-47EE348F8D78}"
