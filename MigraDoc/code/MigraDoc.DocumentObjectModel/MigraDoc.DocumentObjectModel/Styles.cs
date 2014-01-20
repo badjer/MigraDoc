@@ -33,6 +33,7 @@
 using System;
 using System.Collections;
 using MigraDoc.DocumentObjectModel.Visitors;
+using PdfSharp.Core.Enums;
 
 namespace MigraDoc.DocumentObjectModel
 {

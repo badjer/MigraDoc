@@ -30,6 +30,7 @@
 using System;
 using System.Diagnostics;
 using System.Globalization;
+using PdfSharp.Core.Enums;
 
 namespace PdfSharp.Drawing
 {

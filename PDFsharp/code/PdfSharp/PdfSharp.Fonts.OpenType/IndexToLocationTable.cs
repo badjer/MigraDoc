@@ -35,6 +35,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.IO;
+using PdfSharp.Core;
 using PdfSharp.Drawing;
 using PdfSharp.Internal;
 

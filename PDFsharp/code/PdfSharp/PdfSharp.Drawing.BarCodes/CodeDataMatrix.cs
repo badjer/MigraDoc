@@ -37,6 +37,7 @@ using System.Drawing;
 using System.Windows;
 using System.Windows.Media;
 #endif
+using PdfSharp.Core.Enums;
 using PdfSharp.Drawing;
 
 namespace PdfSharp.Drawing.BarCodes

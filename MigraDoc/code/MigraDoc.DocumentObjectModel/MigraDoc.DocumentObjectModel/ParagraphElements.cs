@@ -33,6 +33,7 @@
 using System;
 using MigraDoc.DocumentObjectModel.Fields;
 using MigraDoc.DocumentObjectModel.Shapes;
+using PdfSharp.Core.Enums;
 
 namespace MigraDoc.DocumentObjectModel
 {
@@ -166,7 +167,7 @@ namespace MigraDoc.DocumentObjectModel
     /// </summary>
     public Character AddSpace(int count)
     {
-      return this.AddCharacter(DocumentObjectModel.SymbolName.Blank, count);
+      return this.AddCharacter(SymbolName.Blank, count);
     }
 
     /// <summary>

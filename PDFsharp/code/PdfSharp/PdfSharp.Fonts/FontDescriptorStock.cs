@@ -30,6 +30,7 @@
 using System;
 using System.Diagnostics;
 using System.Collections.Generic;
+using PdfSharp.Core.Enums;
 using PdfSharp.Drawing;
 using PdfSharp.Fonts.OpenType;
 

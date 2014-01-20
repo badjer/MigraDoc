@@ -41,6 +41,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 #endif
+using PdfSharp.Core.Enums;
 using PdfSharp.Internal;
 using PdfSharp.Pdf;
 using PdfSharp.Drawing.Pdf;

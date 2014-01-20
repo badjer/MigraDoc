@@ -33,6 +33,7 @@ using System.Collections;
 using System.Reflection;
 using System.Text;
 using System.IO;
+using PdfSharp.Core.Enums;
 using PdfSharp.Pdf;
 using PdfSharp.Pdf.Advanced;
 using PdfSharp.Pdf.Filters;

@@ -34,6 +34,7 @@ using System;
 using System.Diagnostics;
 using System.Collections;
 using System.Globalization;
+using PdfSharp.Core.Enums;
 
 namespace MigraDoc.DocumentObjectModel
 {

@@ -126,9 +126,6 @@
     <Compile Include="MigraDoc.DocumentObjectModel.Fields\DateField.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel.Fields\enums\InfoFieldType.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="MigraDoc.DocumentObjectModel.Fields\InfoField.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -163,27 +160,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MigraDoc.DocumentObjectModel.Shapes.Charts\DataLabel.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel.Shapes.Charts\enums\BlankType.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel.Shapes.Charts\enums\ChartType.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel.Shapes.Charts\enums\DataLabelPosition.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel.Shapes.Charts\enums\DataLabelType.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel.Shapes.Charts\enums\HorizontalAlignment.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel.Shapes.Charts\enums\MarkerStyle.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel.Shapes.Charts\enums\TickMarkType.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MigraDoc.DocumentObjectModel.Shapes.Charts\Gridlines.cs">
@@ -228,28 +204,6 @@
     <Compile Include="MigraDoc.DocumentObjectModel.Shapes\Barcode.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel.Shapes\enums\BarcodeType.cs" />
-    <Compile Include="MigraDoc.DocumentObjectModel.Shapes\enums\DashStyle.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel.Shapes\enums\LineStyle.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel.Shapes\enums\RelativeHorizontal.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel.Shapes\enums\RelativeVertical.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel.Shapes\enums\ShapePosition.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel.Shapes\enums\TextOrientation.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel.Shapes\enums\WrapStyle.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="MigraDoc.DocumentObjectModel.Shapes\FillFormat.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -287,18 +241,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MigraDoc.DocumentObjectModel.Tables\Columns.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel.Tables\enums\Edge.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel.Tables\enums\RowAlignment.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel.Tables\enums\RowHeightRule.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel.Tables\enums\VerticalAlignment.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MigraDoc.DocumentObjectModel.Tables\Row.cs">
@@ -367,78 +309,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MigraDoc.DocumentObjectModel\DomSR.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel\enums\BorderStyle.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel\enums\BorderType.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel\enums\BreakType.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel\enums\ColorName.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel\enums\DomMsgID.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel\enums\FontProperties.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel\enums\FootnoteLocation.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel\enums\FootnoteNumberingRule.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel\enums\FootnoteNumberStyle.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel\enums\HeaderFooterIndex.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel\enums\HyperlinkType.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel\enums\LineSpacingRule.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel\enums\ListType.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel\enums\Orientation.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel\enums\OutlineLevel.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel\enums\PageFormat.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel\enums\ParagraphAlignment.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel\enums\StyleType.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel\enums\SymbolName.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel\enums\TabAlignment.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel\enums\TabLeader.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel\enums\TextFormat.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel\enums\Underline.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.DocumentObjectModel\enums\UnitType.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MigraDoc.DocumentObjectModel\Font.cs">
@@ -556,7 +426,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="MigraDoc.DocumentObjectModel.UnitTests\" />
-    <Folder Include="MigraDoc\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\PdfSharp.Core\PdfSharp.Core.csproj">
+      <Project>{9E4D41E8-4B14-4718-8626-19BD27350AF1}</Project>
+      <Name>PdfSharp.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

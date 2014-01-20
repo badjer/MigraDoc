@@ -28,6 +28,7 @@
 #endregion
 
 using System;
+using PdfSharp.Core.Enums;
 using PdfSharp.Drawing;
 
 namespace PdfSharp.Charting.Renderers

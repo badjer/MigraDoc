@@ -31,6 +31,7 @@
 #endregion
 
 using System.Diagnostics;
+using PdfSharp.Core.Enums;
 
 namespace MigraDoc.DocumentObjectModel
 {
@@ -74,51 +75,51 @@ namespace MigraDoc.DocumentObjectModel
       int width = 0;
       switch (pageFormat)
       {
-        case DocumentObjectModel.PageFormat.A0:
+        case PdfSharp.Core.Enums.PageFormat.A0:
           height = A0Height;
           width = A0Width;
           break;
-		case DocumentObjectModel.PageFormat.A1:
+		case PdfSharp.Core.Enums.PageFormat.A1:
           height = A0Width;
           width = A0Height / 2;
           break;
-		case DocumentObjectModel.PageFormat.A2:
+		case PdfSharp.Core.Enums.PageFormat.A2:
           height = A0Height / 2;
           width = A0Width / 2;
           break;
-		case DocumentObjectModel.PageFormat.A3:
+		case PdfSharp.Core.Enums.PageFormat.A3:
           height = A0Width / 2;
           width = A0Height / 4;
           break;
-		case DocumentObjectModel.PageFormat.A4:
+		case PdfSharp.Core.Enums.PageFormat.A4:
           height = A0Height / 4;
           width = A0Width / 4;
           break;
-		case DocumentObjectModel.PageFormat.A5:
+		case PdfSharp.Core.Enums.PageFormat.A5:
           height = A0Width / 4;
           width = A0Height / 8;
           break;
-		case DocumentObjectModel.PageFormat.A6:
+		case PdfSharp.Core.Enums.PageFormat.A6:
           height = A0Height / 8;
           width = A0Width / 8;
           break;
-		case DocumentObjectModel.PageFormat.B5:
+		case PdfSharp.Core.Enums.PageFormat.B5:
           height = 257;
           width = 182;
           break;
-		case DocumentObjectModel.PageFormat.Letter:
+		case PdfSharp.Core.Enums.PageFormat.Letter:
           pageWidth = Unit.FromPoint(612);
           pageHeight = Unit.FromPoint(792);
           break;
-		case DocumentObjectModel.PageFormat.Legal:
+		case PdfSharp.Core.Enums.PageFormat.Legal:
           pageWidth = Unit.FromPoint(612);
           pageHeight = Unit.FromPoint(1008);
           break;
-		case DocumentObjectModel.PageFormat.Ledger:
+		case PdfSharp.Core.Enums.PageFormat.Ledger:
           pageWidth = Unit.FromPoint(1224);
           pageHeight = Unit.FromPoint(792);
           break;
-		case DocumentObjectModel.PageFormat.P11x17:
+		case PdfSharp.Core.Enums.PageFormat.P11x17:
           pageWidth = Unit.FromPoint(792);
           pageHeight = Unit.FromPoint(1224);
           break;
@@ -351,9 +352,9 @@ namespace MigraDoc.DocumentObjectModel
         if (defaultPageSetup == null)
         {
           defaultPageSetup = new PageSetup();
-		  defaultPageSetup.PageFormat = DocumentObjectModel.PageFormat.A4;
+		  defaultPageSetup.PageFormat = PdfSharp.Core.Enums.PageFormat.A4;
           defaultPageSetup.SectionStart = BreakType.BreakNextPage;
-          defaultPageSetup.Orientation = DocumentObjectModel.Orientation.Portrait;
+          defaultPageSetup.Orientation = PdfSharp.Core.Enums.Orientation.Portrait;
           defaultPageSetup.PageWidth = Unit.FromCentimeter(21);
           defaultPageSetup.PageHeight = Unit.FromCentimeter(29.7);
           defaultPageSetup.TopMargin = Unit.FromCentimeter(2.5);

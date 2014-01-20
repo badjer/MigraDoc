@@ -31,6 +31,7 @@
 #endregion
 
 using System.Collections;
+using PdfSharp.Core.Enums;
 
 namespace MigraDoc.DocumentObjectModel
 {

@@ -34,6 +34,7 @@ using System.Drawing;
 #if WPF
 using System.Windows;
 #endif
+using PdfSharp.Core.Enums;
 using PdfSharp.Drawing;
 
 namespace PdfSharp.Internal

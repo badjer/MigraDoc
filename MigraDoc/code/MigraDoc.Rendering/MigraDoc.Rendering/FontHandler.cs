@@ -33,6 +33,7 @@
 using System;
 using System.Collections;
 using System.Text;
+using PdfSharp.Core.Enums;
 using PdfSharp.Pdf;
 using PdfSharp.Drawing;
 using MigraDoc.DocumentObjectModel;

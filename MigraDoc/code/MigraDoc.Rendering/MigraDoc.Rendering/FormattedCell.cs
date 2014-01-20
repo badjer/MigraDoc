@@ -31,6 +31,7 @@
 using System;
 using System.Collections;
 using MigraDoc.DocumentObjectModel;
+using PdfSharp.Core.Enums;
 using PdfSharp.Drawing;
 using MigraDoc.DocumentObjectModel.Tables;
 

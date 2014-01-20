@@ -38,6 +38,8 @@ using System.IO;
 #if WPF
 using System.Windows.Media;
 #endif
+using PdfSharp.Core;
+using PdfSharp.Core.Enums;
 using PdfSharp.Drawing;
 using PdfSharp.Internal;
 

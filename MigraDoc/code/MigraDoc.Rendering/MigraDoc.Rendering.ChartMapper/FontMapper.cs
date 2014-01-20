@@ -30,6 +30,7 @@
 
 using System;
 using PdfSharp.Charting;
+using PdfSharp.Core.Enums;
 using PdfSharp.Drawing;
 
 namespace MigraDoc.Rendering.ChartMapper

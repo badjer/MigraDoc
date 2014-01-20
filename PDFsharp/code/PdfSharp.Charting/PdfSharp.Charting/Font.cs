@@ -31,6 +31,7 @@ using System;
 using System.Diagnostics;
 using System.Reflection;
 using System.Globalization;
+using PdfSharp.Core.Enums;
 using PdfSharp.Drawing;
 
 namespace PdfSharp.Charting

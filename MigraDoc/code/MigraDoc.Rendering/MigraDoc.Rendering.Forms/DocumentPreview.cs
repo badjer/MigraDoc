@@ -35,8 +35,10 @@ using System.Drawing;
 using System.Drawing.Text;
 using System.Data;
 using System.Windows.Forms;
+using PdfSharp.Core.Enums;
 using PdfSharp.Drawing;
 using MigraDoc.Rendering;
+using BorderStyle = System.Windows.Forms.BorderStyle;
 
 namespace MigraDoc.Rendering.Forms
 {
@@ -154,7 +156,7 @@ namespace MigraDoc.Rendering.Forms
             {
               this.page = value;
               PageInfo pageInfo = this.renderer.formattedDocument.GetPageInfo(this.page);
-              if (pageInfo.Orientation == PdfSharp.PageOrientation.Portrait)
+              if (pageInfo.Orientation == PageOrientation.Portrait)
                 this.preview.PageSize = new Size((int)pageInfo.Width, (int)pageInfo.Height);
               else
                 this.preview.PageSize = new Size((int)pageInfo.Height, (int)pageInfo.Width);
@@ -312,9 +314,9 @@ namespace MigraDoc.Rendering.Forms
       get { return (Zoom)this.preview.Zoom; }
       set
       {
-        if (this.preview.Zoom != (PdfSharp.Forms.Zoom)value)
+        if (this.preview.Zoom != (PdfSharp.Core.Enums.Zoom)value)
         {
-          this.preview.Zoom = (PdfSharp.Forms.Zoom)value;
+          this.preview.Zoom = (PdfSharp.Core.Enums.Zoom)value;
           OnZoomChanged(new EventArgs());
         }
       }
@@ -464,7 +466,7 @@ namespace MigraDoc.Rendering.Forms
       this.preview.PageSize = new System.Drawing.Size(595, 842);
       this.preview.Size = new System.Drawing.Size(200, 200);
       this.preview.TabIndex = 0;
-      this.preview.Zoom = PdfSharp.Forms.Zoom.FullPage;
+      this.preview.Zoom = PdfSharp.Core.Enums.Zoom.FullPage;
       this.preview.ZoomPercent = 15;
       // 
       // PagePreview

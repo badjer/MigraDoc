@@ -37,6 +37,7 @@ using System.Drawing.Drawing2D;
 #if WPF
 using System.Windows.Media;
 #endif
+using PdfSharp.Core.Enums;
 using PdfSharp.Pdf;
 using PdfSharp.Fonts.OpenType;
 

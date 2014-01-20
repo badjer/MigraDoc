@@ -38,6 +38,7 @@ using System.Drawing.Drawing2D;
 using System.Windows;
 using System.Windows.Media;
 #endif
+using PdfSharp.Core.Enums;
 using PdfSharp.Internal;
 
 namespace PdfSharp.Drawing

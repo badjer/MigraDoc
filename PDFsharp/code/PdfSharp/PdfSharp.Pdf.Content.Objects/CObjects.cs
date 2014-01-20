@@ -34,7 +34,6 @@ using System.Collections;
 using System.Globalization;
 using System.IO;
 using System.Text;
-using PdfSharp.Pdf.Internal;
 
 namespace PdfSharp.Pdf.Content.Objects  // TODO: split into single files
 {
@@ -43,14 +42,7 @@ namespace PdfSharp.Pdf.Content.Objects  // TODO: split into single files
   /// </summary>
   public abstract class CObject : ICloneable
   {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="CObject"/> class.
-    /// </summary>
-    protected CObject()
-    {
-    }
-
-    /// <summary>
+	  /// <summary>
     /// Creates a new object that is a copy of the current instance.
     /// </summary>
     object ICloneable.Clone()

@@ -118,6 +118,10 @@
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
+    <ProjectReference Include="..\..\..\PdfSharp.Core\PdfSharp.Core.csproj">
+      <Project>{9E4D41E8-4B14-4718-8626-19BD27350AF1}</Project>
+      <Name>PdfSharp.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\PDFsharp\code\PdfSharp.Charting\PdfSharp.Charting.csproj">
       <Project>{CFDB7D46-EA8D-47DE-B10A-9E755A1B48BA}</Project>
       <Name>PdfSharp.Charting</Name>
@@ -170,7 +174,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MigraDoc.Rendering\ColorHelper.cs" />
-    <Compile Include="MigraDoc.Rendering\enums\PageRenderOptions.cs" />
     <Compile Include="VersionInfo.cs" />
     <Compile Include="MigraDoc.Rendering.Forms\enums\Zoom.cs" />
     <Compile Include="MigraDoc.Rendering.Forms\DocumentPreview.cs">
@@ -192,21 +195,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MigraDoc.Rendering\DocumentRenderer.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.Rendering\enums\ElementAlignment.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.Rendering\enums\Floating.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.Rendering\enums\HorizontalReference.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.Rendering\enums\ImageFailure.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.Rendering\enums\VerticalReference.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MigraDoc.Rendering\FieldInfos.cs">

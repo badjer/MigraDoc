@@ -30,6 +30,7 @@
 
 using System;
 using PdfSharp.Charting;
+using PdfSharp.Core.Enums;
 using PdfSharp.Drawing;
 
 namespace MigraDoc.Rendering.ChartMapper
@@ -65,7 +66,7 @@ namespace MigraDoc.Rendering.ChartMapper
 
       LegendMapper.Map(chart, domChart);
 
-      chart.DisplayBlanksAs = (BlankType)domChart.DisplayBlanksAs.GetValueOrDefault();
+      chart.DisplayBlanksAs = domChart.DisplayBlanksAs.GetValueOrDefault();
       chart.HasDataLabel = domChart.HasDataLabel;
       if (domChart.dataLabel != null)
         DataLabelMapper.Map(chart.DataLabel, domChart.DataLabel);

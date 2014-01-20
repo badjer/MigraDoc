@@ -33,6 +33,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using System.IO;
+using PdfSharp.Core.Enums;
 using PdfSharp.Drawing;
 using PdfSharp.Internal;
 using PdfSharp.Fonts.OpenType;

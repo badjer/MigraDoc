@@ -31,6 +31,7 @@
 #endregion
 
 using MigraDoc.DocumentObjectModel.Visitors;
+using PdfSharp.Core.Enums;
 
 namespace MigraDoc.DocumentObjectModel.Tables
 {

@@ -40,6 +40,7 @@ using System.Drawing.Imaging;
 #if WPF
 using System.Windows.Media;
 #endif
+using PdfSharp.Core.Enums;
 using PdfSharp.Internal;
 using PdfSharp.Drawing.Pdf;
 using PdfSharp.Fonts.OpenType;

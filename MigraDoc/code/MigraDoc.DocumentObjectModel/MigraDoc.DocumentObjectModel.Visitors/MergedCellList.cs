@@ -33,6 +33,7 @@
 using System;
 using System.Collections.Generic;
 using MigraDoc.DocumentObjectModel.Tables;
+using PdfSharp.Core.Enums;
 
 namespace MigraDoc.DocumentObjectModel.Visitors
 {

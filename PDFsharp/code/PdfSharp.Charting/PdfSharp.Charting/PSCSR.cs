@@ -29,6 +29,7 @@
 
 using System;
 using PdfSharp.Charting;
+using PdfSharp.Core.Enums;
 
 namespace PdfSharp.Charting
 {

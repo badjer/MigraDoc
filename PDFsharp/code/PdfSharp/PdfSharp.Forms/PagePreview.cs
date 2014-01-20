@@ -51,9 +51,12 @@ using System.Windows.Forms;
 //using System.Windows.Media;
 //#endif
 using PdfSharp;
+using PdfSharp.Core.Enums;
 using PdfSharp.Internal;
 using PdfSharp.Drawing;
 using PdfSharp.Pdf;
+using BorderStyle = System.Windows.Forms.BorderStyle;
+using DashStyle = System.Drawing.Drawing2D.DashStyle;
 
 namespace PdfSharp.Forms
 {
@@ -1029,7 +1032,7 @@ namespace PdfSharp.Forms
     /// <summary>
     /// Real page size in point.
     /// </summary>
-    SizeF pageSize = PageSizeConverter.ToSize(PdfSharp.PageSize.A4).ToSizeF();
+    SizeF pageSize = PageSizeConverter.ToSize(PdfSharp.Core.Enums.PageSize.A4).ToSizeF();
 
     /// <summary>
     /// Page in pixel relative to virtual canvas.

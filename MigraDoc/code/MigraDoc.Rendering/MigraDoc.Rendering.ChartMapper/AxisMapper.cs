@@ -30,6 +30,7 @@
 
 using System;
 using PdfSharp.Charting;
+using PdfSharp.Core.Enums;
 
 namespace MigraDoc.Rendering.ChartMapper
 {
@@ -48,9 +49,9 @@ namespace MigraDoc.Rendering.ChartMapper
         FontMapper.Map(axis.TickLabels.Font, domAxis.TickLabels.Font);
 
       if (domAxis.majorTickMark.HasValue)
-        axis.MajorTickMark = (TickMarkType)domAxis.MajorTickMark.Value;
+        axis.MajorTickMark = domAxis.MajorTickMark;
       if (domAxis.minorTickMark.HasValue)
-        axis.MinorTickMark = (TickMarkType)domAxis.MinorTickMark.Value;
+        axis.MinorTickMark = domAxis.MinorTickMark;
 
       if (domAxis.majorTick.HasValue)
         axis.MajorTick = domAxis.MajorTick;

@@ -47,7 +47,7 @@ namespace PdfSharp.SharpZipLib.Zip.Compression
 	/// <summary>
 	/// Strategies for deflater
 	/// </summary>
-	internal enum DeflateStrategy 
+	public enum DeflateStrategy 
 	{
 		/// <summary>
 		/// The default strategy

@@ -30,6 +30,7 @@
 using System;
 using System.Diagnostics;
 using System.Collections;
+using PdfSharp.Core.Enums;
 using PdfSharp.Drawing;
 using PdfSharp.Pdf.Advanced;
 using PdfSharp.Pdf.Annotations;

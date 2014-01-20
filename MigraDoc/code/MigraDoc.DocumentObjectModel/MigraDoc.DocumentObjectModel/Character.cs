@@ -30,6 +30,8 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using PdfSharp.Core.Enums;
+
 namespace MigraDoc.DocumentObjectModel
 {
   /// <summary>
@@ -39,28 +41,28 @@ namespace MigraDoc.DocumentObjectModel
   public class Character : DocumentObject
   {
     // \space
-    public static readonly Character Blank = new Character(MigraDoc.DocumentObjectModel.SymbolName.Blank);
-	public static readonly Character En = new Character(MigraDoc.DocumentObjectModel.SymbolName.En);
-	public static readonly Character Em = new Character(MigraDoc.DocumentObjectModel.SymbolName.Em);
-	public static readonly Character EmQuarter = new Character(MigraDoc.DocumentObjectModel.SymbolName.EmQuarter);
-	public static readonly Character Em4 = new Character(MigraDoc.DocumentObjectModel.SymbolName.Em4);
+    public static readonly Character Blank = new Character(PdfSharp.Core.Enums.SymbolName.Blank);
+	public static readonly Character En = new Character(PdfSharp.Core.Enums.SymbolName.En);
+	public static readonly Character Em = new Character(PdfSharp.Core.Enums.SymbolName.Em);
+	public static readonly Character EmQuarter = new Character(PdfSharp.Core.Enums.SymbolName.EmQuarter);
+	public static readonly Character Em4 = new Character(PdfSharp.Core.Enums.SymbolName.Em4);
 
     // used to serialize as \tab, \linebreak
-	public static readonly Character Tab = new Character(MigraDoc.DocumentObjectModel.SymbolName.Tab);
-	public static readonly Character LineBreak = new Character(MigraDoc.DocumentObjectModel.SymbolName.LineBreak);
+	public static readonly Character Tab = new Character(PdfSharp.Core.Enums.SymbolName.Tab);
+	public static readonly Character LineBreak = new Character(PdfSharp.Core.Enums.SymbolName.LineBreak);
     //public static readonly Character MarginBreak         = new Character(SymbolName.MarginBreak);
 
     // \symbol
-	public static readonly Character Euro = new Character(MigraDoc.DocumentObjectModel.SymbolName.Euro);
-	public static readonly Character Copyright = new Character(MigraDoc.DocumentObjectModel.SymbolName.Copyright);
-	public static readonly Character Trademark = new Character(MigraDoc.DocumentObjectModel.SymbolName.Trademark);
-	public static readonly Character RegisteredTrademark = new Character(MigraDoc.DocumentObjectModel.SymbolName.RegisteredTrademark);
-	public static readonly Character Bullet = new Character(MigraDoc.DocumentObjectModel.SymbolName.Bullet);
-	public static readonly Character Not = new Character(MigraDoc.DocumentObjectModel.SymbolName.Not);
-	public static readonly Character EmDash = new Character(MigraDoc.DocumentObjectModel.SymbolName.EmDash);
-	public static readonly Character EnDash = new Character(MigraDoc.DocumentObjectModel.SymbolName.EnDash);
-	public static readonly Character NonBreakableBlank = new Character(MigraDoc.DocumentObjectModel.SymbolName.NonBreakableBlank);
-	public static readonly Character HardBlank = new Character(MigraDoc.DocumentObjectModel.SymbolName.HardBlank);
+	public static readonly Character Euro = new Character(PdfSharp.Core.Enums.SymbolName.Euro);
+	public static readonly Character Copyright = new Character(PdfSharp.Core.Enums.SymbolName.Copyright);
+	public static readonly Character Trademark = new Character(PdfSharp.Core.Enums.SymbolName.Trademark);
+	public static readonly Character RegisteredTrademark = new Character(PdfSharp.Core.Enums.SymbolName.RegisteredTrademark);
+	public static readonly Character Bullet = new Character(PdfSharp.Core.Enums.SymbolName.Bullet);
+	public static readonly Character Not = new Character(PdfSharp.Core.Enums.SymbolName.Not);
+	public static readonly Character EmDash = new Character(PdfSharp.Core.Enums.SymbolName.EmDash);
+	public static readonly Character EnDash = new Character(PdfSharp.Core.Enums.SymbolName.EnDash);
+	public static readonly Character NonBreakableBlank = new Character(PdfSharp.Core.Enums.SymbolName.NonBreakableBlank);
+	public static readonly Character HardBlank = new Character(PdfSharp.Core.Enums.SymbolName.HardBlank);
 
     /// <summary>
     /// Initializes a new instance of the Character class.

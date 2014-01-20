@@ -32,6 +32,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Collections;
 using System.Text;
+using PdfSharp.Core.Enums;
 using PdfSharp.Drawing;
 using PdfSharp.Pdf.IO;
 

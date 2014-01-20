@@ -36,6 +36,7 @@ using System.Drawing.Drawing2D;
 #if WPF
 using System.Windows.Media;
 #endif
+using PdfSharp.Core.Enums;
 using PdfSharp.Internal;
 
 namespace PdfSharp.Drawing

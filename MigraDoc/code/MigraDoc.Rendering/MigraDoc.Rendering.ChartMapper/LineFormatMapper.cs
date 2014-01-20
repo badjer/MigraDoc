@@ -30,6 +30,7 @@
 
 using System;
 using PdfSharp.Charting;
+using PdfSharp.Core.Enums;
 using PdfSharp.Drawing;
 using System.Drawing;
 
@@ -61,19 +62,19 @@ namespace MigraDoc.Rendering.ChartMapper
       }
       switch (domLineFormat.DashStyle)
       {
-        case MigraDoc.DocumentObjectModel.Shapes.DashStyle.Dash:
+        case DashStyle.Dash:
           lineFormat.DashStyle = XDashStyle.Dash;
           break;
-        case MigraDoc.DocumentObjectModel.Shapes.DashStyle.DashDot:
+        case DashStyle.DashDot:
           lineFormat.DashStyle = XDashStyle.DashDot;
           break;
-        case MigraDoc.DocumentObjectModel.Shapes.DashStyle.DashDotDot:
+        case DashStyle.DashDotDot:
           lineFormat.DashStyle = XDashStyle.DashDotDot;
           break;
-        case MigraDoc.DocumentObjectModel.Shapes.DashStyle.Solid:
+        case DashStyle.Solid:
           lineFormat.DashStyle = XDashStyle.Solid;
           break;
-        case MigraDoc.DocumentObjectModel.Shapes.DashStyle.SquareDot:
+        case DashStyle.SquareDot:
           lineFormat.DashStyle = XDashStyle.Dot;
           break;
         default:
@@ -82,7 +83,7 @@ namespace MigraDoc.Rendering.ChartMapper
       }
       switch (domLineFormat.Style)
       {
-        case MigraDoc.DocumentObjectModel.Shapes.LineStyle.Single:
+        case LineStyle.Single:
           lineFormat.Style = LineStyle.Single;
           break;
       }

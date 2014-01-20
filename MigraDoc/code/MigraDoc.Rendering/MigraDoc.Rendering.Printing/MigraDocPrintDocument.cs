@@ -33,6 +33,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Drawing;
 using System.Drawing.Printing;
+using PdfSharp.Core.Enums;
 using PdfSharp.Drawing;
 
 namespace MigraDoc.Rendering.Printing
@@ -135,7 +136,7 @@ namespace MigraDoc.Rendering.Printing
         PageInfo pageInfo = this.renderer.FormattedDocument.GetPageInfo(this.pageNumber);
 
         // set portrait/landscape
-        settings.Landscape = pageInfo.Orientation == PdfSharp.PageOrientation.Landscape;
+        settings.Landscape = pageInfo.Orientation == PageOrientation.Landscape;
       }
     }
 

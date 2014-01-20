@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.DocumentObjectModel.Shapes.Charts;
 using MigraDoc.Rendering;
+using PdfSharp.Core.Enums;
 
 namespace TestFormsApplication
 {
@@ -79,7 +76,7 @@ namespace TestFormsApplication
         private static void OpenPdf(Document doc)
         {
             var filename = "c:\\temp\\test.pdf";
-            PdfDocumentRenderer pdf = new PdfDocumentRenderer(true, PdfSharp.Pdf.PdfFontEmbedding.None);
+            PdfDocumentRenderer pdf = new PdfDocumentRenderer(true, PdfFontEmbedding.None);
             pdf.Document = doc;
             pdf.RenderDocument();
             pdf.Save(filename);

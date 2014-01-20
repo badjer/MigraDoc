@@ -1,0 +1,325 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{9E4D41E8-4B14-4718-8626-19BD27350AF1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PdfSharp.Core</RootNamespace>
+    <AssemblyName>PdfSharp.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>StrongnameKey.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Enums\AnchorType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\BarcodeType.cs" />
+    <Compile Include="Enums\BlankType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\BorderStyle.cs" />
+    <Compile Include="Enums\BorderType.cs" />
+    <Compile Include="Enums\BreakType.cs" />
+    <Compile Include="Enums\ChartType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\CodeDirection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\CodeType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\ColorName.cs" />
+    <Compile Include="Enums\CSymbol.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\DashStyle.cs" />
+    <Compile Include="Enums\DataLabelPosition.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\DataLabelType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\DataMatrixEncoding.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\DirtyFlags.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\DockingType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\DocumentFontOptions.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\DocumentState.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\DomMsgID.cs" />
+    <Compile Include="Enums\Edge.cs" />
+    <Compile Include="Enums\ElementAlignment.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\Floating.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\FontProperties.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\FontTechnology.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\FootnoteLocation.cs" />
+    <Compile Include="Enums\FootnoteNumberingRule.cs" />
+    <Compile Include="Enums\FootnoteNumberStyle.cs" />
+    <Compile Include="Enums\HeaderFooterIndex.cs" />
+    <Compile Include="Enums\HorizontalAlignment.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\HorizontalReference.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\HyperlinkType.cs" />
+    <Compile Include="Enums\ImageFailure.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\InfoFieldType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\LineSpacingRule.cs" />
+    <Compile Include="Enums\LineStyle.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\ListType.cs" />
+    <Compile Include="Enums\MarkDistance.cs" />
+    <Compile Include="Enums\MarkerStyle.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\NamespaceDoc.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\OpCodeFlags.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\OpCodeName.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\Orientation.cs" />
+    <Compile Include="Enums\OutlineLevel.cs" />
+    <Compile Include="Enums\PageFormat.cs" />
+    <Compile Include="Enums\PageOrientation.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\PageRenderOptions.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\PageSize.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\ParagraphAlignment.cs" />
+    <Compile Include="Enums\PasswordValidity.cs" />
+    <Compile Include="Enums\PathStart.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\PdfAcroFieldFlags.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\PdfAnnotationFlags.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\PdfColorMode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\PdfCustomValueCompressionMode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\PdfDocumentOpenMode.cs" />
+    <Compile Include="Enums\PdfDocumentSecurityLevel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\PdfFontEmbedding.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\PdfFontEncoding.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\PdfNamedActionNames.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\PdfOutlineStyle.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\PdfPageLayout.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\PdfPageMode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\PdfReadingDirection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\PdfRubberStampAnnotationIcon.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\PdfTextAnnotationIcon.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\PdfTextStringEncoding.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\PdfUserAccessPermission.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\PdfWriterLayout.cs" />
+    <Compile Include="Enums\PdfWriterOptions.cs" />
+    <Compile Include="Enums\PSMsgID.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\RelativeHorizontal.cs" />
+    <Compile Include="Enums\RelativeVertical.cs" />
+    <Compile Include="Enums\RenderMode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\RowAlignment.cs" />
+    <Compile Include="Enums\RowHeightRule.cs" />
+    <Compile Include="Enums\ShapePosition.cs" />
+    <Compile Include="Enums\StreamMode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\StyleType.cs" />
+    <Compile Include="Enums\Symbol.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\SymbolName.cs" />
+    <Compile Include="Enums\TabAlignment.cs" />
+    <Compile Include="Enums\TabLeader.cs" />
+    <Compile Include="Enums\TableTag.cs" />
+    <Compile Include="Enums\TextFormat.cs" />
+    <Compile Include="Enums\TextLocation.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\TextOrientation.cs" />
+    <Compile Include="Enums\TickMarkType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\Underline.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\UnitType.cs" />
+    <Compile Include="Enums\VerticalAlignment.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\VerticalReference.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\WrapStyle.cs" />
+    <Compile Include="Enums\XColorSpace.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\XCombineMode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\XDashStyle.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\XFillMode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\XFontStyle.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\XGraphicsPathItemType.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\XGraphicsPdfPageOptions.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\XGraphicsUnit.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\XGraphicTargetContext.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\XKnownColor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\XLineAlignment.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\XLinearGradientMode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\XLineCap.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\XLineJoin.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\XMatrixOrder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\XPageDirection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\XParagraphAlignment.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\XSmoothingMode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\XStringAlignment.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Enums\Zoom.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TableTagNames.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="StrongnameKey.snk" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -30,6 +30,7 @@
 
 using System;
 using MigraDoc.DocumentObjectModel;
+using PdfSharp.Core.Enums;
 using PdfSharp.Drawing;
 using MigraDoc.DocumentObjectModel.Shapes;
 

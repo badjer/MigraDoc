@@ -34,6 +34,7 @@ using System.IO;
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.DocumentObjectModel.Visitors;
 using MigraDoc.Rendering.Resources;
+using PdfSharp.Core.Enums;
 using PdfSharp.Pdf;
 using PdfSharp.Drawing;
 

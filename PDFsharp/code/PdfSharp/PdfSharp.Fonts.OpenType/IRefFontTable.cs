@@ -30,6 +30,7 @@
 using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using PdfSharp.Core;
 using PdfSharp.Drawing;
 using PdfSharp.Internal;
 

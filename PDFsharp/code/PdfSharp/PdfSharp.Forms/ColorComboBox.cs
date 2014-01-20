@@ -32,6 +32,7 @@ using System.Collections;
 using System.Text;
 using System.Drawing;
 using System.Windows.Forms;
+using PdfSharp.Core.Enums;
 using PdfSharp.Drawing;
 
 namespace PdfSharp.Forms

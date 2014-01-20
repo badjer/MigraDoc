@@ -30,6 +30,8 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
+using PdfSharp.Core.Enums;
+
 namespace MigraDoc.DocumentObjectModel.Shapes.Charts
 {
   /// <summary>

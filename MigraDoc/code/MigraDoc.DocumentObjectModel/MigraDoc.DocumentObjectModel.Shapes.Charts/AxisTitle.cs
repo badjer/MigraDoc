@@ -31,6 +31,7 @@
 #endregion
 
 using MigraDoc.DocumentObjectModel.Tables;
+using PdfSharp.Core.Enums;
 
 namespace MigraDoc.DocumentObjectModel.Shapes.Charts
 {

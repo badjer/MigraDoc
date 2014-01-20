@@ -37,6 +37,7 @@ using System.Drawing.Drawing2D;
 #endif
 #if WPF
 #endif
+using PdfSharp.Core.Enums;
 using PdfSharp.Pdf;
 using PdfSharp.Pdf.Advanced;
 using PdfSharp.Pdf.Internal;
