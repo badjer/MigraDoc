@@ -30,10 +30,6 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
-using MigraDoc.DocumentObjectModel.Internals;
-
-
 namespace MigraDoc.DocumentObjectModel.Shapes
 {
   /// <summary>
@@ -114,7 +110,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes
     /// </summary>
     public RelativeVertical? RelativeVertical
     {
-      get { return (RelativeVertical)this.relativeVertical; }
+      get { return relativeVertical; }
       set { this.relativeVertical = value; }
     }
     
@@ -125,7 +121,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes
     /// </summary>
     public RelativeHorizontal? RelativeHorizontal
     {
-      get { return (RelativeHorizontal)this.relativeHorizontal; }
+      get { return this.relativeHorizontal; }
       set { this.relativeHorizontal = value; }
     }
     

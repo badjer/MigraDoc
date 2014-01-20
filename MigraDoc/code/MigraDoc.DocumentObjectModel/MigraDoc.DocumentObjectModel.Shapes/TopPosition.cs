@@ -31,14 +31,13 @@
 #endregion
 
 using System;
-using MigraDoc.DocumentObjectModel.Internals;
 
 namespace MigraDoc.DocumentObjectModel.Shapes
 {
   /// <summary>
   /// Represents the top position in a shape.
   /// </summary>
-  public struct TopPosition : INullableValue
+  public struct TopPosition
   {
     /// <summary>
     /// Initializes a new instance of TopPosition from Unit.
@@ -119,68 +118,10 @@ namespace MigraDoc.DocumentObjectModel.Shapes
       return new TopPosition(unit);
     }
 
-    /// <summary>
-    /// Sets shapeposition enum and resets position.
-    /// </summary>
-    private void SetFromEnum(ShapePosition shapePosition)
-    {
-      if (!IsValid(shapePosition))
-        throw new ArgumentException(DomSR.InvalidEnumForTopPosition);
-
-      this.shapePosition = shapePosition;
-      this.position = Unit.NullValue;
-    }
-
-    /// <summary>
-    /// Sets the Position from a Unit.
-    /// </summary>
-    private void SetFromUnit(Unit unit)
-    {
-      this.shapePosition = ShapePosition.Undefined;
-      this.position = unit;
-    }
-
-    /// <summary>
-    /// Sets the Position from an object.
-    /// </summary>
-    void INullableValue.SetValue(object value)
-    {
-      if (value == null)
-        throw new ArgumentNullException("value");
-
-      if (value is ShapePosition)
-        SetFromEnum((ShapePosition)value);
-      else if (value is string && Enum.IsDefined(typeof(ShapePosition), value))
-        SetFromEnum((ShapePosition)Enum.Parse(typeof(ShapePosition), (string)value));
-      else
-        SetFromUnit(value.ToString());
-
-      this.notNull = true;
-    }
-
-    /// <summary>
-    /// Gets the Position as Unit or ShapePosition.
-    /// </summary>
-    object INullableValue.GetValue()
-    {
-      if (this.shapePosition == ShapePosition.Undefined)
-        return this.position;
-
-      return this.shapePosition;
-    }
-
-    /// <summary>
-    /// Resets this instance, i.e. IsNull() will return true afterwards.
-    /// </summary>
-    void INullableValue.SetNull()
-    {
-      this = new TopPosition();
-    }
-
-    /// <summary>
+	  /// <summary>
     /// Determines whether this instance is null (not set).
     /// </summary>
-    bool INullableValue.IsNull
+    public bool IsNull
     {
       get { return !this.notNull; }
     }

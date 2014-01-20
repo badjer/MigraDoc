@@ -30,10 +30,6 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
-using System.Collections;
-using MigraDoc.DocumentObjectModel.Internals;
-
 namespace MigraDoc.DocumentObjectModel.Shapes.Charts
 {
   /// <summary>

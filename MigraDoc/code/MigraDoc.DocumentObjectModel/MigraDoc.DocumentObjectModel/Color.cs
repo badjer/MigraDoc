@@ -34,8 +34,6 @@ using System;
 using System.Diagnostics;
 using System.Collections;
 using System.Globalization;
-using System.Reflection;
-using MigraDoc.DocumentObjectModel.Internals;
 
 namespace MigraDoc.DocumentObjectModel
 {
@@ -43,7 +41,7 @@ namespace MigraDoc.DocumentObjectModel
   /// The Color class represents an ARGB color value.
   /// </summary>
   [DebuggerDisplay("(A={A}, R={R}, G={G}, B={B} C={C}, M={M}, Y={Y}, K={K})")]
-  public struct Color : INullableValue
+  public struct Color
   {
     /// <summary>
     /// Initializes a new instance of the Color class.
@@ -148,41 +146,6 @@ namespace MigraDoc.DocumentObjectModel
     /// Determines whether this color is empty.
     /// </summary>
     public bool IsEmpty
-    {
-      get { return this == Color.Empty; }
-    }
-
-    /// <summary>
-    /// Returns the value.
-    /// </summary>
-    object INullableValue.GetValue()
-    {
-      return this;
-    }
-
-    /// <summary>
-    /// Sets the given value.
-    /// </summary>
-    void INullableValue.SetValue(object value)
-    {
-      if (value is uint)
-        this.argb = (uint)value;
-      else
-        this = Color.Parse(value.ToString());
-    }
-
-    /// <summary>
-    /// Resets this instance, i.e. IsNull() will return true afterwards.
-    /// </summary>
-    void INullableValue.SetNull()
-    {
-      this = Color.Empty;
-    }
-
-    /// <summary>
-    /// Determines whether this instance is null (not set).
-    /// </summary>
-    bool INullableValue.IsNull
     {
       get { return this == Color.Empty; }
     }

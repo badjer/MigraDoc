@@ -348,9 +348,9 @@ namespace MigraDoc.DocumentObjectModel.Visitors
 
       LineFormat refLineFormat = new LineFormat();
       refLineFormat.width = 0.15;
-      if (axis.hasMajorGridlines.Value && axis.majorGridlines != null)
+      if (axis.HasMajorGridlines && axis.majorGridlines != null)
         FlattenLineFormat(axis.majorGridlines.lineFormat, refLineFormat);
-      if (axis.hasMinorGridlines.Value && axis.minorGridlines != null)
+      if (axis.HasMinorGridlines && axis.minorGridlines != null)
         FlattenLineFormat(axis.minorGridlines.lineFormat, refLineFormat);
 
       refLineFormat.width = 0.4;

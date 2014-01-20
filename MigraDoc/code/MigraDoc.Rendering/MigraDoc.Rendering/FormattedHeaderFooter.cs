@@ -28,12 +28,9 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
 using System.Collections;
 
 using MigraDoc.DocumentObjectModel;
-using MigraDoc.DocumentObjectModel.Internals;
-
 using PdfSharp.Drawing;
 
 namespace MigraDoc.Rendering

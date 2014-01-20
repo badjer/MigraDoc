@@ -28,11 +28,8 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
 using MigraDoc.DocumentObjectModel;
-using MigraDoc.DocumentObjectModel.Internals;
 using System.Collections;
-using System.Collections.Specialized;
 
 namespace MigraDoc.Rendering
 {

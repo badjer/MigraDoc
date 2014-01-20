@@ -32,7 +32,6 @@
 
 using System;
 using System.Diagnostics;
-using MigraDoc.DocumentObjectModel.Internals;
 
 namespace MigraDoc.DocumentObjectModel
 {
@@ -40,7 +39,7 @@ namespace MigraDoc.DocumentObjectModel
   /// An Unit consist of a numerical value and an UnitType like Centimeter, Millimeter or Inch.
   /// Several conversion between different measures are supported.
   /// </summary>
-  public struct Unit : IFormattable, INullableValue
+  public struct Unit : IFormattable
   {
     /// <summary>
     /// Initializes a new instance of the Unit class with type set to point.
@@ -67,50 +66,6 @@ namespace MigraDoc.DocumentObjectModel
     /// Determines whether this instance is empty.
     /// </summary>
     public bool IsEmpty
-    {
-      get { return IsNull; }
-    }
-
-    /// <summary>
-    /// Gets the value of the unit.
-    /// </summary>
-    object INullableValue.GetValue()
-    {
-      return this;
-    }
-
-    /// <summary>
-    /// Sets the unit to the given value.
-    /// </summary>
-    void INullableValue.SetValue(object value)
-    {
-      if (value == null)
-        throw new ArgumentNullException("value");
-
-      if (value is Unit)
-        this = (Unit)value;
-      else
-        this = value.ToString();
-    }
-
-    /// <summary>
-    /// Resets this instance,
-    /// i.e. IsNull() will return true afterwards.
-    /// </summary>
-    void INullableValue.SetNull()
-    {
-      _value = 0;
-      _type = UnitType.Point;
-      _initialized = false;
-    }
-
-    // Explicit interface implementations cannot contain access specifiers, i.e. they are accessible by a
-    // cast operator only, e.g. ((IDomValue)obj).IsNull.
-    // Therefore the second IsNull-Property is used as a handy shortcut.
-    /// <summary>
-    /// Determines whether this instance is null (not set).
-    /// </summary>
-    bool INullableValue.IsNull
     {
       get { return IsNull; }
     }

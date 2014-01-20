@@ -30,8 +30,6 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using MigraDoc.DocumentObjectModel.Internals;
-
 namespace MigraDoc.DocumentObjectModel.Shapes
 {
   /// <summary>
@@ -100,7 +98,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes
     /// </summary>
     public DashStyle? DashStyle
     {
-      get { return (DashStyle)this.dashStyle; }
+      get { return this.dashStyle; }
       set { this.dashStyle = value; }
     }
     
@@ -109,9 +107,9 @@ namespace MigraDoc.DocumentObjectModel.Shapes
     /// <summary>
     /// Gets or sets the style of the line.
     /// </summary>
-    public LineStyle Style
+    public LineStyle? Style
     {
-      get { return (LineStyle)this.style; }
+      get { return this.style; }
       set { this.style = value; }
     }
     

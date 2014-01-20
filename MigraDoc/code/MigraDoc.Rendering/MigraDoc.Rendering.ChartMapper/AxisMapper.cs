@@ -65,8 +65,8 @@ namespace MigraDoc.Rendering.ChartMapper
         if (domAxis.title.font != null)
           FontMapper.Map(axis.Title.Font, domAxis.Title.Font);
         axis.Title.Orientation = domAxis.Title.Orientation.Value;
-        axis.Title.Alignment = (HorizontalAlignment)domAxis.Title.Alignment;
-        axis.Title.VerticalAlignment = (VerticalAlignment)domAxis.Title.VerticalAlignment;
+        axis.Title.Alignment = (HorizontalAlignment)domAxis.Title.Alignment.GetValueOrDefault();
+        axis.Title.VerticalAlignment = (VerticalAlignment)domAxis.Title.VerticalAlignment.GetValueOrDefault();
       }
 
       axis.HasMajorGridlines = domAxis.HasMajorGridlines;

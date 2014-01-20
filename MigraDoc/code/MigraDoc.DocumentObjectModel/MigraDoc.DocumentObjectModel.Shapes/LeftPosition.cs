@@ -31,24 +31,22 @@
 #endregion
 
 using System;
-using MigraDoc.DocumentObjectModel.Internals;
-using MigraDoc.DocumentObjectModel.Shapes;
 
 namespace MigraDoc.DocumentObjectModel.Shapes
 {
   /// <summary>
   /// Represents the left position in a shape.
   /// </summary>
-  public struct LeftPosition : INullableValue
+  public struct LeftPosition
   {
     /// <summary>
     /// Initializes a new instance of the LeftPosition class from Unit.
     /// </summary>
     private LeftPosition(Unit value)
     {
-      this.shapePosition = ShapePosition.Undefined;
-      this.position = value;
-      this.notNull = !value.IsNull;
+      shapePosition = ShapePosition.Undefined;
+      position = value;
+      notNull = !value.IsNull;
     }
 
     /// <summary>
@@ -59,77 +57,17 @@ namespace MigraDoc.DocumentObjectModel.Shapes
       if (!(value == ShapePosition.Undefined || IsValid(value)))
         throw new ArgumentException(DomSR.InvalidEnumForLeftPosition);
 
-      this.shapePosition = value;
-      this.position = Unit.NullValue;
-      this.notNull = (value != ShapePosition.Undefined);
+      shapePosition = value;
+      position = Unit.NullValue;
+      notNull = (value != ShapePosition.Undefined);
     }
 
-    /// <summary>
-    /// Sets shapeposition enum and resets position.
-    /// </summary>
-    private void SetFromEnum(ShapePosition shapePosition)
-    {
-      if (!IsValid(shapePosition))
-        throw new ArgumentException(DomSR.InvalidEnumForLeftPosition);
-
-      this.shapePosition = shapePosition;
-      this.position = Unit.NullValue;
-    }
-
-    /// <summary>
-    /// Sets the Position from a Unit.
-    /// </summary>
-    private void SetFromUnit(Unit unit)
-    {
-      this.shapePosition = ShapePosition.Undefined;
-      this.position = unit;
-    }
-
-    /// <summary>
-    /// Sets the Position from an object.
-    /// </summary>
-    void INullableValue.SetValue(object value)
-    {
-      //REVIEW KlPo4KlPo: Code-Verdopplung in TopPostion/LeftPosition
-      if (value == null)
-        throw new ArgumentNullException("value");
-
-      if (value is ShapePosition)
-        SetFromEnum((ShapePosition)value);
-
-      else if (value is string && Enum.IsDefined(typeof(ShapePosition), value))
-        SetFromEnum((ShapePosition)Enum.Parse(typeof(ShapePosition), (string)value));
-      else
-        SetFromUnit(value.ToString());
-
-      this.notNull = true;
-    }
-
-    /// <summary>
-    /// Gets the value of the position.
-    /// </summary>
-    object INullableValue.GetValue()
-    {
-      if (this.shapePosition == ShapePosition.Undefined)
-        return this.position;
-
-      return this.shapePosition;
-    }
-
-    /// <summary>
-    /// Resets this instance, i.e. IsNull() will return true afterwards.
-    /// </summary>
-    void INullableValue.SetNull()
-    {
-      this = new LeftPosition();
-    }
-
-    /// <summary>
+	  /// <summary>
     /// Determines whether this instance is null (not set).
     /// </summary>
-    bool INullableValue.IsNull
+    public bool IsNull
     {
-      get { return !this.notNull; }
+      get { return !notNull; }
     }
 
     /// <summary>
@@ -137,7 +75,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes
     /// </summary>
     public Unit Position
     {
-      get { return this.position; }
+      get { return position; }
     }
 
     /// <summary>
@@ -145,7 +83,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes
     /// </summary>
     public ShapePosition ShapePosition
     {
-      get { return this.shapePosition; }
+      get { return shapePosition; }
     }
     internal ShapePosition shapePosition;
     internal Unit position;
@@ -214,7 +152,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes
     /// </summary>
     public static LeftPosition Parse(string value)
     {
-      if (value == null || value.Length == 0)
+      if (string.IsNullOrEmpty(value))
         throw new ArgumentNullException("value");
 
       value = value.Trim();

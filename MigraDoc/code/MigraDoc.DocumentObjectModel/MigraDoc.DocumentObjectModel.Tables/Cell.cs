@@ -30,7 +30,6 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using MigraDoc.DocumentObjectModel.Internals;
 using MigraDoc.DocumentObjectModel.Visitors;
 using MigraDoc.DocumentObjectModel.Shapes;
 using MigraDoc.DocumentObjectModel.Shapes.Charts;

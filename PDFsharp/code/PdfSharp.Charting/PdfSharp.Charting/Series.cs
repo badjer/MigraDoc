@@ -219,13 +219,7 @@ namespace PdfSharp.Charting
     public ChartType ChartType
     {
       get {return this.chartType;}
-      set
-      {
-        if (!Enum.IsDefined(typeof(ChartType), value))
-          throw new InvalidEnumArgumentException("value", (int)value, typeof(ChartType));
-
-        this.chartType = value;
-      }
+      set { this.chartType = value; }
     }
     internal ChartType chartType;
 

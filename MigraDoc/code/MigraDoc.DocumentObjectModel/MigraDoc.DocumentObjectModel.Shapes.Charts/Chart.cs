@@ -30,7 +30,6 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using MigraDoc.DocumentObjectModel.Internals;
 using MigraDoc.DocumentObjectModel.Visitors;
 
 namespace MigraDoc.DocumentObjectModel.Shapes.Charts
@@ -157,7 +156,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
     /// </summary>
     public ChartType? Type
     {
-      get { return (ChartType)this.type; }
+      get { return this.type; }
       set { this.type = value; }
     }
     
@@ -452,7 +451,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
     /// </summary>
     public BlankType? DisplayBlanksAs
     {
-      get { return (BlankType)this.displayBlanksAs; }
+      get { return this.displayBlanksAs; }
       set { this.displayBlanksAs = value; }
     }
 

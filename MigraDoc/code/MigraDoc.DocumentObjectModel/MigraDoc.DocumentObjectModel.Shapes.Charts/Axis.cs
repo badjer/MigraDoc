@@ -30,10 +30,6 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
-using System.ComponentModel;
-using MigraDoc.DocumentObjectModel.Internals;
-
 namespace MigraDoc.DocumentObjectModel.Shapes.Charts
 {
   /// <summary>
@@ -277,7 +273,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
       set { this.hasMajorGridlines = value; }
     }
     
-    internal bool? hasMajorGridlines;
+    private bool? hasMajorGridlines;
 
     /// <summary>
     /// Gets or sets, whether the axis has a secondary gridline object.
@@ -288,7 +284,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes.Charts
       set { this.hasMinorGridlines = value; }
     }
 
-	internal bool? hasMinorGridlines;
+	private bool? hasMinorGridlines;
     #endregion
 
     /// <summary>

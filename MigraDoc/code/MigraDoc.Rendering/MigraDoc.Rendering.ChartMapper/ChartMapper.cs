@@ -52,7 +52,7 @@ namespace MigraDoc.Rendering.ChartMapper
       chartFrame.Size = new XSize(domChart.Width.Point, domChart.Height.Point);
       chartFrame.Location = new XPoint(domChart.Left.Position.Point, domChart.Top.Position.Point);
 
-      Chart chart = new Chart((ChartType)domChart.Type);
+      Chart chart = new Chart((ChartType)domChart.Type.GetValueOrDefault());
 
       if (domChart.xAxis != null)
         AxisMapper.Map(chart.XAxis, domChart.XAxis);
@@ -65,7 +65,7 @@ namespace MigraDoc.Rendering.ChartMapper
 
       LegendMapper.Map(chart, domChart);
 
-      chart.DisplayBlanksAs = (BlankType)domChart.DisplayBlanksAs;
+      chart.DisplayBlanksAs = (BlankType)domChart.DisplayBlanksAs.GetValueOrDefault();
       chart.HasDataLabel = domChart.HasDataLabel;
       if (domChart.dataLabel != null)
         DataLabelMapper.Map(chart.DataLabel, domChart.DataLabel);
