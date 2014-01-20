@@ -616,7 +616,7 @@ namespace MigraDoc.DocumentObjectModel.Visitors
           col.width = columns.width;
 
         if (col.width.IsNull)
-          col.width = "2.5cm";
+          col.width = Unit.FromCentimeter(2.5);
       }
     }
 

@@ -468,6 +468,7 @@ namespace MigraDoc.DocumentObjectModel
       }
 
       unit._value = 1;
+
       try
       {
         unit._value = float.Parse(value.Substring(0, valLen).Trim(), System.Globalization.CultureInfo.InvariantCulture);

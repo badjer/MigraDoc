@@ -348,26 +348,26 @@ namespace MigraDoc.DocumentObjectModel
     {
       get
       {
-        if (PageSetup.defaultPageSetup == null)
+        if (defaultPageSetup == null)
         {
-          PageSetup.defaultPageSetup = new PageSetup();
-		  PageSetup.defaultPageSetup.PageFormat = DocumentObjectModel.PageFormat.A4;
-          PageSetup.defaultPageSetup.SectionStart = BreakType.BreakNextPage;
-          PageSetup.defaultPageSetup.Orientation = MigraDoc.DocumentObjectModel.Orientation.Portrait;
-          PageSetup.defaultPageSetup.PageWidth = "21cm";
-          PageSetup.defaultPageSetup.PageHeight = "29.7cm";
-          PageSetup.defaultPageSetup.TopMargin = "2.5cm";
-          PageSetup.defaultPageSetup.BottomMargin = "2cm";
-          PageSetup.defaultPageSetup.LeftMargin = "2.5cm";
-          PageSetup.defaultPageSetup.RightMargin = "2.5cm";
-          PageSetup.defaultPageSetup.HeaderDistance = "1.25cm";
-          PageSetup.defaultPageSetup.FooterDistance = "1.25cm";
-          PageSetup.defaultPageSetup.OddAndEvenPagesHeaderFooter = false;
-          PageSetup.defaultPageSetup.DifferentFirstPageHeaderFooter = false;
-          PageSetup.defaultPageSetup.MirrorMargins = false;
-          PageSetup.defaultPageSetup.HorizontalPageBreak = false;
+          defaultPageSetup = new PageSetup();
+		  defaultPageSetup.PageFormat = DocumentObjectModel.PageFormat.A4;
+          defaultPageSetup.SectionStart = BreakType.BreakNextPage;
+          defaultPageSetup.Orientation = DocumentObjectModel.Orientation.Portrait;
+          defaultPageSetup.PageWidth = Unit.FromCentimeter(21);
+          defaultPageSetup.PageHeight = Unit.FromCentimeter(29.7);
+          defaultPageSetup.TopMargin = Unit.FromCentimeter(2.5);
+          defaultPageSetup.BottomMargin = Unit.FromCentimeter(2);
+          defaultPageSetup.LeftMargin = Unit.FromCentimeter(2.5);
+          defaultPageSetup.RightMargin = Unit.FromCentimeter(2.5);
+          defaultPageSetup.HeaderDistance =  Unit.FromCentimeter(1.25);
+          defaultPageSetup.FooterDistance =  Unit.FromCentimeter(1.25);
+          defaultPageSetup.OddAndEvenPagesHeaderFooter = false;
+          defaultPageSetup.DifferentFirstPageHeaderFooter = false;
+          defaultPageSetup.MirrorMargins = false;
+          defaultPageSetup.HorizontalPageBreak = false;
 #if DEBUG
-          PageSetup.defaultPageSetupClone = PageSetup.defaultPageSetup.Clone();
+          defaultPageSetupClone = defaultPageSetup.Clone();
 #endif
         }
 #if DEBUG

@@ -57,14 +57,6 @@ namespace MigraDoc.DocumentObjectModel.Visitors
 		/// </summary>
 		public MergedCellList(Table table)
 		{
-			Init(table);
-		}
-
-		/// <summary>
-		/// Initializes this instance from a table.
-		/// </summary>
-		private void Init(Table table)
-		{
 			for (int rwIdx = 0; rwIdx < table.Rows.Count; ++rwIdx)
 			{
 				for (int clmIdx = 0; clmIdx < table.Columns.Count; ++clmIdx)

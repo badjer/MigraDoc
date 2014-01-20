@@ -31,141 +31,125 @@
 using System;
 using System.Resources;
 using System.Reflection;
-using System.Text.RegularExpressions;
 
 namespace MigraDoc.Rendering.Resources
 {
-  /// <summary>
-  /// Provides diagnostic messages taken from the resources.
-  /// </summary>
-  internal static class Messages
-  {
-    internal static string NumberTooLargeForRoman(int number)
-    {
-      return FormatMessage(IDs.NumberTooLargeForRoman, number);
-    }
+	/// <summary>
+	/// Provides diagnostic messages taken from the resources.
+	/// </summary>
+	internal static class Messages
+	{
+		internal static string NumberTooLargeForRoman(int number)
+		{
+			return FormatMessage(IDs.NumberTooLargeForRoman, number);
+		}
 
-    internal static string NumberTooLargeForLetters(int number)
-    {
-      return FormatMessage(IDs.NumberTooLargeForLetters, number);
-    }
+		internal static string NumberTooLargeForLetters(int number)
+		{
+			return FormatMessage(IDs.NumberTooLargeForLetters, number);
+		}
 
-    internal static string DisplayEmptyImageSize
-    {
-      get { return FormatMessage(IDs.DisplayEmptyImageSize); }
-    }
+		internal static string DisplayEmptyImageSize
+		{
+			get { return FormatMessage(IDs.DisplayEmptyImageSize); }
+		}
 
-    internal static string DisplayImageFileNotFound
-    {
-      get { return FormatMessage(IDs.DisplayImageFileNotFound); }
-    }
+		internal static string DisplayImageFileNotFound
+		{
+			get { return FormatMessage(IDs.DisplayImageFileNotFound); }
+		}
 
-    internal static string DisplayInvalidImageType
-    {
-      get { return FormatMessage(IDs.DisplayInvalidImageType); }
-    }
+		internal static string DisplayInvalidImageType
+		{
+			get { return FormatMessage(IDs.DisplayInvalidImageType); }
+		}
 
-    internal static string DisplayImageNotRead
-    {
-      get { return FormatMessage(IDs.DisplayImageNotRead); }
-    }
+		internal static string DisplayImageNotRead
+		{
+			get { return FormatMessage(IDs.DisplayImageNotRead); }
+		}
 
-    internal static string PropertyNotSetBefore(string propertyName, string functionName)
-    {
-      return FormatMessage(IDs.PropertyNotSetBefore, propertyName, functionName);
-    }
+		internal static string PropertyNotSetBefore(string propertyName, string functionName)
+		{
+			return FormatMessage(IDs.PropertyNotSetBefore, propertyName, functionName);
+		}
 
-    internal static string BookmarkNotDefined(string bookmarkName)
-    {
-      return FormatMessage(IDs.BookmarkNotDefined, bookmarkName);
-    }
+		internal static string BookmarkNotDefined(string bookmarkName)
+		{
+			return FormatMessage(IDs.BookmarkNotDefined, bookmarkName);
+		}
 
-    internal static string ImageNotFound(string imageName)
-    {
-      return FormatMessage(IDs.ImageNotFound, imageName);
-    }
+		internal static string ImageNotFound(string imageName)
+		{
+			return FormatMessage(IDs.ImageNotFound, imageName);
+		}
 
-    internal static string InvalidImageType(string type)
-    {
-      return FormatMessage(IDs.InvalidImageType, type);
-    }
+		internal static string InvalidImageType(string type)
+		{
+			return FormatMessage(IDs.InvalidImageType, type);
+		}
 
-    internal static string ImageNotReadable(string imageName, string innerException)
-    {
-      return FormatMessage(IDs.ImageNotReadable, imageName, innerException);
-    }
+		internal static string ImageNotReadable(string imageName, string innerException)
+		{
+			return FormatMessage(IDs.ImageNotReadable, imageName, innerException);
+		}
 
-    internal static string EmptyImageSize
-    {
-      get
-      {
-        return FormatMessage(IDs.EmptyImageSize);
-      }
-    }
+		internal static string EmptyImageSize
+		{
+			get
+			{
+				return FormatMessage(IDs.EmptyImageSize);
+			}
+		}
 
-    internal static string ObjectNotRenderable
-    {
-      get
-      {
-        return FormatMessage(IDs.ObjectNotRenderable);
-      }
-    }
-
-
-    private enum IDs
-    {
-      PropertyNotSetBefore,
-      BookmarkNotDefined,
-      ImageNotFound,
-      InvalidImageType,
-      ImageNotReadable,
-      EmptyImageSize,
-      ObjectNotRenderable,
-      NumberTooLargeForRoman,
-      NumberTooLargeForLetters,
-      DisplayEmptyImageSize,
-      DisplayImageFileNotFound,
-      DisplayInvalidImageType,
-      DisplayImageNotRead
-    }
-
-    private static ResourceManager ResourceManager
-    {
-      get
-      {
-        if (resourceManager == null)
-          resourceManager = new ResourceManager("MigraDoc.Rendering.Resources.Messages", Assembly.GetExecutingAssembly());
-        return resourceManager;
-      }
-    }
-    private static ResourceManager resourceManager;
+		internal static string ObjectNotRenderable
+		{
+			get
+			{
+				return FormatMessage(IDs.ObjectNotRenderable);
+			}
+		}
 
 
-    private static string FormatMessage(IDs id, params object[] args)
-    {
-      string message;
-      try
-      {
-        message = ResourceManager.GetString(id.ToString());
-        if (message != null)
-        {
-#if DEBUG
-          if (Regex.Matches(message, @"\{[0-9]\}").Count > args.Length)
-          {
-            //TODO too many placeholders or too few args...
-          }
-#endif
-          message = String.Format(message, args);
-        }
-        else
-          message = "<<<error: message not found>>>";
-        return message;
-      }
-      catch (Exception ex)
-      {
-        message = "INTERNAL ERROR while formatting error message: " + ex.ToString();
-      }
-      return message;
-    }
-  }
+		private enum IDs
+		{
+			PropertyNotSetBefore,
+			BookmarkNotDefined,
+			ImageNotFound,
+			InvalidImageType,
+			ImageNotReadable,
+			EmptyImageSize,
+			ObjectNotRenderable,
+			NumberTooLargeForRoman,
+			NumberTooLargeForLetters,
+			DisplayEmptyImageSize,
+			DisplayImageFileNotFound,
+			DisplayInvalidImageType,
+			DisplayImageNotRead
+		}
+
+		private static ResourceManager ResourceManager
+		{
+			get { return _resourceManager ?? (_resourceManager = new ResourceManager("MigraDoc.Rendering.Resources.Messages", Assembly.GetExecutingAssembly())); }
+		}
+
+		private static ResourceManager _resourceManager;
+
+		private static string FormatMessage(IDs id, params object[] args)
+		{
+			string message;
+			try
+			{
+				message = ResourceManager.GetString(id.ToString());
+				message = string.IsNullOrEmpty(message) ? "<<<error: message not found>>>" : string.Format(message, args);
+
+				return message;
+			}
+			catch (Exception ex)
+			{
+				message = "INTERNAL ERROR while formatting error message: " + ex.ToString();
+			}
+			return message;
+		}
+	}
 }
