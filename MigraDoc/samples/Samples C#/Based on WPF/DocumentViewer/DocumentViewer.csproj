@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DocumentViewer</RootNamespace>
     <AssemblyName>DocumentViewer</AssemblyName>
-    <TargetFrameworkVersion>v3.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -41,6 +41,7 @@
     </SccAuxPath>
     <SccProvider>
     </SccProvider>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -52,6 +53,7 @@
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>x86</PlatformTarget>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -61,10 +63,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
@@ -148,6 +152,10 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\PdfSharp.Core\PdfSharp.Core.csproj">
+      <Project>{9e4d41e8-4b14-4718-8626-19bd27350af1}</Project>
+      <Name>PdfSharp.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\..\..\PdfSharp\code\PdfSharp.Charting\PdfSharp.Charting-WPF.csproj">
       <Project>{E6A2734E-0CD6-4210-8AEC-47EE348F8D78}</Project>
       <Name>PdfSharp.Charting-WPF</Name>
@@ -163,10 +171,6 @@
     <ProjectReference Include="..\..\..\..\code\MigraDoc.Rendering\MigraDoc.Rendering-WPF.csproj">
       <Project>{497784DA-4FDD-43E5-BC4E-6702C8F1AEE0}</Project>
       <Name>MigraDoc.Rendering-WPF</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\code\MigraDoc.RtfRendering\MigraDoc.RtfRendering-WPF.csproj">
-      <Project>{00416AAB-3EEE-44A2-923B-86782560CE00}</Project>
-      <Name>MigraDoc.RtfRendering-WPF</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
