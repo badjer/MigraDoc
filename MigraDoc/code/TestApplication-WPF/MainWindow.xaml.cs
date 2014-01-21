@@ -3,6 +3,7 @@ using System.Windows;
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.DocumentObjectModel.Shapes.Charts;
 using MigraDoc.Rendering;
+using PdfSharp.Core.Enums;
 
 namespace TestApplication_WPF
 {
@@ -78,7 +79,7 @@ namespace TestApplication_WPF
         private static void OpenPdf(Document doc)
         {
             var filename = "c:\\temp\\test.pdf";
-            PdfDocumentRenderer pdf = new PdfDocumentRenderer(true, PdfSharp.Pdf.PdfFontEmbedding.None);
+            PdfDocumentRenderer pdf = new PdfDocumentRenderer(true, PdfFontEmbedding.None);
             pdf.Document = doc;
             pdf.RenderDocument();
             pdf.Save(filename);

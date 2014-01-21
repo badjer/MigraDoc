@@ -29,7 +29,7 @@
     </UpgradeBackupLocation>
     <SignAssembly>true</SignAssembly>
     <OldToolsVersion>3.5</OldToolsVersion>
-    <TargetFrameworkVersion>v3.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -53,6 +53,7 @@
     </SccAuxPath>
     <SccProvider>
     </SccProvider>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>bin\Debug\</OutputPath>
@@ -76,6 +77,7 @@
     <DebugType>full</DebugType>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -99,6 +101,7 @@
     <DebugType>none</DebugType>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="PresentationCore">
@@ -117,6 +120,7 @@
       <Name>System.Drawing</Name>
     </Reference>
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
@@ -131,18 +135,13 @@
     <Compile Include="MigraDoc.Rendering.Forms\DocumentPreviewWpf.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MigraDoc.Rendering.Forms\enums\Zoom.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="MigraDoc.Rendering.Printing\MigraDocPrintDocument.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="MigraDoc.Rendering.Windows\DocumentPreview.xaml.cs">
       <DependentUpon>DocumentPreview.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MigraDoc.Rendering.Windows\enums\Zoom.cs" />
     <Compile Include="MigraDoc.Rendering\ColorHelper.cs" />
-    <Compile Include="MigraDoc.Rendering\enums\PageRenderOptions.cs" />
     <Compile Include="VersionInfo.cs" />
     <Compile Include="MigraDoc.Rendering.ChartMapper\AxisMapper.cs">
       <SubType>Code</SubType>
@@ -191,21 +190,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MigraDoc.Rendering\DocumentRenderer.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.Rendering\enums\ElementAlignment.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.Rendering\enums\Floating.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.Rendering\enums\HorizontalReference.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.Rendering\enums\ImageFailure.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MigraDoc.Rendering\enums\VerticalReference.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MigraDoc.Rendering\FieldInfos.cs">
@@ -333,6 +317,10 @@
     <None Include="StrongnameKey.snk" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\PdfSharp.Core\PdfSharp.Core.csproj">
+      <Project>{9e4d41e8-4b14-4718-8626-19bd27350af1}</Project>
+      <Name>PdfSharp.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\PdfSharp\code\PdfSharp.Charting\PdfSharp.Charting-WPF.csproj">
       <Project>{E6A2734E-0CD6-4210-8AEC-47EE348F8D78}</Project>
       <Name>PdfSharp.Charting-WPF</Name>

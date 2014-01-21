@@ -37,7 +37,6 @@ using System.Windows;
 using System.Windows.Media;
 using PdfSharp.Core.Enums;
 using PdfSharp.Fonts;
-
 #endif
 
 namespace PdfSharp.Drawing

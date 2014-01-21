@@ -30,25 +30,39 @@
 #endregion
 
 using System;
-using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Globalization;
-using System.Windows;
-using System.Windows.Media;
 using PdfSharp.Core.Enums;
 using PdfSharp.Drawing.BarCodes;
 using PdfSharp.Drawing.Pdf;
-using PdfSharp.Internal;
 using PdfSharp.Pdf;
 using PdfSharp.Pdf.Advanced;
+
+using Point = System.Drawing.Point;
+using Size = System.Drawing.Size;
+
+#if WPF
+using System.Windows;
+using System.Windows.Media;
 using Brush = System.Windows.Media.Brush;
 using Brushes = System.Windows.Media.Brushes;
 using Matrix = System.Windows.Media.Matrix;
 using Pen = System.Windows.Media.Pen;
-using Point = System.Drawing.Point;
-using Size = System.Drawing.Size;
+#endif
+
+#if DEBUG
+using System.Diagnostics;
+#endif
+
+#if GDI && !WPF
+using System.IO;
+#endif
+
+#if !SILVERLIGHT
+using PdfSharp.Internal;
+#endif
 
 // ReSharper disable RedundantNameQualifier
 
@@ -3352,8 +3366,8 @@ namespace PdfSharp.Drawing
       //FormattedText formattedText = new FormattedText(text, new CultureInfo("en-us"),
       //  FlowDirection.LeftToRight, font.typeface, font.Size, System.Windows.Media.Brushes.Black);
       FormattedText formattedText = FontHelper.CreateFormattedText(text, font.typeface, font.Size, System.Windows.Media.Brushes.Black);
-      var size1 = FontHelper14.MeasureString(text, font, null);
-      var size2 = new XSize(formattedText.WidthIncludingTrailingWhitespace, formattedText.Height);
+      XSize size1 = FontHelper14.MeasureString(text, font, null);
+      XSize size2 = new XSize(formattedText.WidthIncludingTrailingWhitespace, formattedText.Height);
       return new XSize(size1.Width, size2.Height);
       //return new XSize(formattedText.WidthIncludingTrailingWhitespace, formattedText.Height);
 #else

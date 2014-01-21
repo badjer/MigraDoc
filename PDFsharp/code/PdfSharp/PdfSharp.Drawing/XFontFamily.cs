@@ -32,8 +32,6 @@
 using System.Diagnostics;
 using System.Drawing;
 using PdfSharp.Core.Enums;
-#if GDI
-#endif
 
 // WPFHACK
 #pragma warning disable 162

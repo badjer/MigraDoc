@@ -29,10 +29,11 @@
 
 #endregion
 
+using PdfSharp.Core.Enums;
+
 #if GDI
 using System.Drawing;
 using PdfSharp.Core.Enums;
-
 #endif
 
 namespace PdfSharp.Drawing

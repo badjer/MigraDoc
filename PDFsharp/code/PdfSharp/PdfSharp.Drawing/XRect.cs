@@ -36,10 +36,6 @@ using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Windows;
 using PdfSharp.Internal;
-#if GDI
-#endif
-#if WPF
-#endif
 
 namespace PdfSharp.Drawing
 {

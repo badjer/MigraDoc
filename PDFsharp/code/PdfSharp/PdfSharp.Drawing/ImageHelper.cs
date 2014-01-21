@@ -29,16 +29,16 @@
 
 #endregion
 
+#if WPF
+using System.Windows.Media.Imaging;
+#endif
+
+#if WPF && GDI
+using System.Drawing;
+using System.IO;
+using System.Drawing.Imaging;
 using System;
 using System.Diagnostics;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
-using System.Windows.Media.Imaging;
-#if GDI
-#endif
-#if WPF
-
 #endif
 
 namespace PdfSharp.Drawing

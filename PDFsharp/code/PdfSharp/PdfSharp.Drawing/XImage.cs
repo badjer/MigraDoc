@@ -34,13 +34,15 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Windows.Media.Imaging;
-using PdfSharp.Internal;
 using PdfSharp.Pdf.Advanced;
 using PdfSharp.Pdf.IO;
-#if GDI
-#endif
+
 #if WPF
+using System.Windows.Media.Imaging;
+#endif
+
+#if GDI && WPF
+using PdfSharp.Internal;
 #endif
 
 // WPFHACK

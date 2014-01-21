@@ -35,10 +35,9 @@ using System.Drawing;
 using System.Globalization;
 using System.Runtime.InteropServices;
 using PdfSharp.Internal;
-using Size = System.Windows.Size;
-#if GDI
-#endif
+
 #if WPF
+using Size = System.Windows.Size;
 #endif
 
 namespace PdfSharp.Drawing

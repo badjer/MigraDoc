@@ -36,6 +36,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Windows;
 //using System.Windows.Forms;
+using PdfSharp.Core.Enums;
 using PdfSharp.Drawing;
 using MigraDoc.Rendering;
 
@@ -53,7 +54,7 @@ namespace MigraDoc.Rendering.Forms
   /// Represents a Windows control to display a MigraDoc document.
   /// </summary>
   [Obsolete("This class won't be implemented; it will be removed soon.")]
-  public class DocumentPreview : System.Windows.Window
+  public class DocumentPreview : Window
   {
     //private PdfSharp.Forms.PagePreview preview;
     //private System.ComponentModel.Container components = null;
@@ -82,7 +83,7 @@ namespace MigraDoc.Rendering.Forms
     //  base.Dispose(disposing);
     //}
 
-    Windows.Zoom GetNewZoomFactor(int currentZoom, bool larger)
+    Zoom GetNewZoomFactor(int currentZoom, bool larger)
     {
       int[] values = new int[]
       {
@@ -91,16 +92,16 @@ namespace MigraDoc.Rendering.Forms
       };
 
       if (currentZoom <= 10 && !larger)
-        return Windows.Zoom.Percent10;
+        return PdfSharp.Core.Enums.Zoom.Percent10;
       else if (currentZoom >= 800 && larger)
-        return Windows.Zoom.Percent800;
+        return PdfSharp.Core.Enums.Zoom.Percent800;
 
       if (larger)
       {
         for (int i = 0; i < values.Length; i++)
         {
           if (currentZoom < values[i])
-            return (Windows.Zoom)values[i];
+			  return (Zoom)values[i];
         }
       }
       else
@@ -108,10 +109,10 @@ namespace MigraDoc.Rendering.Forms
         for (int i = values.Length - 1; i >= 0; i--)
         {
           if (currentZoom > values[i])
-            return (Windows.Zoom)values[i];
+            return (Zoom)values[i];
         }
       }
-      return Windows.Zoom.Percent100;
+	  return PdfSharp.Core.Enums.Zoom.Percent100;
     }
 
     //[DefaultValue((int)BorderStyle.Fixed3D), Description("Determines the style of the border."), Category("Preview Properties")]
@@ -348,10 +349,10 @@ namespace MigraDoc.Rendering.Forms
     /// <summary>
     /// Gets or sets a predefined zoom factor.
     /// </summary>
-    [DefaultValue((int)Forms.Zoom.FullPage), Description("Determines the zoom of the page."), Category("Preview Properties")]
-    public Forms.Zoom Zoom
+    [DefaultValue((int)PdfSharp.Core.Enums.Zoom.FullPage), Description("Determines the zoom of the page."), Category("Preview Properties")]
+	public Zoom Zoom
     {
-      get { return Forms.Zoom.Percent100; }// (Zoom)this.preview.Zoom; }
+		get { return Zoom.Percent100; }// (Zoom)this.preview.Zoom; }
       set
       {
         //if (this.preview.Zoom != (PdfSharp.Forms.Zoom)value)
@@ -365,7 +366,7 @@ namespace MigraDoc.Rendering.Forms
     /// <summary>
     /// Gets or sets an arbitrary zoom factor. The range is from 10 to 800.
     /// </summary>
-    [DefaultValue((int)Forms.Zoom.FullPage), Description("Determines the zoom of the page."), Category("Preview Properties")]
+    [DefaultValue((int)Zoom.FullPage), Description("Determines the zoom of the page."), Category("Preview Properties")]
     public int ZoomPercent
     {
       get { return 100;}// this.preview.ZoomPercent; }

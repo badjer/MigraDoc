@@ -34,7 +34,9 @@ using System;
 using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.IO;
+#if WPF
 using System.Windows.Media.Imaging;
+#endif
 using PdfSharp.Drawing;
 using PdfSharp.Pdf.Filters;
 

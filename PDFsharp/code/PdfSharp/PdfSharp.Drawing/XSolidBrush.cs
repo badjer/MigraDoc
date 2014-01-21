@@ -32,13 +32,11 @@
 using System;
 using System.Diagnostics;
 using System.Drawing;
-using System.Windows.Media;
 using Brush = System.Drawing.Brush;
 using Color = System.Drawing.Color;
-#if GDI
-#endif
-#if WPF
 
+#if WPF
+using System.Windows.Media;
 #endif
 
 namespace PdfSharp.Drawing

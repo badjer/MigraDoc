@@ -31,13 +31,12 @@
 
 using System;
 using System.Drawing.Drawing2D;
-using System.Windows.Media;
 using PdfSharp.Core.Enums;
 using DashStyle = System.Drawing.Drawing2D.DashStyle;
 using Pen = System.Drawing.Pen;
-#if GDI
-#endif
+
 #if WPF
+using System.Windows.Media;
 #endif
 
 namespace PdfSharp.Drawing

@@ -31,8 +31,6 @@
 
 #define VERBOSE_
 
-#if WPF
-#endif
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -40,7 +38,9 @@ using System.Drawing;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
+#if WPF
 using System.Windows.Media;
+#endif
 using PdfSharp.Core;
 using PdfSharp.Core.Enums;
 using PdfSharp.Drawing;

@@ -36,18 +36,17 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Globalization;
 using System.Text;
-using System.Windows.Media;
 using PdfSharp.Core.Enums;
 using PdfSharp.Fonts.OpenType;
 using PdfSharp.Internal;
 using PdfSharp.Pdf;
 using PdfSharp.Pdf.Advanced;
 using PdfSharp.Pdf.Internal;
+
+#if WPF
 using Point = System.Windows.Point;
 using Size = System.Windows.Size;
-#if GDI
-#endif
-#if WPF
+using System.Windows.Media;
 #endif
 
 namespace PdfSharp.Drawing.Pdf

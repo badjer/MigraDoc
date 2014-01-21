@@ -31,7 +31,6 @@
 
 #if GDI
 using System.Drawing.Drawing2D;
-
 #endif
 
 namespace PdfSharp.Drawing

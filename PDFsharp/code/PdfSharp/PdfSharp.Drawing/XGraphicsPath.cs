@@ -30,17 +30,18 @@
 #endregion
 
 using System;
+using PdfSharp.Core.Enums;
+
+#if GDI
+using Size = System.Drawing.Size;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+#endif
+
+#if WPF
 using System.Windows;
 using System.Windows.Media;
-using PdfSharp.Core.Enums;
 using Brushes = System.Windows.Media.Brushes;
-using Point = System.Drawing.Point;
-using Size = System.Drawing.Size;
-#if GDI
-#endif
-#if WPF
 #endif
 
 namespace PdfSharp.Drawing
@@ -166,7 +167,7 @@ namespace PdfSharp.Drawing
 		/// <summary>
 		///     Adds a line segment to current figure.
 		/// </summary>
-		public void AddLine(Point pt1, Point pt2)
+		public void AddLine(System.Drawing.Point pt1, System.Drawing.Point pt2)
 		{
 			AddLine(pt1.X, pt1.Y, pt2.X, (double) pt2.Y);
 		}
@@ -255,7 +256,7 @@ namespace PdfSharp.Drawing
 		/// <summary>
 		///     Adds a series of connected line segments to current figure.
 		/// </summary>
-		public void AddLines(Point[] points)
+		public void AddLines(System.Drawing.Point[] points)
 		{
 			AddLines(XGraphics.MakeXPointArray(points));
 		}
@@ -335,7 +336,7 @@ namespace PdfSharp.Drawing
 		/// <summary>
 		///     Adds a cubic Bézier curve to the current figure.
 		/// </summary>
-		public void AddBezier(Point pt1, Point pt2, Point pt3, Point pt4)
+		public void AddBezier(System.Drawing.Point pt1, System.Drawing.Point pt2, System.Drawing.Point pt3, System.Drawing.Point pt4)
 		{
 			AddBezier(pt1.X, pt1.Y, pt2.X, pt2.Y, pt3.X, pt3.Y, pt4.X, (double) pt4.Y);
 		}
@@ -425,7 +426,7 @@ namespace PdfSharp.Drawing
 		/// <summary>
 		///     Adds a sequence of connected cubic Bézier curves to the current figure.
 		/// </summary>
-		public void AddBeziers(Point[] points)
+		public void AddBeziers(System.Drawing.Point[] points)
 		{
 			AddBeziers(XGraphics.MakeXPointArray(points));
 		}
@@ -512,7 +513,7 @@ namespace PdfSharp.Drawing
 		/// <summary>
 		///     Adds a spline curve to the current figure.
 		/// </summary>
-		public void AddCurve(Point[] points)
+		public void AddCurve(System.Drawing.Point[] points)
 		{
 			AddCurve(XGraphics.MakeXPointArray(points));
 		}
@@ -550,7 +551,7 @@ namespace PdfSharp.Drawing
 		/// <summary>
 		///     Adds a spline curve to the current figure.
 		/// </summary>
-		public void AddCurve(Point[] points, double tension)
+		public void AddCurve(System.Drawing.Point[] points, double tension)
 		{
 			AddCurve(XGraphics.MakeXPointArray(points), tension);
 		}
@@ -623,7 +624,7 @@ namespace PdfSharp.Drawing
 		/// <summary>
 		///     Adds a spline curve to the current figure.
 		/// </summary>
-		public void AddCurve(Point[] points, int offset, int numberOfSegments, float tension)
+		public void AddCurve(System.Drawing.Point[] points, int offset, int numberOfSegments, float tension)
 		{
 			AddCurve(XGraphics.MakeXPointArray(points), offset, numberOfSegments, tension);
 		}
@@ -1076,7 +1077,7 @@ namespace PdfSharp.Drawing
 		/// <summary>
 		///     Adds a polygon to this path.
 		/// </summary>
-		public void AddPolygon(Point[] points)
+		public void AddPolygon(System.Drawing.Point[] points)
 		{
 			gdipPath.AddPolygon(points);
 		}
@@ -1182,7 +1183,7 @@ namespace PdfSharp.Drawing
 		/// <summary>
 		///     Adds a closed curve to this path.
 		/// </summary>
-		public void AddClosedCurve(Point[] points)
+		public void AddClosedCurve(System.Drawing.Point[] points)
 		{
 			AddClosedCurve(XGraphics.MakeXPointArray(points), 0.5);
 		}
@@ -1220,7 +1221,7 @@ namespace PdfSharp.Drawing
 		/// <summary>
 		///     Adds a closed curve to this path.
 		/// </summary>
-		public void AddClosedCurve(Point[] points, double tension)
+		public void AddClosedCurve(System.Drawing.Point[] points, double tension)
 		{
 			AddClosedCurve(XGraphics.MakeXPointArray(points), tension);
 		}
@@ -1308,7 +1309,7 @@ namespace PdfSharp.Drawing
 		/// <summary>
 		///     Adds a text string to this path.
 		/// </summary>
-		public void AddString(string s, XFontFamily family, XFontStyle style, double emSize, Point origin, XStringFormat format)
+		public void AddString(string s, XFontFamily family, XFontStyle style, double emSize, System.Drawing.Point origin, XStringFormat format)
 		{
 			AddString(s, family, style, emSize, new XRect(origin.X, origin.Y, 0, 0), format);
 		}

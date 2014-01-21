@@ -36,8 +36,6 @@ using PdfSharp.Drawing;
 using PdfSharp.Pdf.Advanced;
 using PdfSharp.Pdf.IO;
 using PdfSharp.Pdf.Internal;
-#if GDI
-#endif
 
 namespace PdfSharp.Pdf
 {

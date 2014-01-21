@@ -175,7 +175,6 @@
     </Compile>
     <Compile Include="MigraDoc.Rendering\ColorHelper.cs" />
     <Compile Include="VersionInfo.cs" />
-    <Compile Include="MigraDoc.Rendering.Forms\enums\Zoom.cs" />
     <Compile Include="MigraDoc.Rendering.Forms\DocumentPreview.cs">
       <SubType>UserControl</SubType>
     </Compile>

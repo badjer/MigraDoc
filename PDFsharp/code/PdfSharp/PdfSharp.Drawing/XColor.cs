@@ -35,8 +35,6 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using PdfSharp.Core.Enums;
-#if GDI
-#endif
 
 namespace PdfSharp.Drawing
 {

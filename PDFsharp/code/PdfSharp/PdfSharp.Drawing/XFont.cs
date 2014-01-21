@@ -34,12 +34,15 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
-using System.Windows.Media;
 using PdfSharp.Core.Enums;
 using PdfSharp.Fonts;
 using PdfSharp.Internal;
 using PdfSharp.Pdf.Advanced;
 using FontFamily = System.Drawing.FontFamily;
+
+#if WPF
+using System.Windows.Media;
+#endif
 
 // WPFHACK
 #pragma warning disable 162

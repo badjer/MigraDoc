@@ -30,16 +30,18 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
+
+#if GDI
 using System.Drawing;
 using System.Drawing.Text;
 using System.Runtime.InteropServices;
+#endif
+
+#if WPF
+using System.Collections.Generic;
 using System.Windows.Media;
 using PdfSharp.Core.Enums;
 using FontFamily = System.Windows.Media.FontFamily;
-#if GDI
-#endif
-#if WPF
 #endif
 
 namespace PdfSharp.Drawing

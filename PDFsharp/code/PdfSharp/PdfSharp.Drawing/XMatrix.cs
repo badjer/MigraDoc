@@ -37,8 +37,6 @@ using System.Globalization;
 using System.Runtime.InteropServices;
 using PdfSharp.Core.Enums;
 using PdfSharp.Internal;
-#if GDI
-#endif
 
 // ReSharper disable RedundantNameQualifier
 

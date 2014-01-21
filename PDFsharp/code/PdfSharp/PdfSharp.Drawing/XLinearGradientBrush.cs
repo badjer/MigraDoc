@@ -33,15 +33,14 @@ using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Windows;
-using System.Windows.Media;
 using PdfSharp.Core.Enums;
 using Brush = System.Drawing.Brush;
 using LinearGradientBrush = System.Drawing.Drawing2D.LinearGradientBrush;
 using Point = System.Drawing.Point;
-#if GDI
-#endif
+
 #if WPF
+using System.Windows;
+using System.Windows.Media;
 #endif
 
 namespace PdfSharp.Drawing

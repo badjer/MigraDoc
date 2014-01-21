@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PDFsharp Projects", "PDFsharp Projects", "{8CF3A6C1-4179-4286-9D33-5D3887636DF1}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfSharp-WPF", "PDFsharp\code\PdfSharp\PdfSharp-WPF.csproj", "{02FCC0BB-2AA2-43BA-8D2F-66D168B87A1D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfSharp.Charting-WPF", "PDFsharp\code\PdfSharp.Charting\PdfSharp.Charting-WPF.csproj", "{E6A2734E-0CD6-4210-8AEC-47EE348F8D78}"
@@ -12,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MigraDoc.Rendering-WPF", "MigraDoc\code\MigraDoc.Rendering\MigraDoc.Rendering-WPF.csproj", "{497784DA-4FDD-43E5-BC4E-6702C8F1AEE0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApplication-WPF", "MigraDoc\code\TestApplication-WPF\TestApplication-WPF.csproj", "{8E05C206-B006-481A-832E-8F48A036C5F9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfSharp.Core", "PdfSharp.Core\PdfSharp.Core.csproj", "{9E4D41E8-4B14-4718-8626-19BD27350AF1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -73,12 +73,18 @@ Global
 		{8E05C206-B006-481A-832E-8F48A036C5F9}.Release|Mixed Platforms.Build.0 = Release|x86
 		{8E05C206-B006-481A-832E-8F48A036C5F9}.Release|x86.ActiveCfg = Release|x86
 		{8E05C206-B006-481A-832E-8F48A036C5F9}.Release|x86.Build.0 = Release|x86
+		{9E4D41E8-4B14-4718-8626-19BD27350AF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E4D41E8-4B14-4718-8626-19BD27350AF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E4D41E8-4B14-4718-8626-19BD27350AF1}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{9E4D41E8-4B14-4718-8626-19BD27350AF1}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{9E4D41E8-4B14-4718-8626-19BD27350AF1}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9E4D41E8-4B14-4718-8626-19BD27350AF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E4D41E8-4B14-4718-8626-19BD27350AF1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E4D41E8-4B14-4718-8626-19BD27350AF1}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{9E4D41E8-4B14-4718-8626-19BD27350AF1}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{9E4D41E8-4B14-4718-8626-19BD27350AF1}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{02FCC0BB-2AA2-43BA-8D2F-66D168B87A1D} = {8CF3A6C1-4179-4286-9D33-5D3887636DF1}
-		{E6A2734E-0CD6-4210-8AEC-47EE348F8D78} = {8CF3A6C1-4179-4286-9D33-5D3887636DF1}
 	EndGlobalSection
 EndGlobal

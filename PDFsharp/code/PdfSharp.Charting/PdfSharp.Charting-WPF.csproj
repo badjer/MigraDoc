@@ -28,7 +28,7 @@
     </UpgradeBackupLocation>
     <SignAssembly>true</SignAssembly>
     <OldToolsVersion>3.5</OldToolsVersion>
-    <TargetFrameworkVersion>v3.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -52,6 +52,7 @@
     </SccAuxPath>
     <SccProvider>
     </SccProvider>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>bin\Debug\</OutputPath>
@@ -75,6 +76,7 @@
     <DebugType>full</DebugType>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -98,6 +100,7 @@
     <DebugType>none</DebugType>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="PresentationCore">
@@ -297,42 +300,6 @@
     <Compile Include="PdfSharp.Charting\DocumentObjectCollection.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="PdfSharp.Charting\enums\BlankType.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="PdfSharp.Charting\enums\ChartType.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="PdfSharp.Charting\enums\DataLabelPosition.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="PdfSharp.Charting\enums\DataLabelType.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="PdfSharp.Charting\enums\DockingType.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="PdfSharp.Charting\enums\FontProperties.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="PdfSharp.Charting\enums\HorizontalAlignment.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="PdfSharp.Charting\enums\LineStyle.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="PdfSharp.Charting\enums\MarkerStyle.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="PdfSharp.Charting\enums\TickMarkType.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="PdfSharp.Charting\enums\Underline.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="PdfSharp.Charting\enums\VerticalAlignment.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="PdfSharp.Charting\FillFormat.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -388,6 +355,10 @@
     <None Include="StrongnameKey.snk" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\PdfSharp.Core\PdfSharp.Core.csproj">
+      <Project>{9e4d41e8-4b14-4718-8626-19bd27350af1}</Project>
+      <Name>PdfSharp.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PdfSharp\PdfSharp-WPF.csproj">
       <Project>{02FCC0BB-2AA2-43BA-8D2F-66D168B87A1D}</Project>
       <Name>PdfSharp-WPF</Name>

@@ -32,11 +32,11 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Windows;
-using System.Windows.Media;
 using PdfSharp.Core.Enums;
 using PdfSharp.Internal;
 #if WPF
+using System.Windows;
+using System.Windows.Media;
 #endif
 
 namespace PdfSharp.Drawing
