@@ -1,4 +1,5 @@
 #region PDFsharp - A .NET library for processing PDF
+
 //
 // Authors:
 //   Stefan Lange (mailto:Stefan.Lange@pdfsharp.com)
@@ -25,6 +26,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 using System.Diagnostics;
@@ -32,85 +34,86 @@ using PdfSharp.Drawing;
 
 namespace PdfSharp.Pdf
 {
-  /// <summary>
-  /// Represents trim margins added to the page.
-  /// </summary>
-  [DebuggerDisplay("(Left={left.Millimeter}mm, Right={right.Millimeter}mm, Top={top.Millimeter}mm, Bottom={bottom.Millimeter}mm)")]
-  public sealed class TrimMargins
-  {
-    ///// <summary>
-    ///// Clones this instance.
-    ///// </summary>
-    //public TrimMargins Clone()
-    //{
-    //  TrimMargins trimMargins = new TrimMargins();
-    //  trimMargins.left = this.left;
-    //  trimMargins.top = this.top;
-    //  trimMargins.right = this.right;
-    //  trimMargins.bottom = this.bottom;
-    //  return trimMargins;
-    //}
+	/// <summary>
+	///     Represents trim margins added to the page.
+	/// </summary>
+	[DebuggerDisplay("(Left={left.Millimeter}mm, Right={right.Millimeter}mm, Top={top.Millimeter}mm, Bottom={bottom.Millimeter}mm)")]
+	public sealed class TrimMargins
+	{
+		///// <summary>
+		///// Clones this instance.
+		///// </summary>
+		//public TrimMargins Clone()
+		//{
+		//  TrimMargins trimMargins = new TrimMargins();
+		//  trimMargins.left = this.left;
+		//  trimMargins.top = this.top;
+		//  trimMargins.right = this.right;
+		//  trimMargins.bottom = this.bottom;
+		//  return trimMargins;
+		//}
 
-    /// <summary>
-    /// Sets all four crop margins simultaneously.
-    /// </summary>
-    public XUnit All
-    {
-      set
-      {
-        this.left = value;
-        this.right = value;
-        this.top = value;
-        this.bottom = value;
-      }
-    }
+		private XUnit bottom;
+		private XUnit left;
+		private XUnit right;
+		private XUnit top;
 
-    /// <summary>
-    /// Gets or sets the left crop margin.
-    /// </summary>
-    public XUnit Left
-    {
-      get { return this.left; }
-      set { this.left = value; }
-    }
-    XUnit left;
+		/// <summary>
+		///     Sets all four crop margins simultaneously.
+		/// </summary>
+		public XUnit All
+		{
+			set
+			{
+				left = value;
+				right = value;
+				top = value;
+				bottom = value;
+			}
+		}
 
-    /// <summary>
-    /// Gets or sets the right crop margin.
-    /// </summary>
-    public XUnit Right
-    {
-      get { return this.right; }
-      set { this.right = value; }
-    }
-    XUnit right;
+		/// <summary>
+		///     Gets or sets the left crop margin.
+		/// </summary>
+		public XUnit Left
+		{
+			get { return left; }
+			set { left = value; }
+		}
 
-    /// <summary>
-    /// Gets or sets the top crop margin.
-    /// </summary>
-    public XUnit Top
-    {
-      get { return this.top; }
-      set { this.top = value; }
-    }
-    XUnit top;
+		/// <summary>
+		///     Gets or sets the right crop margin.
+		/// </summary>
+		public XUnit Right
+		{
+			get { return right; }
+			set { right = value; }
+		}
 
-    /// <summary>
-    /// Gets or sets the bottom crop margin.
-    /// </summary>
-    public XUnit Bottom
-    {
-      get { return this.bottom; }
-      set { this.bottom = value; }
-    }
-    XUnit bottom;
+		/// <summary>
+		///     Gets or sets the top crop margin.
+		/// </summary>
+		public XUnit Top
+		{
+			get { return top; }
+			set { top = value; }
+		}
 
-    /// <summary>
-    /// Gets a value indicating whether this instance has at least one margin with a value other than zero.
-    /// </summary>
-    public bool AreSet
-    {
-      get { return this.left.Value != 0 || this.right.Value != 0 || this.top.Value != 0 || this.bottom.Value != 0; }
-    }
-  }
+		/// <summary>
+		///     Gets or sets the bottom crop margin.
+		/// </summary>
+		public XUnit Bottom
+		{
+			get { return bottom; }
+			set { bottom = value; }
+		}
+
+		/// <summary>
+		///     Gets a value indicating whether this instance has at least one margin with a value other than zero.
+		/// </summary>
+		public bool AreSet
+		{
+			get { return left.Value != 0 || right.Value != 0 || top.Value != 0 || bottom.Value != 0; }
+		}
+	}
 }

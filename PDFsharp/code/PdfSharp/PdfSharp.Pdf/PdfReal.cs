@@ -1,4 +1,5 @@
 #region PDFsharp - A .NET library for processing PDF
+
 //
 // Authors:
 //   Stefan Lange (mailto:Stefan.Lange@pdfsharp.com)
@@ -25,6 +26,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 using System.Diagnostics;
@@ -33,51 +35,53 @@ using PdfSharp.Pdf.IO;
 
 namespace PdfSharp.Pdf
 {
-  /// <summary>
-  /// Represents a direct real value.
-  /// </summary>
-  [DebuggerDisplay("({Value})")]
-  public sealed class PdfReal : PdfNumber
-  {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="PdfReal"/> class.
-    /// </summary>
-    public PdfReal()
-    { }
+	/// <summary>
+	///     Represents a direct real value.
+	/// </summary>
+	[DebuggerDisplay("({Value})")]
+	public sealed class PdfReal : PdfNumber
+	{
+		private readonly double value;
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="PdfReal"/> class.
-    /// </summary>
-    /// <param name="value">The value.</param>
-    public PdfReal(double value)
-    {
-      this.value = value;
-    }
+		/// <summary>
+		///     Initializes a new instance of the <see cref="PdfReal" /> class.
+		/// </summary>
+		public PdfReal()
+		{
+		}
 
-    /// <summary>
-    /// Gets the value as double.
-    /// </summary>
-    public double Value
-    {
-      // This class must behave like a value type. Therefore it cannot be changed (like System.String).
-      get { return this.value; }
-    }
-    double value;
+		/// <summary>
+		///     Initializes a new instance of the <see cref="PdfReal" /> class.
+		/// </summary>
+		/// <param name="value">The value.</param>
+		public PdfReal(double value)
+		{
+			this.value = value;
+		}
 
-    /// <summary>
-    /// Returns the real number as string.
-    /// </summary>
-    public override string ToString()
-    {
-      return this.value.ToString("0.###", CultureInfo.InvariantCulture);
-    }
+		/// <summary>
+		///     Gets the value as double.
+		/// </summary>
+		public double Value
+		{
+			// This class must behave like a value type. Therefore it cannot be changed (like System.String).
+			get { return value; }
+		}
 
-    /// <summary>
-    /// Writes the real value with up to three digits.
-    /// </summary>
-    internal override void WriteObject(PdfWriter writer)
-    {
-      writer.Write(this);
-    }
-  }
+		/// <summary>
+		///     Returns the real number as string.
+		/// </summary>
+		public override string ToString()
+		{
+			return value.ToString("0.###", CultureInfo.InvariantCulture);
+		}
+
+		/// <summary>
+		///     Writes the real value with up to three digits.
+		/// </summary>
+		internal override void WriteObject(PdfWriter writer)
+		{
+			writer.Write(this);
+		}
+	}
 }

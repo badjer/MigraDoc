@@ -1,4 +1,5 @@
 #region PDFsharp - A .NET library for processing PDF
+
 //
 // Authors:
 //   Stefan Lange (mailto:Stefan.Lange@pdfsharp.com)
@@ -25,65 +26,71 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 #if GDI
 using System.Drawing.Drawing2D;
+using System.Windows.Media;
 using PdfSharp.Core.Enums;
 #endif
 #if WPF
-using System.Windows.Media;
+
 #endif
 
 namespace PdfSharp.Drawing
 {
-  /// <summary>
-  /// Converts XGraphics enums to GDI+ enums.
-  /// </summary>
-  static class XConvert
-  {
+	/// <summary>
+	///     Converts XGraphics enums to GDI+ enums.
+	/// </summary>
+	internal static class XConvert
+	{
 #if GDI
-    /// <summary>
-    /// Converts XLineJoin to LineJoin.
-    /// </summary>
-    public static LineJoin ToLineJoin(XLineJoin lineJoin)
-    {
-      return gdiLineJoin[(int)lineJoin];
-    }
-    static LineJoin[] gdiLineJoin = new LineJoin[3]{LineJoin.Miter, LineJoin.Round, LineJoin.Bevel};
+		/// <summary>
+		///     Converts XLineJoin to LineJoin.
+		/// </summary>
+		public static LineJoin ToLineJoin(XLineJoin lineJoin)
+		{
+			return gdiLineJoin[(int) lineJoin];
+		}
+
+		private static readonly LineJoin[] gdiLineJoin = new LineJoin[3] {LineJoin.Miter, LineJoin.Round, LineJoin.Bevel};
 #endif
 
 #if GDI
-    /// <summary>
-    /// Converts XLineCap to LineCap.
-    /// </summary>
-    public static LineCap ToLineCap(XLineCap lineCap)
-    {
-      return gdiLineCap[(int)lineCap];
-    }
-    static LineCap[] gdiLineCap = new LineCap[3]{LineCap.Flat, LineCap.Round, LineCap.Square};
+		/// <summary>
+		///     Converts XLineCap to LineCap.
+		/// </summary>
+		public static LineCap ToLineCap(XLineCap lineCap)
+		{
+			return gdiLineCap[(int) lineCap];
+		}
+
+		private static readonly LineCap[] gdiLineCap = new LineCap[3] {LineCap.Flat, LineCap.Round, LineCap.Square};
 #endif
 
 #if WPF
-    /// <summary>
-    /// Converts XLineJoin to PenLineJoin.
-    /// </summary>
-    public static PenLineJoin ToPenLineJoin(XLineJoin lineJoin)
-    {
-      return wpfLineJoin[(int)lineJoin];
-    }
-    static readonly PenLineJoin[] wpfLineJoin = new PenLineJoin[] { PenLineJoin.Miter, PenLineJoin.Round, PenLineJoin.Bevel };
+		/// <summary>
+		///     Converts XLineJoin to PenLineJoin.
+		/// </summary>
+		public static PenLineJoin ToPenLineJoin(XLineJoin lineJoin)
+		{
+			return wpfLineJoin[(int) lineJoin];
+		}
+
+		private static readonly PenLineJoin[] wpfLineJoin = new PenLineJoin[] {PenLineJoin.Miter, PenLineJoin.Round, PenLineJoin.Bevel};
 #endif
 
 #if WPF
-    /// <summary>
-    /// Converts XLineCap to PenLineCap.
-    /// </summary>
-    public static PenLineCap ToPenLineCap(XLineCap lineCap)
-    {
-      return wpfLineCap[(int)lineCap];
-    }
-    static readonly PenLineCap[] wpfLineCap = new PenLineCap[] { PenLineCap.Flat, PenLineCap.Round, PenLineCap.Square };
+		/// <summary>
+		///     Converts XLineCap to PenLineCap.
+		/// </summary>
+		public static PenLineCap ToPenLineCap(XLineCap lineCap)
+		{
+			return wpfLineCap[(int) lineCap];
+		}
+
+		private static readonly PenLineCap[] wpfLineCap = new PenLineCap[] {PenLineCap.Flat, PenLineCap.Round, PenLineCap.Square};
 #endif
-  }
+	}
 }

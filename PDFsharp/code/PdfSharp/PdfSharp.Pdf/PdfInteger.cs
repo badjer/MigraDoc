@@ -1,4 +1,5 @@
 #region PDFsharp - A .NET library for processing PDF
+
 //
 // Authors:
 //   Stefan Lange (mailto:Stefan.Lange@pdfsharp.com)
@@ -25,6 +26,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 using System;
@@ -34,145 +36,147 @@ using PdfSharp.Pdf.IO;
 
 namespace PdfSharp.Pdf
 {
-  /// <summary>
-  /// Represents a direct integer value.
-  /// </summary>
-  [DebuggerDisplay("({Value})")]
-  public sealed class PdfInteger : PdfNumber, IConvertible
-  {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="PdfInteger"/> class.
-    /// </summary>
-    public PdfInteger()
-    { }
+	/// <summary>
+	///     Represents a direct integer value.
+	/// </summary>
+	[DebuggerDisplay("({Value})")]
+	public sealed class PdfInteger : PdfNumber, IConvertible
+	{
+		private readonly int value;
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="PdfInteger"/> class.
-    /// </summary>
-    /// <param name="value">The value.</param>
-    public PdfInteger(int value)
-    {
-      this.value = value;
-    }
+		/// <summary>
+		///     Initializes a new instance of the <see cref="PdfInteger" /> class.
+		/// </summary>
+		public PdfInteger()
+		{
+		}
 
-    /// <summary>
-    /// Gets the value as integer
-    /// </summary>
-    public int Value
-    {
-      // This class must behave like a value type. Therefore it cannot be changed (like System.String).
-      get { return this.value; }
-    }
-    readonly int value;
+		/// <summary>
+		///     Initializes a new instance of the <see cref="PdfInteger" /> class.
+		/// </summary>
+		/// <param name="value">The value.</param>
+		public PdfInteger(int value)
+		{
+			this.value = value;
+		}
 
-    /// <summary>
-    /// Returns the integer as string.
-    /// </summary>
-    public override string ToString()
-    {
-      return value.ToString(CultureInfo.InvariantCulture);
-    }
+		/// <summary>
+		///     Gets the value as integer
+		/// </summary>
+		public int Value
+		{
+			// This class must behave like a value type. Therefore it cannot be changed (like System.String).
+			get { return value; }
+		}
 
-    /// <summary>
-    /// Writes the integer as string.
-    /// </summary>
-    internal override void WriteObject(PdfWriter writer)
-    {
-      writer.Write(this);
-    }
+		/// <summary>
+		///     Returns the integer as string.
+		/// </summary>
+		public override string ToString()
+		{
+			return value.ToString(CultureInfo.InvariantCulture);
+		}
 
-    #region IConvertible Members
+		/// <summary>
+		///     Writes the integer as string.
+		/// </summary>
+		internal override void WriteObject(PdfWriter writer)
+		{
+			writer.Write(this);
+		}
 
-    ulong IConvertible.ToUInt64(IFormatProvider provider)
-    {
-      return Convert.ToUInt64(this.value);
-    }
+		#region IConvertible Members
 
-    sbyte IConvertible.ToSByte(IFormatProvider provider)
-    {
-      throw new InvalidCastException();
-    }
+		ulong IConvertible.ToUInt64(IFormatProvider provider)
+		{
+			return Convert.ToUInt64(value);
+		}
 
-    double IConvertible.ToDouble(IFormatProvider provider)
-    {
-      return value;
-    }
+		sbyte IConvertible.ToSByte(IFormatProvider provider)
+		{
+			throw new InvalidCastException();
+		}
 
-    DateTime IConvertible.ToDateTime(IFormatProvider provider)
-    {
-      // TODO:  Add PdfInteger.ToDateTime implementation
-      return new DateTime();
-    }
+		double IConvertible.ToDouble(IFormatProvider provider)
+		{
+			return value;
+		}
 
-    float IConvertible.ToSingle(IFormatProvider provider)
-    {
-      return value;
-    }
+		DateTime IConvertible.ToDateTime(IFormatProvider provider)
+		{
+			// TODO:  Add PdfInteger.ToDateTime implementation
+			return new DateTime();
+		}
 
-    bool IConvertible.ToBoolean(IFormatProvider provider)
-    {
-      return Convert.ToBoolean(this.value);
-    }
+		float IConvertible.ToSingle(IFormatProvider provider)
+		{
+			return value;
+		}
 
-    int IConvertible.ToInt32(IFormatProvider provider)
-    {
-      return value;
-    }
+		bool IConvertible.ToBoolean(IFormatProvider provider)
+		{
+			return Convert.ToBoolean(value);
+		}
 
-    ushort IConvertible.ToUInt16(IFormatProvider provider)
-    {
-      return Convert.ToUInt16(this.value);
-    }
+		int IConvertible.ToInt32(IFormatProvider provider)
+		{
+			return value;
+		}
 
-    short IConvertible.ToInt16(IFormatProvider provider)
-    {
-      return Convert.ToInt16(this.value);
-    }
+		ushort IConvertible.ToUInt16(IFormatProvider provider)
+		{
+			return Convert.ToUInt16(value);
+		}
 
-    string IConvertible.ToString(IFormatProvider provider)
-    {
-      return value.ToString(provider);
-    }
+		short IConvertible.ToInt16(IFormatProvider provider)
+		{
+			return Convert.ToInt16(value);
+		}
 
-    byte IConvertible.ToByte(IFormatProvider provider)
-    {
-      return Convert.ToByte(this.value);
-    }
+		string IConvertible.ToString(IFormatProvider provider)
+		{
+			return value.ToString(provider);
+		}
 
-    char IConvertible.ToChar(IFormatProvider provider)
-    {
-      return Convert.ToChar(this.value);
-    }
+		byte IConvertible.ToByte(IFormatProvider provider)
+		{
+			return Convert.ToByte(value);
+		}
 
-    long IConvertible.ToInt64(IFormatProvider provider)
-    {
-      return value;
-    }
+		char IConvertible.ToChar(IFormatProvider provider)
+		{
+			return Convert.ToChar(value);
+		}
 
-    /// <summary>
-    /// Returns TypeCode for 32-bit integers.
-    /// </summary>
-    public TypeCode GetTypeCode()
-    {
-      return TypeCode.Int32;
-    }
+		long IConvertible.ToInt64(IFormatProvider provider)
+		{
+			return value;
+		}
 
-    decimal IConvertible.ToDecimal(IFormatProvider provider)
-    {
-      return value;
-    }
+		/// <summary>
+		///     Returns TypeCode for 32-bit integers.
+		/// </summary>
+		public TypeCode GetTypeCode()
+		{
+			return TypeCode.Int32;
+		}
 
-    object IConvertible.ToType(Type conversionType, IFormatProvider provider)
-    {
-      // TODO:  Add PdfInteger.ToType implementation
-      return null;
-    }
+		decimal IConvertible.ToDecimal(IFormatProvider provider)
+		{
+			return value;
+		}
 
-    uint IConvertible.ToUInt32(IFormatProvider provider)
-    {
-      return Convert.ToUInt32(this.value);
-    }
+		object IConvertible.ToType(Type conversionType, IFormatProvider provider)
+		{
+			// TODO:  Add PdfInteger.ToType implementation
+			return null;
+		}
 
-    #endregion
-  }
+		uint IConvertible.ToUInt32(IFormatProvider provider)
+		{
+			return Convert.ToUInt32(value);
+		}
+
+		#endregion
+	}
 }

@@ -1,4 +1,5 @@
 #region PDFsharp - A .NET library for processing PDF
+
 //
 // Authors:
 //   Stefan Lange (mailto:Stefan.Lange@pdfsharp.com)
@@ -25,293 +26,270 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 using PdfSharp.Drawing;
 
 namespace PdfSharp.Fonts
 {
-  /// <summary>
-  /// Base class for all font descriptors.
-  /// </summary>
-  internal class FontDescriptor
-  {
-    /// <summary>
-    /// 
-    /// </summary>
-    public string FontFile
-    {
-      get { return this.fontFile; }
-    }
-    protected string fontFile;
+	/// <summary>
+	///     Base class for all font descriptors.
+	/// </summary>
+	internal class FontDescriptor
+	{
+		protected int ascender;
+		protected int capHeight;
+		protected int descender;
+		protected string encodingScheme;
+		protected string familyName;
+		protected int flags;
+		protected string fontFile;
+		private XFontMetrics fontMetrics;
+		protected string fontName;
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public string FontType
-    {
-      get { return this.fontType; }
-    }
-    protected string fontType;
+		protected string fontType;
+		protected string fullName;
+		protected bool isFixedPitch;
+		protected float italicAngle;
+		protected int leading;
+		protected int stemV;
+		protected int strikeoutPosition;
+		protected int strikeoutSize;
+		protected int underlinePosition;
+		protected int underlineThickness;
+		protected int unitsPerEm;
+		protected string version;
+		protected string weight;
+		protected int xHeight;
+		protected int xMax;
+		protected int xMin;
+		protected int yMax;
+		protected int yMin;
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public string FontName
-    {
-      get { return this.fontName; }
-    }
-    protected string fontName;
+		/// <summary>
+		/// </summary>
+		public string FontFile
+		{
+			get { return fontFile; }
+		}
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public string FullName
-    {
-      get { return this.fullName; }
-    }
-    protected string fullName;
+		/// <summary>
+		/// </summary>
+		public string FontType
+		{
+			get { return fontType; }
+		}
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public string FamilyName
-    {
-      get { return this.familyName; }
-    }
-    protected string familyName;
+		/// <summary>
+		/// </summary>
+		public string FontName
+		{
+			get { return fontName; }
+		}
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public string Weight
-    {
-      get { return this.weight; }
-    }
-    protected string weight;
+		/// <summary>
+		/// </summary>
+		public string FullName
+		{
+			get { return fullName; }
+		}
 
-    /// <summary>
-    /// Gets a value indicating whether this instance belongs to a bold font.
-    /// </summary>
-    public virtual bool IsBoldFace
-    {
-      get { return false; }
-    }
+		/// <summary>
+		/// </summary>
+		public string FamilyName
+		{
+			get { return familyName; }
+		}
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public float ItalicAngle
-    {
-      get { return this.italicAngle; }
-    }
-    protected float italicAngle;
+		/// <summary>
+		/// </summary>
+		public string Weight
+		{
+			get { return weight; }
+		}
 
-    /// <summary>
-    /// Gets a value indicating whether this instance belongs to an italic font.
-    /// </summary>
-    public virtual bool IsItalicFace
-    {
-      get { return false; }
-    }
+		/// <summary>
+		///     Gets a value indicating whether this instance belongs to a bold font.
+		/// </summary>
+		public virtual bool IsBoldFace
+		{
+			get { return false; }
+		}
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public int XMin
-    {
-      get { return this.xMin; }
-    }
-    protected int xMin;
+		/// <summary>
+		/// </summary>
+		public float ItalicAngle
+		{
+			get { return italicAngle; }
+		}
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public int YMin
-    {
-      get { return this.yMin; }
-    }
-    protected int yMin;
+		/// <summary>
+		///     Gets a value indicating whether this instance belongs to an italic font.
+		/// </summary>
+		public virtual bool IsItalicFace
+		{
+			get { return false; }
+		}
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public int XMax
-    {
-      get { return this.xMax; }
-    }
-    protected int xMax;
+		/// <summary>
+		/// </summary>
+		public int XMin
+		{
+			get { return xMin; }
+		}
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public int YMax
-    {
-      get { return this.yMax; }
-    }
-    protected int yMax;
+		/// <summary>
+		/// </summary>
+		public int YMin
+		{
+			get { return yMin; }
+		}
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public bool IsFixedPitch
-    {
-      get { return this.isFixedPitch; }
-    }
-    protected bool isFixedPitch;
+		/// <summary>
+		/// </summary>
+		public int XMax
+		{
+			get { return xMax; }
+		}
 
-    //Rect FontBBox;
+		/// <summary>
+		/// </summary>
+		public int YMax
+		{
+			get { return yMax; }
+		}
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public int UnderlinePosition
-    {
-      get { return this.underlinePosition; }
-    }
-    protected int underlinePosition;
+		/// <summary>
+		/// </summary>
+		public bool IsFixedPitch
+		{
+			get { return isFixedPitch; }
+		}
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public int UnderlineThickness
-    {
-      get { return this.underlineThickness; }
-    }
-    protected int underlineThickness;
+		//Rect FontBBox;
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public int StrikeoutPosition
-    {
-      get { return this.strikeoutPosition; }
-    }
-    protected int strikeoutPosition;
+		/// <summary>
+		/// </summary>
+		public int UnderlinePosition
+		{
+			get { return underlinePosition; }
+		}
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public int StrikeoutSize
-    {
-      get { return this.strikeoutSize; }
-    }
-    protected int strikeoutSize;
+		/// <summary>
+		/// </summary>
+		public int UnderlineThickness
+		{
+			get { return underlineThickness; }
+		}
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public string Version
-    {
-      get { return this.version; }
-    }
-    protected string version;
+		/// <summary>
+		/// </summary>
+		public int StrikeoutPosition
+		{
+			get { return strikeoutPosition; }
+		}
 
-    ///// <summary>
-    ///// 
-    ///// </summary>
-    //public string Notice
-    //{
-    //  get { return this.Notice; }
-    //}
-    //protected string notice;
+		/// <summary>
+		/// </summary>
+		public int StrikeoutSize
+		{
+			get { return strikeoutSize; }
+		}
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public string EncodingScheme
-    {
-      get { return this.encodingScheme; }
-    }
-    protected string encodingScheme;
+		/// <summary>
+		/// </summary>
+		public string Version
+		{
+			get { return version; }
+		}
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public int UnitsPerEm
-    {
-      get { return this.unitsPerEm; }
-    }
-    protected int unitsPerEm;
+		///// <summary>
+		///// 
+		///// </summary>
+		//public string Notice
+		//{
+		//  get { return this.Notice; }
+		//}
+		//protected string notice;
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public int CapHeight
-    {
-      get { return this.capHeight; }
-    }
-    protected int capHeight;
+		/// <summary>
+		/// </summary>
+		public string EncodingScheme
+		{
+			get { return encodingScheme; }
+		}
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public int XHeight
-    {
-      get { return this.xHeight; }
-    }
-    protected int xHeight;
+		/// <summary>
+		/// </summary>
+		public int UnitsPerEm
+		{
+			get { return unitsPerEm; }
+		}
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public int Ascender
-    {
-      get { return this.ascender; }
-    }
-    protected int ascender;
+		/// <summary>
+		/// </summary>
+		public int CapHeight
+		{
+			get { return capHeight; }
+		}
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public int Descender
-    {
-      get { return this.descender; }
-    }
-    protected int descender;
+		/// <summary>
+		/// </summary>
+		public int XHeight
+		{
+			get { return xHeight; }
+		}
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public int Leading
-    {
-      get { return this.leading; }
-    }
-    protected int leading;
+		/// <summary>
+		/// </summary>
+		public int Ascender
+		{
+			get { return ascender; }
+		}
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public int Flags
-    {
-      get { return this.flags; }
-    }
-    protected int flags;
+		/// <summary>
+		/// </summary>
+		public int Descender
+		{
+			get { return descender; }
+		}
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public int StemV
-    {
-      get { return this.stemV; }
-    }
-    protected int stemV;
+		/// <summary>
+		/// </summary>
+		public int Leading
+		{
+			get { return leading; }
+		}
 
-    /// <summary>
-    /// Under Construction
-    /// </summary>
-    public XFontMetrics FontMetrics
-    {
-      get
-      {
-        if (this.fontMetrics == null)
-        {
-          this.fontMetrics = new XFontMetrics(this.fontName, this.unitsPerEm, this.ascender, this.descender, this.leading, this.capHeight,
-            this.xHeight, this.stemV, 0, 0, 0);
-        }
-        return this.fontMetrics;
-      }
-    }
-    XFontMetrics fontMetrics;
-  }
+		/// <summary>
+		/// </summary>
+		public int Flags
+		{
+			get { return flags; }
+		}
+
+		/// <summary>
+		/// </summary>
+		public int StemV
+		{
+			get { return stemV; }
+		}
+
+		/// <summary>
+		///     Under Construction
+		/// </summary>
+		public XFontMetrics FontMetrics
+		{
+			get
+			{
+				if (fontMetrics == null)
+				{
+					fontMetrics = new XFontMetrics(fontName, unitsPerEm, ascender, descender, leading, capHeight,
+					                               xHeight, stemV, 0, 0, 0);
+				}
+				return fontMetrics;
+			}
+		}
+	}
 }

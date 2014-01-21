@@ -1,4 +1,5 @@
 #region PDFsharp - A .NET library for processing PDF
+
 //
 // Authors:
 //   Stefan Lange (mailto:Stefan.Lange@pdfsharp.com)
@@ -25,17 +26,18 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 namespace PdfSharp.Pdf
 {
-  /// <summary>
-  /// Base class for direct number values (not yet used, maybe superfluous).
-  /// </summary>
-  public abstract class PdfNumber : PdfItem
-  {
-    //public PdfNumber()
-    //{
-    //}
-  }
+	/// <summary>
+	///     Base class for direct number values (not yet used, maybe superfluous).
+	/// </summary>
+	public abstract class PdfNumber : PdfItem
+	{
+		//public PdfNumber()
+		//{
+		//}
+	}
 }

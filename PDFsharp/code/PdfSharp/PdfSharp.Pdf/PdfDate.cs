@@ -1,4 +1,5 @@
 #region PDFsharp - A .NET library for processing PDF
+
 //
 // Authors:
 //   Stefan Lange (mailto:Stefan.Lange@pdfsharp.com)
@@ -25,6 +26,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 using System;
@@ -33,52 +35,53 @@ using PdfSharp.Pdf.IO;
 
 namespace PdfSharp.Pdf
 {
-  /// <summary>
-  /// Represents a direct date value.
-  /// </summary>
-  [DebuggerDisplay("({Value})")]
-  public sealed class PdfDate : PdfItem
-  {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="PdfDate"/> class.
-    /// </summary>
-    public PdfDate()
-    {
-    }
+	/// <summary>
+	///     Represents a direct date value.
+	/// </summary>
+	[DebuggerDisplay("({Value})")]
+	public sealed class PdfDate : PdfItem
+	{
+		private DateTime _value;
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="PdfDate"/> class.
-    /// </summary>
-    public PdfDate(DateTime value)
-    {
-      _value = value;
-    }
+		/// <summary>
+		///     Initializes a new instance of the <see cref="PdfDate" /> class.
+		/// </summary>
+		public PdfDate()
+		{
+		}
 
-    /// <summary>
-    /// Gets the value as DateTime.
-    /// </summary>
-    public DateTime Value
-    {
-      // This class must behave like a value type. Therefore it cannot be changed (like System.String).
-      get { return _value; }
-    }
-    private DateTime _value;
+		/// <summary>
+		///     Initializes a new instance of the <see cref="PdfDate" /> class.
+		/// </summary>
+		public PdfDate(DateTime value)
+		{
+			_value = value;
+		}
 
-    /// <summary>
-    /// Returns the value in the PDF date format.
-    /// </summary>
-    public override string ToString()
-    {
-      string delta = _value.ToString("zzz").Replace(':', '\'');
-      return String.Format("D:{0:yyyyMMddHHmmss}{1}'", _value, delta);
-    }
+		/// <summary>
+		///     Gets the value as DateTime.
+		/// </summary>
+		public DateTime Value
+		{
+			// This class must behave like a value type. Therefore it cannot be changed (like System.String).
+			get { return _value; }
+		}
 
-    /// <summary>
-    /// Writes the value in the PDF date format.
-    /// </summary>
-    internal override void WriteObject(PdfWriter writer)
-    {
-      writer.WriteDocString(ToString());
-    }
-  }
+		/// <summary>
+		///     Returns the value in the PDF date format.
+		/// </summary>
+		public override string ToString()
+		{
+			string delta = _value.ToString("zzz").Replace(':', '\'');
+			return String.Format("D:{0:yyyyMMddHHmmss}{1}'", _value, delta);
+		}
+
+		/// <summary>
+		///     Writes the value in the PDF date format.
+		/// </summary>
+		internal override void WriteObject(PdfWriter writer)
+		{
+			writer.WriteDocString(ToString());
+		}
+	}
 }

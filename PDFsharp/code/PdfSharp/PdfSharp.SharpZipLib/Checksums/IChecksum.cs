@@ -35,58 +35,54 @@
 // obligated to do so.  If you do not wish to do so, delete this
 // exception statement from your version.
 
-namespace PdfSharp.SharpZipLib.Checksums 
+namespace PdfSharp.SharpZipLib.Checksums
 {
-	
 	/// <summary>
-	/// Interface to compute a data checksum used by checked input/output streams.
-	/// A data checksum can be updated by one byte or with a byte array. After each
-	/// update the value of the current checksum can be returned by calling
-	/// <code>getValue</code>. The complete checksum object can also be reset
-	/// so it can be used again with new data.
+	///     Interface to compute a data checksum used by checked input/output streams.
+	///     A data checksum can be updated by one byte or with a byte array. After each
+	///     update the value of the current checksum can be returned by calling
+	///     <code>getValue</code>. The complete checksum object can also be reset
+	///     so it can be used again with new data.
 	/// </summary>
 	internal interface IChecksum
 	{
 		/// <summary>
-		/// Returns the data checksum computed so far.
+		///     Returns the data checksum computed so far.
 		/// </summary>
-		long Value 
-		{
-			get;
-		}
-		
+		long Value { get; }
+
 		/// <summary>
-		/// Resets the data checksum as if no update was ever called.
+		///     Resets the data checksum as if no update was ever called.
 		/// </summary>
 		void Reset();
-		
+
 		/// <summary>
-		/// Adds one byte to the data checksum.
+		///     Adds one byte to the data checksum.
 		/// </summary>
-		/// <param name = "bval">
-		/// the data value to add. The high byte of the int is ignored.
+		/// <param name="bval">
+		///     the data value to add. The high byte of the int is ignored.
 		/// </param>
 		void Update(int bval);
-		
+
 		/// <summary>
-		/// Updates the data checksum with the bytes taken from the array.
+		///     Updates the data checksum with the bytes taken from the array.
 		/// </summary>
 		/// <param name="buffer">
-		/// buffer an array of bytes
+		///     buffer an array of bytes
 		/// </param>
 		void Update(byte[] buffer);
-		
+
 		/// <summary>
-		/// Adds the byte array to the data checksum.
+		///     Adds the byte array to the data checksum.
 		/// </summary>
-		/// <param name = "buf">
-		/// the buffer which contains the data
+		/// <param name="buf">
+		///     the buffer which contains the data
 		/// </param>
-		/// <param name = "off">
-		/// the offset in the buffer where the data starts
+		/// <param name="off">
+		///     the offset in the buffer where the data starts
 		/// </param>
-		/// <param name = "len">
-		/// the length of the data
+		/// <param name="len">
+		///     the length of the data
 		/// </param>
 		void Update(byte[] buf, int off, int len);
 	}

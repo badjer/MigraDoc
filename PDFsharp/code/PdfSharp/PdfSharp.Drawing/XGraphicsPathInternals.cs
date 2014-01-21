@@ -1,4 +1,5 @@
 #region PDFsharp - A .NET library for processing PDF
+
 //
 // Authors:
 //   Stefan Lange (mailto:Stefan.Lange@pdfsharp.com)
@@ -25,47 +26,50 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 #if GDI
 using System.Drawing.Drawing2D;
+using System.Windows.Media;
 #endif
 #if WPF
-using System.Windows.Media;
+
 #endif
 
 namespace PdfSharp.Drawing
 {
-  /// <summary>
-  /// Provides access to the internal data structures of XGraphicsPath.
-  /// This class prevents the public interface from pollution with internal functions.
-  /// </summary>
-  public sealed class XGraphicsPathInternals
-  {
-    internal XGraphicsPathInternals(XGraphicsPath path)
-    {
-      this.path = path;
-    }
-    XGraphicsPath path;
+	/// <summary>
+	///     Provides access to the internal data structures of XGraphicsPath.
+	///     This class prevents the public interface from pollution with internal functions.
+	/// </summary>
+	public sealed class XGraphicsPathInternals
+	{
+		internal XGraphicsPathInternals(XGraphicsPath path)
+		{
+			this.path = path;
+		}
+
+		private readonly XGraphicsPath path;
 
 #if GDI
-    /// <summary>
-    /// Gets the underlying GDI+ path object.
-    /// </summary>
-    public GraphicsPath GdiPath
-    {
-      get { return this.path.gdipPath; }
-    }
+		/// <summary>
+		///     Gets the underlying GDI+ path object.
+		/// </summary>
+		public GraphicsPath GdiPath
+		{
+			get { return path.gdipPath; }
+		}
 #endif
 
 #if WPF
-    /// <summary>
-    /// Gets the underlying WPF path geometry object.
-    /// </summary>
-    public PathGeometry WpfPath
-    {
-      get { return this.path.pathGeometry; }
-    }
+		/// <summary>
+		///     Gets the underlying WPF path geometry object.
+		/// </summary>
+		public PathGeometry WpfPath
+		{
+			get { return path.pathGeometry; }
+		}
 #endif
-  }
+	}
 }

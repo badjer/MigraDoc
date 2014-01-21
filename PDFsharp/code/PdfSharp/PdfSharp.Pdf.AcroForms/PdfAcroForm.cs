@@ -1,4 +1,5 @@
 #region PDFsharp - A .NET library for processing PDF
+
 //
 // Authors:
 //   Stefan Lange (mailto:Stefan.Lange@pdfsharp.com)
@@ -25,122 +26,118 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 namespace PdfSharp.Pdf.AcroForms
 {
-  /// <summary>
-  /// Represents a interactive form (or AcroForm), a collection of fields for 
-  /// gathering information interactively from the user.
-  /// </summary>
-  public sealed class PdfAcroForm : PdfDictionary
-  {
-    /// <summary>
-    /// Initializes a new instance of AcroForm.
-    /// </summary>
-    internal PdfAcroForm(PdfDocument document) : base(document)
-    {
-      this.document = document;
-    }
+	/// <summary>
+	///     Represents a interactive form (or AcroForm), a collection of fields for
+	///     gathering information interactively from the user.
+	/// </summary>
+	public sealed class PdfAcroForm : PdfDictionary
+	{
+		private PdfAcroField.PdfAcroFieldCollection fields;
 
-    internal PdfAcroForm(PdfDictionary dictionary) : base(dictionary)
-    {
-    }
+		/// <summary>
+		///     Initializes a new instance of AcroForm.
+		/// </summary>
+		internal PdfAcroForm(PdfDocument document) : base(document)
+		{
+			this.document = document;
+		}
 
-    /// <summary>
-    /// Gets the fields collection of this form.
-    /// </summary>
-    public PdfAcroField.PdfAcroFieldCollection Fields
-    {
-      get
-      {
-        if (this.fields == null)
-        {
-          object o = Elements.GetValue(Keys.Fields, VCF.CreateIndirect);
-          this.fields = (PdfAcroField.PdfAcroFieldCollection)o;
-        }
-        return this.fields;
-      }
-    }
-    PdfAcroField.PdfAcroFieldCollection fields;
+		internal PdfAcroForm(PdfDictionary dictionary) : base(dictionary)
+		{
+		}
 
-    /// <summary>
-    /// Predefined keys of this dictionary. 
-    /// The description comes from PDF 1.4 Reference.
-    /// </summary>
-    public sealed class Keys : KeysBase
-    {
-      /// <summary>
-      /// (Required) An array of references to the document’s root fields (those with
-      /// no ancestors in the field hierarchy).
-      /// </summary>
-      [KeyInfo(KeyType.Array | KeyType.Required, typeof(PdfAcroField.PdfAcroFieldCollection))]
-      public const string Fields = "/Fields";
+		/// <summary>
+		///     Gets the fields collection of this form.
+		/// </summary>
+		public PdfAcroField.PdfAcroFieldCollection Fields
+		{
+			get
+			{
+				if (fields == null)
+				{
+					object o = Elements.GetValue(Keys.Fields, VCF.CreateIndirect);
+					fields = (PdfAcroField.PdfAcroFieldCollection) o;
+				}
+				return fields;
+			}
+		}
 
-      /// <summary>
-      /// (Optional) A flag specifying whether to construct appearance streams and
-      /// appearance dictionaries for all widget annotations in the document.
-      /// Default value: false.
-      /// </summary>
-      [KeyInfo(KeyType.Boolean | KeyType.Optional)]
-      public const string NeedAppearances = "/NeedAppearances";
+		/// <summary>
+		///     Gets the KeysMeta of this dictionary type.
+		/// </summary>
+		internal override DictionaryMeta Meta
+		{
+			get { return Keys.Meta; }
+		}
 
-      /// <summary>
-      /// (Optional; PDF 1.3) A set of flags specifying various document-level characteristics
-      /// related to signature fields.
-      /// Default value: 0.
-      /// </summary>
-      [KeyInfo("1.3", KeyType.Integer | KeyType.Optional)]
-      public const string SigFlags = "/SigFlags";
+		/// <summary>
+		///     Predefined keys of this dictionary.
+		///     The description comes from PDF 1.4 Reference.
+		/// </summary>
+		public sealed class Keys : KeysBase
+		{
+			/// <summary>
+			///     (Required) An array of references to the document’s root fields (those with
+			///     no ancestors in the field hierarchy).
+			/// </summary>
+			[KeyInfo(KeyType.Array | KeyType.Required, typeof (PdfAcroField.PdfAcroFieldCollection))] public const string Fields = "/Fields";
 
-      /// <summary>
-      /// (Required if any fields in the document have additional-actions dictionaries
-      /// containing a C entry; PDF 1.3) An array of indirect references to field dictionaries
-      /// with calculation actions, defining the calculation order in which their values will 
-      /// be recalculated when the value of any field changes.
-      /// </summary>
-      [KeyInfo(KeyType.Array)]
-      public const string CO = "/CO";
+			/// <summary>
+			///     (Optional) A flag specifying whether to construct appearance streams and
+			///     appearance dictionaries for all widget annotations in the document.
+			///     Default value: false.
+			/// </summary>
+			[KeyInfo(KeyType.Boolean | KeyType.Optional)] public const string NeedAppearances = "/NeedAppearances";
 
-      /// <summary>
-      /// (Optional) A document-wide default value for the DR attribute of variable text fields.
-      /// </summary>
-      [KeyInfo(KeyType.Dictionary | KeyType.Optional)]
-      public const string DR = "/DR";
+			/// <summary>
+			///     (Optional; PDF 1.3) A set of flags specifying various document-level characteristics
+			///     related to signature fields.
+			///     Default value: 0.
+			/// </summary>
+			[KeyInfo("1.3", KeyType.Integer | KeyType.Optional)] public const string SigFlags = "/SigFlags";
 
-      /// <summary>
-      /// (Optional) A document-wide default value for the DA attribute of variable text fields.
-      /// </summary>
-      [KeyInfo(KeyType.String | KeyType.Optional)]
-      public const string DA = "/DA";
+			/// <summary>
+			///     (Required if any fields in the document have additional-actions dictionaries
+			///     containing a C entry; PDF 1.3) An array of indirect references to field dictionaries
+			///     with calculation actions, defining the calculation order in which their values will
+			///     be recalculated when the value of any field changes.
+			/// </summary>
+			[KeyInfo(KeyType.Array)] public const string CO = "/CO";
 
-      /// <summary>
-      /// (Optional) A document-wide default value for the Q attribute of variable text fields.
-      /// </summary>
-      [KeyInfo(KeyType.Integer | KeyType.Optional)]
-      public const string Q = "/Q";
+			/// <summary>
+			///     (Optional) A document-wide default value for the DR attribute of variable text fields.
+			/// </summary>
+			[KeyInfo(KeyType.Dictionary | KeyType.Optional)] public const string DR = "/DR";
 
-      /// <summary>
-      /// Gets the KeysMeta for these keys.
-      /// </summary>
-      internal static DictionaryMeta Meta
-      {
-        get
-        {
-          if (Keys.meta == null)
-            Keys.meta = CreateMeta(typeof(Keys));
-          return Keys.meta;
-        }
-      }
-      static DictionaryMeta meta;
-    }
+			/// <summary>
+			///     (Optional) A document-wide default value for the DA attribute of variable text fields.
+			/// </summary>
+			[KeyInfo(KeyType.String | KeyType.Optional)] public const string DA = "/DA";
 
-    /// <summary>
-    /// Gets the KeysMeta of this dictionary type.
-    /// </summary>
-    internal override DictionaryMeta Meta
-    {
-      get {return Keys.Meta;}
-    }
-  }
+			/// <summary>
+			///     (Optional) A document-wide default value for the Q attribute of variable text fields.
+			/// </summary>
+			[KeyInfo(KeyType.Integer | KeyType.Optional)] public const string Q = "/Q";
+
+			private static DictionaryMeta meta;
+
+			/// <summary>
+			///     Gets the KeysMeta for these keys.
+			/// </summary>
+			internal static DictionaryMeta Meta
+			{
+				get
+				{
+					if (meta == null)
+						meta = CreateMeta(typeof (Keys));
+					return meta;
+				}
+			}
+		}
+	}
 }

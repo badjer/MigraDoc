@@ -1,4 +1,5 @@
 #region PDFsharp - A .NET library for processing PDF
+
 //
 // Authors:
 //   Stefan Lange (mailto:Stefan.Lange@pdfsharp.com)
@@ -25,6 +26,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 using System;
@@ -32,80 +34,80 @@ using System.Diagnostics;
 
 namespace PdfSharp.Fonts.OpenType
 {
-  /// <summary>
-  /// Base class for all OpenType fonts.
-  /// </summary>
-  internal class OpenTypeFontTable : ICloneable
-  {
-    public OpenTypeFontTable(FontData fontData, string tag)
-    {
-      this.fontData = fontData;
-      if (fontData != null && fontData.tableDictionary.ContainsKey(tag))
-        this.DirectoryEntry = fontData.tableDictionary[tag];
-      else
-        this.DirectoryEntry = new TableDirectoryEntry(tag);
-      this.DirectoryEntry.FontTable = this;
-    }
+	/// <summary>
+	///     Base class for all OpenType fonts.
+	/// </summary>
+	internal class OpenTypeFontTable : ICloneable
+	{
+		public TableDirectoryEntry DirectoryEntry;
+		internal FontData fontData;
 
-    /// <summary>
-    /// Creates a deep copy of the current instance.
-    /// </summary>
-    public object Clone()
-    {
-      return DeepCopy();
-    }
+		public OpenTypeFontTable(FontData fontData, string tag)
+		{
+			this.fontData = fontData;
+			if (fontData != null && fontData.tableDictionary.ContainsKey(tag))
+				DirectoryEntry = fontData.tableDictionary[tag];
+			else
+				DirectoryEntry = new TableDirectoryEntry(tag);
+			DirectoryEntry.FontTable = this;
+		}
 
-    protected virtual OpenTypeFontTable DeepCopy()
-    {
-      OpenTypeFontTable fontTable = (OpenTypeFontTable)MemberwiseClone();
-      fontTable.DirectoryEntry.Offset = 0;
-      fontTable.DirectoryEntry.FontTable = fontTable;
-      return fontTable;
-    }
+		/// <summary>
+		///     Gets the font image the table belongs to.
+		/// </summary>
+		public FontData FontData
+		{
+			get { return fontData; }
+		}
 
-    /// <summary>
-    /// Gets the font image the table belongs to.
-    /// </summary>
-    public FontData FontData
-    {
-      get { return this.fontData; }
-    }
-    internal FontData fontData;
+		/// <summary>
+		///     Creates a deep copy of the current instance.
+		/// </summary>
+		public object Clone()
+		{
+			return DeepCopy();
+		}
 
-    public TableDirectoryEntry DirectoryEntry;
+		protected virtual OpenTypeFontTable DeepCopy()
+		{
+			OpenTypeFontTable fontTable = (OpenTypeFontTable) MemberwiseClone();
+			fontTable.DirectoryEntry.Offset = 0;
+			fontTable.DirectoryEntry.FontTable = fontTable;
+			return fontTable;
+		}
 
-    /// <summary>
-    /// When overridden in a derived class, prepares the font table to be compiled into its binary representation.
-    /// </summary>
-    public virtual void PrepareForCompilation()
-    {
-    }
+		/// <summary>
+		///     When overridden in a derived class, prepares the font table to be compiled into its binary representation.
+		/// </summary>
+		public virtual void PrepareForCompilation()
+		{
+		}
 
-    /// <summary>
-    /// When overridden in a derived class, converts the font into its binary representation.
-    /// </summary>
-    public virtual void Write(OpenTypeFontWriter writer)
-    {
-    }
+		/// <summary>
+		///     When overridden in a derived class, converts the font into its binary representation.
+		/// </summary>
+		public virtual void Write(OpenTypeFontWriter writer)
+		{
+		}
 
-    /// <summary>
-    /// Calculates the checksum of a table represented by its bytes.
-    /// </summary>
-    public static uint CalcChecksum(byte[] bytes)
-    {
-      Debug.Assert((bytes.Length & 3) == 0);
-      // Cannot use Buffer.BlockCopy because 32-bit values are Big-endian
-      uint byte3, byte2, byte1, byte0;
-      byte3 = byte2 = byte1 = byte0 = 0;
-      int length = bytes.Length;
-      for (int idx = 0; idx < length;)
-      {
-        byte3 += bytes[idx++];
-        byte2 += bytes[idx++];
-        byte1 += bytes[idx++];
-        byte0 += bytes[idx++];
-      }
-      return (byte3 << 24) + (byte2 << 16) + (byte1 << 8) + byte0;
-    }
-  }
+		/// <summary>
+		///     Calculates the checksum of a table represented by its bytes.
+		/// </summary>
+		public static uint CalcChecksum(byte[] bytes)
+		{
+			Debug.Assert((bytes.Length & 3) == 0);
+			// Cannot use Buffer.BlockCopy because 32-bit values are Big-endian
+			uint byte3, byte2, byte1, byte0;
+			byte3 = byte2 = byte1 = byte0 = 0;
+			int length = bytes.Length;
+			for (int idx = 0; idx < length;)
+			{
+				byte3 += bytes[idx++];
+				byte2 += bytes[idx++];
+				byte1 += bytes[idx++];
+				byte0 += bytes[idx++];
+			}
+			return (byte3 << 24) + (byte2 << 16) + (byte1 << 8) + byte0;
+		}
+	}
 }

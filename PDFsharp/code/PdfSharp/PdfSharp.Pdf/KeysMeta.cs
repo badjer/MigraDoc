@@ -1,4 +1,5 @@
 #region PDFsharp - A .NET library for processing PDF
+
 //
 // Authors:
 //   Stefan Lange (mailto:Stefan.Lange@pdfsharp.com)
@@ -25,181 +26,183 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 using System;
-using System.Diagnostics;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Reflection;
 
 namespace PdfSharp.Pdf
 {
-  /// <summary>
-  /// Hold information about the value of a key in a dictionary. This information is used to create
-  /// and interpret this value.
-  /// </summary>
-  internal sealed class KeyDescriptor
-  {
-    /// <summary>
-    /// Initializes a new instance of KeyDescriptor from the specified attribute during a KeysMeta
-    /// initializes itself using reflection.
-    /// </summary>
-    public KeyDescriptor(KeyInfoAttribute attribute)
-    {
-      this.version = attribute.Version;
-      this.keyType = attribute.KeyType;
-      this.fixedValue = attribute.FixedValue;
-      this.objectType = attribute.ObjectType;
+	/// <summary>
+	///     Hold information about the value of a key in a dictionary. This information is used to create
+	///     and interpret this value.
+	/// </summary>
+	internal sealed class KeyDescriptor
+	{
+		private readonly string fixedValue;
+		private KeyType keyType;
+		private string keyValue;
+		private Type objectType;
+		private string version;
 
-      if (this.version == "")
-        version = "1.0";
-    }
+		/// <summary>
+		///     Initializes a new instance of KeyDescriptor from the specified attribute during a KeysMeta
+		///     initializes itself using reflection.
+		/// </summary>
+		public KeyDescriptor(KeyInfoAttribute attribute)
+		{
+			version = attribute.Version;
+			keyType = attribute.KeyType;
+			fixedValue = attribute.FixedValue;
+			objectType = attribute.ObjectType;
 
-    /// <summary>
-    /// Gets or sets the PDF version starting with the availability of the described key.
-    /// </summary>
-    public string Version
-    {
-      get { return this.version; }
-      set { this.version = value; }
-    }
-    string version;
+			if (version == "")
+				version = "1.0";
+		}
 
-    public KeyType KeyType
-    {
-      get { return this.keyType; }
-      set { this.keyType = value; }
-    }
-    KeyType keyType;
+		/// <summary>
+		///     Gets or sets the PDF version starting with the availability of the described key.
+		/// </summary>
+		public string Version
+		{
+			get { return version; }
+			set { version = value; }
+		}
 
-    public string KeyValue
-    {
-      get { return this.keyValue; }
-      set { this.keyValue = value; }
-    }
-    string keyValue;
+		public KeyType KeyType
+		{
+			get { return keyType; }
+			set { keyType = value; }
+		}
 
-    public string FixedValue
-    {
-      get { return this.fixedValue; }
-    }
-    string fixedValue;
+		public string KeyValue
+		{
+			get { return keyValue; }
+			set { keyValue = value; }
+		}
 
-    public Type ObjectType
-    {
-      get { return this.objectType; }
-      set { this.objectType = value; }
-    }
-    Type objectType;
+		public string FixedValue
+		{
+			get { return fixedValue; }
+		}
 
-    public bool CanBeIndirect
-    {
-      get { return (this.keyType & KeyType.MustNotBeIndirect) == 0; }
-    }
+		public Type ObjectType
+		{
+			get { return objectType; }
+			set { objectType = value; }
+		}
 
-    /// <summary>
-    /// Returns the type of the object to be created as value for the described key.
-    /// </summary>
-    public Type GetValueType()
-    {
-      Type type = this.objectType;
-      if (type == null)
-      {
-        // If we have no ObjectType specified, use the KeyType enumeration.
-        switch (this.keyType & KeyType.TypeMask)
-        {
-          case KeyType.Name:
-            type = typeof(PdfName);
-            break;
+		public bool CanBeIndirect
+		{
+			get { return (keyType & KeyType.MustNotBeIndirect) == 0; }
+		}
 
-          case KeyType.String:
-            type = typeof(PdfString);
-            break;
+		/// <summary>
+		///     Returns the type of the object to be created as value for the described key.
+		/// </summary>
+		public Type GetValueType()
+		{
+			Type type = objectType;
+			if (type == null)
+			{
+				// If we have no ObjectType specified, use the KeyType enumeration.
+				switch (keyType & KeyType.TypeMask)
+				{
+					case KeyType.Name:
+						type = typeof (PdfName);
+						break;
 
-          case KeyType.Boolean:
-            type = typeof(PdfBoolean);
-            break;
+					case KeyType.String:
+						type = typeof (PdfString);
+						break;
 
-          case KeyType.Integer:
-            type = typeof(PdfInteger);
-            break;
+					case KeyType.Boolean:
+						type = typeof (PdfBoolean);
+						break;
 
-          case KeyType.Real:
-            type = typeof(PdfReal);
-            break;
+					case KeyType.Integer:
+						type = typeof (PdfInteger);
+						break;
 
-          case KeyType.Date:
-            type = typeof(PdfDate);
-            break;
+					case KeyType.Real:
+						type = typeof (PdfReal);
+						break;
 
-          case KeyType.Rectangle:
-            type = typeof(PdfRectangle);
-            break;
+					case KeyType.Date:
+						type = typeof (PdfDate);
+						break;
 
-          case KeyType.Array:
-            type = typeof(PdfArray);
-            break;
+					case KeyType.Rectangle:
+						type = typeof (PdfRectangle);
+						break;
 
-          case KeyType.Dictionary:
-            type = typeof(PdfDictionary);
-            break;
+					case KeyType.Array:
+						type = typeof (PdfArray);
+						break;
 
-          case KeyType.Stream:
-            type = typeof(PdfDictionary);
-            break;
+					case KeyType.Dictionary:
+						type = typeof (PdfDictionary);
+						break;
 
-          // The following types are not yet used
+					case KeyType.Stream:
+						type = typeof (PdfDictionary);
+						break;
 
-          case KeyType.NumberTree:
-            throw new NotImplementedException("KeyType.NumberTree");
+						// The following types are not yet used
 
-          case KeyType.NameOrArray:
-            throw new NotImplementedException("KeyType.NameOrArray");
+					case KeyType.NumberTree:
+						throw new NotImplementedException("KeyType.NumberTree");
 
-          case KeyType.ArrayOrDictionary:
-            throw new NotImplementedException("KeyType.ArrayOrDictionary");
+					case KeyType.NameOrArray:
+						throw new NotImplementedException("KeyType.NameOrArray");
 
-          case KeyType.StreamOrArray:
-            throw new NotImplementedException("KeyType.StreamOrArray");
+					case KeyType.ArrayOrDictionary:
+						throw new NotImplementedException("KeyType.ArrayOrDictionary");
 
-          case KeyType.ArrayOrNameOrString:
-            throw new NotImplementedException("KeyType.ArrayOrNameOrString");
+					case KeyType.StreamOrArray:
+						throw new NotImplementedException("KeyType.StreamOrArray");
 
-          default:
-            Debug.Assert(false, "Invalid KeyType: " + this.keyType);
-            break;
-        }
-      }
-      return type;
-    }
-  }
+					case KeyType.ArrayOrNameOrString:
+						throw new NotImplementedException("KeyType.ArrayOrNameOrString");
 
-  /// <summary>
-  /// Contains meta information about all keys of a PDF dictionary.
-  /// </summary>
-  internal class DictionaryMeta
-  {
-    public DictionaryMeta(Type type)
-    {
-      FieldInfo[] fields = type.GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
-      foreach (FieldInfo field in fields)
-      {
-        object[] attributes = field.GetCustomAttributes(typeof(KeyInfoAttribute), false);
-        if (attributes.Length == 1)
-        {
-          KeyInfoAttribute attribute = (KeyInfoAttribute)attributes[0];
-          KeyDescriptor descriptor = new KeyDescriptor(attribute);
-          descriptor.KeyValue = (string)field.GetValue(null);
-          this.keyDescriptors[descriptor.KeyValue] = descriptor;
-        }
-      }
-    }
+					default:
+						Debug.Assert(false, "Invalid KeyType: " + keyType);
+						break;
+				}
+			}
+			return type;
+		}
+	}
 
-    public KeyDescriptor this[string key]
-    {
-      get { return this.keyDescriptors[key]; }
-    }
+	/// <summary>
+	///     Contains meta information about all keys of a PDF dictionary.
+	/// </summary>
+	internal class DictionaryMeta
+	{
+		private readonly Dictionary<string, KeyDescriptor> keyDescriptors = new Dictionary<string, KeyDescriptor>();
 
-    readonly Dictionary<string, KeyDescriptor> keyDescriptors = new Dictionary<string, KeyDescriptor>();
-  }
+		public DictionaryMeta(Type type)
+		{
+			FieldInfo[] fields = type.GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
+			foreach (FieldInfo field in fields)
+			{
+				object[] attributes = field.GetCustomAttributes(typeof (KeyInfoAttribute), false);
+				if (attributes.Length == 1)
+				{
+					KeyInfoAttribute attribute = (KeyInfoAttribute) attributes[0];
+					KeyDescriptor descriptor = new KeyDescriptor(attribute);
+					descriptor.KeyValue = (string) field.GetValue(null);
+					keyDescriptors[descriptor.KeyValue] = descriptor;
+				}
+			}
+		}
+
+		public KeyDescriptor this[string key]
+		{
+			get { return keyDescriptors[key]; }
+		}
+	}
 }

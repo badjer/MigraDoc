@@ -1,4 +1,5 @@
 #region PDFsharp - A .NET library for processing PDF
+
 //
 // Authors:
 //   Stefan Lange (mailto:Stefan.Lange@pdfsharp.com)
@@ -25,50 +26,51 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 using PdfSharp.Pdf.IO;
 
 namespace PdfSharp.Pdf
 {
-  /// <summary>
-  /// Represents an indirect null value. This type is not used by PDFsharp, but at least
-  /// one tool from Adobe creates PDF files with a null object.
-  /// </summary>
-  public sealed class PdfNullObject : PdfObject
-  {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="PdfNullObject"/> class.
-    /// </summary>
-    public PdfNullObject()
-    {
-    }
+	/// <summary>
+	///     Represents an indirect null value. This type is not used by PDFsharp, but at least
+	///     one tool from Adobe creates PDF files with a null object.
+	/// </summary>
+	public sealed class PdfNullObject : PdfObject
+	{
+		/// <summary>
+		///     Initializes a new instance of the <see cref="PdfNullObject" /> class.
+		/// </summary>
+		public PdfNullObject()
+		{
+		}
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="PdfNullObject"/> class.
-    /// </summary>
-    /// <param name="document">The document.</param>
-    public PdfNullObject(PdfDocument document)
-      : base(document)
-    {
-    }
+		/// <summary>
+		///     Initializes a new instance of the <see cref="PdfNullObject" /> class.
+		/// </summary>
+		/// <param name="document">The document.</param>
+		public PdfNullObject(PdfDocument document)
+			: base(document)
+		{
+		}
 
-    /// <summary>
-    /// Returns the string "null".
-    /// </summary>
-    public override string ToString()
-    {
-      return "null";
-    }
+		/// <summary>
+		///     Returns the string "null".
+		/// </summary>
+		public override string ToString()
+		{
+			return "null";
+		}
 
-    /// <summary>
-    /// Writes the keyword «null».
-    /// </summary>
-    internal override void WriteObject(PdfWriter writer)
-    {
-      writer.WriteBeginObject(this);
-      writer.WriteRaw(" null ");
-      writer.WriteEndObject();
-    }
-  }
+		/// <summary>
+		///     Writes the keyword «null».
+		/// </summary>
+		internal override void WriteObject(PdfWriter writer)
+		{
+			writer.WriteBeginObject(this);
+			writer.WriteRaw(" null ");
+			writer.WriteEndObject();
+		}
+	}
 }

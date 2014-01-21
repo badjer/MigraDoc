@@ -1,4 +1,5 @@
 #region PDFsharp - A .NET library for processing PDF
+
 //
 // Authors:
 //   Stefan Lange (mailto:Stefan.Lange@pdfsharp.com)
@@ -25,50 +26,52 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 #if GDI
 using System.Drawing;
 using PdfSharp.Core.Enums;
+
 #endif
 
 namespace PdfSharp.Drawing
 {
 #if true
-  /// <summary>
-  /// Represents a segment of a path defined by a type and a set of points.
-  /// </summary>
-  internal sealed class XGraphicsPathItem
-  {
-    public XGraphicsPathItem(XGraphicsPathItemType type)
-    {
-      this.type   = type;
-      this.points = null;
-    }
+	/// <summary>
+	///     Represents a segment of a path defined by a type and a set of points.
+	/// </summary>
+	internal sealed class XGraphicsPathItem
+	{
+		public XGraphicsPathItem(XGraphicsPathItemType type)
+		{
+			this.type = type;
+			points = null;
+		}
 
 #if GDI
-    public XGraphicsPathItem(XGraphicsPathItemType type, params PointF[] points)
-    {
-      this.type   = type;
-      this.points = XGraphics.MakeXPointArray(points);
-    }
+		public XGraphicsPathItem(XGraphicsPathItemType type, params PointF[] points)
+		{
+			this.type = type;
+			this.points = XGraphics.MakeXPointArray(points);
+		}
 #endif
-    
-    public XGraphicsPathItem(XGraphicsPathItemType type, params XPoint[] points)
-    {
-      this.type   = type;
-      this.points = (XPoint[])points.Clone();
-    }
 
-    public XGraphicsPathItem Clone()
-    {
-      XGraphicsPathItem item = MemberwiseClone() as XGraphicsPathItem;
-      item.points = this.points.Clone() as XPoint[];
-      return item;
-    }
+		public XGraphicsPathItem(XGraphicsPathItemType type, params XPoint[] points)
+		{
+			this.type = type;
+			this.points = (XPoint[]) points.Clone();
+		}
 
-    public XGraphicsPathItemType type;
-    public XPoint[] points;
-  }
+		public XGraphicsPathItem Clone()
+		{
+			XGraphicsPathItem item = MemberwiseClone() as XGraphicsPathItem;
+			item.points = points.Clone() as XPoint[];
+			return item;
+		}
+
+		public XGraphicsPathItemType type;
+		public XPoint[] points;
+	}
 #endif
 }

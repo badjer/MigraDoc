@@ -1,4 +1,5 @@
 #region PDFsharp - A .NET library for processing PDF
+
 //
 // Authors:
 //   Stefan Lange (mailto:Stefan.Lange@pdfsharp.com)
@@ -25,337 +26,340 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 using System;
 using System.Diagnostics;
 using System.Text;
-using PdfSharp.Pdf.Internal;
 using PdfSharp.Drawing;
+using PdfSharp.Pdf.Internal;
 
 namespace PdfSharp.Fonts.OpenType
 {
-  /// <summary>
-  /// The OpenType font descriptor.
-  /// </summary>
-  internal sealed class OpenTypeDescriptor : FontDescriptor
-  {
-    public OpenTypeDescriptor(XFont font, XPdfFontOptions options)
-    {
-      try
-      {
-        this.fontData = new FontData(font, options);
-        this.fontName = font.Name;
-        Initialize();
-      }
-      catch
-      {
-        throw;
-      }
-    }
+	/// <summary>
+	///     The OpenType font descriptor.
+	/// </summary>
+	internal sealed class OpenTypeDescriptor : FontDescriptor
+	{
+		public OpenTypeDescriptor(XFont font, XPdfFontOptions options)
+		{
+			try
+			{
+				fontData = new FontData(font, options);
+				fontName = font.Name;
+				Initialize();
+			}
+			catch
+			{
+				throw;
+			}
+		}
 
-    //#if WPF
-    //    public TrueTypeDescriptor(XFont font, XPdfFontOptions options)
-    //    {
-    //      try
-    //      {
-    //        this.fontData = new FontData(font, options);
-    //        this.fontName = font.Name;
-    //        Initialize();
-    //      }
-    //      catch (Exception ex)
-    //      {
-    //        throw ex;
-    //      }
-    //    }
-    //#endif
+		//#if WPF
+		//    public TrueTypeDescriptor(XFont font, XPdfFontOptions options)
+		//    {
+		//      try
+		//      {
+		//        this.fontData = new FontData(font, options);
+		//        this.fontName = font.Name;
+		//        Initialize();
+		//      }
+		//      catch (Exception ex)
+		//      {
+		//        throw ex;
+		//      }
+		//    }
+		//#endif
 
-    //internal TrueTypeDescriptor(FontSelector selector)
-    //{
-    //  throw new NotImplementedException("TrueTypeDescriptor(FontSelector selector)");
-    //}
+		//internal TrueTypeDescriptor(FontSelector selector)
+		//{
+		//  throw new NotImplementedException("TrueTypeDescriptor(FontSelector selector)");
+		//}
 
-    internal OpenTypeDescriptor(XFont font)
-      : this(font, font.PdfOptions)
-    { }
+		internal OpenTypeDescriptor(XFont font)
+			: this(font, font.PdfOptions)
+		{
+		}
 
-    internal OpenTypeDescriptor(string idName, byte[] fontData)
-    {
-      try
-      {
-        this.fontData = new FontData(fontData);
-        // Try to get real name form name table
-        if (idName.Contains("XPS-Font-") && this.fontData.name != null && this.fontData.name.Name.Length != 0)
-        {
-          string tag = String.Empty;
-          if (idName.IndexOf('+') == 6)
-            tag = idName.Substring(0, 6);
-          idName = tag + "+" + this.fontData.name.Name;
-          if (this.fontData.name.Style.Length != 0)
-            idName += "," + this.fontData.name.Style;
-          idName = idName.Replace(" ", "");
-        }
-        this.fontName = idName;
-        Initialize();
-      }
-      catch (Exception ex)
-      {
-        throw ex;
-      }
-    }
+		internal OpenTypeDescriptor(string idName, byte[] fontData)
+		{
+			try
+			{
+				this.fontData = new FontData(fontData);
+				// Try to get real name form name table
+				if (idName.Contains("XPS-Font-") && this.fontData.name != null && this.fontData.name.Name.Length != 0)
+				{
+					string tag = String.Empty;
+					if (idName.IndexOf('+') == 6)
+						tag = idName.Substring(0, 6);
+					idName = tag + "+" + this.fontData.name.Name;
+					if (this.fontData.name.Style.Length != 0)
+						idName += "," + this.fontData.name.Style;
+					idName = idName.Replace(" ", "");
+				}
+				fontName = idName;
+				Initialize();
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
 
-    internal OpenTypeDescriptor(byte[] fontData)
-    {
-      try
-      {
-        this.fontData = new FontData(fontData);
-        // Try to get real name form name table
-        string name = this.fontData.name.Name;
-        if (this.fontData.name.Style.Length != 0)
-          name += "," + this.fontData.name.Style;
-        name = name.Replace(" ", "");
-        this.fontName = name;
-        Initialize();
-      }
-      catch
-      {
-        throw;
-      }
-    }
+		internal OpenTypeDescriptor(byte[] fontData)
+		{
+			try
+			{
+				this.fontData = new FontData(fontData);
+				// Try to get real name form name table
+				string name = this.fontData.name.Name;
+				if (this.fontData.name.Style.Length != 0)
+					name += "," + this.fontData.name.Style;
+				name = name.Replace(" ", "");
+				fontName = name;
+				Initialize();
+			}
+			catch
+			{
+				throw;
+			}
+		}
 
-    internal FontData fontData;
+		internal FontData fontData;
 
-    void Initialize()
-    {
-      //bool embeddingRestricted = this.fontData.os2.fsType == 0x0002;
+		private void Initialize()
+		{
+			//bool embeddingRestricted = this.fontData.os2.fsType == 0x0002;
 
-      //this.fontName = image.n
-      this.italicAngle = this.fontData.post.italicAngle;
+			//this.fontName = image.n
+			italicAngle = fontData.post.italicAngle;
 
-      this.xMin = this.fontData.head.xMin;
-      this.yMin = this.fontData.head.yMin;
-      this.xMax = this.fontData.head.xMax;
-      this.yMax = this.fontData.head.yMax;
+			xMin = fontData.head.xMin;
+			yMin = fontData.head.yMin;
+			xMax = fontData.head.xMax;
+			yMax = fontData.head.yMax;
 
-      this.underlinePosition = this.fontData.post.underlinePosition;
-      this.underlineThickness = this.fontData.post.underlineThickness;
-      this.strikeoutPosition = this.fontData.os2.yStrikeoutPosition;
-      this.strikeoutSize = this.fontData.os2.yStrikeoutSize;
+			underlinePosition = fontData.post.underlinePosition;
+			underlineThickness = fontData.post.underlineThickness;
+			strikeoutPosition = fontData.os2.yStrikeoutPosition;
+			strikeoutSize = fontData.os2.yStrikeoutSize;
 
-      // No documetation found how to get the set vertical stems width from the
-      // TrueType tables.
-      // The following formula comes from PDFlib Lite source code. Acrobat 5.0 sets
-      // /StemV to 0 always. I think the value doesn't matter.
-      //float weight = (float)(this.image.os2.usWeightClass / 65.0f);
-      //this.stemV = (int)(50 + weight * weight);  // MAGIC
-      this.stemV = 0;
+			// No documetation found how to get the set vertical stems width from the
+			// TrueType tables.
+			// The following formula comes from PDFlib Lite source code. Acrobat 5.0 sets
+			// /StemV to 0 always. I think the value doesn't matter.
+			//float weight = (float)(this.image.os2.usWeightClass / 65.0f);
+			//this.stemV = (int)(50 + weight * weight);  // MAGIC
+			stemV = 0;
 
-      // PDFlib states that some Apple fonts miss the OS/2 table.
-      Debug.Assert(fontData.os2 != null, "TrueType font has no OS/2 table.");
+			// PDFlib states that some Apple fonts miss the OS/2 table.
+			Debug.Assert(fontData.os2 != null, "TrueType font has no OS/2 table.");
 
-      this.unitsPerEm = fontData.head.unitsPerEm;
+			unitsPerEm = fontData.head.unitsPerEm;
 
-      // PDFlib takes sTypoAscender and sTypoDescender from OS/2 tabel, but GDI+ uses usWinAscent and usWinDescent
-      if (fontData.os2.sTypoAscender != 0)
-        this.ascender = fontData.os2.usWinAscent;
-      else
-        this.ascender = fontData.hhea.ascender;
-      Debug.Assert(this.ascender > 0, "PDFsharp internal: Ascender should be greater than 0.");
+			// PDFlib takes sTypoAscender and sTypoDescender from OS/2 tabel, but GDI+ uses usWinAscent and usWinDescent
+			if (fontData.os2.sTypoAscender != 0)
+				ascender = fontData.os2.usWinAscent;
+			else
+				ascender = fontData.hhea.ascender;
+			Debug.Assert(ascender > 0, "PDFsharp internal: Ascender should be greater than 0.");
 
-      if (fontData.os2.sTypoDescender != 0)
-      {
-        this.descender = fontData.os2.usWinDescent;
-        Debug.Assert(this.descender > 0, "PDFsharp internal: Font with non positive ascender value found.");
+			if (fontData.os2.sTypoDescender != 0)
+			{
+				descender = fontData.os2.usWinDescent;
+				Debug.Assert(descender > 0, "PDFsharp internal: Font with non positive ascender value found.");
 #if true_
         Debug.WriteLine(String.Format(CultureInfo.InvariantCulture,
           "os2.usWinDescent={0}, hhea.descender={1}, os2.sTypoDescender={2}", fontData.os2.usWinDescent, fontData.hhea.descender, fontData.os2.sTypoDescender));
 #endif
-        // Force sign from hhea.descender
-        // TODO:
-        this.descender = Math.Abs(this.descender) * Math.Sign(fontData.hhea.descender);
-      }
-      else
-        this.descender = fontData.hhea.descender;
-      Debug.Assert(this.descender < 0, "PDFsharp internal: Ascender should be less than 0.");
+				// Force sign from hhea.descender
+				// TODO:
+				descender = Math.Abs(descender)*Math.Sign(fontData.hhea.descender);
+			}
+			else
+				descender = fontData.hhea.descender;
+			Debug.Assert(descender < 0, "PDFsharp internal: Ascender should be less than 0.");
 
-      this.leading = fontData.hhea.lineGap;
+			leading = fontData.hhea.lineGap;
 
-      // sCapHeight and sxHeight are only valid if version >= 2
-      if (fontData.os2.version >= 2 && fontData.os2.sCapHeight != 0)
-        this.capHeight = fontData.os2.sCapHeight;
-      else
-        this.capHeight = fontData.hhea.ascender;
+			// sCapHeight and sxHeight are only valid if version >= 2
+			if (fontData.os2.version >= 2 && fontData.os2.sCapHeight != 0)
+				capHeight = fontData.os2.sCapHeight;
+			else
+				capHeight = fontData.hhea.ascender;
 
-      if (fontData.os2.version >= 2 && fontData.os2.sxHeight != 0)
-        this.xHeight = fontData.os2.sxHeight;
-      else
-        this.xHeight = (int)(0.66f * this.ascender);
+			if (fontData.os2.version >= 2 && fontData.os2.sxHeight != 0)
+				xHeight = fontData.os2.sxHeight;
+			else
+				xHeight = (int) (0.66f*ascender);
 
-      //this.flags = this.image.
+			//this.flags = this.image.
 
-      Encoding ansi = PdfEncoders.WinAnsiEncoding; // System.Text.Encoding.Default;
-      Encoding unicode = Encoding.Unicode;
-      byte[] bytes = new byte[256];
+			Encoding ansi = PdfEncoders.WinAnsiEncoding; // System.Text.Encoding.Default;
+			Encoding unicode = Encoding.Unicode;
+			byte[] bytes = new byte[256];
 
-      bool symbol = this.fontData.cmap.symbol;
-      this.widths = new int[256];
-      for (int idx = 0; idx < 256; idx++)
-      {
-        bytes[idx] = (byte)idx;
-        // PDFlib handles some font flaws here...
-        // We wait for bug reports.
+			bool symbol = fontData.cmap.symbol;
+			widths = new int[256];
+			for (int idx = 0; idx < 256; idx++)
+			{
+				bytes[idx] = (byte) idx;
+				// PDFlib handles some font flaws here...
+				// We wait for bug reports.
 
-        char ch = (char)idx;
-        string s = ansi.GetString(bytes, idx, 1);
-        if (s.Length != 0)
-        {
-          if (s[0] != ch)
-            ch = s[0];
-        }
+				char ch = (char) idx;
+				string s = ansi.GetString(bytes, idx, 1);
+				if (s.Length != 0)
+				{
+					if (s[0] != ch)
+						ch = s[0];
+				}
 #if DEBUG
-        if (idx == 'S')
-          GetType();
+				if (idx == 'S')
+					GetType();
 #endif
-        int glyphIndex;
-        if (symbol)
-        {
-          glyphIndex = idx + (this.fontData.os2.usFirstCharIndex & 0xFF00);
-          glyphIndex = CharCodeToGlyphIndex((char)glyphIndex);
-        }
-        else
-        {
-          //Debug.Assert(idx + (this.fontData.os2.usFirstCharIndex & 0xFF00) == idx);
-          //glyphIndex = CharCodeToGlyphIndex((char)idx);
-          glyphIndex = CharCodeToGlyphIndex(ch);
-        }
-        this.widths[idx] = GlyphIndexToPdfWidth(glyphIndex);
-      }
-    }
-    public int[] widths;
+				int glyphIndex;
+				if (symbol)
+				{
+					glyphIndex = idx + (fontData.os2.usFirstCharIndex & 0xFF00);
+					glyphIndex = CharCodeToGlyphIndex((char) glyphIndex);
+				}
+				else
+				{
+					//Debug.Assert(idx + (this.fontData.os2.usFirstCharIndex & 0xFF00) == idx);
+					//glyphIndex = CharCodeToGlyphIndex((char)idx);
+					glyphIndex = CharCodeToGlyphIndex(ch);
+				}
+				widths[idx] = GlyphIndexToPdfWidth(glyphIndex);
+			}
+		}
 
-    /// <summary>
-    /// Gets a value indicating whether this instance belongs to a bold font.
-    /// </summary>
-    public override bool IsBoldFace
-    {
-      get
-      {
-        // usWeightClass 700 is Bold
-        //Debug.Assert((this.fontData.os2.usWeightClass >= 700) == ((this.fontData.os2.fsSelection & (ushort)OS2Table.FontSelectionFlags.Bold) != 0));
-        return (this.fontData.os2.fsSelection & (ushort)OS2Table.FontSelectionFlags.Bold) != 0;
-      }
-    }
+		public int[] widths;
 
-    /// <summary>
-    /// Gets a value indicating whether this instance belongs to an italic font.
-    /// </summary>
-    public override bool IsItalicFace
-    {
-      get { return (this.fontData.os2.fsSelection & (ushort)OS2Table.FontSelectionFlags.Italic) != 0; }
-    }
+		/// <summary>
+		///     Gets a value indicating whether this instance belongs to a bold font.
+		/// </summary>
+		public override bool IsBoldFace
+		{
+			get
+			{
+				// usWeightClass 700 is Bold
+				//Debug.Assert((this.fontData.os2.usWeightClass >= 700) == ((this.fontData.os2.fsSelection & (ushort)OS2Table.FontSelectionFlags.Bold) != 0));
+				return (fontData.os2.fsSelection & (ushort) OS2Table.FontSelectionFlags.Bold) != 0;
+			}
+		}
 
-    internal int DesignUnitsToPdf(double value)
-    {
-      return (int)Math.Round(value * 1000.0 / this.fontData.head.unitsPerEm);
-    }
+		/// <summary>
+		///     Gets a value indicating whether this instance belongs to an italic font.
+		/// </summary>
+		public override bool IsItalicFace
+		{
+			get { return (fontData.os2.fsSelection & (ushort) OS2Table.FontSelectionFlags.Italic) != 0; }
+		}
 
-    /// <summary>
-    /// Maps a unicode to the index of the corresponding glyph.
-    /// See OpenType spec "cmap - Character To Glyph Index Mapping Table / Format 4: Segment mapping to delta values"
-    /// for details about this a little bit strange looking algorithm.
-    /// </summary>
-    public int CharCodeToGlyphIndex(char value)
-    {
-      try
-      {
-        CMap4 cmap = this.fontData.cmap.cmap4;
-        int segCount = cmap.segCountX2 / 2;
-        int seg;
-        for (seg = 0; seg < segCount; seg++)
-        {
-          if (value <= cmap.endCount[seg])
-            break;
-        }
-        Debug.Assert(seg < segCount);
+		internal int DesignUnitsToPdf(double value)
+		{
+			return (int) Math.Round(value*1000.0/fontData.head.unitsPerEm);
+		}
 
-        if (value < cmap.startCount[seg])
-          return 0;
+		/// <summary>
+		///     Maps a unicode to the index of the corresponding glyph.
+		///     See OpenType spec "cmap - Character To Glyph Index Mapping Table / Format 4: Segment mapping to delta values"
+		///     for details about this a little bit strange looking algorithm.
+		/// </summary>
+		public int CharCodeToGlyphIndex(char value)
+		{
+			try
+			{
+				CMap4 cmap = fontData.cmap.cmap4;
+				int segCount = cmap.segCountX2/2;
+				int seg;
+				for (seg = 0; seg < segCount; seg++)
+				{
+					if (value <= cmap.endCount[seg])
+						break;
+				}
+				Debug.Assert(seg < segCount);
 
-        if (cmap.idRangeOffs[seg] == 0)
-          return (value + cmap.idDelta[seg]) & 0xFFFF;
+				if (value < cmap.startCount[seg])
+					return 0;
 
-        int idx = cmap.idRangeOffs[seg] / 2 + (value - cmap.startCount[seg]) - (segCount - seg);
-        Debug.Assert(idx >= 0 && idx < cmap.glyphCount);
+				if (cmap.idRangeOffs[seg] == 0)
+					return (value + cmap.idDelta[seg]) & 0xFFFF;
 
-        if (cmap.glyphIdArray[idx] == 0)
-          return 0;
-        
-        return (cmap.glyphIdArray[idx] + cmap.idDelta[seg]) & 0xFFFF;
-      }
-      catch
-      {
-        throw;
-      }
-    }
+				int idx = cmap.idRangeOffs[seg]/2 + (value - cmap.startCount[seg]) - (segCount - seg);
+				Debug.Assert(idx >= 0 && idx < cmap.glyphCount);
 
-    /// <summary>
-    /// Converts the width of a glyph identified by its index to PDF design units.
-    /// </summary>
-    public int GlyphIndexToPdfWidth(int glyphIndex)
-    {
-      try
-      {
-        int numberOfHMetrics = this.fontData.hhea.numberOfHMetrics;
-        int unitsPerEm = this.fontData.head.unitsPerEm;
+				if (cmap.glyphIdArray[idx] == 0)
+					return 0;
 
-        // glyphIndex >= numberOfHMetrics means the font is mono-spaced and all glyphs have the same width
-        if (glyphIndex >= numberOfHMetrics)
-          glyphIndex = numberOfHMetrics - 1;
+				return (cmap.glyphIdArray[idx] + cmap.idDelta[seg]) & 0xFFFF;
+			}
+			catch
+			{
+				throw;
+			}
+		}
 
-        int width = this.fontData.hmtx.metrics[glyphIndex].advanceWidth;
+		/// <summary>
+		///     Converts the width of a glyph identified by its index to PDF design units.
+		/// </summary>
+		public int GlyphIndexToPdfWidth(int glyphIndex)
+		{
+			try
+			{
+				int numberOfHMetrics = fontData.hhea.numberOfHMetrics;
+				int unitsPerEm = fontData.head.unitsPerEm;
 
-        // Sometimes the unitsPerEm is 1000, sometimes a power of 2.
-        if (unitsPerEm == 1000)
-          return width;
-        return width * 1000 / unitsPerEm; // normalize
-      }
-      catch (Exception ex)
-      {
-        throw ex;
-      }
-    }
+				// glyphIndex >= numberOfHMetrics means the font is mono-spaced and all glyphs have the same width
+				if (glyphIndex >= numberOfHMetrics)
+					glyphIndex = numberOfHMetrics - 1;
 
-    /// <summary>
-    ///   //Converts the width of a glyph identified by its index to PDF design units.
-    /// </summary>
-    public int GlyphIndexToWidth(int glyphIndex)
-    {
-      try
-      {
-        int numberOfHMetrics = fontData.hhea.numberOfHMetrics;
+				int width = fontData.hmtx.metrics[glyphIndex].advanceWidth;
 
-        // glyphIndex >= numberOfHMetrics means the font is mono-spaced and all glyphs have the same width
-        if (glyphIndex >= numberOfHMetrics)
-          glyphIndex = numberOfHMetrics - 1;
+				// Sometimes the unitsPerEm is 1000, sometimes a power of 2.
+				if (unitsPerEm == 1000)
+					return width;
+				return width*1000/unitsPerEm; // normalize
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
 
-        int width = fontData.hmtx.metrics[glyphIndex].advanceWidth;
+		/// <summary>
+		///     //Converts the width of a glyph identified by its index to PDF design units.
+		/// </summary>
+		public int GlyphIndexToWidth(int glyphIndex)
+		{
+			try
+			{
+				int numberOfHMetrics = fontData.hhea.numberOfHMetrics;
 
-        return width;
-      }
-      catch (Exception)
-      {
-        GetType();
-        throw;
-      }
-    }
+				// glyphIndex >= numberOfHMetrics means the font is mono-spaced and all glyphs have the same width
+				if (glyphIndex >= numberOfHMetrics)
+					glyphIndex = numberOfHMetrics - 1;
+
+				int width = fontData.hmtx.metrics[glyphIndex].advanceWidth;
+
+				return width;
+			}
+			catch (Exception)
+			{
+				GetType();
+				throw;
+			}
+		}
 
 
-    public int PdfWidthFromCharCode(char ch)
-    {
-      int idx = CharCodeToGlyphIndex(ch);
-      int width = GlyphIndexToPdfWidth(idx);
-      return width;
-    }
+		public int PdfWidthFromCharCode(char ch)
+		{
+			int idx = CharCodeToGlyphIndex(ch);
+			int width = GlyphIndexToPdfWidth(idx);
+			return width;
+		}
 
 #if DEBUG_
     public static void Test()
@@ -391,5 +395,5 @@ namespace PdfSharp.Fonts.OpenType
 //      font.GetType();
     }
 #endif
-  }
+	}
 }

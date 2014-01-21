@@ -1,4 +1,5 @@
 #region PDFsharp - A .NET library for processing PDF
+
 //
 // Authors:
 //   Klaus Potzesny (mailto:Klaus.Potzesny@pdfsharp.com)
@@ -25,14 +26,15 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 namespace PdfSharp.Drawing.BarCodes
 {
 #if _
-  /// <summary>
-  /// Represents the data coded within the OMR code.
-  /// </summary>
+	/// <summary>
+	/// Represents the data coded within the OMR code.
+	/// </summary>
   class OmrData
   {
     private OmrData()

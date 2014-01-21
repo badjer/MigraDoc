@@ -1,4 +1,5 @@
 #region PDFsharp - A .NET library for processing PDF
+
 //
 // Authors:
 //   Stefan Lange (mailto:Stefan.Lange@pdfsharp.com)
@@ -25,23 +26,26 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
+
+using System.Drawing;
 
 namespace PdfSharp.Drawing
 {
-  /// <summary>
-  /// Classes derived from this abstract base class define objects used to fill the 
-  /// interiors of paths.
-  /// </summary>
-  public abstract class XBrush
-  {
+	/// <summary>
+	///     Classes derived from this abstract base class define objects used to fill the
+	///     interiors of paths.
+	/// </summary>
+	public abstract class XBrush
+	{
 #if GDI
-    internal abstract System.Drawing. Brush RealizeGdiBrush();
+		internal abstract Brush RealizeGdiBrush();
 
 #if UseGdiObjects
-    /// <summary>
-    /// Converts from a System.Drawing.Brush.
-    /// </summary>
+	/// <summary>
+	/// Converts from a System.Drawing.Brush.
+	/// </summary>
     public static implicit operator XBrush(Brush brush)
     {
       XBrush xbrush;
@@ -65,7 +69,7 @@ namespace PdfSharp.Drawing
 #endif
 #endif
 #if WPF
-    internal abstract System.Windows.Media. Brush RealizeWpfBrush();
+		internal abstract System.Windows.Media.Brush RealizeWpfBrush();
 #endif
-  }
+	}
 }

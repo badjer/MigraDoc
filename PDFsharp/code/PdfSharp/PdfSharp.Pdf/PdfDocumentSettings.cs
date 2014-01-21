@@ -1,4 +1,5 @@
 #region PDFsharp - A .NET library for processing PDF
+
 //
 // Authors:
 //   Stefan Lange (mailto:Stefan.Lange@pdfsharp.com)
@@ -25,6 +26,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 using System;
@@ -32,58 +34,59 @@ using PdfSharp.Drawing;
 
 namespace PdfSharp.Pdf
 {
-  /// <summary>
-  /// Holds PDF specific information of the document.
-  /// </summary>
-  public sealed class PdfDocumentSettings
-  {
-    internal PdfDocumentSettings(PdfDocument document)
-    {
-    }
+	/// <summary>
+	///     Holds PDF specific information of the document.
+	/// </summary>
+	public sealed class PdfDocumentSettings
+	{
+		private XPrivateFontCollection privateFontCollection;
+		private TrimMargins trimMargins = new TrimMargins();
 
-    /// <summary>
-    /// Sets the private font collection.
-    /// </summary>
-    public XPrivateFontCollection PrivateFontCollection
-    {
-      internal get { return this.privateFontCollection; }
-      set
-      {
-        if (this.privateFontCollection != null)
-          throw new InvalidOperationException("PrivateFontCollection can only be set once.");
+		internal PdfDocumentSettings(PdfDocument document)
+		{
+		}
 
-        this.privateFontCollection = value;
-      }
-    }
-    private XPrivateFontCollection privateFontCollection;
+		/// <summary>
+		///     Sets the private font collection.
+		/// </summary>
+		public XPrivateFontCollection PrivateFontCollection
+		{
+			internal get { return privateFontCollection; }
+			set
+			{
+				if (privateFontCollection != null)
+					throw new InvalidOperationException("PrivateFontCollection can only be set once.");
+
+				privateFontCollection = value;
+			}
+		}
 
 
-    /// <summary>
-    /// Gets or sets the default trim margins.
-    /// </summary>
-    public TrimMargins TrimMargins
-    {
-      get
-      {
-        if (this.trimMargins == null)
-          this.trimMargins = new TrimMargins();
-        return this.trimMargins;
-      }
-      set
-      {
-        if (this.trimMargins == null)
-          this.trimMargins = new TrimMargins();
-        if (value != null)
-        {
-          this.trimMargins.Left = value.Left;
-          this.trimMargins.Right = value.Right;
-          this.trimMargins.Top = value.Top;
-          this.trimMargins.Bottom = value.Bottom;
-        }
-        else
-          this.trimMargins.All = 0;
-      }
-    }
-    TrimMargins trimMargins = new TrimMargins();
-  }
+		/// <summary>
+		///     Gets or sets the default trim margins.
+		/// </summary>
+		public TrimMargins TrimMargins
+		{
+			get
+			{
+				if (trimMargins == null)
+					trimMargins = new TrimMargins();
+				return trimMargins;
+			}
+			set
+			{
+				if (trimMargins == null)
+					trimMargins = new TrimMargins();
+				if (value != null)
+				{
+					trimMargins.Left = value.Left;
+					trimMargins.Right = value.Right;
+					trimMargins.Top = value.Top;
+					trimMargins.Bottom = value.Bottom;
+				}
+				else
+					trimMargins.All = 0;
+			}
+		}
+	}
 }

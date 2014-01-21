@@ -1,4 +1,5 @@
 #region PDFsharp - A .NET library for processing PDF
+
 //
 // Authors:
 //   Stefan Lange (mailto:Stefan.Lange@pdfsharp.com)
@@ -25,6 +26,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 using System;
@@ -32,263 +34,263 @@ using System.Globalization;
 
 namespace PdfSharp.Drawing
 {
-  /// <summary>
-  /// Defines a set of static predefined XFontWeight values.
-  /// </summary>
-  public static class XFontWeights
-  {
-    internal static bool FontWeightStringToKnownWeight(string s, IFormatProvider provider, ref XFontWeight fontWeight)
-    {
-      int num;
-      switch (s.ToLower())
-      {
-        case "thin":
-          fontWeight = Thin;
-          return true;
+	/// <summary>
+	///     Defines a set of static predefined XFontWeight values.
+	/// </summary>
+	public static class XFontWeights
+	{
+		/// <summary>
+		///     Specifies a "Thin" font weight.
+		/// </summary>
+		public static XFontWeight Thin
+		{
+			get { return new XFontWeight(100); }
+		}
 
-        case "extralight":
-          fontWeight = ExtraLight;
-          return true;
+		/// <summary>
+		///     Specifies a "ExtraLight" font weight.
+		/// </summary>
+		public static XFontWeight ExtraLight
+		{
+			get { return new XFontWeight(200); }
+		}
 
-        case "ultralight":
-          fontWeight = UltraLight;
-          return true;
+		/// <summary>
+		///     Specifies a "UltraLight" font weight.
+		/// </summary>
+		public static XFontWeight UltraLight
+		{
+			get { return new XFontWeight(200); }
+		}
 
-        case "light":
-          fontWeight = Light;
-          return true;
+		/// <summary>
+		///     Specifies a "Light" font weight.
+		/// </summary>
+		public static XFontWeight Light
+		{
+			get { return new XFontWeight(300); }
+		}
 
-        case "normal":
-          fontWeight = Normal;
-          return true;
+		/// <summary>
+		///     Specifies a "Normal" font weight.
+		/// </summary>
+		public static XFontWeight Normal
+		{
+			get { return new XFontWeight(400); }
+		}
 
-        case "regular":
-          fontWeight = Regular;
-          return true;
+		/// <summary>
+		///     Specifies a "Regular" font weight.
+		/// </summary>
+		public static XFontWeight Regular
+		{
+			get { return new XFontWeight(400); }
+		}
 
-        case "medium":
-          fontWeight = Medium;
-          return true;
+		/// <summary>
+		///     Specifies a "Medium" font weight.
+		/// </summary>
+		public static XFontWeight Medium
+		{
+			get { return new XFontWeight(500); }
+		}
 
-        case "semibold":
-          fontWeight = SemiBold;
-          return true;
+		/// <summary>
+		///     Specifies a "SemiBold" font weight.
+		/// </summary>
+		public static XFontWeight SemiBold
+		{
+			get { return new XFontWeight(600); }
+		}
 
-        case "demibold":
-          fontWeight = DemiBold;
-          return true;
+		/// <summary>
+		///     Specifies a "DemiBold" font weight.
+		/// </summary>
+		public static XFontWeight DemiBold
+		{
+			get { return new XFontWeight(600); }
+		}
 
-        case "bold":
-          fontWeight = Bold;
-          return true;
+		/// <summary>
+		///     Specifies a "Bold" font weight.
+		/// </summary>
+		public static XFontWeight Bold
+		{
+			get { return new XFontWeight(700); }
+		}
 
-        case "extrabold":
-          fontWeight = ExtraBold;
-          return true;
+		/// <summary>
+		///     Specifies a "ExtraBold" font weight.
+		/// </summary>
+		public static XFontWeight ExtraBold
+		{
+			get { return new XFontWeight(800); }
+		}
 
-        case "ultrabold":
-          fontWeight = UltraBold;
-          return true;
+		/// <summary>
+		///     Specifies a "UltraBold" font weight.
+		/// </summary>
+		public static XFontWeight UltraBold
+		{
+			get { return new XFontWeight(800); }
+		}
 
-        case "heavy":
-          fontWeight = Heavy;
-          return true;
+		/// <summary>
+		///     Specifies a "Heavy" font weight.
+		/// </summary>
+		public static XFontWeight Heavy
+		{
+			get { return new XFontWeight(900); }
+		}
 
-        case "black":
-          fontWeight = Black;
-          return true;
+		/// <summary>
+		///     Specifies a "Black" font weight.
+		/// </summary>
+		public static XFontWeight Black
+		{
+			get { return new XFontWeight(900); }
+		}
 
-        case "extrablack":
-          fontWeight = ExtraBlack;
-          return true;
+		/// <summary>
+		///     Specifies a "ExtraBlack" font weight.
+		/// </summary>
+		public static XFontWeight ExtraBlack
+		{
+			get { return new XFontWeight(950); }
+		}
 
-        case "ultrablack":
-          fontWeight = UltraBlack;
-          return true;
-      }
+		/// <summary>
+		///     Specifies a "UltraBlack" font weight.
+		/// </summary>
+		public static XFontWeight UltraBlack
+		{
+			get { return new XFontWeight(950); }
+		}
 
-      if (Int32.TryParse(s, NumberStyles.Integer, provider, out num))
-      {
-        fontWeight = new XFontWeight(num);
-        return true;
-      }
-      return false;
-    }
+		internal static bool FontWeightStringToKnownWeight(string s, IFormatProvider provider, ref XFontWeight fontWeight)
+		{
+			int num;
+			switch (s.ToLower())
+			{
+				case "thin":
+					fontWeight = Thin;
+					return true;
 
-    internal static bool FontWeightToString(int weight, out string convertedValue)
-    {
-      switch (weight)
-      {
-        case 100:
-          convertedValue = "Thin";
-          return true;
+				case "extralight":
+					fontWeight = ExtraLight;
+					return true;
 
-        case 200:
-          convertedValue = "ExtraLight";
-          return true;
+				case "ultralight":
+					fontWeight = UltraLight;
+					return true;
 
-        case 300:
-          convertedValue = "Light";
-          return true;
+				case "light":
+					fontWeight = Light;
+					return true;
 
-        case 400:
-          convertedValue = "Normal";
-          return true;
+				case "normal":
+					fontWeight = Normal;
+					return true;
 
-        case 500:
-          convertedValue = "Medium";
-          return true;
+				case "regular":
+					fontWeight = Regular;
+					return true;
 
-        case 600:
-          convertedValue = "SemiBold";
-          return true;
+				case "medium":
+					fontWeight = Medium;
+					return true;
 
-        case 700:
-          convertedValue = "Bold";
-          return true;
+				case "semibold":
+					fontWeight = SemiBold;
+					return true;
 
-        case 800:
-          convertedValue = "ExtraBold";
-          return true;
+				case "demibold":
+					fontWeight = DemiBold;
+					return true;
 
-        case 900:
-          convertedValue = "Black";
-          return true;
+				case "bold":
+					fontWeight = Bold;
+					return true;
 
-        case 950:
-          convertedValue = "ExtraBlack";
-          return true;
-      }
-      convertedValue = null;
-      return false;
-    }
+				case "extrabold":
+					fontWeight = ExtraBold;
+					return true;
 
-    /// <summary>
-    /// Specifies a "Thin" font weight.
-    /// </summary>
-    public static XFontWeight Thin
-    {
-      get { return new XFontWeight(100); }
-    }
+				case "ultrabold":
+					fontWeight = UltraBold;
+					return true;
 
-    /// <summary>
-    /// Specifies a "ExtraLight" font weight.
-    /// </summary>
-    public static XFontWeight ExtraLight
-    {
-      get { return new XFontWeight(200); }
-    }
+				case "heavy":
+					fontWeight = Heavy;
+					return true;
 
-    /// <summary>
-    /// Specifies a "UltraLight" font weight.
-    /// </summary>
-    public static XFontWeight UltraLight
-    {
-      get { return new XFontWeight(200); }
-    }
+				case "black":
+					fontWeight = Black;
+					return true;
 
-    /// <summary>
-    /// Specifies a "Light" font weight.
-    /// </summary>
-    public static XFontWeight Light
-    {
-      get { return new XFontWeight(300); }
-    }
+				case "extrablack":
+					fontWeight = ExtraBlack;
+					return true;
 
-    /// <summary>
-    /// Specifies a "Normal" font weight.
-    /// </summary>
-    public static XFontWeight Normal
-    {
-      get { return new XFontWeight(400); }
-    }
+				case "ultrablack":
+					fontWeight = UltraBlack;
+					return true;
+			}
 
-    /// <summary>
-    /// Specifies a "Regular" font weight.
-    /// </summary>
-    public static XFontWeight Regular
-    {
-      get { return new XFontWeight(400); }
-    }
+			if (Int32.TryParse(s, NumberStyles.Integer, provider, out num))
+			{
+				fontWeight = new XFontWeight(num);
+				return true;
+			}
+			return false;
+		}
 
-    /// <summary>
-    /// Specifies a "Medium" font weight.
-    /// </summary>
-    public static XFontWeight Medium
-    {
-      get { return new XFontWeight(500); }
-    }
+		internal static bool FontWeightToString(int weight, out string convertedValue)
+		{
+			switch (weight)
+			{
+				case 100:
+					convertedValue = "Thin";
+					return true;
 
-    /// <summary>
-    /// Specifies a "SemiBold" font weight.
-    /// </summary>
-    public static XFontWeight SemiBold
-    {
-      get { return new XFontWeight(600); }
-    }
+				case 200:
+					convertedValue = "ExtraLight";
+					return true;
 
-    /// <summary>
-    /// Specifies a "DemiBold" font weight.
-    /// </summary>
-    public static XFontWeight DemiBold
-    {
-      get { return new XFontWeight(600); }
-    }
+				case 300:
+					convertedValue = "Light";
+					return true;
 
-    /// <summary>
-    /// Specifies a "Bold" font weight.
-    /// </summary>
-    public static XFontWeight Bold
-    {
-      get { return new XFontWeight(700); }
-    }
+				case 400:
+					convertedValue = "Normal";
+					return true;
 
-    /// <summary>
-    /// Specifies a "ExtraBold" font weight.
-    /// </summary>
-    public static XFontWeight ExtraBold
-    {
-      get { return new XFontWeight(800); }
-    }
+				case 500:
+					convertedValue = "Medium";
+					return true;
 
-    /// <summary>
-    /// Specifies a "UltraBold" font weight.
-    /// </summary>
-    public static XFontWeight UltraBold
-    {
-      get { return new XFontWeight(800); }
-    }
+				case 600:
+					convertedValue = "SemiBold";
+					return true;
 
-    /// <summary>
-    /// Specifies a "Heavy" font weight.
-    /// </summary>
-    public static XFontWeight Heavy
-    {
-      get { return new XFontWeight(900); }
-    }
+				case 700:
+					convertedValue = "Bold";
+					return true;
 
-    /// <summary>
-    /// Specifies a "Black" font weight.
-    /// </summary>
-    public static XFontWeight Black
-    {
-      get { return new XFontWeight(900); }
-    }
+				case 800:
+					convertedValue = "ExtraBold";
+					return true;
 
-    /// <summary>
-    /// Specifies a "ExtraBlack" font weight.
-    /// </summary>
-    public static XFontWeight ExtraBlack
-    {
-      get { return new XFontWeight(950); }
-    }
+				case 900:
+					convertedValue = "Black";
+					return true;
 
-    /// <summary>
-    /// Specifies a "UltraBlack" font weight.
-    /// </summary>
-    public static XFontWeight UltraBlack
-    {
-      get { return new XFontWeight(950); }
-    }
-  }
+				case 950:
+					convertedValue = "ExtraBlack";
+					return true;
+			}
+			convertedValue = null;
+			return false;
+		}
+	}
 }

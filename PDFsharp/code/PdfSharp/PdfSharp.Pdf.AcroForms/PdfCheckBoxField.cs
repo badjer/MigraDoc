@@ -1,4 +1,5 @@
 #region PDFsharp - A .NET library for processing PDF
+
 //
 // Authors:
 //   Stefan Lange (mailto:Stefan.Lange@pdfsharp.com)
@@ -25,81 +26,82 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 using PdfSharp.Pdf.Annotations;
 
 namespace PdfSharp.Pdf.AcroForms
 {
-  /// <summary>
-  /// Represents the check box field.
-  /// </summary>
-  public sealed class PdfCheckBoxField : PdfButtonField
-  {
-    /// <summary>
-    /// Initializes a new instance of PdfCheckBoxField.
-    /// </summary>
-    internal PdfCheckBoxField(PdfDocument document) : base(document)
-    {
-      this.document = document;
-    }
+	/// <summary>
+	///     Represents the check box field.
+	/// </summary>
+	public sealed class PdfCheckBoxField : PdfButtonField
+	{
+		/// <summary>
+		///     Initializes a new instance of PdfCheckBoxField.
+		/// </summary>
+		internal PdfCheckBoxField(PdfDocument document) : base(document)
+		{
+			this.document = document;
+		}
 
-    internal PdfCheckBoxField(PdfDictionary dict) : base(dict)
-    {
-    }
+		internal PdfCheckBoxField(PdfDictionary dict) : base(dict)
+		{
+		}
 
-    /// <summary>
-    /// Indicates whether the field is checked.
-    /// </summary>
-    public bool Checked
-    { 
-      get
-      {
-        string value = Elements.GetString(Keys.V);
-        return value.Length != 0 && value != "/Off";
-      }
-      set 
-      {
-        string name = value ? GetNonOffValue() : "/Off";
-        Elements.SetName(Keys.V, name);
-        Elements.SetName(PdfAnnotation.Keys.AS, name);
-      }
-    }
+		/// <summary>
+		///     Indicates whether the field is checked.
+		/// </summary>
+		public bool Checked
+		{
+			get
+			{
+				string value = Elements.GetString(PdfAcroField.Keys.V);
+				return value.Length != 0 && value != "/Off";
+			}
+			set
+			{
+				string name = value ? GetNonOffValue() : "/Off";
+				Elements.SetName(PdfAcroField.Keys.V, name);
+				Elements.SetName(PdfAnnotation.Keys.AS, name);
+			}
+		}
 
-    /// <summary>
-    /// Predefined keys of this dictionary. 
-    /// The description comes from PDF 1.4 Reference.
-    /// </summary>
-    public new class Keys : PdfButtonField.Keys
-    {
-      /// <summary>
-      /// (Optional; inheritable; PDF 1.4) A text string to be used in place of the V entry for the
-      /// value of the field.
-      /// </summary>
-      [KeyInfo(KeyType.TextString | KeyType.Optional)]
-      public const string Opt = "/Opt";
-  
-      /// <summary>
-      /// Gets the KeysMeta for these keys.
-      /// </summary>
-      internal static DictionaryMeta Meta
-      {
-        get
-        {
-          if (Keys.meta == null)
-            Keys.meta = CreateMeta(typeof(Keys));
-          return Keys.meta;
-        }
-      }
-      static DictionaryMeta meta;
-    }
+		/// <summary>
+		///     Gets the KeysMeta of this dictionary type.
+		/// </summary>
+		internal override DictionaryMeta Meta
+		{
+			get { return Keys.Meta; }
+		}
 
-    /// <summary>
-    /// Gets the KeysMeta of this dictionary type.
-    /// </summary>
-    internal override DictionaryMeta Meta
-    {
-      get {return Keys.Meta;}
-    }
-  }
+		/// <summary>
+		///     Predefined keys of this dictionary.
+		///     The description comes from PDF 1.4 Reference.
+		/// </summary>
+		public new class Keys : PdfButtonField.Keys
+		{
+			/// <summary>
+			///     (Optional; inheritable; PDF 1.4) A text string to be used in place of the V entry for the
+			///     value of the field.
+			/// </summary>
+			[KeyInfo(KeyType.TextString | KeyType.Optional)] public const string Opt = "/Opt";
+
+			private static DictionaryMeta meta;
+
+			/// <summary>
+			///     Gets the KeysMeta for these keys.
+			/// </summary>
+			internal static DictionaryMeta Meta
+			{
+				get
+				{
+					if (meta == null)
+						meta = CreateMeta(typeof (Keys));
+					return meta;
+				}
+			}
+		}
+	}
 }

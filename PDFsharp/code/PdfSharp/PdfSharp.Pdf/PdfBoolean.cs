@@ -1,4 +1,5 @@
 #region PDFsharp - A .NET library for processing PDF
+
 //
 // Authors:
 //   Stefan Lange (mailto:Stefan.Lange@pdfsharp.com)
@@ -25,6 +26,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 using System.Diagnostics;
@@ -32,61 +34,62 @@ using PdfSharp.Pdf.IO;
 
 namespace PdfSharp.Pdf
 {
-  /// <summary>
-  /// Represents a direct boolean value.
-  /// </summary>
-  [DebuggerDisplay("({Value})")]
-  public sealed class PdfBoolean : PdfItem
-  {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="PdfBoolean"/> class.
-    /// </summary>
-    public PdfBoolean()
-    {
-    }
+	/// <summary>
+	///     Represents a direct boolean value.
+	/// </summary>
+	[DebuggerDisplay("({Value})")]
+	public sealed class PdfBoolean : PdfItem
+	{
+		/// <summary>
+		///     A pre-defined value that represents <c>true</c>.
+		/// </summary>
+		public static readonly PdfBoolean True = new PdfBoolean(true);
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="PdfBoolean"/> class.
-    /// </summary>
-    public PdfBoolean(bool value)
-    {
-      this.value = value;
-    }
+		/// <summary>
+		///     A pre-defined value that represents <c>false</c>.
+		/// </summary>
+		public static readonly PdfBoolean False = new PdfBoolean(false);
 
-    /// <summary>
-    /// Gets the value of this instance as boolean value.
-    /// </summary>
-    public bool Value
-    {
-      // This class must behave like a value type. Therefore it cannot be changed (like System.String).
-      get { return this.value; }
-    }
-    bool value;
+		private readonly bool value;
 
-    /// <summary>
-    /// A pre-defined value that represents <c>true</c>.
-    /// </summary>
-    public static readonly PdfBoolean True = new PdfBoolean(true);
+		/// <summary>
+		///     Initializes a new instance of the <see cref="PdfBoolean" /> class.
+		/// </summary>
+		public PdfBoolean()
+		{
+		}
 
-    /// <summary>
-    /// A pre-defined value that represents <c>false</c>.
-    /// </summary>
-    public static readonly PdfBoolean False = new PdfBoolean(false);
+		/// <summary>
+		///     Initializes a new instance of the <see cref="PdfBoolean" /> class.
+		/// </summary>
+		public PdfBoolean(bool value)
+		{
+			this.value = value;
+		}
 
-    /// <summary>
-    /// Returns 'false' or 'true'.
-    /// </summary>
-    public override string ToString()
-    {
-      return this.value ? bool.TrueString : bool.FalseString;
-    }
+		/// <summary>
+		///     Gets the value of this instance as boolean value.
+		/// </summary>
+		public bool Value
+		{
+			// This class must behave like a value type. Therefore it cannot be changed (like System.String).
+			get { return value; }
+		}
 
-    /// <summary>
-    /// Writes 'true' or 'false'.
-    /// </summary>
-    internal override void WriteObject(PdfWriter writer)
-    {
-      writer.Write(this);
-    }
-  }
+		/// <summary>
+		///     Returns 'false' or 'true'.
+		/// </summary>
+		public override string ToString()
+		{
+			return value ? bool.TrueString : bool.FalseString;
+		}
+
+		/// <summary>
+		///     Writes 'true' or 'false'.
+		/// </summary>
+		internal override void WriteObject(PdfWriter writer)
+		{
+			writer.Write(this);
+		}
+	}
 }

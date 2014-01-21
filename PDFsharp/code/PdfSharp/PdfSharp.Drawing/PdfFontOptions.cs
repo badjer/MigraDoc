@@ -1,4 +1,5 @@
 #region PDFsharp - A .NET library for processing PDF
+
 //
 // Authors:
 //   Stefan Lange (mailto:Stefan.Lange@pdfsharp.com)
@@ -25,62 +26,66 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 using PdfSharp.Core.Enums;
 
 namespace PdfSharp.Drawing
 {
-  /// <summary>
-  /// Specifies details about how the font is used in PDF creation.
-  /// </summary>
-  public class XPdfFontOptions
-  {
-    internal XPdfFontOptions() { }
+	/// <summary>
+	///     Specifies details about how the font is used in PDF creation.
+	/// </summary>
+	public class XPdfFontOptions
+	{
+		private readonly PdfFontEmbedding fontEmbedding;
+		private readonly PdfFontEncoding fontEncoding;
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="XPdfFontOptions"/> class.
-    /// </summary>
-    public XPdfFontOptions(PdfFontEncoding encoding,  PdfFontEmbedding embedding)
-    {
-      fontEncoding = encoding;
-      fontEmbedding = embedding;
-    }
+		internal XPdfFontOptions()
+		{
+		}
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="XPdfFontOptions"/> class.
-    /// </summary>
-    public XPdfFontOptions(PdfFontEncoding encoding)
-    {
-      fontEncoding = encoding;
-      fontEmbedding = PdfFontEmbedding.None;
-    }
+		/// <summary>
+		///     Initializes a new instance of the <see cref="XPdfFontOptions" /> class.
+		/// </summary>
+		public XPdfFontOptions(PdfFontEncoding encoding, PdfFontEmbedding embedding)
+		{
+			fontEncoding = encoding;
+			fontEmbedding = embedding;
+		}
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="XPdfFontOptions"/> class.
-    /// </summary>
-    public XPdfFontOptions(PdfFontEmbedding embedding)
-    {
-      fontEncoding = PdfFontEncoding.WinAnsi;
-      fontEmbedding = embedding;
-    }
+		/// <summary>
+		///     Initializes a new instance of the <see cref="XPdfFontOptions" /> class.
+		/// </summary>
+		public XPdfFontOptions(PdfFontEncoding encoding)
+		{
+			fontEncoding = encoding;
+			fontEmbedding = PdfFontEmbedding.None;
+		}
 
-    /// <summary>
-    /// Gets a value indicating the font embedding.
-    /// </summary>
-    public PdfFontEmbedding FontEmbedding
-    {
-      get { return this.fontEmbedding; }
-    }
-    PdfFontEmbedding fontEmbedding;
+		/// <summary>
+		///     Initializes a new instance of the <see cref="XPdfFontOptions" /> class.
+		/// </summary>
+		public XPdfFontOptions(PdfFontEmbedding embedding)
+		{
+			fontEncoding = PdfFontEncoding.WinAnsi;
+			fontEmbedding = embedding;
+		}
 
-    /// <summary>
-    /// Gets a value indicating how the font is encoded.
-    /// </summary>
-    public PdfFontEncoding FontEncoding
-    {
-      get { return this.fontEncoding; }
-    }
-    PdfFontEncoding fontEncoding;
-  }
+		/// <summary>
+		///     Gets a value indicating the font embedding.
+		/// </summary>
+		public PdfFontEmbedding FontEmbedding
+		{
+			get { return fontEmbedding; }
+		}
+
+		/// <summary>
+		///     Gets a value indicating how the font is encoded.
+		/// </summary>
+		public PdfFontEncoding FontEncoding
+		{
+			get { return fontEncoding; }
+		}
+	}
 }

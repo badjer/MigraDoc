@@ -1,4 +1,5 @@
 #region PDFsharp - A .NET library for processing PDF
+
 //
 // Authors:
 //   Stefan Lange (mailto:Stefan.Lange@pdfsharp.com)
@@ -25,6 +26,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 // Draw crosses to check layout calculation
@@ -36,586 +38,612 @@
 #endif
 
 using System;
-using System.Diagnostics;
 using System.ComponentModel;
-using System.Collections;
-using System.Runtime.InteropServices;
-using System.Data;
-#if GDI
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Drawing.Text;
 using System.Windows.Forms;
+using PdfSharp.Core.Enums;
+using PdfSharp.Drawing;
+using BorderStyle = System.Windows.Forms.BorderStyle;
+using DashStyle = System.Drawing.Drawing2D.DashStyle;
+#if GDI
 #endif
 //#if Wpf
 //using System.Windows.Media;
 //#endif
-using PdfSharp;
-using PdfSharp.Core.Enums;
-using PdfSharp.Internal;
-using PdfSharp.Drawing;
-using PdfSharp.Pdf;
-using BorderStyle = System.Windows.Forms.BorderStyle;
-using DashStyle = System.Drawing.Drawing2D.DashStyle;
 
 namespace PdfSharp.Forms
 {
-  /* TODOs
+	/* TODOs
    * 
    *  o Call render event only once. -> introduce an UpdatePage() function
    * 
    * Further stuff: set printable area; set text box (smallest rect that contains all content)
   */
-  /// <summary>
-  /// Represents a preview control for an XGraphics page. Can be used as an alternative to
-  /// System.Windows.Forms.PrintPreviewControl.
-  /// </summary>
-  public class PagePreview : UserControl
-  {
-    /// <summary>
-    /// A delegate for invoking the render function.
-    /// </summary>
-    public delegate void RenderEvent(XGraphics gfx);
 
-    private Container components = null;
+	/// <summary>
+	///     Represents a preview control for an XGraphics page. Can be used as an alternative to
+	///     System.Windows.Forms.PrintPreviewControl.
+	/// </summary>
+	public class PagePreview : UserControl
+	{
+		/// <summary>
+		///     A delegate for invoking the render function.
+		/// </summary>
+		public delegate void RenderEvent(XGraphics gfx);
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="PagePreview"/> class.
-    /// </summary>
-    public PagePreview()
-    {
-      this.canvas = new PagePreviewCanvas(this);
-      Controls.Add(this.canvas);
+		private readonly PagePreviewCanvas canvas;
+		private readonly Container components = null;
+		private readonly HScrollBar hScrollBar;
 
-      this.hScrollBar = new HScrollBar();
-      this.hScrollBar.Visible = this.showScrollbars;
-      this.hScrollBar.Scroll += OnScroll;
-      this.hScrollBar.ValueChanged += OnValueChanged;
-      Controls.Add(this.hScrollBar);
+		/// <summary>
+		///     Printable area in point.
+		/// </summary>
+		private readonly RectangleF printableArea;
 
-      this.vScrollBar = new VScrollBar();
-      this.vScrollBar.Visible = this.showScrollbars;
-      this.vScrollBar.Scroll += OnScroll;
-      this.vScrollBar.ValueChanged += OnValueChanged;
-      Controls.Add(this.vScrollBar);
-
-      InitializeComponent();
-      //OnLayout();
-
-      this.zoom = Zoom.FullPage;
-      this.printableArea = new RectangleF();
-      //this.virtPageSize = new Size();
-      //this.showNonPrintableArea = false;
-      //this.virtualPrintableArea = new Rectangle();
-
-      this.printableArea.GetType();
-      //this.showNonPrintableArea.GetType();
-      //this.virtualPrintableArea.GetType();
-
-      // Prevent bogus compiler warnings
-      this.posOffset = new Point();
-      this.virtualPage = new Rectangle();
-    }
-
-    readonly PagePreviewCanvas canvas;
-    readonly HScrollBar hScrollBar;
-    readonly VScrollBar vScrollBar;
+		private readonly VScrollBar vScrollBar;
 
 
-    /// <summary> 
-    /// Clean up any resources being used.
-    /// </summary>
-    protected override void Dispose(bool disposing)
-    {
-      if (disposing)
-      {
-        if (components != null)
-          components.Dispose();
-      }
-      base.Dispose(disposing);
-    }
+		private BorderStyle borderStyle = BorderStyle.Fixed3D;
+		internal Color desktopColor = SystemColors.ControlDark;
+		private Color pageColor = Color.GhostWhite;
 
-    /// <summary>
-    /// Gets or sets the border style of the control.
-    /// </summary>
-    /// <value></value>
-    [DefaultValue((int)BorderStyle.Fixed3D), Description("Determines the style of the border."), Category("Preview Properties")]
-    public new BorderStyle BorderStyle
-    {
-      get { return this.borderStyle; }
-      set
-      {
-        if (!Enum.IsDefined(typeof(BorderStyle), value))
-          throw new InvalidEnumArgumentException("value", (int)value, typeof(BorderStyle));
+		/// <summary>
+		///     Real page size in point.
+		/// </summary>
+		private SizeF pageSize = PageSizeConverter.ToSize(Core.Enums.PageSize.A4).ToSizeF();
 
-        if (value != this.borderStyle)
-        {
-          this.borderStyle = value;
-          LayoutChildren();
-        }
-      }
-    }
-    BorderStyle borderStyle = BorderStyle.Fixed3D;
+		/// <summary>
+		///     Upper left corner of scroll area.
+		/// </summary>
+		private Point posOffset;
 
-    //    [DefaultValue(2), Description("TODO..."), Category("Preview Properties")]
-    //    public PageSize PageSize
-    //    {
-    //      get { return this.pageSize2; }
-    //      set
-    //      {
-    //        if (!Enum.IsDefined(typeof(PageSize), value))
-    //          throw new InvalidEnumArgumentException("value", (int)value, typeof(PageSize));
-    //
-    //        if (value != this.pageSize2)
-    //        {
-    //          this.pageSize2 = value;
-    //          //          base.RecreateHandle();
-    //          //          this.integralHeightAdjust = true;
-    //          //          try
-    //          //          {
-    //          //            base.Height = this.requestedHeight;
-    //          //          }
-    //          //          finally
-    //          //          {
-    //          //            this.integralHeightAdjust = false;
-    //          //          }
-    //        }
-    //      }
-    //    }
-    //    PageSize pageSize2;
+		private RenderEvent renderEvent;
+		internal bool showPage = true;
+		private bool showScrollbars = true;
 
-    /// <summary>
-    /// Gets or sets a predefined zoom factor.
-    /// </summary>
-    [DefaultValue((int)Zoom.FullPage), Description("Determines the zoom of the page."), Category("Preview Properties")]
-    public Zoom Zoom
-    {
-      get { return this.zoom; }
-      set
-      {
-        if ((int)value < (int)Zoom.Mininum || (int)value > (int)Zoom.Maximum)
-        {
-          if (!Enum.IsDefined(typeof(Zoom), value))
-            throw new InvalidEnumArgumentException("value", (int)value, typeof(Zoom));
-        }
-        if (value != this.zoom)
-        {
-          this.zoom = value;
-          CalculatePreviewDimension();
-          SetScrollBarRange();
-          this.canvas.Invalidate();
-        }
-      }
-    }
-    Zoom zoom;
+		/// <summary>
+		///     The size in pixel of an area that completely contains the virtual page and at leat a small
+		///     border around it. If this area is larger than the canvas window, it is scrolled.
+		/// </summary>
+		private Size virtualCanvas;
 
-    /// <summary>
-    /// Gets or sets an arbitrary zoom factor. The range is from 10 to 800.
-    /// </summary>
-    //[DefaultValue((int)Zoom.FullPage), Description("Determines the zoom of the page."), Category("Preview Properties")]
-    public int ZoomPercent
-    {
-      get { return this.zoomPercent; }
-      set
-      {
-        if (value < (int)Zoom.Mininum || value > (int)Zoom.Maximum)
-          throw new ArgumentOutOfRangeException("value", value,
-            String.Format("Value must between {0} and {1}.", (int)Zoom.Mininum, (int)Zoom.Maximum));
+		/// <summary>
+		///     Page in pixel relative to virtual canvas.
+		/// </summary>
+		private Rectangle virtualPage;
 
-        if (value != this.zoomPercent)
-        {
-          this.zoom = (Zoom)value;
-          this.zoomPercent = value;
-          CalculatePreviewDimension();
-          SetScrollBarRange();
-          this.canvas.Invalidate();
-        }
-      }
-    }
-    int zoomPercent;
+		//    [DefaultValue(2), Description("TODO..."), Category("Preview Properties")]
+		//    public PageSize PageSize
+		//    {
+		//      get { return this.pageSize2; }
+		//      set
+		//      {
+		//        if (!Enum.IsDefined(typeof(PageSize), value))
+		//          throw new InvalidEnumArgumentException("value", (int)value, typeof(PageSize));
+		//
+		//        if (value != this.pageSize2)
+		//        {
+		//          this.pageSize2 = value;
+		//          //          base.RecreateHandle();
+		//          //          this.integralHeightAdjust = true;
+		//          //          try
+		//          //          {
+		//          //            base.Height = this.requestedHeight;
+		//          //          }
+		//          //          finally
+		//          //          {
+		//          //            this.integralHeightAdjust = false;
+		//          //          }
+		//        }
+		//      }
+		//    }
+		//    PageSize pageSize2;
 
-    /// <summary>
-    /// Gets or sets the color of the page.
-    /// </summary>
-    [Description("The background color of the page."), Category("Preview Properties")]
-    public Color PageColor
-    {
-      get { return this.pageColor; }
-      set
-      {
-        if (value != this.pageColor)
-        {
-          this.pageColor = value;
-          Invalidate();
-        }
-      }
-    }
-    Color pageColor = Color.GhostWhite;
+		private Zoom zoom;
 
-    /// <summary>
-    /// Gets or sets the color of the desktop.
-    /// </summary>
-    [Description("The color of the desktop."), Category("Preview Properties")]
-    public Color DesktopColor
-    {
-      get { return this.desktopColor; }
-      set
-      {
-        if (value != this.desktopColor)
-        {
-          this.desktopColor = value;
-          Invalidate();
-        }
-      }
-    }
-    internal Color desktopColor = SystemColors.ControlDark;
+		private int zoomPercent;
 
-    /// <summary>
-    /// Gets or sets a value indicating whether the scrollbars are visilbe.
-    /// </summary>
-    [DefaultValue(true), Description("Determines whether the scrollbars are visible."), Category("Preview Properties")]
-    public bool ShowScrollbars
-    {
-      get { return this.showScrollbars; }
-      set
-      {
-        if (value != this.showScrollbars)
-        {
-          this.showScrollbars = value;
-          this.hScrollBar.Visible = value;
-          this.vScrollBar.Visible = value;
-          LayoutChildren();
-        }
-      }
-    }
-    bool showScrollbars = true;
+		#region Component Designer generated code
 
-    /// <summary>
-    /// Gets or sets a value indicating whether the page is visilbe.
-    /// </summary>
-    [DefaultValue(true), Description("Determines whether the page visible."), Category("Preview Properties")]
-    public bool ShowPage
-    {
-      get { return this.showPage; }
-      set
-      {
-        if (value != this.showPage)
-        {
-          this.showPage = value;
-          this.canvas.Invalidate();
-        }
-      }
-    }
-    internal bool showPage = true;
+		/// <summary>
+		///     Required method for Designer support - do not modify
+		///     the contents of this method with the code editor.
+		/// </summary>
+		private void InitializeComponent()
+		{
+			this.Name = "PagePreview";
+			this.Size = new System.Drawing.Size(228, 252);
+		}
 
-    /// <summary>
-    /// Gets or sets the page size in point.
-    /// </summary>
-    [Description("Determines the size (in points) of the page."), Category("Preview Properties")]
-    public XSize PageSize
-    {
-      get { return new XSize((int)this.pageSize.Width, (int)this.pageSize.Height); }
-      set
-      {
-        this.pageSize = new SizeF((float)value.Width, (float)value.Height);
-        CalculatePreviewDimension();
-        Invalidate();
-      }
-    }
+		#endregion
 
-    /// <summary>
-    /// This is a hack for Visual Studio 2008. The designer uses reflection for setting the PageSize property.
-    /// This fails, even an implicit operator that converts Size to XSize exits.
-    /// </summary>
-    public Size PageSizeF
-    {
-      get { return new Size(Convert.ToInt32(this.pageSize.Width), Convert.ToInt32(this.pageSize.Height)); }
-      set
-      {
-        this.pageSize = value;
-        CalculatePreviewDimension();
-        Invalidate();
-      }
-    }
+		/// <summary>
+		///     Initializes a new instance of the <see cref="PagePreview" /> class.
+		/// </summary>
+		public PagePreview()
+		{
+			canvas = new PagePreviewCanvas(this);
+			Controls.Add(canvas);
 
-    /// <summary>
-    /// Sets a delagate that is invoked when the preview wants to be painted.
-    /// </summary>
-    public void SetRenderEvent(RenderEvent renderEvent)
-    {
-      this.renderEvent = renderEvent;
-      Invalidate();
-    }
-    RenderEvent renderEvent;
+			hScrollBar = new HScrollBar();
+			hScrollBar.Visible = showScrollbars;
+			hScrollBar.Scroll += OnScroll;
+			hScrollBar.ValueChanged += OnValueChanged;
+			Controls.Add(hScrollBar);
 
-    #region Component Designer generated code
-    /// <summary> 
-    /// Required method for Designer support - do not modify 
-    /// the contents of this method with the code editor.
-    /// </summary>
-    private void InitializeComponent()
-    {
-      this.Name = "PagePreview";
-      this.Size = new System.Drawing.Size(228, 252);
-    }
-    #endregion
+			vScrollBar = new VScrollBar();
+			vScrollBar.Visible = showScrollbars;
+			vScrollBar.Scroll += OnScroll;
+			vScrollBar.ValueChanged += OnValueChanged;
+			Controls.Add(vScrollBar);
 
-    /// <summary>
-    /// Raises the ZoomChanged event when the zoom factor changed.
-    /// </summary>
-    protected virtual void OnZoomChanged(EventArgs e)
-    {
-      if (ZoomChanged != null)
-        ZoomChanged(this, e);
-    }
+			InitializeComponent();
+			//OnLayout();
 
-    /// <summary>
-    /// Occurs when the zoom factor changed.
-    /// </summary>
-    public event EventHandler ZoomChanged;
+			zoom = Zoom.FullPage;
+			printableArea = new RectangleF();
+			//this.virtPageSize = new Size();
+			//this.showNonPrintableArea = false;
+			//this.virtualPrintableArea = new Rectangle();
 
-    /// <summary>
-    /// Paints the background with the sheet of paper.
-    /// </summary>
-    protected override void OnPaintBackground(PaintEventArgs e)
-    {
-      // Accurate drawing prevents flickering
-      Graphics gfx = e.Graphics;
-      Rectangle clientRect = ClientRectangle;
-      int d = 0;
-      switch (this.borderStyle)
-      {
-        case BorderStyle.FixedSingle:
-          gfx.DrawRectangle(SystemPens.WindowFrame, clientRect.X, clientRect.Y, clientRect.Width - 1, clientRect.Height - 1);
-          d = 1;
-          break;
+			printableArea.GetType();
+			//this.showNonPrintableArea.GetType();
+			//this.virtualPrintableArea.GetType();
 
-        case BorderStyle.Fixed3D:
-          ControlPaint.DrawBorder3D(gfx, clientRect, Border3DStyle.Sunken);
-          d = 2;
-          break;
-      }
-      if (this.showScrollbars)
-      {
-        int cxScrollbar = SystemInformation.VerticalScrollBarWidth;
-        int cyScrollbar = SystemInformation.HorizontalScrollBarHeight;
+			// Prevent bogus compiler warnings
+			posOffset = new Point();
+			virtualPage = new Rectangle();
+		}
 
-        gfx.FillRectangle(new SolidBrush(BackColor),
-          clientRect.Width - cxScrollbar - d, clientRect.Height - cyScrollbar - d, cxScrollbar, cyScrollbar);
-      }
-    }
+		/// <summary>
+		///     Gets or sets the border style of the control.
+		/// </summary>
+		/// <value></value>
+		[DefaultValue((int) BorderStyle.Fixed3D), Description("Determines the style of the border."), Category("Preview Properties")]
+		public new BorderStyle BorderStyle
+		{
+			get { return borderStyle; }
+			set
+			{
+				if (!Enum.IsDefined(typeof (BorderStyle), value))
+					throw new InvalidEnumArgumentException("value", (int) value, typeof (BorderStyle));
 
-    /// <summary>
-    /// Recalculates the preview dimension.
-    /// </summary>
-    protected override void OnSizeChanged(EventArgs e)
-    {
-      base.OnSizeChanged(e);
-      CalculatePreviewDimension();
-      SetScrollBarRange();
-    }
+				if (value != borderStyle)
+				{
+					borderStyle = value;
+					LayoutChildren();
+				}
+			}
+		}
 
-    /// <summary>
-    /// Invalidates the canvas.
-    /// </summary>
-    protected override void OnInvalidated(InvalidateEventArgs e)
-    {
-      base.OnInvalidated(e);
-      this.canvas.Invalidate();
-    }
+		/// <summary>
+		///     Gets or sets a predefined zoom factor.
+		/// </summary>
+		[DefaultValue((int) Zoom.FullPage), Description("Determines the zoom of the page."), Category("Preview Properties")]
+		public Zoom Zoom
+		{
+			get { return zoom; }
+			set
+			{
+				if ((int) value < (int) Zoom.Mininum || (int) value > (int) Zoom.Maximum)
+				{
+					if (!Enum.IsDefined(typeof (Zoom), value))
+						throw new InvalidEnumArgumentException("value", (int) value, typeof (Zoom));
+				}
+				if (value != zoom)
+				{
+					zoom = value;
+					CalculatePreviewDimension();
+					SetScrollBarRange();
+					canvas.Invalidate();
+				}
+			}
+		}
 
-    /// <summary>
-    /// Layouts the child controls.
-    /// </summary>
-    protected override void OnLayout(LayoutEventArgs levent)
-    {
-      LayoutChildren();
-    }
+		/// <summary>
+		///     Gets or sets an arbitrary zoom factor. The range is from 10 to 800.
+		/// </summary>
+		//[DefaultValue((int)Zoom.FullPage), Description("Determines the zoom of the page."), Category("Preview Properties")]
+		public int ZoomPercent
+		{
+			get { return zoomPercent; }
+			set
+			{
+				if (value < (int) Zoom.Mininum || value > (int) Zoom.Maximum)
+					throw new ArgumentOutOfRangeException("value", value,
+					                                      String.Format("Value must between {0} and {1}.", (int) Zoom.Mininum, (int) Zoom.Maximum));
 
-    void OnScroll(object obj, ScrollEventArgs e)
-    {
-      ScrollBar sc = obj as ScrollBar;
-      if (sc != null)
-      {
-        //Debug.WriteLine(String.Format("OnScroll: {0}, {1}", sc.Value, e.NewValue));
-      }
-    }
+				if (value != zoomPercent)
+				{
+					zoom = (Zoom) value;
+					zoomPercent = value;
+					CalculatePreviewDimension();
+					SetScrollBarRange();
+					canvas.Invalidate();
+				}
+			}
+		}
 
-    void OnValueChanged(object obj, EventArgs e)
-    {
-      ScrollBar sc = obj as ScrollBar;
-      if (sc != null)
-      {
-        //Debug.WriteLine(String.Format("OnValueChanged: {0}", sc.Value));
-        if (sc == this.hScrollBar)
-          this.posOffset.X = sc.Value;
+		/// <summary>
+		///     Gets or sets the color of the page.
+		/// </summary>
+		[Description("The background color of the page."), Category("Preview Properties")]
+		public Color PageColor
+		{
+			get { return pageColor; }
+			set
+			{
+				if (value != pageColor)
+				{
+					pageColor = value;
+					Invalidate();
+				}
+			}
+		}
 
-        else if (sc == this.vScrollBar)
-          this.posOffset.Y = sc.Value;
-      }
-      this.canvas.Invalidate();
-    }
+		/// <summary>
+		///     Gets or sets the color of the desktop.
+		/// </summary>
+		[Description("The color of the desktop."), Category("Preview Properties")]
+		public Color DesktopColor
+		{
+			get { return desktopColor; }
+			set
+			{
+				if (value != desktopColor)
+				{
+					desktopColor = value;
+					Invalidate();
+				}
+			}
+		}
 
-    void LayoutChildren()
-    {
-      Invalidate();
-      Rectangle clientRect = ClientRectangle;
-      switch (this.borderStyle)
-      {
-        case BorderStyle.FixedSingle:
-          clientRect.Inflate(-1, -1);
-          break;
+		/// <summary>
+		///     Gets or sets a value indicating whether the scrollbars are visilbe.
+		/// </summary>
+		[DefaultValue(true), Description("Determines whether the scrollbars are visible."), Category("Preview Properties")]
+		public bool ShowScrollbars
+		{
+			get { return showScrollbars; }
+			set
+			{
+				if (value != showScrollbars)
+				{
+					showScrollbars = value;
+					hScrollBar.Visible = value;
+					vScrollBar.Visible = value;
+					LayoutChildren();
+				}
+			}
+		}
 
-        case BorderStyle.Fixed3D:
-          clientRect.Inflate(-2, -2);
-          break;
-      }
-      int x = clientRect.X;
-      int y = clientRect.Y;
-      int cx = clientRect.Width;
-      int cy = clientRect.Height;
-      int cxScrollbar = 0;
-      int cyScrollbar = 0;
-      if (this.showScrollbars && this.vScrollBar != null && this.hScrollBar != null)
-      {
-        cxScrollbar = this.vScrollBar.Width;
-        cyScrollbar = this.hScrollBar.Height;
-        this.vScrollBar.Location = new Point(x + cx - cxScrollbar, y);
-        this.vScrollBar.Size = new Size(cxScrollbar, cy - cyScrollbar);
-        this.hScrollBar.Location = new Point(x, y + cy - cyScrollbar);
-        this.hScrollBar.Size = new Size(cx - cxScrollbar, cyScrollbar);
-      }
-      if (this.canvas != null)
-      {
-        this.canvas.Location = new Point(x, y);
-        this.canvas.Size = new Size(cx - cxScrollbar, cy - cyScrollbar);
-      }
-    }
+		/// <summary>
+		///     Gets or sets a value indicating whether the page is visilbe.
+		/// </summary>
+		[DefaultValue(true), Description("Determines whether the page visible."), Category("Preview Properties")]
+		public bool ShowPage
+		{
+			get { return showPage; }
+			set
+			{
+				if (value != showPage)
+				{
+					showPage = value;
+					canvas.Invalidate();
+				}
+			}
+		}
 
-    /// <summary>
-    /// Calculates all values for drawing the page preview.
-    /// </summary>
-    internal void CalculatePreviewDimension(out bool zoomChanged)
-    {
-      // User may change display resolution while preview is running
-      Graphics gfx = Graphics.FromImage(new Bitmap(100, 100));
-      IntPtr hdc = gfx.GetHdc();
-      DeviceInfos devInfo = DeviceInfos.GetInfos(hdc);
-      gfx.ReleaseHdc(hdc);
-      gfx.Dispose();
-      int xdpiScreen = devInfo.LogicalDpiX;
-      int ydpiScreen = devInfo.LogicalDpiY;
-      //int cxScrollbar = SystemInformation.VerticalScrollBarWidth;
-      //int cyScrollbar = SystemInformation.HorizontalScrollBarHeight;
-      Rectangle rcCanvas = this.canvas.ClientRectangle;
+		/// <summary>
+		///     Gets or sets the page size in point.
+		/// </summary>
+		[Description("Determines the size (in points) of the page."), Category("Preview Properties")]
+		public XSize PageSize
+		{
+			get { return new XSize((int) pageSize.Width, (int) pageSize.Height); }
+			set
+			{
+				pageSize = new SizeF((float) value.Width, (float) value.Height);
+				CalculatePreviewDimension();
+				Invalidate();
+			}
+		}
 
-      Zoom zoomOld = this.zoom;
-      int zoomPercentOld = this.zoomPercent;
+		/// <summary>
+		///     This is a hack for Visual Studio 2008. The designer uses reflection for setting the PageSize property.
+		///     This fails, even an implicit operator that converts Size to XSize exits.
+		/// </summary>
+		public Size PageSizeF
+		{
+			get { return new Size(Convert.ToInt32(pageSize.Width), Convert.ToInt32(pageSize.Height)); }
+			set
+			{
+				pageSize = value;
+				CalculatePreviewDimension();
+				Invalidate();
+			}
+		}
 
-      // Border around virtual page in pixel.
-      const int leftBorder = 2;
-      const int rightBorder = 4;  // because of shadow
-      const int topBorder = 2;
-      const int bottomBorder = 4;  // because of shadow
-      const int horzBorders = leftBorder + rightBorder;
-      const int vertBorders = topBorder + bottomBorder;
+		/// <summary>
+		///     Clean up any resources being used.
+		/// </summary>
+		protected override void Dispose(bool disposing)
+		{
+			if (disposing)
+			{
+				if (components != null)
+					components.Dispose();
+			}
+			base.Dispose(disposing);
+		}
 
-      // Calculate new zoom factor.
-      switch (this.zoom)
-      {
-        case Zoom.BestFit:
-        BestFit:
-          //this.zoomPercent = Convert.ToInt32(25400.0 * (rcCanvas.Width - (leftBorder + rightBorder)) / (this.pageSize.Width * xdpiScreen));
-          this.zoomPercent = (int)(7200f * (rcCanvas.Width - horzBorders) / (this.pageSize.Width * xdpiScreen));
-        //--this.zoomPercent;  // prevend round up errors
-        break;
+		/// <summary>
+		///     Sets a delagate that is invoked when the preview wants to be painted.
+		/// </summary>
+		public void SetRenderEvent(RenderEvent renderEvent)
+		{
+			this.renderEvent = renderEvent;
+			Invalidate();
+		}
 
-        case Zoom.TextFit:
-        // TODO: 'public Rectangle TextBox' property
-        goto BestFit;
-        //this.zoomPercent = LongFromReal (25400.0 / (_cxUsedPage + 0) * 
-        //                            (rcWnd.CX () - 2 * cxScrollbar) / xdpiScreen) - 3;
-        //break;
+		/// <summary>
+		///     Raises the ZoomChanged event when the zoom factor changed.
+		/// </summary>
+		protected virtual void OnZoomChanged(EventArgs e)
+		{
+			if (ZoomChanged != null)
+				ZoomChanged(this, e);
+		}
 
-        case Zoom.FullPage:
-        {
-          //int zoomX = Convert.ToInt32(25400.0 / (this.pageSize.Width) *
-          //  (rcCanvas.Width - (leftBorder + rightBorder)) / xdpiScreen);
-          //int zoomY = Convert.ToInt32(25400.0 / (this.pageSize.Height) *
-          //  (rcCanvas.Height - (topBorder + bottomBorder)) / ydpiScreen);
-          int zoomX = (int)(7200f * (rcCanvas.Width - horzBorders) / (this.pageSize.Width * xdpiScreen));
-          int zoomY = (int)(7200f * (rcCanvas.Height - vertBorders) / (this.pageSize.Height * ydpiScreen));
-          this.zoomPercent = Math.Min(zoomX, zoomY);
-          //--this.zoomPercent;  // prevend round up errors
-        }
-        break;
+		/// <summary>
+		///     Occurs when the zoom factor changed.
+		/// </summary>
+		public event EventHandler ZoomChanged;
 
-        case Zoom.OriginalSize:
-        this.zoomPercent = (int)(0.5 + 200f / (devInfo.ScaleX + devInfo.ScaleY));
-        this.zoomPercent = (int)(0.5 + 100f / devInfo.ScaleX);
-        break;
+		/// <summary>
+		///     Paints the background with the sheet of paper.
+		/// </summary>
+		protected override void OnPaintBackground(PaintEventArgs e)
+		{
+			// Accurate drawing prevents flickering
+			Graphics gfx = e.Graphics;
+			Rectangle clientRect = ClientRectangle;
+			int d = 0;
+			switch (borderStyle)
+			{
+				case BorderStyle.FixedSingle:
+					gfx.DrawRectangle(SystemPens.WindowFrame, clientRect.X, clientRect.Y, clientRect.Width - 1, clientRect.Height - 1);
+					d = 1;
+					break;
 
-        default:
-        this.zoomPercent = (int)this.zoom;
-        break;
-      }
+				case BorderStyle.Fixed3D:
+					ControlPaint.DrawBorder3D(gfx, clientRect, Border3DStyle.Sunken);
+					d = 2;
+					break;
+			}
+			if (showScrollbars)
+			{
+				int cxScrollbar = SystemInformation.VerticalScrollBarWidth;
+				int cyScrollbar = SystemInformation.HorizontalScrollBarHeight;
 
-      // Bound to zoom limits
-      this.zoomPercent = Math.Max(Math.Min(this.zoomPercent, (int)Zoom.Maximum), (int)Zoom.Mininum);
-      if ((int)this.zoom > 0)
-        this.zoom = (Zoom)this.zoomPercent;
+				gfx.FillRectangle(new SolidBrush(BackColor),
+				                  clientRect.Width - cxScrollbar - d, clientRect.Height - cyScrollbar - d, cxScrollbar, cyScrollbar);
+			}
+		}
 
-      // Size of page in preview window in pixel
-      this.virtualPage.X = leftBorder;
-      this.virtualPage.Y = topBorder;
-      this.virtualPage.Width = (int)(this.pageSize.Width * xdpiScreen * this.zoomPercent / 7200);
-      this.virtualPage.Height = (int)(this.pageSize.Height * ydpiScreen * this.zoomPercent / 7200);
+		/// <summary>
+		///     Recalculates the preview dimension.
+		/// </summary>
+		protected override void OnSizeChanged(EventArgs e)
+		{
+			base.OnSizeChanged(e);
+			CalculatePreviewDimension();
+			SetScrollBarRange();
+		}
 
-      //// 2540 := (25.4mm * 100%) / 1mm
-      //m_VirtualPrintableArea.X      = (int)this.printableArea.X * this.zoomPercent * xdpiScreen / 2540;
-      //m_VirtualPrintableArea.Y      = (int)this.printableArea.Y * this.zoomPercent * xdpiScreen / 2540;
-      //m_VirtualPrintableArea.Width  = (int)this.printableArea.Width  * this.zoomPercent * xdpiScreen / 2540;
-      //m_VirtualPrintableArea.Height = (int)this.printableArea.Height * this.zoomPercent * xdpiScreen / 2540;
+		/// <summary>
+		///     Invalidates the canvas.
+		/// </summary>
+		protected override void OnInvalidated(InvalidateEventArgs e)
+		{
+			base.OnInvalidated(e);
+			canvas.Invalidate();
+		}
 
-      // Border do not depend on zoom anymore
-      this.virtualCanvas = new Size(this.virtualPage.Width + horzBorders, this.virtualPage.Height + vertBorders);
+		/// <summary>
+		///     Layouts the child controls.
+		/// </summary>
+		protected override void OnLayout(LayoutEventArgs levent)
+		{
+			LayoutChildren();
+		}
 
-      // Adjust virtual canvas to at least acutal window size
-      if (virtualCanvas.Width < rcCanvas.Width)
-      {
-        virtualCanvas.Width = rcCanvas.Width;
-        this.virtualPage.X = leftBorder + (rcCanvas.Width - horzBorders - virtualPage.Width) / 2;
-      }
-      if (virtualCanvas.Height < rcCanvas.Height)
-      {
-        virtualCanvas.Height = rcCanvas.Height;
-        this.virtualPage.Y = topBorder + (rcCanvas.Height - vertBorders - virtualPage.Height) / 2;
-      }
+		private void OnScroll(object obj, ScrollEventArgs e)
+		{
+			ScrollBar sc = obj as ScrollBar;
+			if (sc != null)
+			{
+				//Debug.WriteLine(String.Format("OnScroll: {0}, {1}", sc.Value, e.NewValue));
+			}
+		}
 
-      zoomChanged = zoomOld != this.zoom || zoomPercentOld != this.zoomPercent;
-      if (zoomChanged)
-        OnZoomChanged(new EventArgs());
-    }
+		private void OnValueChanged(object obj, EventArgs e)
+		{
+			ScrollBar sc = obj as ScrollBar;
+			if (sc != null)
+			{
+				//Debug.WriteLine(String.Format("OnValueChanged: {0}", sc.Value));
+				if (sc == hScrollBar)
+					posOffset.X = sc.Value;
 
-    internal void CalculatePreviewDimension()
-    {
-      bool zoomChanged;
-      CalculatePreviewDimension(out zoomChanged);
-    }
+				else if (sc == vScrollBar)
+					posOffset.Y = sc.Value;
+			}
+			canvas.Invalidate();
+		}
 
-    internal bool RenderPage(Graphics gfx)
-    {
-      //delete m_RenderContext;
-      //m_RenderContext = new HdcRenderContext(wdc.m_hdc);
+		private void LayoutChildren()
+		{
+			Invalidate();
+			Rectangle clientRect = ClientRectangle;
+			switch (borderStyle)
+			{
+				case BorderStyle.FixedSingle:
+					clientRect.Inflate(-1, -1);
+					break;
 
-      gfx.TranslateTransform(-this.posOffset.X, -this.posOffset.Y);
-      gfx.SetClip(new Rectangle(this.virtualPage.X + 1, this.virtualPage.Y + 1, this.virtualPage.Width - 1, this.virtualPage.Height - 1));
+				case BorderStyle.Fixed3D:
+					clientRect.Inflate(-2, -2);
+					break;
+			}
+			int x = clientRect.X;
+			int y = clientRect.Y;
+			int cx = clientRect.Width;
+			int cy = clientRect.Height;
+			int cxScrollbar = 0;
+			int cyScrollbar = 0;
+			if (showScrollbars && vScrollBar != null && hScrollBar != null)
+			{
+				cxScrollbar = vScrollBar.Width;
+				cyScrollbar = hScrollBar.Height;
+				vScrollBar.Location = new Point(x + cx - cxScrollbar, y);
+				vScrollBar.Size = new Size(cxScrollbar, cy - cyScrollbar);
+				hScrollBar.Location = new Point(x, y + cy - cyScrollbar);
+				hScrollBar.Size = new Size(cx - cxScrollbar, cyScrollbar);
+			}
+			if (canvas != null)
+			{
+				canvas.Location = new Point(x, y);
+				canvas.Size = new Size(cx - cxScrollbar, cy - cyScrollbar);
+			}
+		}
 
-      float scaleX = virtualPage.Width / this.pageSize.Width;
-      float scaleY = virtualPage.Height / this.pageSize.Height;
+		/// <summary>
+		///     Calculates all values for drawing the page preview.
+		/// </summary>
+		internal void CalculatePreviewDimension(out bool zoomChanged)
+		{
+			// User may change display resolution while preview is running
+			Graphics gfx = Graphics.FromImage(new Bitmap(100, 100));
+			IntPtr hdc = gfx.GetHdc();
+			DeviceInfos devInfo = DeviceInfos.GetInfos(hdc);
+			gfx.ReleaseHdc(hdc);
+			gfx.Dispose();
+			int xdpiScreen = devInfo.LogicalDpiX;
+			int ydpiScreen = devInfo.LogicalDpiY;
+			//int cxScrollbar = SystemInformation.VerticalScrollBarWidth;
+			//int cyScrollbar = SystemInformation.HorizontalScrollBarHeight;
+			Rectangle rcCanvas = canvas.ClientRectangle;
 
-      //gfx.SetSmoothingMode(SmoothingModeAntiAlias);
-      //PaintBackground(gfx);
+			Zoom zoomOld = zoom;
+			int zoomPercentOld = zoomPercent;
+
+			// Border around virtual page in pixel.
+			const int leftBorder = 2;
+			const int rightBorder = 4; // because of shadow
+			const int topBorder = 2;
+			const int bottomBorder = 4; // because of shadow
+			const int horzBorders = leftBorder + rightBorder;
+			const int vertBorders = topBorder + bottomBorder;
+
+			// Calculate new zoom factor.
+			switch (zoom)
+			{
+				case Zoom.BestFit:
+					BestFit:
+					//this.zoomPercent = Convert.ToInt32(25400.0 * (rcCanvas.Width - (leftBorder + rightBorder)) / (this.pageSize.Width * xdpiScreen));
+					zoomPercent = (int) (7200f*(rcCanvas.Width - horzBorders)/(pageSize.Width*xdpiScreen));
+					//--this.zoomPercent;  // prevend round up errors
+					break;
+
+				case Zoom.TextFit:
+					// TODO: 'public Rectangle TextBox' property
+					goto BestFit;
+					//this.zoomPercent = LongFromReal (25400.0 / (_cxUsedPage + 0) * 
+					//                            (rcWnd.CX () - 2 * cxScrollbar) / xdpiScreen) - 3;
+					//break;
+
+				case Zoom.FullPage:
+					{
+						//int zoomX = Convert.ToInt32(25400.0 / (this.pageSize.Width) *
+						//  (rcCanvas.Width - (leftBorder + rightBorder)) / xdpiScreen);
+						//int zoomY = Convert.ToInt32(25400.0 / (this.pageSize.Height) *
+						//  (rcCanvas.Height - (topBorder + bottomBorder)) / ydpiScreen);
+						int zoomX = (int) (7200f*(rcCanvas.Width - horzBorders)/(pageSize.Width*xdpiScreen));
+						int zoomY = (int) (7200f*(rcCanvas.Height - vertBorders)/(pageSize.Height*ydpiScreen));
+						zoomPercent = Math.Min(zoomX, zoomY);
+						//--this.zoomPercent;  // prevend round up errors
+					}
+					break;
+
+				case Zoom.OriginalSize:
+					zoomPercent = (int) (0.5 + 200f/(devInfo.ScaleX + devInfo.ScaleY));
+					zoomPercent = (int) (0.5 + 100f/devInfo.ScaleX);
+					break;
+
+				default:
+					zoomPercent = (int) zoom;
+					break;
+			}
+
+			// Bound to zoom limits
+			zoomPercent = Math.Max(Math.Min(zoomPercent, (int) Zoom.Maximum), (int) Zoom.Mininum);
+			if ((int) zoom > 0)
+				zoom = (Zoom) zoomPercent;
+
+			// Size of page in preview window in pixel
+			virtualPage.X = leftBorder;
+			virtualPage.Y = topBorder;
+			virtualPage.Width = (int) (pageSize.Width*xdpiScreen*zoomPercent/7200);
+			virtualPage.Height = (int) (pageSize.Height*ydpiScreen*zoomPercent/7200);
+
+			//// 2540 := (25.4mm * 100%) / 1mm
+			//m_VirtualPrintableArea.X      = (int)this.printableArea.X * this.zoomPercent * xdpiScreen / 2540;
+			//m_VirtualPrintableArea.Y      = (int)this.printableArea.Y * this.zoomPercent * xdpiScreen / 2540;
+			//m_VirtualPrintableArea.Width  = (int)this.printableArea.Width  * this.zoomPercent * xdpiScreen / 2540;
+			//m_VirtualPrintableArea.Height = (int)this.printableArea.Height * this.zoomPercent * xdpiScreen / 2540;
+
+			// Border do not depend on zoom anymore
+			virtualCanvas = new Size(virtualPage.Width + horzBorders, virtualPage.Height + vertBorders);
+
+			// Adjust virtual canvas to at least acutal window size
+			if (virtualCanvas.Width < rcCanvas.Width)
+			{
+				virtualCanvas.Width = rcCanvas.Width;
+				virtualPage.X = leftBorder + (rcCanvas.Width - horzBorders - virtualPage.Width)/2;
+			}
+			if (virtualCanvas.Height < rcCanvas.Height)
+			{
+				virtualCanvas.Height = rcCanvas.Height;
+				virtualPage.Y = topBorder + (rcCanvas.Height - vertBorders - virtualPage.Height)/2;
+			}
+
+			zoomChanged = zoomOld != zoom || zoomPercentOld != zoomPercent;
+			if (zoomChanged)
+				OnZoomChanged(new EventArgs());
+		}
+
+		internal void CalculatePreviewDimension()
+		{
+			bool zoomChanged;
+			CalculatePreviewDimension(out zoomChanged);
+		}
+
+		internal bool RenderPage(Graphics gfx)
+		{
+			//delete m_RenderContext;
+			//m_RenderContext = new HdcRenderContext(wdc.m_hdc);
+
+			gfx.TranslateTransform(-posOffset.X, -posOffset.Y);
+			gfx.SetClip(new Rectangle(virtualPage.X + 1, virtualPage.Y + 1, virtualPage.Width - 1, virtualPage.Height - 1));
+
+			float scaleX = virtualPage.Width/pageSize.Width;
+			float scaleY = virtualPage.Height/pageSize.Height;
+
+			//gfx.SetSmoothingMode(SmoothingModeAntiAlias);
+			//PaintBackground(gfx);
 
 #if DRAW_BMP
       Matrix matrix = new Matrix();
@@ -647,33 +675,33 @@ namespace PdfSharp.Forms
         }
       }
 #else
-      Matrix matrix = new Matrix();
-      matrix.Translate(virtualPage.X, virtualPage.Y);
-      matrix.Translate(-this.posOffset.X, -this.posOffset.Y);
-      matrix.Scale(scaleX, scaleY);
-      gfx.Transform = matrix;
+			Matrix matrix = new Matrix();
+			matrix.Translate(virtualPage.X, virtualPage.Y);
+			matrix.Translate(-posOffset.X, -posOffset.Y);
+			matrix.Scale(scaleX, scaleY);
+			gfx.Transform = matrix;
 
 #if DRAW_X
       gfx.DrawLine(Pens.Red, 0, 0, pageSize.Width, pageSize.Height);
       gfx.DrawLine(Pens.Red, 0, pageSize.Height, pageSize.Width, 0);
 #endif
 
-      if (this.renderEvent != null)
-      {
-        gfx.SmoothingMode = SmoothingMode.HighQuality;
-        XGraphics xgfx = XGraphics.FromGraphics(gfx, new XSize(this.pageSize.Width, this.pageSize.Height));
-        try
-        {
-          this.renderEvent(xgfx);
-        }
-        catch (Exception ex)
-        {
-          MessageBox.Show(ex.Message, "Exception");
-        }
-      }
+			if (renderEvent != null)
+			{
+				gfx.SmoothingMode = SmoothingMode.HighQuality;
+				XGraphics xgfx = XGraphics.FromGraphics(gfx, new XSize(pageSize.Width, pageSize.Height));
+				try
+				{
+					renderEvent(xgfx);
+				}
+				catch (Exception ex)
+				{
+					MessageBox.Show(ex.Message, "Exception");
+				}
+			}
 #endif
 
-      // Old C++ stuff, may be useful later...
+			// Old C++ stuff, may be useful later...
 #if false
       switch (m_mode)
       {
@@ -811,243 +839,217 @@ namespace PdfSharp.Forms
           break;
       }
 #endif
-      return true;
-    }
+			return true;
+		}
 
-    /// <summary>
-    /// Paints the background and the empty page.
-    /// </summary>
-    internal void PaintBackground(Graphics gfx)
-    {
-      // Draw sharp paper borders and shadow.
-      gfx.SmoothingMode = SmoothingMode.None;
-      //gfx.SetCompositingMode(CompositingModeSourceOver); // CompositingModeSourceCopy
-      //gfx.SetCompositingQuality(CompositingQualityHighQuality);
+		/// <summary>
+		///     Paints the background and the empty page.
+		/// </summary>
+		internal void PaintBackground(Graphics gfx)
+		{
+			// Draw sharp paper borders and shadow.
+			gfx.SmoothingMode = SmoothingMode.None;
+			//gfx.SetCompositingMode(CompositingModeSourceOver); // CompositingModeSourceCopy
+			//gfx.SetCompositingQuality(CompositingQualityHighQuality);
 
-      gfx.TranslateTransform(-this.posOffset.X, -this.posOffset.Y);
+			gfx.TranslateTransform(-posOffset.X, -posOffset.Y);
 
-      // Draw outer area. Use clipping to prevent flickering of page interior.
-      gfx.SetClip(new Rectangle(virtualPage.X, virtualPage.Y, virtualPage.Width + 3, virtualPage.Height + 3), CombineMode.Exclude);
-      gfx.SetClip(new Rectangle(virtualPage.X + virtualPage.Width + 1, virtualPage.Y, 2, 2), CombineMode.Union);
-      gfx.SetClip(new Rectangle(virtualPage.X, virtualPage.Y + virtualPage.Height + 1, 2, 2), CombineMode.Union);
-      gfx.Clear(this.desktopColor);
+			// Draw outer area. Use clipping to prevent flickering of page interior.
+			gfx.SetClip(new Rectangle(virtualPage.X, virtualPage.Y, virtualPage.Width + 3, virtualPage.Height + 3), CombineMode.Exclude);
+			gfx.SetClip(new Rectangle(virtualPage.X + virtualPage.Width + 1, virtualPage.Y, 2, 2), CombineMode.Union);
+			gfx.SetClip(new Rectangle(virtualPage.X, virtualPage.Y + virtualPage.Height + 1, 2, 2), CombineMode.Union);
+			gfx.Clear(desktopColor);
 
 #if DRAW_X
       gfx.DrawLine(Pens.Blue, 0, 0, virtualCanvas.Width, virtualCanvas.Height);
       gfx.DrawLine(Pens.Blue, virtualCanvas.Width, 0, 0, virtualCanvas.Height);
 #endif
-      gfx.ResetClip();
+			gfx.ResetClip();
 
 #if !DRAW_BMP
-      // Fill page interior.
-      SolidBrush brushPaper = new SolidBrush(this.pageColor);
-      gfx.FillRectangle(brushPaper, virtualPage.X + 1, virtualPage.Y + 1, virtualPage.Width - 1, virtualPage.Height - 1);
+			// Fill page interior.
+			SolidBrush brushPaper = new SolidBrush(pageColor);
+			gfx.FillRectangle(brushPaper, virtualPage.X + 1, virtualPage.Y + 1, virtualPage.Width - 1, virtualPage.Height - 1);
 #endif
 
-      //// draw non printable area
-      //if (m_ShowNonPrintableArea)
-      //{
-      //SolidBrush brushNPA(+DESKTOP::QuerySysColor((SYSCLR_3DLIGHT)) | 0xFF000000);
-      //
-      //gfx.FillRectangle(&brushNPA, virtualPage.X, virtualPage.Y, virtualPage.Width, rcPrintableArea.Y - virtualPage.Y);
-      //gfx.FillRectangle(&brushNPA, virtualPage.X, virtualPage.Y, rcPrintableArea.X - virtualPage.X, virtualPage.Height);
-      //gfx.FillRectangle(&brushNPA, rcPrintableArea.X + rcPrintableArea.Width,
-      //virtualPage.Y, virtualPage.X + virtualPage.Width - (rcPrintableArea.X + rcPrintableArea.Width), virtualPage.Height);
-      //gfx.FillRectangle(&brushNPA, virtualPage.X, rcPrintableArea.Y + rcPrintableArea.Height,
-      //virtualPage.Width, virtualPage.Y + virtualPage.Height - (rcPrintableArea.Y + rcPrintableArea.Height));
-      //}
-      //this.DrawDash(gfx, virtualPage);
+			//// draw non printable area
+			//if (m_ShowNonPrintableArea)
+			//{
+			//SolidBrush brushNPA(+DESKTOP::QuerySysColor((SYSCLR_3DLIGHT)) | 0xFF000000);
+			//
+			//gfx.FillRectangle(&brushNPA, virtualPage.X, virtualPage.Y, virtualPage.Width, rcPrintableArea.Y - virtualPage.Y);
+			//gfx.FillRectangle(&brushNPA, virtualPage.X, virtualPage.Y, rcPrintableArea.X - virtualPage.X, virtualPage.Height);
+			//gfx.FillRectangle(&brushNPA, rcPrintableArea.X + rcPrintableArea.Width,
+			//virtualPage.Y, virtualPage.X + virtualPage.Width - (rcPrintableArea.X + rcPrintableArea.Width), virtualPage.Height);
+			//gfx.FillRectangle(&brushNPA, virtualPage.X, rcPrintableArea.Y + rcPrintableArea.Height,
+			//virtualPage.Width, virtualPage.Y + virtualPage.Height - (rcPrintableArea.Y + rcPrintableArea.Height));
+			//}
+			//this.DrawDash(gfx, virtualPage);
 
-      // Draw page border and shadow.
-      Pen penPaperBorder = SystemPens.WindowText;
-      Brush brushShadow = SystemBrushes.ControlDarkDark;
-      gfx.DrawRectangle(penPaperBorder, virtualPage);
-      gfx.FillRectangle(brushShadow, virtualPage.X + virtualPage.Width + 1, virtualPage.Y + 2, 2, virtualPage.Height + 1);
-      gfx.FillRectangle(brushShadow, virtualPage.X + 2, virtualPage.Y + virtualPage.Height + 1, virtualPage.Width + 1, 2);
-    }
+			// Draw page border and shadow.
+			Pen penPaperBorder = SystemPens.WindowText;
+			Brush brushShadow = SystemBrushes.ControlDarkDark;
+			gfx.DrawRectangle(penPaperBorder, virtualPage);
+			gfx.FillRectangle(brushShadow, virtualPage.X + virtualPage.Width + 1, virtualPage.Y + 2, 2, virtualPage.Height + 1);
+			gfx.FillRectangle(brushShadow, virtualPage.X + 2, virtualPage.Y + virtualPage.Height + 1, virtualPage.Width + 1, 2);
+		}
 
-    /// <summary>
-    /// Check clipping rectangle calculations.
-    /// </summary>
-    [Conditional("DEBUG")]
-    void DrawDash(Graphics gfx, Rectangle rect)
-    {
-      Pen pen = new Pen(Color.GreenYellow, 1);
-      pen.DashStyle = DashStyle.Dash;
-      gfx.DrawRectangle(pen, rect);
-    }
+		/// <summary>
+		///     Check clipping rectangle calculations.
+		/// </summary>
+		[Conditional("DEBUG")]
+		private void DrawDash(Graphics gfx, Rectangle rect)
+		{
+			Pen pen = new Pen(Color.GreenYellow, 1);
+			pen.DashStyle = DashStyle.Dash;
+			gfx.DrawRectangle(pen, rect);
+		}
 
-    /// <summary>
-    /// Adjusts scroll bars.
-    /// </summary>
-    void SetScrollBarRange()
-    {
-      Rectangle clientRect = this.canvas.ClientRectangle;
-      Size clientAreaSize = clientRect.Size;
+		/// <summary>
+		///     Adjusts scroll bars.
+		/// </summary>
+		private void SetScrollBarRange()
+		{
+			Rectangle clientRect = canvas.ClientRectangle;
+			Size clientAreaSize = clientRect.Size;
 
-      // Scoll range
-      int dx = this.virtualCanvas.Width - clientAreaSize.Width;
-      int dy = this.virtualCanvas.Height - clientAreaSize.Height;
+			// Scoll range
+			int dx = virtualCanvas.Width - clientAreaSize.Width;
+			int dy = virtualCanvas.Height - clientAreaSize.Height;
 
-      //bool extendX = clientAreaSize.Width < virtualCanvas.Width;
-      //bool extendY = clientAreaSize.Height < virtualCanvas.Height;
+			//bool extendX = clientAreaSize.Width < virtualCanvas.Width;
+			//bool extendY = clientAreaSize.Height < virtualCanvas.Height;
 
-      if (ShowScrollbars && this.hScrollBar != null)
-      {
-        if (this.posOffset.X > dx)
-          this.hScrollBar.Value = this.posOffset.X = dx;
+			if (ShowScrollbars && hScrollBar != null)
+			{
+				if (posOffset.X > dx)
+					hScrollBar.Value = posOffset.X = dx;
 
-        if (dx > 0)
-        {
-          this.hScrollBar.Minimum = 0;
-          this.hScrollBar.Maximum = this.virtualCanvas.Width;
-          this.hScrollBar.SmallChange = clientAreaSize.Width / 10;
-          this.hScrollBar.LargeChange = clientAreaSize.Width;
-          this.hScrollBar.Enabled = true;
-        }
-        else
-        {
-          this.hScrollBar.Minimum = 0;
-          this.hScrollBar.Maximum = 0;
-          this.hScrollBar.Enabled = false;
-        }
-      }
+				if (dx > 0)
+				{
+					hScrollBar.Minimum = 0;
+					hScrollBar.Maximum = virtualCanvas.Width;
+					hScrollBar.SmallChange = clientAreaSize.Width/10;
+					hScrollBar.LargeChange = clientAreaSize.Width;
+					hScrollBar.Enabled = true;
+				}
+				else
+				{
+					hScrollBar.Minimum = 0;
+					hScrollBar.Maximum = 0;
+					hScrollBar.Enabled = false;
+				}
+			}
 
-      if (ShowScrollbars && this.vScrollBar != null)
-      {
-        if (this.posOffset.Y > dy)
-          this.vScrollBar.Value = this.posOffset.Y = dy;
+			if (ShowScrollbars && vScrollBar != null)
+			{
+				if (posOffset.Y > dy)
+					vScrollBar.Value = posOffset.Y = dy;
 
-        if (dy > 0)
-        {
-          this.vScrollBar.Minimum = 0;
-          this.vScrollBar.Maximum = this.virtualCanvas.Height;
-          this.vScrollBar.SmallChange = clientAreaSize.Height / 10;
-          this.vScrollBar.LargeChange = clientAreaSize.Height;
-          this.vScrollBar.Enabled = true;
-        }
-        else
-        {
-          this.vScrollBar.Minimum = 0;
-          this.vScrollBar.Maximum = 0;
-          this.vScrollBar.Enabled = false;
-        }
-      }
-    }
+				if (dy > 0)
+				{
+					vScrollBar.Minimum = 0;
+					vScrollBar.Maximum = virtualCanvas.Height;
+					vScrollBar.SmallChange = clientAreaSize.Height/10;
+					vScrollBar.LargeChange = clientAreaSize.Height;
+					vScrollBar.Enabled = true;
+				}
+				else
+				{
+					vScrollBar.Minimum = 0;
+					vScrollBar.Maximum = 0;
+					vScrollBar.Enabled = false;
+				}
+			}
+		}
 
-    ///// <summary>
-    ///// Calculates two interesting values...
-    ///// </summary>
-    //public static void GetMagicValues(IntPtr hdc, out float magicX, out float magicY)
-    //{
-    //  // Even Petzold would be surprised about that...
+		///// <summary>
+		///// Calculates two interesting values...
+		///// </summary>
+		//public static void GetMagicValues(IntPtr hdc, out float magicX, out float magicY)
+		//{
+		//  // Even Petzold would be surprised about that...
 
-    //  // Physical device size in MM
-    //  int horzSizeMM = GetDeviceCaps(hdc, HORZSIZE);
-    //  int vertSizeMM = GetDeviceCaps(hdc, VERTSIZE);
-    //  //
-    //  // Display size in pixels                        1600 x 1200                    1280 x 1024
-    //  //
-    //  // My old Sony display with  96 DPI:                 ---                         330 x 254
-    //  // My old Sony display with 120 DPI:                 ---                         254 x 203
-    //  // My current Sony display with  96 DPI:          410 x 310                      410 x 310
-    //  // My current Sony display with 120 DPI:          410 x 310                      410 x 310
-    //  // My old Sony display with  96 DPI:                 ---                         360 x 290
-    //  // My old Sony display with 120 DPI:                 ---                         360 x 290
-    //  // My LaserJet 6L (300 DPI):                           198 (not 210) x 288 (nscot 297)
+		//  // Physical device size in MM
+		//  int horzSizeMM = GetDeviceCaps(hdc, HORZSIZE);
+		//  int vertSizeMM = GetDeviceCaps(hdc, VERTSIZE);
+		//  //
+		//  // Display size in pixels                        1600 x 1200                    1280 x 1024
+		//  //
+		//  // My old Sony display with  96 DPI:                 ---                         330 x 254
+		//  // My old Sony display with 120 DPI:                 ---                         254 x 203
+		//  // My current Sony display with  96 DPI:          410 x 310                      410 x 310
+		//  // My current Sony display with 120 DPI:          410 x 310                      410 x 310
+		//  // My old Sony display with  96 DPI:                 ---                         360 x 290
+		//  // My old Sony display with 120 DPI:                 ---                         360 x 290
+		//  // My LaserJet 6L (300 DPI):                           198 (not 210) x 288 (nscot 297)
 
 
-    //  // Device size in pixel
-    //  int horzSizePixel = GetDeviceCaps(hdc, HORZRES);
-    //  int vertSizePixel = GetDeviceCaps(hdc, VERTRES);
-    //  //
-    //  // Display size in pixels                        1600 x 1200                    1280 x 1024
-    //  //
-    //  // My old Sony display with  96 DPI:                 ---                        1280 x 1024
-    //  // My old Sony display with 120 DPI:                 ---                        1280 x 1024
-    //  // My current Sony display with  96 DPI:         1600 x 1200                    1280 x 1024
-    //  // My current Sony display with 120 DPI:         1600 x 1200                    1280 x 1024
-    //  //
-    //  // My LaserJet 6L (600 DPI):                                    4676 x 6814
+		//  // Device size in pixel
+		//  int horzSizePixel = GetDeviceCaps(hdc, HORZRES);
+		//  int vertSizePixel = GetDeviceCaps(hdc, VERTRES);
+		//  //
+		//  // Display size in pixels                        1600 x 1200                    1280 x 1024
+		//  //
+		//  // My old Sony display with  96 DPI:                 ---                        1280 x 1024
+		//  // My old Sony display with 120 DPI:                 ---                        1280 x 1024
+		//  // My current Sony display with  96 DPI:         1600 x 1200                    1280 x 1024
+		//  // My current Sony display with 120 DPI:         1600 x 1200                    1280 x 1024
+		//  //
+		//  // My LaserJet 6L (600 DPI):                                    4676 x 6814
 
-    //  // 'logical' device resolution in DPI
-    //  int logResX = GetDeviceCaps(hdc, LOGPIXELSX);
-    //  int logResY = GetDeviceCaps(hdc, LOGPIXELSY);
-    //  //
-    //  // Display size in pixels                        1600 x 1200                    1280 x 1024
-    //  //
-    //  // My old Sony display with  96 DPI:                 ---                          96 x  96
-    //  // My old Sony display with 120 DPI:                 ---                         120 x 120
-    //  // My current Sony display with  96 DPI:           96 x  96                       96 x  96
-    //  // My current Sony display with 120 DPI:          120 x 120                      120 x 120
-    //  //
-    //  // My LaserJet 6L (600 DPI):                                     600 x 600
+		//  // 'logical' device resolution in DPI
+		//  int logResX = GetDeviceCaps(hdc, LOGPIXELSX);
+		//  int logResY = GetDeviceCaps(hdc, LOGPIXELSY);
+		//  //
+		//  // Display size in pixels                        1600 x 1200                    1280 x 1024
+		//  //
+		//  // My old Sony display with  96 DPI:                 ---                          96 x  96
+		//  // My old Sony display with 120 DPI:                 ---                         120 x 120
+		//  // My current Sony display with  96 DPI:           96 x  96                       96 x  96
+		//  // My current Sony display with 120 DPI:          120 x 120                      120 x 120
+		//  //
+		//  // My LaserJet 6L (600 DPI):                                     600 x 600
 
-    //  // physical pixel size in .01 MM units
-    //  // accidentally(?) the result of GetPhysicalDimension!
-    //  //float X1 = 100.0f * horzSizeMM / horzSizePixel;        // = 25.781250 : 19.843750   | 4.2343884
-    //  //float Y1 = 100.0f * vertSizeMM / vertSizePixel;        // = 24.804688 : 19.824219   | 4.2265925
+		//  // physical pixel size in .01 MM units
+		//  // accidentally(?) the result of GetPhysicalDimension!
+		//  //float X1 = 100.0f * horzSizeMM / horzSizePixel;        // = 25.781250 : 19.843750   | 4.2343884
+		//  //float Y1 = 100.0f * vertSizeMM / vertSizePixel;        // = 24.804688 : 19.824219   | 4.2265925
 
-    //  // Now we can get the 'physical' device resolution...
-    //  float phyResX = horzSizePixel / (horzSizeMM / 25.4f);
-    //  float phyResY = vertSizePixel / (vertSizeMM / 25.4f);
-    //  //
-    //  // Display size in pixels                        1600 x 1200                    1280 x 1024
-    //  //
-    //  // My old Sony display with  96 DPI:                 ---                   98.521210 x 102.40000
-    //  // My old Sony display with 120 DPI:                 ---                   128.00000 x 128.12611
-    //  // My current Sony display with  96 DPI:     99.12195 x 98.32258            79.29756 x 83.90193
-    //  // My current Sony display with 120 DPI:     99.12195 x 98.32258            79.29756 x 83.90193
-    //  //
-    //  // My LaserJet 6L (600 DPI):                               599.85052 x 600.95691
+		//  // Now we can get the 'physical' device resolution...
+		//  float phyResX = horzSizePixel / (horzSizeMM / 25.4f);
+		//  float phyResY = vertSizePixel / (vertSizeMM / 25.4f);
+		//  //
+		//  // Display size in pixels                        1600 x 1200                    1280 x 1024
+		//  //
+		//  // My old Sony display with  96 DPI:                 ---                   98.521210 x 102.40000
+		//  // My old Sony display with 120 DPI:                 ---                   128.00000 x 128.12611
+		//  // My current Sony display with  96 DPI:     99.12195 x 98.32258            79.29756 x 83.90193
+		//  // My current Sony display with 120 DPI:     99.12195 x 98.32258            79.29756 x 83.90193
+		//  //
+		//  // My LaserJet 6L (600 DPI):                               599.85052 x 600.95691
 
-    //  // ...and rescale the size of the meta rectangle.
-    //  magicX = logResX / phyResX;
-    //  magicY = logResY / phyResY;
-    //  //
-    //  // Display size in pixels                        1600 x 1200                    1280 x 1024
-    //  //
-    //  // My old Sony display with  96 DPI:                 ---                  0.97440946 x 0.93750000
-    //  // My old Sony display with 120 DPI:                 ---                  0.93750000 x 0.93657720
-    //  // My current Sony display with  96 DPI:  0.968503952 x 0.976377964       1.21062994 x 1.14419293
-    //  // My current Sony display with 120 DPI:  1.21062994  x 1.22047246        1.51328743 x 1.43024123
-    //  //
-    //  // My LaserJet 6L (600 DPI):                               1.0002491 x 0.99840766
-    //}
+		//  // ...and rescale the size of the meta rectangle.
+		//  magicX = logResX / phyResX;
+		//  magicY = logResY / phyResY;
+		//  //
+		//  // Display size in pixels                        1600 x 1200                    1280 x 1024
+		//  //
+		//  // My old Sony display with  96 DPI:                 ---                  0.97440946 x 0.93750000
+		//  // My old Sony display with 120 DPI:                 ---                  0.93750000 x 0.93657720
+		//  // My current Sony display with  96 DPI:  0.968503952 x 0.976377964       1.21062994 x 1.14419293
+		//  // My current Sony display with 120 DPI:  1.21062994  x 1.22047246        1.51328743 x 1.43024123
+		//  //
+		//  // My LaserJet 6L (600 DPI):                               1.0002491 x 0.99840766
+		//}
 
-    //[DllImport("gdi32.dll")]
-    //static extern int GetDeviceCaps(IntPtr hdc, int capability);
-    //const int HORZSIZE = 4;
-    //const int VERTSIZE = 6;
-    //const int HORZRES = 8;
-    //const int VERTRES = 10;
-    //const int LOGPIXELSX = 88;
-    //const int LOGPIXELSY = 90;
-
-    /// <summary>
-    /// Upper left corner of scroll area.
-    /// </summary>
-    Point posOffset;
-
-    /// <summary>
-    /// Real page size in point.
-    /// </summary>
-    SizeF pageSize = PageSizeConverter.ToSize(PdfSharp.Core.Enums.PageSize.A4).ToSizeF();
-
-    /// <summary>
-    /// Page in pixel relative to virtual canvas.
-    /// </summary>
-    Rectangle virtualPage;
-
-    /// <summary>
-    /// The size in pixel of an area that completely contains the virtual page and at leat a small 
-    /// border around it. If this area is larger than the canvas window, it is scrolled.
-    /// </summary>
-    Size virtualCanvas;
-
-    /// <summary>
-    /// Printable area in point.
-    /// </summary>
-    readonly RectangleF printableArea;
-  }
+		//[DllImport("gdi32.dll")]
+		//static extern int GetDeviceCaps(IntPtr hdc, int capability);
+		//const int HORZSIZE = 4;
+		//const int VERTSIZE = 6;
+		//const int HORZRES = 8;
+		//const int VERTRES = 10;
+		//const int LOGPIXELSX = 88;
+		//const int LOGPIXELSY = 90;
+	}
 }

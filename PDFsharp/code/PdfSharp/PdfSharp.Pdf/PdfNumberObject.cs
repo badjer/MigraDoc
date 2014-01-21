@@ -1,4 +1,5 @@
 #region PDFsharp - A .NET library for processing PDF
+
 //
 // Authors:
 //   Stefan Lange (mailto:Stefan.Lange@pdfsharp.com)
@@ -25,28 +26,29 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 namespace PdfSharp.Pdf
 {
-  /// <summary>
-  /// Base class for indirect number values (not yet used, maybe superfluous).
-  /// </summary>
-  public abstract class PdfNumberObject : PdfObject
-  {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="PdfNumberObject"/> class.
-    /// </summary>
-    protected PdfNumberObject()
-    {
-    }
+	/// <summary>
+	///     Base class for indirect number values (not yet used, maybe superfluous).
+	/// </summary>
+	public abstract class PdfNumberObject : PdfObject
+	{
+		/// <summary>
+		///     Initializes a new instance of the <see cref="PdfNumberObject" /> class.
+		/// </summary>
+		protected PdfNumberObject()
+		{
+		}
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="PdfNumberObject"/> class.
-    /// </summary>
-    /// <param name="document">The document.</param>
-    protected PdfNumberObject(PdfDocument document) : base(document)
-    {
-    }
-  }
+		/// <summary>
+		///     Initializes a new instance of the <see cref="PdfNumberObject" /> class.
+		/// </summary>
+		/// <param name="document">The document.</param>
+		protected PdfNumberObject(PdfDocument document) : base(document)
+		{
+		}
+	}
 }

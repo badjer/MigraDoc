@@ -1,4 +1,5 @@
 #region PDFsharp - A .NET library for processing PDF
+
 //
 // Authors:
 //   Stefan Lange (mailto:Stefan.Lange@pdfsharp.com)
@@ -25,15 +26,14 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 using System;
-using System.Collections;
-using System.ComponentModel;
-#if GDI
 using System.Drawing;
-using System.Data;
 using System.Windows.Forms;
+#if GDI
+
 #endif
 #if Wpf
 using System.Windows.Media;
@@ -41,44 +41,45 @@ using System.Windows.Media;
 
 namespace PdfSharp.Forms
 {
-  /// <summary>
-  /// Implements the control that previews the page.
-  /// </summary>
-  class PagePreviewCanvas : System.Windows.Forms.Control
-  {
-    public PagePreviewCanvas(PagePreview preview)
-    {
-      this.preview = preview;
-      SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint | ControlStyles.DoubleBuffer, true);
-    }
-    PagePreview preview;
+	/// <summary>
+	///     Implements the control that previews the page.
+	/// </summary>
+	internal class PagePreviewCanvas : Control
+	{
+		private readonly PagePreview preview;
 
-    protected override void OnPaint(PaintEventArgs e)
-    {
-      if (!this.preview.showPage)
-        return;
+		public PagePreviewCanvas(PagePreview preview)
+		{
+			this.preview = preview;
+			SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint | ControlStyles.DoubleBuffer, true);
+		}
 
-      Graphics gfx = e.Graphics;
-      bool zoomChanged;
-      this.preview.CalculatePreviewDimension(out zoomChanged);
-      this.preview.RenderPage(gfx);
-    }
+		protected override void OnPaint(PaintEventArgs e)
+		{
+			if (!preview.showPage)
+				return;
 
-    protected override void OnPaintBackground(PaintEventArgs e)
-    {
-      if (!this.preview.showPage)
-      {
-        e.Graphics.Clear(this.preview.desktopColor);
-        return;
-      }
-      bool zoomChanged;
-      this.preview.CalculatePreviewDimension(out zoomChanged);
-      this.preview.PaintBackground(e.Graphics);
-    }
+			Graphics gfx = e.Graphics;
+			bool zoomChanged;
+			preview.CalculatePreviewDimension(out zoomChanged);
+			preview.RenderPage(gfx);
+		}
 
-    protected override void OnSizeChanged(EventArgs e)
-    {
-      Invalidate();
-    }
-  }
+		protected override void OnPaintBackground(PaintEventArgs e)
+		{
+			if (!preview.showPage)
+			{
+				e.Graphics.Clear(preview.desktopColor);
+				return;
+			}
+			bool zoomChanged;
+			preview.CalculatePreviewDimension(out zoomChanged);
+			preview.PaintBackground(e.Graphics);
+		}
+
+		protected override void OnSizeChanged(EventArgs e)
+		{
+			Invalidate();
+		}
+	}
 }

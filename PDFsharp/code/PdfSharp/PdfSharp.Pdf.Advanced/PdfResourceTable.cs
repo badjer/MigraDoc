@@ -1,4 +1,5 @@
 #region PDFsharp - A .NET library for processing PDF
+
 //
 // Authors:
 //   Stefan Lange (mailto:Stefan.Lange@pdfsharp.com)
@@ -25,19 +26,21 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 namespace PdfSharp.Pdf.Advanced
 {
-  /// <summary>
-  /// Base class for FontTable, ImageTable, FormXObjectTable etc.
-  /// </summary>
-  internal class PdfResourceTable
-  {
-    public PdfResourceTable(PdfDocument owner)
-    {
-      this.owner = owner;
-    }
-    protected PdfDocument owner;
-  }
+	/// <summary>
+	///     Base class for FontTable, ImageTable, FormXObjectTable etc.
+	/// </summary>
+	internal class PdfResourceTable
+	{
+		protected PdfDocument owner;
+
+		public PdfResourceTable(PdfDocument owner)
+		{
+			this.owner = owner;
+		}
+	}
 }

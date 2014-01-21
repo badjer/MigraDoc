@@ -1,4 +1,5 @@
 #region PDFsharp - A .NET library for processing PDF
+
 //
 // Authors:
 //   Stefan Lange (mailto:Stefan.Lange@pdfsharp.com)
@@ -25,60 +26,62 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 namespace PdfSharp.Pdf.Advanced
 {
-  /// <summary>
-  /// Provides access to the internal PDF object data structures. This class prevents the public
-  /// interfaces from pollution with to much internal functions.
-  /// </summary>
-  public class PdfObjectInternals
-  {
-    internal PdfObjectInternals(PdfObject obj)
-    {
-      this.obj = obj;
-    }
-    PdfObject obj;
+	/// <summary>
+	///     Provides access to the internal PDF object data structures. This class prevents the public
+	///     interfaces from pollution with to much internal functions.
+	/// </summary>
+	public class PdfObjectInternals
+	{
+		private readonly PdfObject obj;
 
-    /// <summary>
-    /// Gets the object identifier. Returns PdfObjectID.Empty for direct objects.
-    /// </summary>
-    public PdfObjectID ObjectID
-    {
-      get { return this.obj.ObjectID; }
-    }
+		internal PdfObjectInternals(PdfObject obj)
+		{
+			this.obj = obj;
+		}
 
-    /// <summary>
-    /// Gets the object number.
-    /// </summary>
-    public int ObjectNumber
-    {
-      get { return this.obj.ObjectID.ObjectNumber; }
-    }
+		/// <summary>
+		///     Gets the object identifier. Returns PdfObjectID.Empty for direct objects.
+		/// </summary>
+		public PdfObjectID ObjectID
+		{
+			get { return obj.ObjectID; }
+		}
 
-    /// <summary>
-    /// Gets the generation number.
-    /// </summary>
-    public int GenerationNumber
-    {
-      get { return this.obj.ObjectID.GenerationNumber; }
-    }
+		/// <summary>
+		///     Gets the object number.
+		/// </summary>
+		public int ObjectNumber
+		{
+			get { return obj.ObjectID.ObjectNumber; }
+		}
 
-    /// <summary>
-    /// Gets the name of the current type.
-    /// Not a very useful property, but can be used for data binding.
-    /// </summary>
-    public string TypeID
-    {
-      get
-      {
-        if (this.obj is PdfArray)
-          return "array";
-        else if (this.obj is PdfDictionary)
-          return "dictionary";
-        return this.obj.GetType().Name;
-      }
-    }
-  }
+		/// <summary>
+		///     Gets the generation number.
+		/// </summary>
+		public int GenerationNumber
+		{
+			get { return obj.ObjectID.GenerationNumber; }
+		}
+
+		/// <summary>
+		///     Gets the name of the current type.
+		///     Not a very useful property, but can be used for data binding.
+		/// </summary>
+		public string TypeID
+		{
+			get
+			{
+				if (obj is PdfArray)
+					return "array";
+				else if (obj is PdfDictionary)
+					return "dictionary";
+				return obj.GetType().Name;
+			}
+		}
+	}
 }

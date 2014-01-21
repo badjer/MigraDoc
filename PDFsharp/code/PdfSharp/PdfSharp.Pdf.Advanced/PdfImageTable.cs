@@ -1,4 +1,5 @@
 #region PDFsharp - A .NET library for processing PDF
+
 //
 // Authors:
 //   Stefan Lange (mailto:Stefan.Lange@pdfsharp.com)
@@ -25,98 +26,102 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 using System;
-using System.Diagnostics;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using PdfSharp.Drawing;
 
 namespace PdfSharp.Pdf.Advanced
 {
-  /// <summary>
-  /// Contains all used images of a document.
-  /// </summary>
-  internal sealed class PdfImageTable : PdfResourceTable
-  {
-    /// <summary>
-    /// Initializes a new instance of this class, which is a singleton for each document.
-    /// </summary>
-    public PdfImageTable(PdfDocument document)
-      : base(document)
-    { }
+	/// <summary>
+	///     Contains all used images of a document.
+	/// </summary>
+	internal sealed class PdfImageTable : PdfResourceTable
+	{
+		/// <summary>
+		///     Map from ImageSelector to PdfImage.
+		/// </summary>
+		private readonly Dictionary<ImageSelector, PdfImage> images = new Dictionary<ImageSelector, PdfImage>();
 
-    /// <summary>
-    /// Gets a PdfImage from an XImage. If no PdfImage already exists, a new one is created.
-    /// </summary>
-    public PdfImage GetImage(XImage image)
-    {
-      PdfImageTable.ImageSelector selector = image.selector;
-      if (selector == null)
-      {
-        selector = new ImageSelector(image);
-        image.selector = selector;
-      }
-      PdfImage pdfImage;
-      if (!this.images.TryGetValue(selector, out pdfImage))
-      {
-        pdfImage = new PdfImage(this.owner, image);
-        //pdfImage.Document = this.document;
-        Debug.Assert(pdfImage.Owner == this.owner);
-        this.images[selector] = pdfImage;
-        //if (this.document.EarlyWrite)
-        //{
-        //  //pdfFont.Close(); delete 
-        //  //pdfFont.AssignObjID(ref this.document.ObjectID); // BUG just test code!!!!
-        //  //pdfFont.WriteObject(null);
-        //}
-      }
-      return pdfImage;
-    }
+		/// <summary>
+		///     Initializes a new instance of this class, which is a singleton for each document.
+		/// </summary>
+		public PdfImageTable(PdfDocument document)
+			: base(document)
+		{
+		}
 
-    /// <summary>
-    /// Map from ImageSelector to PdfImage.
-    /// </summary>
-    readonly Dictionary<ImageSelector, PdfImage> images = new Dictionary<ImageSelector, PdfImage>();
+		/// <summary>
+		///     Gets a PdfImage from an XImage. If no PdfImage already exists, a new one is created.
+		/// </summary>
+		public PdfImage GetImage(XImage image)
+		{
+			ImageSelector selector = image.selector;
+			if (selector == null)
+			{
+				selector = new ImageSelector(image);
+				image.selector = selector;
+			}
+			PdfImage pdfImage;
+			if (!images.TryGetValue(selector, out pdfImage))
+			{
+				pdfImage = new PdfImage(owner, image);
+				//pdfImage.Document = this.document;
+				Debug.Assert(pdfImage.Owner == owner);
+				images[selector] = pdfImage;
+				//if (this.document.EarlyWrite)
+				//{
+				//  //pdfFont.Close(); delete 
+				//  //pdfFont.AssignObjID(ref this.document.ObjectID); // BUG just test code!!!!
+				//  //pdfFont.WriteObject(null);
+				//}
+			}
+			return pdfImage;
+		}
 
-    /// <summary>
-    /// A collection of information that uniquely identifies a particular PdfImage.
-    /// </summary>
-    public class ImageSelector
-    {
-      /// <summary>
-      /// Initializes a new instance of ImageSelector from an XImage.
-      /// </summary>
-      public ImageSelector(XImage image)
-      {
-        // HACK: implement a way to identify images when they are reused
-        if (image.path == null)
-          image.path = Guid.NewGuid().ToString();
+		/// <summary>
+		///     A collection of information that uniquely identifies a particular PdfImage.
+		/// </summary>
+		public class ImageSelector
+		{
+			private string path;
 
-        // HACK: just use full path to identify
-        this.path = image.path.ToLower(CultureInfo.InvariantCulture);
-      }
+			/// <summary>
+			///     Initializes a new instance of ImageSelector from an XImage.
+			/// </summary>
+			public ImageSelector(XImage image)
+			{
+				// HACK: implement a way to identify images when they are reused
+				if (image.path == null)
+					image.path = Guid.NewGuid().ToString();
 
-      public string Path
-      {
-        get { return this.path; }
-        set { this.path = value; }
-      }
-      string path;
+				// HACK: just use full path to identify
+				path = image.path.ToLower(CultureInfo.InvariantCulture);
+			}
 
-      public override bool Equals(object obj)
-      {
-        ImageSelector selector = obj as ImageSelector;
-        if (obj == null)
-          return false;
-        return this.path == selector.path; ;
-      }
+			public string Path
+			{
+				get { return path; }
+				set { path = value; }
+			}
 
-      public override int GetHashCode()
-      {
-        return this.path.GetHashCode();
-      }
-    }
-  }
+			public override bool Equals(object obj)
+			{
+				ImageSelector selector = obj as ImageSelector;
+				if (obj == null)
+					return false;
+				return path == selector.path;
+				;
+			}
+
+			public override int GetHashCode()
+			{
+				return path.GetHashCode();
+			}
+		}
+	}
 }

@@ -1,4 +1,5 @@
 #region PDFsharp - A .NET library for processing PDF
+
 //
 // Authors:
 //   Stefan Lange (mailto:Stefan.Lange@pdfsharp.com)
@@ -25,11 +26,10 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 using System;
-using System.Collections;
-using System.Text;
 using System.Drawing;
 using System.Windows.Forms;
 using PdfSharp.Core.Enums;
@@ -37,163 +37,164 @@ using PdfSharp.Drawing;
 
 namespace PdfSharp.Forms
 {
-  /// <summary>
-  /// A combo box control for selection XColor values.
-  /// </summary>
-  public class ColorComboBox : ComboBox
-  {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="ColorComboBox"/> class.
-    /// </summary>
-    public ColorComboBox()
-    {
-      DropDownStyle = ComboBoxStyle.DropDownList;
-      DrawMode = DrawMode.OwnerDrawFixed;
-      Fill();
-    }
+	/// <summary>
+	///     A combo box control for selection XColor values.
+	/// </summary>
+	public class ColorComboBox : ComboBox
+	{
+		private readonly XColorResourceManager crm = new XColorResourceManager();
 
-    XColorResourceManager crm = new XColorResourceManager();
+		private XColor color = XColor.Empty;
 
-    /// <summary>
-    /// Gets or sets the custom color.
-    /// </summary>
-    public XColor Color
-    {
-      get { return this.color; }
-      set
-      {
-        this.color = value;
-        if (value.IsKnownColor)
-        {
-          XKnownColor color = XColorResourceManager.GetKnownColor(value.Argb);
-          for (int idx = 1; idx < Items.Count; idx++)
-          {
-            if (((ColorItem)Items[idx]).Color.Argb == value.Argb)
-            {
-              SelectedIndex = idx;
-              break;
-            }
-          }
-        }
-        else
-          SelectedIndex = 0;
-        Invalidate();
-      }
-    }
-    XColor color = XColor.Empty;
+		/// <summary>
+		///     Initializes a new instance of the <see cref="ColorComboBox" /> class.
+		/// </summary>
+		public ColorComboBox()
+		{
+			DropDownStyle = ComboBoxStyle.DropDownList;
+			DrawMode = DrawMode.OwnerDrawFixed;
+			Fill();
+		}
 
-    void Fill()
-    {
-      Items.Add(new ColorItem(XColor.Empty, "custom"));
-      XKnownColor[] knownColors = XColorResourceManager.GetKnownColors(false);
-      int count = knownColors.Length;
-      for (int idx = 0; idx < knownColors.Length; idx++)
-      {
-        XKnownColor color = knownColors[idx];
-        Items.Add(new ColorItem(XColor.FromKnownColor(color), crm.ToColorName(color)));
-      }
-    }
+		/// <summary>
+		///     Gets or sets the custom color.
+		/// </summary>
+		public XColor Color
+		{
+			get { return color; }
+			set
+			{
+				color = value;
+				if (value.IsKnownColor)
+				{
+					XKnownColor color = XColorResourceManager.GetKnownColor(value.Argb);
+					for (int idx = 1; idx < Items.Count; idx++)
+					{
+						if (((ColorItem) Items[idx]).Color.Argb == value.Argb)
+						{
+							SelectedIndex = idx;
+							break;
+						}
+					}
+				}
+				else
+					SelectedIndex = 0;
+				Invalidate();
+			}
+		}
 
-    /// <summary>
-    /// Keep control a drop down combo box.
-    /// </summary>
-    protected override void OnDropDownStyleChanged(EventArgs e)
-    {
-      DropDownStyle = ComboBoxStyle.DropDownList;
-      base.OnDropDownStyleChanged(e);
-    }
+		private void Fill()
+		{
+			Items.Add(new ColorItem(XColor.Empty, "custom"));
+			XKnownColor[] knownColors = XColorResourceManager.GetKnownColors(false);
+			int count = knownColors.Length;
+			for (int idx = 0; idx < knownColors.Length; idx++)
+			{
+				XKnownColor color = knownColors[idx];
+				Items.Add(new ColorItem(XColor.FromKnownColor(color), crm.ToColorName(color)));
+			}
+		}
 
-    /// <summary>
-    /// Sets the color with the selected item.
-    /// </summary>
-    protected override void OnSelectedIndexChanged(EventArgs e)
-    {
-      int index = SelectedIndex;
-      if (index > 0)
-      {
-        ColorItem item = (ColorItem)Items[index];
-        this.color = item.Color;
-      }
-      base.OnSelectedIndexChanged(e);
-    }
+		/// <summary>
+		///     Keep control a drop down combo box.
+		/// </summary>
+		protected override void OnDropDownStyleChanged(EventArgs e)
+		{
+			DropDownStyle = ComboBoxStyle.DropDownList;
+			base.OnDropDownStyleChanged(e);
+		}
 
-    /// <summary>
-    /// Draw a color entry.
-    /// </summary>
-    protected override void OnDrawItem(DrawItemEventArgs e)
-    {
-      int idx = e.Index;
+		/// <summary>
+		///     Sets the color with the selected item.
+		/// </summary>
+		protected override void OnSelectedIndexChanged(EventArgs e)
+		{
+			int index = SelectedIndex;
+			if (index > 0)
+			{
+				ColorItem item = (ColorItem) Items[index];
+				color = item.Color;
+			}
+			base.OnSelectedIndexChanged(e);
+		}
 
-      // Nothing selected?
-      if (idx < 0)
-        return;
+		/// <summary>
+		///     Draw a color entry.
+		/// </summary>
+		protected override void OnDrawItem(DrawItemEventArgs e)
+		{
+			int idx = e.Index;
 
-      object obj = Items[idx];
-      if (obj is ColorItem)
-      {
-        ColorItem item = (ColorItem)obj;
+			// Nothing selected?
+			if (idx < 0)
+				return;
 
-        // Is custom color?
-        if (idx == 0)
-        {
-          string name;
-          if (this.color.IsEmpty)
-            name = "custom";
-          else
-            name = this.crm.ToColorName(this.color);
+			object obj = Items[idx];
+			if (obj is ColorItem)
+			{
+				ColorItem item = (ColorItem) obj;
 
-          item = new ColorItem(this.color, name);
-        }
+				// Is custom color?
+				if (idx == 0)
+				{
+					string name;
+					if (color.IsEmpty)
+						name = "custom";
+					else
+						name = crm.ToColorName(color);
 
-        XColor clr = item.Color;
-        Graphics gfx = e.Graphics;
-        Rectangle rect = e.Bounds;
-        Brush textbrush = SystemBrushes.ControlText;
-        if ((e.State & DrawItemState.Selected) == 0)
-        {
-          gfx.FillRectangle(SystemBrushes.Window, rect);
-          textbrush = SystemBrushes.ControlText;
-        }
-        else
-        {
-          gfx.FillRectangle(SystemBrushes.Highlight, rect);
-          textbrush = SystemBrushes.HighlightText;
-        }
+					item = new ColorItem(color, name);
+				}
 
-        // Draw color box
-        if (!clr.IsEmpty)
-        {
-          Rectangle box = new Rectangle(rect.X + 3, rect.Y + 1, rect.Height * 2, rect.Height - 3);
-          gfx.FillRectangle(new SolidBrush(clr.ToGdiColor()), box);
-          gfx.DrawRectangle(Pens.Black, box);
-        }
+				XColor clr = item.Color;
+				Graphics gfx = e.Graphics;
+				Rectangle rect = e.Bounds;
+				Brush textbrush = SystemBrushes.ControlText;
+				if ((e.State & DrawItemState.Selected) == 0)
+				{
+					gfx.FillRectangle(SystemBrushes.Window, rect);
+					textbrush = SystemBrushes.ControlText;
+				}
+				else
+				{
+					gfx.FillRectangle(SystemBrushes.Highlight, rect);
+					textbrush = SystemBrushes.HighlightText;
+				}
 
-        StringFormat format = new StringFormat(StringFormat.GenericDefault);
-        format.Alignment = StringAlignment.Near;
-        format.LineAlignment = StringAlignment.Center;
-        rect.X += rect.Height * 2 + 3 + 3;
-        gfx.DrawString(item.Name, Font, textbrush, rect, format);
-      }
-    }
+				// Draw color box
+				if (!clr.IsEmpty)
+				{
+					Rectangle box = new Rectangle(rect.X + 3, rect.Y + 1, rect.Height*2, rect.Height - 3);
+					gfx.FillRectangle(new SolidBrush(clr.ToGdiColor()), box);
+					gfx.DrawRectangle(Pens.Black, box);
+				}
 
-    /// <summary>
-    /// Represents a combo box item.
-    /// </summary>
-    struct ColorItem
-    {
-      public ColorItem(XColor color, string name)
-      {
-        Color = color;
-        Name = name;
-      }
+				StringFormat format = new StringFormat(StringFormat.GenericDefault);
+				format.Alignment = StringAlignment.Near;
+				format.LineAlignment = StringAlignment.Center;
+				rect.X += rect.Height*2 + 3 + 3;
+				gfx.DrawString(item.Name, Font, textbrush, rect, format);
+			}
+		}
 
-      public override string ToString()
-      {
-        return Name;
-      }
+		/// <summary>
+		///     Represents a combo box item.
+		/// </summary>
+		private struct ColorItem
+		{
+			public readonly string Name;
+			public XColor Color;
 
-      public XColor Color;
-      public string Name;
-    }
-  }
+			public ColorItem(XColor color, string name)
+			{
+				Color = color;
+				Name = name;
+			}
+
+			public override string ToString()
+			{
+				return Name;
+			}
+		}
+	}
 }

@@ -1,4 +1,5 @@
 #region PDFsharp - A .NET library for processing PDF
+
 //
 // Authors:
 //   Stefan Lange (mailto:Stefan.Lange@pdfsharp.com)
@@ -25,51 +26,53 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 namespace PdfSharp.Pdf.AcroForms
 {
-  /// <summary>
-  /// Represents the push button field.
-  /// </summary>
-  public sealed class PdfPushButtonField : PdfButtonField
-  {
-    /// <summary>
-    /// Initializes a new instance of PdfPushButtonField.
-    /// </summary>
-    internal PdfPushButtonField(PdfDocument document) : base(document)
-    {
-      this.document = document;
-    }
+	/// <summary>
+	///     Represents the push button field.
+	/// </summary>
+	public sealed class PdfPushButtonField : PdfButtonField
+	{
+		/// <summary>
+		///     Initializes a new instance of PdfPushButtonField.
+		/// </summary>
+		internal PdfPushButtonField(PdfDocument document) : base(document)
+		{
+			this.document = document;
+		}
 
-    internal PdfPushButtonField(PdfDictionary dict) : base(dict)
-    {
-    }
+		internal PdfPushButtonField(PdfDictionary dict) : base(dict)
+		{
+		}
 
-    /// <summary>
-    /// Predefined keys of this dictionary. 
-    /// The description comes from PDF 1.4 Reference.
-    /// </summary>
-    public new class Keys : PdfAcroField.Keys
-    {
-      internal static DictionaryMeta Meta
-      {
-        get
-        {
-          if (Keys.meta == null)
-            Keys.meta = CreateMeta(typeof(Keys));
-          return Keys.meta;
-        }
-      }
-      static DictionaryMeta meta;
-    }
+		/// <summary>
+		///     Gets the KeysMeta of this dictionary type.
+		/// </summary>
+		internal override DictionaryMeta Meta
+		{
+			get { return Keys.Meta; }
+		}
 
-    /// <summary>
-    /// Gets the KeysMeta of this dictionary type.
-    /// </summary>
-    internal override DictionaryMeta Meta
-    {
-      get {return Keys.Meta;}
-    }
-  }
+		/// <summary>
+		///     Predefined keys of this dictionary.
+		///     The description comes from PDF 1.4 Reference.
+		/// </summary>
+		public new class Keys : PdfAcroField.Keys
+		{
+			private static DictionaryMeta meta;
+
+			internal static DictionaryMeta Meta
+			{
+				get
+				{
+					if (meta == null)
+						meta = CreateMeta(typeof (Keys));
+					return meta;
+				}
+			}
+		}
+	}
 }

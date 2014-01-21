@@ -1,4 +1,5 @@
 #region PDFsharp - A .NET library for processing PDF
+
 //
 // Authors:
 //   Stefan Lange (mailto:Stefan.Lange@pdfsharp.com)
@@ -25,127 +26,132 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 using System;
 using System.Diagnostics;
-#if GDI
 using System.Drawing;
+using System.Windows.Media;
+using Brush = System.Drawing.Brush;
+using Color = System.Drawing.Color;
+#if GDI
 #endif
 #if WPF
-using System.Windows.Media;
+
 #endif
 
 namespace PdfSharp.Drawing
 {
-  /// <summary>
-  /// Defines a single color object used to fill shapes and draw text.
-  /// </summary>
-  public class XSolidBrush : XBrush
-  {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="XSolidBrush"/> class.
-    /// </summary>
-    public XSolidBrush()
-    {
-    }
+	/// <summary>
+	///     Defines a single color object used to fill shapes and draw text.
+	/// </summary>
+	public class XSolidBrush : XBrush
+	{
+		/// <summary>
+		///     Initializes a new instance of the <see cref="XSolidBrush" /> class.
+		/// </summary>
+		public XSolidBrush()
+		{
+		}
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="XSolidBrush"/> class.
-    /// </summary>
-    public XSolidBrush(XColor color)
-      : this(color, false)
-    {
-    }
+		/// <summary>
+		///     Initializes a new instance of the <see cref="XSolidBrush" /> class.
+		/// </summary>
+		public XSolidBrush(XColor color)
+			: this(color, false)
+		{
+		}
 
-    internal XSolidBrush(XColor color, bool immutable)
-    {
-      this.color = color;
-      this.immutable = immutable;
-    }
+		internal XSolidBrush(XColor color, bool immutable)
+		{
+			this.color = color;
+			this.immutable = immutable;
+		}
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="XSolidBrush"/> class.
-    /// </summary>
-    public XSolidBrush(XSolidBrush brush)
-    {
-      this.color = brush.Color;
-    }
+		/// <summary>
+		///     Initializes a new instance of the <see cref="XSolidBrush" /> class.
+		/// </summary>
+		public XSolidBrush(XSolidBrush brush)
+		{
+			color = brush.Color;
+		}
 
-    /// <summary>
-    /// Gets or sets the color of this brush.
-    /// </summary>
-    public XColor Color
-    {
-      get { return this.color; }
-      set
-      {
-        if (this.immutable)
-          throw new ArgumentException(PSSR.CannotChangeImmutableObject("XSolidBrush"));
-        this.color = value;
+		/// <summary>
+		///     Gets or sets the color of this brush.
+		/// </summary>
+		public XColor Color
+		{
+			get { return color; }
+			set
+			{
+				if (immutable)
+					throw new ArgumentException(PSSR.CannotChangeImmutableObject("XSolidBrush"));
+				color = value;
 #if GDI
-        this.gdiDirty = this.gdiDirty || this.color != value;
+				gdiDirty = gdiDirty || color != value;
 #endif
 #if WPF
-        this.wpfDirty = this.wpfDirty || this.color != value;
+				wpfDirty = wpfDirty || color != value;
 #endif
 #if GDI && WPF
-        this.gdiDirty = this.wpfDirty = true;
+				gdiDirty = wpfDirty = true;
 #endif
-      }
-    }
-    internal XColor color;
+			}
+		}
+
+		internal XColor color;
 
 #if GDI
-    internal override System.Drawing.Brush RealizeGdiBrush()
-    {
-      if (this.gdiDirty)
-      {
-        if (this.gdiBrush == null)
-          this.gdiBrush = new SolidBrush(this.color.ToGdiColor());
-        else
-          this.gdiBrush.Color = this.color.ToGdiColor();
-        this.gdiDirty = false;
-      }
+		internal override Brush RealizeGdiBrush()
+		{
+			if (gdiDirty)
+			{
+				if (gdiBrush == null)
+					gdiBrush = new SolidBrush(color.ToGdiColor());
+				else
+					gdiBrush.Color = color.ToGdiColor();
+				gdiDirty = false;
+			}
 
 #if DEBUG
-      System.Drawing.Color clr = this.color.ToGdiColor();
-      SolidBrush brush1 = new SolidBrush(clr);
-      Debug.Assert(this.gdiBrush.Color == brush1.Color);
+			Color clr = color.ToGdiColor();
+			SolidBrush brush1 = new SolidBrush(clr);
+			Debug.Assert(gdiBrush.Color == brush1.Color);
 #endif
-      return this.gdiBrush;
-    }
+			return gdiBrush;
+		}
 #endif
 
 #if WPF
-    internal override System.Windows.Media.Brush RealizeWpfBrush()
-    {
-      if (this.wpfDirty)
-      {
-        if (this.wpfBrush == null)
-          this.wpfBrush = new SolidColorBrush(this.color.ToWpfColor());
-        else
-          this.wpfBrush.Color = this.color.ToWpfColor();
-        this.wpfDirty = false;
-      }
+		internal override System.Windows.Media.Brush RealizeWpfBrush()
+		{
+			if (wpfDirty)
+			{
+				if (wpfBrush == null)
+					wpfBrush = new SolidColorBrush(color.ToWpfColor());
+				else
+					wpfBrush.Color = color.ToWpfColor();
+				wpfDirty = false;
+			}
 
 #if DEBUG_
       System.Windows.Media.Color clr = this.color.ToWpfColor();
       System.Windows.Media.SolidColorBrush brush1 = new System.Windows.Media.SolidColorBrush(clr); //System.Drawing.Color.FromArgb(128, 128, 0, 0));
       Debug.Assert(this.wpfBrush.Color == brush1.Color);  // Crashes during unit testing
 #endif
-      return this.wpfBrush;
-    }
+			return wpfBrush;
+		}
 #endif
 
 #if GDI
-    bool gdiDirty = true;
-    SolidBrush gdiBrush;
+		private bool gdiDirty = true;
+		private SolidBrush gdiBrush;
 #endif
 #if WPF
-    bool wpfDirty = true;
-    SolidColorBrush wpfBrush;
+		private bool wpfDirty = true;
+		private SolidColorBrush wpfBrush;
 #endif
-    bool immutable;
-  }
+		private readonly bool immutable;
+	}
 }

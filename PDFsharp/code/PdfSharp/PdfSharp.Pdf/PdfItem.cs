@@ -1,4 +1,5 @@
 #region PDFsharp - A .NET library for processing PDF
+
 //
 // Authors:
 //   Stefan Lange (mailto:Stefan.Lange@pdfsharp.com)
@@ -25,6 +26,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 using System;
@@ -32,38 +34,38 @@ using PdfSharp.Pdf.IO;
 
 namespace PdfSharp.Pdf
 {
-  /// <summary>
-  /// The base class of all PDF objects and simple types.
-  /// </summary>
-  public abstract class PdfItem : ICloneable
-  {
-    // All simple types (i.e. derived from PdfItem but not from PdfObject) must be immutable.
+	/// <summary>
+	///     The base class of all PDF objects and simple types.
+	/// </summary>
+	public abstract class PdfItem : ICloneable
+	{
+		// All simple types (i.e. derived from PdfItem but not from PdfObject) must be immutable.
 
-    object ICloneable.Clone()
-    {
-      return Copy();
-    }
+		object ICloneable.Clone()
+		{
+			return Copy();
+		}
 
-    /// <summary>
-    /// Creates a copy of this object.
-    /// </summary>
-    public PdfItem Clone()
-    {
-      return (PdfItem)Copy();
-    }
+		/// <summary>
+		///     Creates a copy of this object.
+		/// </summary>
+		public PdfItem Clone()
+		{
+			return (PdfItem) Copy();
+		}
 
-    /// <summary>
-    /// Implements the copy mechanism. Must be overridden in derived classes.
-    /// </summary>
-    protected virtual object Copy()
-    {
-      return MemberwiseClone();
-    }
+		/// <summary>
+		///     Implements the copy mechanism. Must be overridden in derived classes.
+		/// </summary>
+		protected virtual object Copy()
+		{
+			return MemberwiseClone();
+		}
 
-    /// <summary>
-    /// When overridden in a derived class, appends a raw string representation of this object
-    /// to the specified PdfWriter.
-    /// </summary>
-    internal abstract void WriteObject(PdfWriter writer);
-  }
+		/// <summary>
+		///     When overridden in a derived class, appends a raw string representation of this object
+		///     to the specified PdfWriter.
+		/// </summary>
+		internal abstract void WriteObject(PdfWriter writer);
+	}
 }

@@ -1,4 +1,5 @@
 #region PDFsharp - A .NET library for processing PDF
+
 //
 // Authors:
 //   Stefan Lange (mailto:Stefan.Lange@pdfsharp.com)
@@ -25,22 +26,23 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 using System;
 
 namespace PdfSharp.Pdf
 {
-  /// <summary>
-  /// Base class for all dictionary Keys classes.
-  /// </summary>
-  public class KeysBase
-  {
-    // public KeysBase() { }
+	/// <summary>
+	///     Base class for all dictionary Keys classes.
+	/// </summary>
+	public class KeysBase
+	{
+		// public KeysBase() { }
 
-    internal static DictionaryMeta CreateMeta(Type type)
-    {
-      return new DictionaryMeta(type);
-    }
-  }
+		internal static DictionaryMeta CreateMeta(Type type)
+		{
+			return new DictionaryMeta(type);
+		}
+	}
 }

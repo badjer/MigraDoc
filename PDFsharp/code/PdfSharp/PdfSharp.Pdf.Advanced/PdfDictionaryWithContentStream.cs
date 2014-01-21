@@ -1,4 +1,5 @@
 #region PDFsharp - A .NET library for processing PDF
+
 //
 // Authors:
 //   Stefan Lange (mailto:Stefan.Lange@pdfsharp.com)
@@ -25,6 +26,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 using System;
@@ -33,130 +35,133 @@ using PdfSharp.Drawing;
 
 namespace PdfSharp.Pdf.Advanced
 {
-  /// <summary>
-  /// Represents a base class for dictionaries with a content stream.
-  /// Implement IContentStream for use with a content writer.
-  /// </summary>
-  public abstract class PdfDictionaryWithContentStream : PdfDictionary, IContentStream
-  {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="PdfDictionaryWithContentStream"/> class.
-    /// </summary>
-    public PdfDictionaryWithContentStream()
-    { }
+	/// <summary>
+	///     Represents a base class for dictionaries with a content stream.
+	///     Implement IContentStream for use with a content writer.
+	/// </summary>
+	public abstract class PdfDictionaryWithContentStream : PdfDictionary, IContentStream
+	{
+		private PdfResources resources;
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="PdfDictionaryWithContentStream"/> class.
-    /// </summary>
-    /// <param name="document">The document.</param>
-    public PdfDictionaryWithContentStream(PdfDocument document)
-      : base(document)
-    { }
+		/// <summary>
+		///     Initializes a new instance of the <see cref="PdfDictionaryWithContentStream" /> class.
+		/// </summary>
+		public PdfDictionaryWithContentStream()
+		{
+		}
 
-    /// <summary>
-    /// Initializes a new instance from an existing dictionary. Used for object type transformation.
-    /// </summary>
-    protected PdfDictionaryWithContentStream(PdfDictionary dict)
-      : base(dict)
-    { }
+		/// <summary>
+		///     Initializes a new instance of the <see cref="PdfDictionaryWithContentStream" /> class.
+		/// </summary>
+		/// <param name="document">The document.</param>
+		public PdfDictionaryWithContentStream(PdfDocument document)
+			: base(document)
+		{
+		}
 
-    /// <summary>
-    /// Gets the resources dictionary of this dictionary. If no such dictionary exists, it is created.
-    /// </summary>
-    internal PdfResources Resources
-    {
-      get
-      {
-        if (this.resources == null)
-          this.resources = (PdfResources)Elements.GetValue(Keys.Resources, VCF.Create);
-        return this.resources;
-      }
-    }
-    PdfResources resources;
+		/// <summary>
+		///     Initializes a new instance from an existing dictionary. Used for object type transformation.
+		/// </summary>
+		protected PdfDictionaryWithContentStream(PdfDictionary dict)
+			: base(dict)
+		{
+		}
 
-    /// <summary>
-    /// Implements the interface because the primary function is internal.
-    /// </summary>
-    PdfResources IContentStream.Resources
-    {
-      get { return Resources; }
-    }
+		/// <summary>
+		///     Gets the resources dictionary of this dictionary. If no such dictionary exists, it is created.
+		/// </summary>
+		internal PdfResources Resources
+		{
+			get
+			{
+				if (resources == null)
+					resources = (PdfResources) Elements.GetValue(Keys.Resources, VCF.Create);
+				return resources;
+			}
+		}
 
-    internal string GetFontName(XFont font, out PdfFont pdfFont)
-    {
-      pdfFont = this.document.FontTable.GetFont(font);
-      Debug.Assert(pdfFont != null);
-      string name = Resources.AddFont(pdfFont);
-      return name;
-    }
+		/// <summary>
+		///     Implements the interface because the primary function is internal.
+		/// </summary>
+		PdfResources IContentStream.Resources
+		{
+			get { return Resources; }
+		}
 
-    string IContentStream.GetFontName(XFont font, out PdfFont pdfFont)
-    {
-      return GetFontName(font, out pdfFont);
-    }
+		string IContentStream.GetFontName(XFont font, out PdfFont pdfFont)
+		{
+			return GetFontName(font, out pdfFont);
+		}
 
-    internal string GetFontName(string idName, byte[] fontData, out PdfFont pdfFont)
-    {
-      pdfFont = this.document.FontTable.GetFont(idName, fontData);
-      Debug.Assert(pdfFont != null);
-      string name = Resources.AddFont(pdfFont);
-      return name;
-    }
+		string IContentStream.GetFontName(string idName, byte[] fontData, out PdfFont pdfFont)
+		{
+			return GetFontName(idName, fontData, out pdfFont);
+		}
 
-    string IContentStream.GetFontName(string idName, byte[] fontData, out PdfFont pdfFont)
-    {
-      return GetFontName(idName, fontData, out pdfFont);
-    }
+		/// <summary>
+		///     Implements the interface because the primary function is internal.
+		/// </summary>
+		string IContentStream.GetImageName(XImage image)
+		{
+			throw new NotImplementedException();
+		}
 
-    /// <summary>
-    /// Gets the resource name of the specified image within this dictionary.
-    /// </summary>
-    internal string GetImageName(XImage image)
-    {
-      PdfImage pdfImage = this.document.ImageTable.GetImage(image);
-      Debug.Assert(pdfImage != null);
-      string name = Resources.AddImage(pdfImage);
-      return name;
-    }
+		/// <summary>
+		///     Implements the interface because the primary function is internal.
+		/// </summary>
+		string IContentStream.GetFormName(XForm form)
+		{
+			throw new NotImplementedException();
+		}
 
-    /// <summary>
-    /// Implements the interface because the primary function is internal.
-    /// </summary>
-    string IContentStream.GetImageName(XImage image)
-    {
-      throw new NotImplementedException();
-    }
+		internal string GetFontName(XFont font, out PdfFont pdfFont)
+		{
+			pdfFont = document.FontTable.GetFont(font);
+			Debug.Assert(pdfFont != null);
+			string name = Resources.AddFont(pdfFont);
+			return name;
+		}
 
-    /// <summary>
-    /// Gets the resource name of the specified form within this dictionary.
-    /// </summary>
-    internal string GetFormName(XForm form)
-    {
-      PdfFormXObject pdfForm = this.document.FormTable.GetForm(form);
-      Debug.Assert(pdfForm != null);
-      string name = Resources.AddForm(pdfForm);
-      return name;
-    }
+		internal string GetFontName(string idName, byte[] fontData, out PdfFont pdfFont)
+		{
+			pdfFont = document.FontTable.GetFont(idName, fontData);
+			Debug.Assert(pdfFont != null);
+			string name = Resources.AddFont(pdfFont);
+			return name;
+		}
 
-    /// <summary>
-    /// Implements the interface because the primary function is internal.
-    /// </summary>
-    string IContentStream.GetFormName(XForm form)
-    {
-      throw new NotImplementedException();
-    }
+		/// <summary>
+		///     Gets the resource name of the specified image within this dictionary.
+		/// </summary>
+		internal string GetImageName(XImage image)
+		{
+			PdfImage pdfImage = document.ImageTable.GetImage(image);
+			Debug.Assert(pdfImage != null);
+			string name = Resources.AddImage(pdfImage);
+			return name;
+		}
 
-    /// <summary>
-    /// Predefined keys of this dictionary.
-    /// </summary>
-    public class Keys : PdfDictionary.PdfStream.Keys
-    {
-      /// <summary>
-      /// (Optional but strongly recommended; PDF 1.2) A dictionary specifying any
-      /// resources (such as fonts and images) required by the form XObject.
-      /// </summary>
-      [KeyInfo(KeyType.Dictionary | KeyType.Optional, typeof(PdfResources))]
-      public const string Resources = "/Resources";
-    }
-  }
+		/// <summary>
+		///     Gets the resource name of the specified form within this dictionary.
+		/// </summary>
+		internal string GetFormName(XForm form)
+		{
+			PdfFormXObject pdfForm = document.FormTable.GetForm(form);
+			Debug.Assert(pdfForm != null);
+			string name = Resources.AddForm(pdfForm);
+			return name;
+		}
+
+		/// <summary>
+		///     Predefined keys of this dictionary.
+		/// </summary>
+		public class Keys : PdfStream.Keys
+		{
+			/// <summary>
+			///     (Optional but strongly recommended; PDF 1.2) A dictionary specifying any
+			///     resources (such as fonts and images) required by the form XObject.
+			/// </summary>
+			[KeyInfo(KeyType.Dictionary | KeyType.Optional, typeof (PdfResources))] public const string Resources = "/Resources";
+		}
+	}
 }

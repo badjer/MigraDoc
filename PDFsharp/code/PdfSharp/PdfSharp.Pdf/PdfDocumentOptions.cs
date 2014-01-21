@@ -1,4 +1,5 @@
 #region PDFsharp - A .NET library for processing PDF
+
 //
 // Authors:
 //   Stefan Lange (mailto:Stefan.Lange@pdfsharp.com)
@@ -25,55 +26,59 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 using PdfSharp.Core.Enums;
 
 namespace PdfSharp.Pdf
 {
-  /// <summary>
-  /// Holds information how to handle the document when it is saved as PDF stream.
-  /// </summary>
-  public sealed class PdfDocumentOptions
-  {
-    internal PdfDocumentOptions(PdfDocument document)
-    {
-      //this.deflateContents = true;
-      //this.writeProcedureSets = true;
-    }
+	/// <summary>
+	///     Holds information how to handle the document when it is saved as PDF stream.
+	/// </summary>
+	public sealed class PdfDocumentOptions
+	{
+		internal PdfDocumentOptions(PdfDocument document)
+		{
+			//this.deflateContents = true;
+			//this.writeProcedureSets = true;
+		}
 
-    /// <summary>
-    /// Gets or sets the color mode.
-    /// </summary>
-    public PdfColorMode ColorMode
-    {
-      get { return this.colorMode; }
-      set { this.colorMode = value; }
-    }
-    PdfColorMode colorMode;
+		/// <summary>
+		///     Gets or sets the color mode.
+		/// </summary>
+		public PdfColorMode ColorMode
+		{
+			get { return colorMode; }
+			set { colorMode = value; }
+		}
 
-    /// <summary>
-    /// Gets or sets a value indicating whether to compress content streams of PDF pages.
-    /// </summary>
-    public bool CompressContentStreams
-    {
-      get { return this.compressContentStreams; }
-      set { this.compressContentStreams = value; }
-    }
+		private PdfColorMode colorMode;
+
+		/// <summary>
+		///     Gets or sets a value indicating whether to compress content streams of PDF pages.
+		/// </summary>
+		public bool CompressContentStreams
+		{
+			get { return compressContentStreams; }
+			set { compressContentStreams = value; }
+		}
+
 #if DEBUG
-    bool compressContentStreams = false;
+		private bool compressContentStreams;
 #else
     bool compressContentStreams = true;
 #endif
 
-    /// <summary>
-    /// Gets or sets a value indicating that all objects are not compressed.
-    /// </summary>
-    public bool NoCompression
-    {
-      get { return this.noCompression; }
-      set { this.noCompression = value; }
-    }
-    bool noCompression;
-  }
+		/// <summary>
+		///     Gets or sets a value indicating that all objects are not compressed.
+		/// </summary>
+		public bool NoCompression
+		{
+			get { return noCompression; }
+			set { noCompression = value; }
+		}
+
+		private bool noCompression;
+	}
 }

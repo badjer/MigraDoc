@@ -1,4 +1,5 @@
 #region PDFsharp - A .NET library for processing PDF
+
 //
 // Authors:
 //   Stefan Lange (mailto:Stefan.Lange@pdfsharp.com)
@@ -25,29 +26,30 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 namespace PdfSharp.Pdf.Advanced
 {
-  /// <summary>
-  /// Base class for all PDF external objects.
-  /// </summary>
-  public abstract class PdfXObject : PdfDictionary
-  {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="PdfXObject"/> class.
-    /// </summary>
-    /// <param name="document">The document that owns the object.</param>
-    public PdfXObject(PdfDocument document)
-      : base(document)
-    {
-    }
+	/// <summary>
+	///     Base class for all PDF external objects.
+	/// </summary>
+	public abstract class PdfXObject : PdfDictionary
+	{
+		/// <summary>
+		///     Initializes a new instance of the <see cref="PdfXObject" /> class.
+		/// </summary>
+		/// <param name="document">The document that owns the object.</param>
+		public PdfXObject(PdfDocument document)
+			: base(document)
+		{
+		}
 
-    /// <summary>
-    /// Predefined keys of this dictionary.
-    /// </summary>
-    public class Keys : PdfDictionary.PdfStream.Keys
-    {
-    }
-  }
+		/// <summary>
+		///     Predefined keys of this dictionary.
+		/// </summary>
+		public class Keys : PdfStream.Keys
+		{
+		}
+	}
 }

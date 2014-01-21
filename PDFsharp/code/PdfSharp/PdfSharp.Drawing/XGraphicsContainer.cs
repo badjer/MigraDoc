@@ -1,4 +1,5 @@
 #region PDFsharp - A .NET library for processing PDF
+
 //
 // Authors:
 //   Stefan Lange (mailto:Stefan.Lange@pdfsharp.com)
@@ -25,32 +26,35 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 #if GDI
 using System.Drawing.Drawing2D;
+
 #endif
 
 namespace PdfSharp.Drawing
 {
-  /// <summary>
-  /// Represents the internal state of an XGraphics object.
-  /// </summary>
-  public sealed class XGraphicsContainer
-  {
+	/// <summary>
+	///     Represents the internal state of an XGraphics object.
+	/// </summary>
+	public sealed class XGraphicsContainer
+	{
 #if GDI
-    internal XGraphicsContainer(GraphicsState state)
-    {
-      GdiState = state;
-    }
-    internal GraphicsState GdiState;
+		internal XGraphicsContainer(GraphicsState state)
+		{
+			GdiState = state;
+		}
+
+		internal GraphicsState GdiState;
 #endif
 #if WPF
-    internal XGraphicsContainer()
-    {
-    }
+		internal XGraphicsContainer()
+		{
+		}
 #endif
 
-    internal InternalGraphicsState InternalState;
-  }
+		internal InternalGraphicsState InternalState;
+	}
 }

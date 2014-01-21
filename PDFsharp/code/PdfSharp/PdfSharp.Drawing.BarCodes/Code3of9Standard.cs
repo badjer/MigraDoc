@@ -1,4 +1,5 @@
 #region PDFsharp - A .NET library for processing PDF
+
 //
 // Authors:
 //   Klaus Potzesny (mailto:Klaus.Potzesny@pdfsharp.com)
@@ -25,6 +26,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 using System;
@@ -32,152 +34,153 @@ using PdfSharp.Core.Enums;
 
 namespace PdfSharp.Drawing.BarCodes
 {
-  /// <summary>
-  /// Imlpementation of the Code 3 of 9 bar code.
-  /// </summary>
-  public class Code3of9Standard : ThickThinBarCode
-  {
-    /// <summary>
-    /// Initializes a new instance of Standard3of9.
-    /// </summary>
-    public Code3of9Standard()
-      : base("", XSize.Empty, CodeDirection.LeftToRight)
-    {
-    }
+	/// <summary>
+	///     Imlpementation of the Code 3 of 9 bar code.
+	/// </summary>
+	public class Code3of9Standard : ThickThinBarCode
+	{
+		private static readonly bool[][] Lines = new bool[][]
+			{
+				// '0'
+				new bool[] {false, false, false, true, true, false, true, false, false},
+				// '1'
+				new bool[] {true, false, false, true, false, false, false, false, true},
+				// '2'
+				new bool[] {false, false, true, true, false, false, false, false, true},
+				// '3'
+				new bool[] {true, false, true, true, false, false, false, false, false},
+				// '4'
+				new bool[] {false, false, false, true, true, false, false, false, true},
+				// '5'
+				new bool[] {true, false, false, true, true, false, false, false, false},
+				// '6'
+				new bool[] {false, false, true, true, true, false, false, false, false},
+				// '7'
+				new bool[] {false, false, false, true, false, false, true, false, true},
+				// '8'
+				new bool[] {true, false, false, true, false, false, true, false, false},
+				// '9'
+				new bool[] {false, false, true, true, false, false, true, false, false},
+				// 'A'
+				new bool[] {true, false, false, false, false, true, false, false, true},
+				// 'B'
+				new bool[] {false, false, true, false, false, true, false, false, true},
+				// 'C'
+				new bool[] {true, false, true, false, false, true, false, false, false},
+				// 'D'
+				new bool[] {false, false, false, false, true, true, false, false, true},
+				// 'E'
+				new bool[] {true, false, false, false, true, true, false, false, false},
+				// 'F'
+				new bool[] {false, false, true, false, true, true, false, false, false},
+				// 'G'
+				new bool[] {false, false, false, false, false, true, true, false, true},
+				// 'H'
+				new bool[] {true, false, false, false, false, true, true, false, false},
+				// 'I'
+				new bool[] {false, false, true, false, false, true, true, false, false},
+				// 'J'
+				new bool[] {false, false, false, false, true, true, true, false, false},
+				// 'K'
+				new bool[] {true, false, false, false, false, false, false, true, true},
+				// 'L'
+				new bool[] {false, false, true, false, false, false, false, true, true},
+				// 'M'
+				new bool[] {true, false, true, false, false, false, false, true, false},
+				// 'N'
+				new bool[] {false, false, false, false, true, false, false, true, true},
+				// 'O'
+				new bool[] {true, false, false, false, true, false, false, true, false},
+				// 'P':
+				new bool[] {false, false, true, false, true, false, false, true, false},
+				// 'Q'
+				new bool[] {false, false, false, false, false, false, true, true, true},
+				// 'R'
+				new bool[] {true, false, false, false, false, false, true, true, false},
+				// 'S'
+				new bool[] {false, false, true, false, false, false, true, true, false},
+				// 'T'
+				new bool[] {false, false, false, false, true, false, true, true, false},
+				// 'U'
+				new bool[] {true, true, false, false, false, false, false, false, true},
+				// 'V'
+				new bool[] {false, true, true, false, false, false, false, false, true},
+				// 'W'
+				new bool[] {true, true, true, false, false, false, false, false, false},
+				// 'X'
+				new bool[] {false, true, false, false, true, false, false, false, true},
+				// 'Y'
+				new bool[] {true, true, false, false, true, false, false, false, false},
+				// 'Z'
+				new bool[] {false, true, true, false, true, false, false, false, false},
+				// '-'
+				new bool[] {false, true, false, false, false, false, true, false, true},
+				// '.'
+				new bool[] {true, true, false, false, false, false, true, false, false},
+				// ' '
+				new bool[] {false, true, true, false, false, false, true, false, false},
+				// '$'
+				new bool[] {false, true, false, true, false, true, false, false, false},
+				// '/'
+				new bool[] {false, true, false, true, false, false, false, true, false},
+				// '+'
+				new bool[] {false, true, false, false, false, true, false, true, false},
+				// '%'
+				new bool[] {false, false, false, true, false, true, false, true, false},
+				// '*'
+				new bool[] {false, true, false, false, true, false, true, false, false},
+			};
 
-    /// <summary>
-    /// Initializes a new instance of Standard3of9.
-    /// </summary>
-    public Code3of9Standard(string code)
-      : base(code, XSize.Empty, CodeDirection.LeftToRight)
-    {
-    }
+		/// <summary>
+		///     Initializes a new instance of Standard3of9.
+		/// </summary>
+		public Code3of9Standard()
+			: base("", XSize.Empty, CodeDirection.LeftToRight)
+		{
+		}
 
-    /// <summary>
-    /// Initializes a new instance of Standard3of9.
-    /// </summary>
-    public Code3of9Standard(string code, XSize size)
-      : base(code, size, CodeDirection.LeftToRight)
-    {
-    }
+		/// <summary>
+		///     Initializes a new instance of Standard3of9.
+		/// </summary>
+		public Code3of9Standard(string code)
+			: base(code, XSize.Empty, CodeDirection.LeftToRight)
+		{
+		}
 
-    /// <summary>
-    /// Initializes a new instance of Standard3of9.
-    /// </summary>
-    public Code3of9Standard(string code, XSize size, CodeDirection direction)
-      : base(code, size, direction)
-    {
-    }
+		/// <summary>
+		///     Initializes a new instance of Standard3of9.
+		/// </summary>
+		public Code3of9Standard(string code, XSize size)
+			: base(code, size, CodeDirection.LeftToRight)
+		{
+		}
 
-    /// <summary>
-    /// Returns an array of size 9 that represents the thick (true) and thin (false) lines and spaces
-    /// representing the specified digit.
-    /// </summary>
-    /// <param name="ch">The character to represent.</param>
-    private static bool[] ThickThinLines(char ch)
-    {
-      return Lines["0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ-. $/+%*".IndexOf(ch)];
-    }
-    static bool[][] Lines = new bool[][]
-    {
-      // '0'
-      new bool[] {false, false, false, true, true, false, true, false, false},
-      // '1'
-      new bool[] {true, false, false, true, false, false, false, false, true},
-      // '2'
-      new bool[] {false, false, true, true, false, false, false, false, true},
-      // '3'
-      new bool[] {true, false, true, true, false, false, false, false, false},
-      // '4'
-      new bool[] {false, false, false, true, true, false, false, false, true},
-      // '5'
-      new bool[] {true, false, false, true, true, false, false, false, false},
-      // '6'
-      new bool[] {false, false, true, true, true, false, false, false, false},
-      // '7'
-      new bool[] {false, false, false, true, false, false, true, false, true},
-      // '8'
-      new bool[] {true, false, false, true, false, false, true, false, false},
-      // '9'
-      new bool[] {false, false, true, true, false, false, true, false, false},
-      // 'A'
-      new bool[] {true, false, false, false, false, true, false, false, true},
-      // 'B'
-      new bool[] {false, false, true, false, false, true, false, false, true},
-      // 'C'
-      new bool[] {true, false, true, false, false, true, false, false, false},
-      // 'D'
-      new bool[] {false, false, false, false, true, true, false, false, true},
-      // 'E'
-      new bool[] {true, false, false, false, true, true, false, false, false},
-      // 'F'
-      new bool[] {false, false, true, false, true, true, false, false, false},
-      // 'G'
-      new bool[] {false, false, false, false, false, true, true, false, true},
-      // 'H'
-      new bool[] {true, false, false, false, false, true, true, false, false},
-      // 'I'
-      new bool[] {false, false, true, false, false, true, true, false, false},
-      // 'J'
-      new bool[] {false, false, false, false, true, true, true, false, false},
-      // 'K'
-      new bool[] {true, false, false, false, false, false, false, true, true},
-      // 'L'
-      new bool[] {false, false, true, false, false, false, false, true, true},
-      // 'M'
-      new bool[] {true, false, true, false, false, false, false, true, false},
-      // 'N'
-      new bool[] {false, false, false, false, true, false, false, true, true},
-      // 'O'
-      new bool[] {true, false, false, false, true, false, false, true, false},
-      // 'P':
-      new bool[] {false, false, true, false, true, false, false, true, false},
-      // 'Q'
-      new bool[] {false, false, false, false, false, false, true, true, true},
-      // 'R'
-      new bool[] {true, false, false, false, false, false, true, true, false},
-      // 'S'
-      new bool[] {false, false, true, false, false, false, true, true, false},
-      // 'T'
-      new bool[] {false, false, false, false, true, false, true, true, false},
-      // 'U'
-      new bool[] {true, true, false, false, false, false, false, false, true},
-      // 'V'
-      new bool[] {false, true, true, false, false, false, false, false, true},
-      // 'W'
-      new bool[] {true, true, true, false, false, false, false, false, false},
-      // 'X'
-      new bool[] {false, true, false, false, true, false, false, false, true},
-      // 'Y'
-      new bool[] {true, true, false, false, true, false, false, false, false},
-      // 'Z'
-      new bool[] {false, true, true, false, true, false, false, false, false},
-      // '-'
-      new bool[] {false, true, false, false, false, false, true, false, true},
-      // '.'
-      new bool[] {true, true, false, false, false, false, true, false, false},
-      // ' '
-      new bool[] {false, true, true, false, false, false, true, false, false},
-      // '$'
-      new bool[] {false, true, false, true, false, true, false, false, false},
-      // '/'
-      new bool[] {false, true, false, true, false, false, false, true, false},
-      // '+'
-      new bool[] {false, true, false, false, false, true, false, true, false},
-      // '%'
-      new bool[] {false, false, false, true, false, true, false, true, false},
-      // '*'
-      new bool[] {false, true, false, false, true, false, true, false, false},
-   };
+		/// <summary>
+		///     Initializes a new instance of Standard3of9.
+		/// </summary>
+		public Code3of9Standard(string code, XSize size, CodeDirection direction)
+			: base(code, size, direction)
+		{
+		}
+
+		/// <summary>
+		///     Returns an array of size 9 that represents the thick (true) and thin (false) lines and spaces
+		///     representing the specified digit.
+		/// </summary>
+		/// <param name="ch">The character to represent.</param>
+		private static bool[] ThickThinLines(char ch)
+		{
+			return Lines["0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ-. $/+%*".IndexOf(ch)];
+		}
 
 
-    /// <summary>
-    /// Calculates the thick and thin line widths,
-    /// taking into account the required rendering size.
-    /// </summary>
-    internal override void CalcThinBarWidth(BarCodeRenderInfo info)
-    {
-      /*
+		/// <summary>
+		///     Calculates the thick and thin line widths,
+		///     taking into account the required rendering size.
+		/// </summary>
+		internal override void CalcThinBarWidth(BarCodeRenderInfo info)
+		{
+			/*
        * The total width is the sum of the following parts:
        * Starting lines      = 3 * thick + 7 * thin
        *  +
@@ -189,87 +192,87 @@ namespace PdfSharp.Drawing.BarCodes
        * 
        * Total width = (13 + 6 * r + (3 * r + 7) * code.Length) * thin
        */
-      double thinLineAmount = 13 + 6 * this.wideNarrowRatio + (3 * this.wideNarrowRatio + 7) * this.text.Length;
-      info.ThinBarWidth = this.Size.Width / thinLineAmount;
-    }
+			double thinLineAmount = 13 + 6*wideNarrowRatio + (3*wideNarrowRatio + 7)*text.Length;
+			info.ThinBarWidth = Size.Width/thinLineAmount;
+		}
 
-    /// <summary>
-    /// Checks the code to be convertible into an standard 3 of 9 bar code.
-    /// </summary>
-    /// <param name="text">The code to be checked.</param>
-    protected override void CheckCode(string text)
-    {
-      if (text == null)
-        throw new ArgumentNullException("text");
+		/// <summary>
+		///     Checks the code to be convertible into an standard 3 of 9 bar code.
+		/// </summary>
+		/// <param name="text">The code to be checked.</param>
+		protected override void CheckCode(string text)
+		{
+			if (text == null)
+				throw new ArgumentNullException("text");
 
-      if (text.Length == 0)
-        throw new ArgumentException(BcgSR.Invalid3Of9Code(text));
+			if (text.Length == 0)
+				throw new ArgumentException(BcgSR.Invalid3Of9Code(text));
 
-      foreach (char ch in text)
-      {
-        if ("0123456789ABCDEFGHIJKLMNOP'QRSTUVWXYZ-. $/+%*".IndexOf(ch) < 0)
-          throw new ArgumentException(BcgSR.Invalid3Of9Code(text));
-      }
-    }
+			foreach (char ch in text)
+			{
+				if ("0123456789ABCDEFGHIJKLMNOP'QRSTUVWXYZ-. $/+%*".IndexOf(ch) < 0)
+					throw new ArgumentException(BcgSR.Invalid3Of9Code(text));
+			}
+		}
 
-    /// <summary>
-    /// Renders the bar code.
-    /// </summary>
-    protected internal override void Render(XGraphics gfx, XBrush brush, XFont font, XPoint position)
-    {
-      XGraphicsState state = gfx.Save();
+		/// <summary>
+		///     Renders the bar code.
+		/// </summary>
+		protected internal override void Render(XGraphics gfx, XBrush brush, XFont font, XPoint position)
+		{
+			XGraphicsState state = gfx.Save();
 
-      BarCodeRenderInfo info = new BarCodeRenderInfo(gfx, brush, font, position);
-      InitRendering(info);
-      info.CurrPosInString = 0;
-      //info.CurrPos = info.Center - this.size / 2;
-      info.CurrPos = position - CodeBase.CalcDistance(AnchorType.TopLeft, this.anchor, this.size);
+			BarCodeRenderInfo info = new BarCodeRenderInfo(gfx, brush, font, position);
+			InitRendering(info);
+			info.CurrPosInString = 0;
+			//info.CurrPos = info.Center - this.size / 2;
+			info.CurrPos = position - CalcDistance(AnchorType.TopLeft, anchor, size);
 
-      if (TurboBit)
-        RenderTurboBit(info, true);
-      RenderStart(info);
-      while (info.CurrPosInString < this.text.Length)
-      {
-        RenderNextChar(info);
-        RenderGap(info, false);
-      }
-      RenderStop(info);
-      if (TurboBit)
-        RenderTurboBit(info, false);
-      if (TextLocation != TextLocation.None)
-        RenderText(info);
+			if (TurboBit)
+				RenderTurboBit(info, true);
+			RenderStart(info);
+			while (info.CurrPosInString < text.Length)
+			{
+				RenderNextChar(info);
+				RenderGap(info, false);
+			}
+			RenderStop(info);
+			if (TurboBit)
+				RenderTurboBit(info, false);
+			if (TextLocation != TextLocation.None)
+				RenderText(info);
 
-      gfx.Restore(state);
-    }
+			gfx.Restore(state);
+		}
 
-    private void RenderNextChar(BarCodeRenderInfo info)
-    {
-      RenderChar(info, this.text[info.CurrPosInString]);
-      ++info.CurrPosInString;
-    }
+		private void RenderNextChar(BarCodeRenderInfo info)
+		{
+			RenderChar(info, text[info.CurrPosInString]);
+			++info.CurrPosInString;
+		}
 
-    private void RenderChar(BarCodeRenderInfo info, char ch)
-    {
-      bool[] thickThinLines = ThickThinLines(ch);
-      int idx = 0;
-      while (idx < 9)
-      {
-        RenderBar(info, thickThinLines[idx]);
-        if (idx < 8)
-          RenderGap(info, thickThinLines[idx + 1]);
-        idx += 2;
-      }
-    }
+		private void RenderChar(BarCodeRenderInfo info, char ch)
+		{
+			bool[] thickThinLines = ThickThinLines(ch);
+			int idx = 0;
+			while (idx < 9)
+			{
+				RenderBar(info, thickThinLines[idx]);
+				if (idx < 8)
+					RenderGap(info, thickThinLines[idx + 1]);
+				idx += 2;
+			}
+		}
 
-    private void RenderStart(BarCodeRenderInfo info)
-    {
-      RenderChar(info, '*');
-      RenderGap(info, false);
-    }
+		private void RenderStart(BarCodeRenderInfo info)
+		{
+			RenderChar(info, '*');
+			RenderGap(info, false);
+		}
 
-    private void RenderStop(BarCodeRenderInfo info)
-    {
-      RenderChar(info, '*');
-    }
-  }
+		private void RenderStop(BarCodeRenderInfo info)
+		{
+			RenderChar(info, '*');
+		}
+	}
 }

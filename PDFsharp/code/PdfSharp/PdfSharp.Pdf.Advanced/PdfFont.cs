@@ -1,4 +1,5 @@
 #region PDFsharp - A .NET library for processing PDF
+
 //
 // Authors:
 //   Stefan Lange (mailto:Stefan.Lange@pdfsharp.com)
@@ -25,6 +26,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 using System;
@@ -35,48 +37,49 @@ using PdfSharp.Fonts;
 
 namespace PdfSharp.Pdf.Advanced
 {
-  /// <summary>
-  /// Represents a PDF font.
-  /// </summary>
-  public class PdfFont : PdfDictionary
-  {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="PdfFont"/> class.
-    /// </summary>
-    public PdfFont(PdfDocument document)
-      : base(document)
-    {
-    }
+	/// <summary>
+	///     Represents a PDF font.
+	/// </summary>
+	public class PdfFont : PdfDictionary
+	{
+		/// <summary>
+		///     Initializes a new instance of the <see cref="PdfFont" /> class.
+		/// </summary>
+		public PdfFont(PdfDocument document)
+			: base(document)
+		{
+		}
 
-    internal PdfFontDescriptor FontDescriptor
-    {
-      get
-      {
-        Debug.Assert(this.fontDescriptor != null);
-        //if (this.fontDescriptor2 == null)
-        //  this.fontDescriptor2 = (PdfFontDescriptor)Elements.GetValue(Keys.FontDescriptor, VCF.CreateIndirect);
-        return this.fontDescriptor;
-      }
-    }
-    internal PdfFontDescriptor fontDescriptor;
+		internal PdfFontDescriptor FontDescriptor
+		{
+			get
+			{
+				Debug.Assert(fontDescriptor != null);
+				//if (this.fontDescriptor2 == null)
+				//  this.fontDescriptor2 = (PdfFontDescriptor)Elements.GetValue(Keys.FontDescriptor, VCF.CreateIndirect);
+				return fontDescriptor;
+			}
+		}
 
-    internal PdfFontEncoding FontEncoding;
+		internal PdfFontDescriptor fontDescriptor;
 
-    internal PdfFontEmbedding FontEmbedding;
+		internal PdfFontEncoding FontEncoding;
 
-    //PdfFontOptions FontOptions
-    //{
-    //  get { return this.fontOptions2; }
-    //}
-    //PdfFontOptions fontOptions2;
+		internal PdfFontEmbedding FontEmbedding;
 
-    /// <summary>
-    /// Gets a value indicating whether this instance is symbol font.
-    /// </summary>
-    public bool IsSymbolFont
-    {
-      get { return this.fontDescriptor.IsSymbolFont; }
-    }
+		//PdfFontOptions FontOptions
+		//{
+		//  get { return this.fontOptions2; }
+		//}
+		//PdfFontOptions fontOptions2;
+
+		/// <summary>
+		///     Gets a value indicating whether this instance is symbol font.
+		/// </summary>
+		public bool IsSymbolFont
+		{
+			get { return fontDescriptor.IsSymbolFont; }
+		}
 
 #if true_
     public string BaseFont
@@ -109,90 +112,88 @@ namespace PdfSharp.Pdf.Advanced
     }
 #endif
 
-    internal void AddChars(string text)
-    {
-      if (this.cmapInfo != null)
-        this.cmapInfo.AddChars(text);
-    }
+		internal void AddChars(string text)
+		{
+			if (cmapInfo != null)
+				cmapInfo.AddChars(text);
+		}
 
-    internal void AddGlyphIndices(string glyphIndices)
-    {
-      if (this.cmapInfo != null)
-        this.cmapInfo.AddGlyphIndices(glyphIndices);
-    }
+		internal void AddGlyphIndices(string glyphIndices)
+		{
+			if (cmapInfo != null)
+				cmapInfo.AddGlyphIndices(glyphIndices);
+		}
 
-    /// <summary>
-    /// Gets or sets the CMapInfo.
-    /// </summary>
-    internal CMapInfo CMapInfo
-    {
-      get { return this.cmapInfo; }
-      set { this.cmapInfo = value; }
-    }
-    internal CMapInfo cmapInfo;
+		/// <summary>
+		///     Gets or sets the CMapInfo.
+		/// </summary>
+		internal CMapInfo CMapInfo
+		{
+			get { return cmapInfo; }
+			set { cmapInfo = value; }
+		}
 
-    /// <summary>
-    /// Gets or sets ToUnicodeMap.
-    /// </summary>
-    internal PdfToUnicodeMap ToUnicodeMap
-    {
-      get { return this.toUnicode; }
-      set { this.toUnicode = value; }
-    }
-    internal PdfToUnicodeMap toUnicode;
+		internal CMapInfo cmapInfo;
+
+		/// <summary>
+		///     Gets or sets ToUnicodeMap.
+		/// </summary>
+		internal PdfToUnicodeMap ToUnicodeMap
+		{
+			get { return toUnicode; }
+			set { toUnicode = value; }
+		}
+
+		internal PdfToUnicodeMap toUnicode;
 
 
-    /// <summary>
-    /// Adds a tag of exactly six uppercase letters to the font name 
-    /// according to PDF Reference Section 5.5.3 'Font Subsets'
-    /// </summary>
-    internal static string CreateEmbeddedFontSubsetName(string name)
-    {
-      StringBuilder s = new StringBuilder(64);
-      byte[] bytes = Guid.NewGuid().ToByteArray();
-      for (int idx = 0; idx < 6; idx++)
-        s.Append((char)('A' + bytes[idx] % 26));
-      s.Append('+');
-      if (name.StartsWith("/"))
-        s.Append(name.Substring(1));
-      else
-        s.Append(name);
-      return s.ToString();
-    }
+		/// <summary>
+		///     Adds a tag of exactly six uppercase letters to the font name
+		///     according to PDF Reference Section 5.5.3 'Font Subsets'
+		/// </summary>
+		internal static string CreateEmbeddedFontSubsetName(string name)
+		{
+			StringBuilder s = new StringBuilder(64);
+			byte[] bytes = Guid.NewGuid().ToByteArray();
+			for (int idx = 0; idx < 6; idx++)
+				s.Append((char) ('A' + bytes[idx]%26));
+			s.Append('+');
+			if (name.StartsWith("/"))
+				s.Append(name.Substring(1));
+			else
+				s.Append(name);
+			return s.ToString();
+		}
 
-    /// <summary>
-    /// Predefined keys common to all font dictionaries.
-    /// </summary>
-    public class Keys : KeysBase
-    {
-      /// <summary>
-      /// (Required) The type of PDF object that this dictionary describes;
-      /// must be Font for a font dictionary.
-      /// </summary>
-      [KeyInfo(KeyType.Name | KeyType.Required, FixedValue = "Font")]
-      public const string Type = "/Type";
+		/// <summary>
+		///     Predefined keys common to all font dictionaries.
+		/// </summary>
+		public class Keys : KeysBase
+		{
+			/// <summary>
+			///     (Required) The type of PDF object that this dictionary describes;
+			///     must be Font for a font dictionary.
+			/// </summary>
+			[KeyInfo(KeyType.Name | KeyType.Required, FixedValue = "Font")] public const string Type = "/Type";
 
-      /// <summary>
-      /// (Required) The type of font.
-      /// </summary>
-      [KeyInfo(KeyType.Name | KeyType.Required)]
-      public const string Subtype = "/Subtype";
+			/// <summary>
+			///     (Required) The type of font.
+			/// </summary>
+			[KeyInfo(KeyType.Name | KeyType.Required)] public const string Subtype = "/Subtype";
 
-      /// <summary>
-      /// (Required) The PostScript name of the font.
-      /// </summary>
-      [KeyInfo(KeyType.Name | KeyType.Required)]
-      public const string BaseFont = "/BaseFont";
+			/// <summary>
+			///     (Required) The PostScript name of the font.
+			/// </summary>
+			[KeyInfo(KeyType.Name | KeyType.Required)] public const string BaseFont = "/BaseFont";
 
-      /// <summary>
-      /// (Required except for the standard 14 fonts; must be an indirect reference)
-      /// A font descriptor describing the font’s metrics other than its glyph widths.
-      /// Note: For the standard 14 fonts, the entries FirstChar, LastChar, Widths, and 
-      /// FontDescriptor must either all be present or all be absent. Ordinarily, they are
-      /// absent; specifying them enables a standard font to be overridden.
-      /// </summary>
-      [KeyInfo(KeyType.Dictionary | KeyType.MustBeIndirect, typeof(PdfFontDescriptor))]
-      public const string FontDescriptor = "/FontDescriptor";
-    }
-  }
+			/// <summary>
+			///     (Required except for the standard 14 fonts; must be an indirect reference)
+			///     A font descriptor describing the font’s metrics other than its glyph widths.
+			///     Note: For the standard 14 fonts, the entries FirstChar, LastChar, Widths, and
+			///     FontDescriptor must either all be present or all be absent. Ordinarily, they are
+			///     absent; specifying them enables a standard font to be overridden.
+			/// </summary>
+			[KeyInfo(KeyType.Dictionary | KeyType.MustBeIndirect, typeof (PdfFontDescriptor))] public const string FontDescriptor = "/FontDescriptor";
+		}
+	}
 }

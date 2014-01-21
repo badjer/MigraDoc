@@ -1,4 +1,5 @@
 #region PDFsharp - A .NET library for processing PDF
+
 //
 // Authors:
 //   Stefan Lange (mailto:Stefan.Lange@pdfsharp.com)
@@ -25,6 +26,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 #define VERBOSE_
@@ -33,94 +35,94 @@ using System.Diagnostics;
 
 namespace PdfSharp.Fonts.OpenType
 {
-  /// <summary>
-  /// Represents an entry in the fonts table dictionary.
-  /// </summary>
-  class TableDirectoryEntry
-  {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="TableDirectoryEntry"/> class.
-    /// </summary>
-    public TableDirectoryEntry()
-    {
-    }
+	/// <summary>
+	///     Represents an entry in the fonts table dictionary.
+	/// </summary>
+	internal class TableDirectoryEntry
+	{
+		/// <summary>
+		///     CheckSum for this table.
+		/// </summary>
+		public uint CheckSum;
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="TableDirectoryEntry"/> class.
-    /// </summary>
-    public TableDirectoryEntry(string tag)
-    {
-      Debug.Assert(tag.Length == 4);
-      Tag = tag;
-      //CheckSum = 0;
-      //Offset = 0;
-      //Length = 0;
-      //FontTable = null;
-    }
+		/// <summary>
+		///     Associated font table.
+		/// </summary>
+		public OpenTypeFontTable FontTable;
 
-    /// <summary>
-    /// 4 -byte identifier.
-    /// </summary>
-    public string Tag;
+		/// <summary>
+		///     Actual length of this table in bytes.
+		/// </summary>
+		public int Length;
 
-    /// <summary>
-    /// CheckSum for this table.
-    /// </summary>
-    public uint CheckSum;
+		/// <summary>
+		///     Offset from beginning of TrueType font file.
+		/// </summary>
+		public int Offset;
 
-    /// <summary>
-    /// Offset from beginning of TrueType font file.
-    /// </summary>
-    public int Offset;
+		/// <summary>
+		///     4 -byte identifier.
+		/// </summary>
+		public string Tag;
 
-    /// <summary>
-    /// Actual length of this table in bytes.
-    /// </summary>
-    public int Length;
+		/// <summary>
+		///     Initializes a new instance of the <see cref="TableDirectoryEntry" /> class.
+		/// </summary>
+		public TableDirectoryEntry()
+		{
+		}
 
-    /// <summary>
-    /// Gets the length rounded up to a multiple of four bytes.
-    /// </summary>
-    public int PaddedLength
-    {
-      get { return (Length + 3) & ~3; }
-    }
+		/// <summary>
+		///     Initializes a new instance of the <see cref="TableDirectoryEntry" /> class.
+		/// </summary>
+		public TableDirectoryEntry(string tag)
+		{
+			Debug.Assert(tag.Length == 4);
+			Tag = tag;
+			//CheckSum = 0;
+			//Offset = 0;
+			//Length = 0;
+			//FontTable = null;
+		}
 
-    /// <summary>
-    /// Associated font table.
-    /// </summary>
-    public OpenTypeFontTable FontTable;
+		/// <summary>
+		///     Gets the length rounded up to a multiple of four bytes.
+		/// </summary>
+		public int PaddedLength
+		{
+			get { return (Length + 3) & ~3; }
+		}
 
-    /// <summary>
-    /// Creates and reads a TableDirectoryEntry from the font image.
-    /// </summary>
-    public static TableDirectoryEntry ReadFrom(FontData fontData)
-    {
-      TableDirectoryEntry entry = new TableDirectoryEntry();
-      entry.Tag = fontData.ReadTag();
-      entry.CheckSum = fontData.ReadULong();
-      entry.Offset = fontData.ReadLong();
-      entry.Length = (int)fontData.ReadULong();
-      return entry;
-    }
+		/// <summary>
+		///     Creates and reads a TableDirectoryEntry from the font image.
+		/// </summary>
+		public static TableDirectoryEntry ReadFrom(FontData fontData)
+		{
+			TableDirectoryEntry entry = new TableDirectoryEntry();
+			entry.Tag = fontData.ReadTag();
+			entry.CheckSum = fontData.ReadULong();
+			entry.Offset = fontData.ReadLong();
+			entry.Length = (int) fontData.ReadULong();
+			return entry;
+		}
 
-    public void Read(FontData fontData)
-    {
-      this.Tag = fontData.ReadTag();
-      this.CheckSum = fontData.ReadULong();
-      this.Offset = fontData.ReadLong();
-      this.Length = (int)fontData.ReadULong();
-    }
+		public void Read(FontData fontData)
+		{
+			Tag = fontData.ReadTag();
+			CheckSum = fontData.ReadULong();
+			Offset = fontData.ReadLong();
+			Length = (int) fontData.ReadULong();
+		}
 
-    public void Write(OpenTypeFontWriter writer)
-    {
-      Debug.Assert(this.Tag.Length == 4);
-      Debug.Assert(this.Offset != 0);
-      Debug.Assert(this.Length != 0);
-      writer.WriteTag(this.Tag);
-      writer.WriteUInt(this.CheckSum);
-      writer.WriteInt(this.Offset);
-      writer.WriteUInt((uint)this.Length);
-    }
-  }
+		public void Write(OpenTypeFontWriter writer)
+		{
+			Debug.Assert(Tag.Length == 4);
+			Debug.Assert(Offset != 0);
+			Debug.Assert(Length != 0);
+			writer.WriteTag(Tag);
+			writer.WriteUInt(CheckSum);
+			writer.WriteInt(Offset);
+			writer.WriteUInt((uint) Length);
+		}
+	}
 }

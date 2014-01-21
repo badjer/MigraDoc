@@ -1,4 +1,5 @@
 #region PDFsharp - A .NET library for processing PDF
+
 //
 // Authors:
 //   Stefan Lange (mailto:Stefan.Lange@pdfsharp.com)
@@ -25,84 +26,85 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 using PdfSharp.Core.Enums;
 
 namespace PdfSharp.Drawing
 {
-  /// <summary>
-  /// Represents predefined text layouts.
-  /// </summary>
-  public static class XStringFormats
-  {
-    /// <summary>
-    /// Gets a new XStringFormat object that aligns the text left on the base line.
-    /// </summary>
-    public static XStringFormat Default
-    {
-      get
-      {
-        XStringFormat format = new XStringFormat();
-        format.LineAlignment = XLineAlignment.BaseLine;
-        return format;
-      }
-    }
+	/// <summary>
+	///     Represents predefined text layouts.
+	/// </summary>
+	public static class XStringFormats
+	{
+		/// <summary>
+		///     Gets a new XStringFormat object that aligns the text left on the base line.
+		/// </summary>
+		public static XStringFormat Default
+		{
+			get
+			{
+				XStringFormat format = new XStringFormat();
+				format.LineAlignment = XLineAlignment.BaseLine;
+				return format;
+			}
+		}
 
-    /// <summary>
-    /// Gets a new XStringFormat object that aligns the text top left of the layout rectangle.
-    /// </summary>
-    public static XStringFormat TopLeft
-    {
-      get
-      {
-        XStringFormat format = new XStringFormat();
-        format.Alignment = XStringAlignment.Near;
-        format.LineAlignment = XLineAlignment.Near;
-        return format;
-      }
-    }
+		/// <summary>
+		///     Gets a new XStringFormat object that aligns the text top left of the layout rectangle.
+		/// </summary>
+		public static XStringFormat TopLeft
+		{
+			get
+			{
+				XStringFormat format = new XStringFormat();
+				format.Alignment = XStringAlignment.Near;
+				format.LineAlignment = XLineAlignment.Near;
+				return format;
+			}
+		}
 
-    /// <summary>
-    /// Gets a new XStringFormat object that centers the text in the middle of the layout rectangle.
-    /// </summary>
-    public static XStringFormat Center
-    {
-      get
-      {
-        XStringFormat format = new XStringFormat();
-        format.Alignment = XStringAlignment.Center;
-        format.LineAlignment = XLineAlignment.Center;
-        return format;
-      }
-    }
+		/// <summary>
+		///     Gets a new XStringFormat object that centers the text in the middle of the layout rectangle.
+		/// </summary>
+		public static XStringFormat Center
+		{
+			get
+			{
+				XStringFormat format = new XStringFormat();
+				format.Alignment = XStringAlignment.Center;
+				format.LineAlignment = XLineAlignment.Center;
+				return format;
+			}
+		}
 
-    /// <summary>
-    /// Gets a new XStringFormat object that centers the text at the top of the layout rectangle.
-    /// </summary>
-    public static XStringFormat TopCenter
-    {
-      get
-      {
-        XStringFormat format = new XStringFormat();
-        format.Alignment = XStringAlignment.Center;
-        format.LineAlignment = XLineAlignment.Near;
-        return format;
-      }
-    }
+		/// <summary>
+		///     Gets a new XStringFormat object that centers the text at the top of the layout rectangle.
+		/// </summary>
+		public static XStringFormat TopCenter
+		{
+			get
+			{
+				XStringFormat format = new XStringFormat();
+				format.Alignment = XStringAlignment.Center;
+				format.LineAlignment = XLineAlignment.Near;
+				return format;
+			}
+		}
 
-    /// <summary>
-    /// Gets a new XStringFormat object that centers the text at the bottom of the layout rectangle.
-    /// </summary>
-    public static XStringFormat BottomCenter
-    {
-      get
-      {
-        XStringFormat format = new XStringFormat();
-        format.Alignment = XStringAlignment.Center;
-        format.LineAlignment = XLineAlignment.Far;
-        return format;
-      }
-    }
-  }
+		/// <summary>
+		///     Gets a new XStringFormat object that centers the text at the bottom of the layout rectangle.
+		/// </summary>
+		public static XStringFormat BottomCenter
+		{
+			get
+			{
+				XStringFormat format = new XStringFormat();
+				format.Alignment = XStringAlignment.Center;
+				format.LineAlignment = XLineAlignment.Far;
+				return format;
+			}
+		}
+	}
 }

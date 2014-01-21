@@ -1,4 +1,5 @@
 #region PDFsharp - A .NET library for processing PDF
+
 //
 // Authors:
 //   Stefan Lange (mailto:Stefan.Lange@pdfsharp.com)
@@ -25,6 +26,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 using System;
@@ -33,120 +35,121 @@ using PdfSharp.Fonts.OpenType;
 
 namespace PdfSharp.Drawing
 {
-  /// <summary>
-  /// Specifies a physical font face that corresponds to a font file on the disk.
-  /// </summary>
-  //[DebuggerDisplay("'{Name}', {Size}")]
-  public class XGlyphTypeface
-  {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="XGlyphTypeface"/> class from the specified font file.
-    /// </summary>
-    public XGlyphTypeface(string filename)
-    {
-      if (String.IsNullOrEmpty(filename))
-        throw new ArgumentNullException("filename");
+	/// <summary>
+	///     Specifies a physical font face that corresponds to a font file on the disk.
+	/// </summary>
+	//[DebuggerDisplay("'{Name}', {Size}")]
+	public class XGlyphTypeface
+	{
+		/// <summary>
+		///     Initializes a new instance of the <see cref="XGlyphTypeface" /> class from the specified font file.
+		/// </summary>
+		public XGlyphTypeface(string filename)
+		{
+			if (String.IsNullOrEmpty(filename))
+				throw new ArgumentNullException("filename");
 
-      FileStream stream = null;
-      try
-      {
-        stream = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.Read);
-        int length = (int)stream.Length;
-        byte[] data = new byte[length];
-        stream.Read(data, 0, length);
-        Initialize(data);
-      }
-      finally
-      {
-        if (stream != null)
-          stream.Close();
-      }
-    }
+			FileStream stream = null;
+			try
+			{
+				stream = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.Read);
+				int length = (int) stream.Length;
+				byte[] data = new byte[length];
+				stream.Read(data, 0, length);
+				Initialize(data);
+			}
+			finally
+			{
+				if (stream != null)
+					stream.Close();
+			}
+		}
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="XGlyphTypeface"/> class from the specified font bytes.
-    /// </summary>
-    public XGlyphTypeface(byte[] data)
-    {
-      if (data == null)
-        throw new ArgumentNullException("data");
+		/// <summary>
+		///     Initializes a new instance of the <see cref="XGlyphTypeface" /> class from the specified font bytes.
+		/// </summary>
+		public XGlyphTypeface(byte[] data)
+		{
+			if (data == null)
+				throw new ArgumentNullException("data");
 
-      Initialize(data);
-    }
+			Initialize(data);
+		}
 
-    void Initialize(byte[] data)
-    {
-      // Cache data and return a FontData
-      this.fontData = FontDataStock.Global.RegisterFontData(data);
-    }
+		private void Initialize(byte[] data)
+		{
+			// Cache data and return a FontData
+			fontData = FontDataStock.Global.RegisterFontData(data);
+		}
 
-    internal FontData FontData
-    {
-      get { return this.fontData; }
-    }
-    private FontData fontData;
+		internal FontData FontData
+		{
+			get { return fontData; }
+		}
 
-    /// <summary>
-    /// Gets the English family name of the font.
-    /// </summary>
-    public string FamilyName
-    {
-      get { return "Times"; }
-    }
+		private FontData fontData;
 
-    /// <summary>
-    /// Gets a value indicating whether the font weight is bold.
-    /// </summary>
-    public bool IsBold
-    {
-      get { return false; }
-    }
+		/// <summary>
+		///     Gets the English family name of the font.
+		/// </summary>
+		public string FamilyName
+		{
+			get { return "Times"; }
+		}
 
-    /// <summary>
-    /// Gets a value indicating whether the font style is italic.
-    /// </summary>
-    public bool IsItalic
-    {
-      get { return false; }
-    }
+		/// <summary>
+		///     Gets a value indicating whether the font weight is bold.
+		/// </summary>
+		public bool IsBold
+		{
+			get { return false; }
+		}
 
-    //internal byte[] GetData()
-    //{
-    //  return this.data;
-    //}
-    //private byte[] data;
+		/// <summary>
+		///     Gets a value indicating whether the font style is italic.
+		/// </summary>
+		public bool IsItalic
+		{
+			get { return false; }
+		}
+
+		//internal byte[] GetData()
+		//{
+		//  return this.data;
+		//}
+		//private byte[] data;
 
 
-    //public XPrivateFont(string fontName,
-    //  bool bold,
-    //  bool italic,
-    //  byte[] data,
-    //  int length)
-    //{
-    //  this.FontName = fontName;
-    //  this.Bold = bold;
-    //  this.Italic = italic;
-    //  this.Data = data;
-    //  this.Length = length;
-    //}
+		//public XPrivateFont(string fontName,
+		//  bool bold,
+		//  bool italic,
+		//  byte[] data,
+		//  int length)
+		//{
+		//  this.FontName = fontName;
+		//  this.Bold = bold;
+		//  this.Italic = italic;
+		//  this.Data = data;
+		//  this.Length = length;
+		//}
 
-    //internal string FontName;
-    //internal bool Bold;
-    //internal bool Italic;
-    //internal byte[] Data;
-    //internal int Length;
+		//internal string FontName;
+		//internal bool Bold;
+		//internal bool Italic;
+		//internal byte[] Data;
+		//internal int Length;
 
-    //public int GetFontData(ref byte[] data,
-    //   int length)
-    //{
-    //  if (length == this.Length)
-    //  {
-    //    // Copy the data:
-    //    //Data.CopyTo(data, 0);
-    //    Array.Copy(Data, data, length);
-    //  }
-    //  return this.Length;
-    //}
+		//public int GetFontData(ref byte[] data,
+		//   int length)
+		//{
+		//  if (length == this.Length)
+		//  {
+		//    // Copy the data:
+		//    //Data.CopyTo(data, 0);
+		//    Array.Copy(Data, data, length);
+		//  }
+		//  return this.Length;
+		//}
 
 #if true_
     #region Constructors 
@@ -2254,5 +2257,5 @@ namespace PdfSharp.Drawing
 
     #endregion Private Fields
 #endif
-  }
+	}
 }

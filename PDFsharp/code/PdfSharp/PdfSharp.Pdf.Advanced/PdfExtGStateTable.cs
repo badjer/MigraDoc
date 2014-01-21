@@ -1,4 +1,5 @@
 #region PDFsharp - A .NET library for processing PDF
+
 //
 // Authors:
 //   Stefan Lange (mailto:Stefan.Lange@pdfsharp.com)
@@ -25,6 +26,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 using System.Collections.Generic;
@@ -32,108 +34,111 @@ using System.Globalization;
 
 namespace PdfSharp.Pdf.Advanced
 {
-  /// <summary>
-  /// Contains all used ExtGState objects of a document.
-  /// </summary>
-  internal sealed class PdfExtGStateTable : PdfResourceTable
-  {
-    /// <summary>
-    /// Initializes a new instance of this class, which is a singleton for each document.
-    /// </summary>
-    public PdfExtGStateTable(PdfDocument document)
-      : base(document)
-    { }
+	/// <summary>
+	///     Contains all used ExtGState objects of a document.
+	/// </summary>
+	internal sealed class PdfExtGStateTable : PdfResourceTable
+	{
+		/// <summary>
+		///     Maps from alpha values (range "0" to "1000") to PdfExtGState objects.
+		/// </summary>
+		private readonly Dictionary<string, PdfExtGState> alphaValues = new Dictionary<string, PdfExtGState>();
 
-    /// <summary>
-    /// Gets a PdfExtGState with the keys 'CA' and 'ca' set to the specified alpha value.
-    /// </summary>
-    public PdfExtGState GetExtGState(double alpha)
-    {
-      string key = MakeKey(alpha);
-      PdfExtGState extGState;
-      if (!this.alphaValues.TryGetValue(key, out extGState))
-      {
-        extGState = new PdfExtGState(this.owner);
-        extGState.Elements[PdfExtGState.Keys.CA] = new PdfReal(alpha);
-        extGState.Elements[PdfExtGState.Keys.ca] = new PdfReal(alpha);
+		private readonly Dictionary<string, PdfExtGState> nonStrokeAlphaValues = new Dictionary<string, PdfExtGState>();
+		private readonly Dictionary<string, PdfExtGState> strokeAlphaValues = new Dictionary<string, PdfExtGState>();
 
-        this.alphaValues[key] = extGState;
-      }
-      return extGState;
-    }
+		/// <summary>
+		///     Initializes a new instance of this class, which is a singleton for each document.
+		/// </summary>
+		public PdfExtGStateTable(PdfDocument document)
+			: base(document)
+		{
+		}
 
-    /// <summary>
-    /// Gets a PdfExtGState with the key 'CA' set to the specified alpha value.
-    /// </summary>
-    public PdfExtGState GetExtGStateStroke(double alpha)
-    {
-      string key = MakeKey(alpha);
-      PdfExtGState extGState;
-      if (!this.strokeAlphaValues.TryGetValue(key, out extGState))
-      {
-        extGState = new PdfExtGState(this.owner);
-        extGState.Elements[PdfExtGState.Keys.CA] = new PdfReal(alpha);
+		/// <summary>
+		///     Gets a PdfExtGState with the keys 'CA' and 'ca' set to the specified alpha value.
+		/// </summary>
+		public PdfExtGState GetExtGState(double alpha)
+		{
+			string key = MakeKey(alpha);
+			PdfExtGState extGState;
+			if (!alphaValues.TryGetValue(key, out extGState))
+			{
+				extGState = new PdfExtGState(owner);
+				extGState.Elements[PdfExtGState.Keys.CA] = new PdfReal(alpha);
+				extGState.Elements[PdfExtGState.Keys.ca] = new PdfReal(alpha);
 
-        this.strokeAlphaValues[key] = extGState;
-      }
-      return extGState;
-    }
+				alphaValues[key] = extGState;
+			}
+			return extGState;
+		}
 
-    /// <summary>
-    /// Gets a PdfExtGState with the key 'ca' set to the specified alpha value.
-    /// </summary>
-    public PdfExtGState GetExtGStateNonStroke(double alpha)
-    {
-      string key = MakeKey(alpha);
-      PdfExtGState extGState; ;
-      if (!this.nonStrokeAlphaValues.TryGetValue(key, out extGState))
-      {
-        extGState = new PdfExtGState(this.owner);
-        extGState.Elements[PdfExtGState.Keys.ca] = new PdfReal(alpha);
+		/// <summary>
+		///     Gets a PdfExtGState with the key 'CA' set to the specified alpha value.
+		/// </summary>
+		public PdfExtGState GetExtGStateStroke(double alpha)
+		{
+			string key = MakeKey(alpha);
+			PdfExtGState extGState;
+			if (!strokeAlphaValues.TryGetValue(key, out extGState))
+			{
+				extGState = new PdfExtGState(owner);
+				extGState.Elements[PdfExtGState.Keys.CA] = new PdfReal(alpha);
 
-        this.nonStrokeAlphaValues[key] = extGState;
-      }
-      return extGState;
-    }
+				strokeAlphaValues[key] = extGState;
+			}
+			return extGState;
+		}
 
-    ///// <summary>
-    ///// Gets a PdfExtGState with the key 'ca' set to the specified alpha value.
-    ///// </summary>
-    //public PdfExtGState GetExtGState(XColor strokeColor, XColor nonStrokeColor)
-    //{
-    //  if (strokeColor.IsEmpty)
-    //  {
-    //  }
-    //  else if (nonStrokeColor.IsEmpty)
-    //  {
-    //  }
-    //  else
-    //  {
-    //  }
+		/// <summary>
+		///     Gets a PdfExtGState with the key 'ca' set to the specified alpha value.
+		/// </summary>
+		public PdfExtGState GetExtGStateNonStroke(double alpha)
+		{
+			string key = MakeKey(alpha);
+			PdfExtGState extGState;
+			;
+			if (!nonStrokeAlphaValues.TryGetValue(key, out extGState))
+			{
+				extGState = new PdfExtGState(owner);
+				extGState.Elements[PdfExtGState.Keys.ca] = new PdfReal(alpha);
 
-    //  return null;
-    //  //string key = MakeKey(alpha);
-    //  //PdfExtGState extGState = this.nonStrokeAlphaValues[key] as PdfExtGState;
-    //  //if (extGState == null)
-    //  //{
-    //  //  extGState = new PdfExtGState(this.document);
-    //  //  extGState.Elements[PdfExtGState.Keys.ca] = new PdfReal(alpha);
-    //  //
-    //  //  this.nonStrokeAlphaValues[key] = extGState;
-    //  //}
-    //  //return extGState;
-    //}
+				nonStrokeAlphaValues[key] = extGState;
+			}
+			return extGState;
+		}
 
-    static string MakeKey(double alpha)
-    {
-      return ((int)(1000 * alpha)).ToString(CultureInfo.InvariantCulture);
-    }
+		///// <summary>
+		///// Gets a PdfExtGState with the key 'ca' set to the specified alpha value.
+		///// </summary>
+		//public PdfExtGState GetExtGState(XColor strokeColor, XColor nonStrokeColor)
+		//{
+		//  if (strokeColor.IsEmpty)
+		//  {
+		//  }
+		//  else if (nonStrokeColor.IsEmpty)
+		//  {
+		//  }
+		//  else
+		//  {
+		//  }
 
-    /// <summary>
-    /// Maps from alpha values (range "0" to "1000") to PdfExtGState objects.
-    /// </summary>
-    Dictionary<string, PdfExtGState> alphaValues = new Dictionary<string, PdfExtGState>();
-    Dictionary<string, PdfExtGState> strokeAlphaValues = new Dictionary<string, PdfExtGState>();
-    Dictionary<string, PdfExtGState> nonStrokeAlphaValues = new Dictionary<string, PdfExtGState>();
-  }
+		//  return null;
+		//  //string key = MakeKey(alpha);
+		//  //PdfExtGState extGState = this.nonStrokeAlphaValues[key] as PdfExtGState;
+		//  //if (extGState == null)
+		//  //{
+		//  //  extGState = new PdfExtGState(this.document);
+		//  //  extGState.Elements[PdfExtGState.Keys.ca] = new PdfReal(alpha);
+		//  //
+		//  //  this.nonStrokeAlphaValues[key] = extGState;
+		//  //}
+		//  //return extGState;
+		//}
+
+		private static string MakeKey(double alpha)
+		{
+			return ((int) (1000*alpha)).ToString(CultureInfo.InvariantCulture);
+		}
+	}
 }

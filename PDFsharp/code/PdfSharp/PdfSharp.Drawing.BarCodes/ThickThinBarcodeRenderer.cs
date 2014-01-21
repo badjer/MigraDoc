@@ -32,27 +32,44 @@ using PdfSharp.Core.Enums;
 
 namespace PdfSharp.Drawing.BarCodes
 {
-  /// <summary>
-  /// Internal base class for several bar code types.
-  /// </summary>
-  public abstract class ThickThinBarCode : BarCode  // TODO: The name is not optimal
-  {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="ThickThinBarCode"/> class.
-    /// </summary>
-    public ThickThinBarCode(string code, XSize size, CodeDirection direction)
-      : base(code, size, direction)
-    {
-    }
+	/// <summary>
+	///     Internal base class for several bar code types.
+	/// </summary>
+	public abstract class ThickThinBarCode : BarCode // TODO: The name is not optimal
+	{
+		internal double wideNarrowRatio = 2.6;
 
-    internal override void InitRendering(BarCodeRenderInfo info)
-    {
-      base.InitRendering(info);
-      CalcThinBarWidth(info);
-      info.BarHeight = Size.Height;
-      // HACK in ThickThinBarCode
-      if (this.textLocation != TextLocation.None)
-        info.BarHeight *= 4.0 / 5;
+		/// <summary>
+		///     Initializes a new instance of the <see cref="ThickThinBarCode" /> class.
+		/// </summary>
+		public ThickThinBarCode(string code, XSize size, CodeDirection direction)
+			: base(code, size, direction)
+		{
+		}
+
+		/// <summary>
+		///     Gets or sets the ration between thick an thin lines. Must be between 2 and 3.
+		///     Optimal and also default value is 2.6.
+		/// </summary>
+		public override double WideNarrowRatio
+		{
+			get { return wideNarrowRatio; }
+			set
+			{
+				if (value > 3 || value < 2)
+					throw new ArgumentOutOfRangeException("value", BcgSR.Invalid2of5Relation);
+				wideNarrowRatio = value;
+			}
+		}
+
+		internal override void InitRendering(BarCodeRenderInfo info)
+		{
+			base.InitRendering(info);
+			CalcThinBarWidth(info);
+			info.BarHeight = Size.Height;
+			// HACK in ThickThinBarCode
+			if (textLocation != TextLocation.None)
+				info.BarHeight *= 4.0/5;
 
 #if DEBUG_
       XColor back = XColors.LightSalmon;
@@ -60,102 +77,86 @@ namespace PdfSharp.Drawing.BarCodes
       XSolidBrush brush = new XSolidBrush(back);
       info.Gfx.DrawRectangle(brush, new XRect(info.Center - this.size / 2, this.size));
 #endif
-      switch (this.direction)
-      {
-        case CodeDirection.RightToLeft:
-          info.Gfx.RotateAtTransform(180, info.Position);
-          break;
+			switch (direction)
+			{
+				case CodeDirection.RightToLeft:
+					info.Gfx.RotateAtTransform(180, info.Position);
+					break;
 
-        case CodeDirection.TopToBottom:
-          info.Gfx.RotateAtTransform(90, info.Position);
-          break;
+				case CodeDirection.TopToBottom:
+					info.Gfx.RotateAtTransform(90, info.Position);
+					break;
 
-        case CodeDirection.BottomToTop:
-          info.Gfx.RotateAtTransform(-90, info.Position);
-          break;
-      }
-    }
+				case CodeDirection.BottomToTop:
+					info.Gfx.RotateAtTransform(-90, info.Position);
+					break;
+			}
+		}
 
-    /// <summary>
-    /// Gets or sets the ration between thick an thin lines. Must be between 2 and 3.
-    /// Optimal and also default value is 2.6.
-    /// </summary>
-    public override double WideNarrowRatio
-    {
-      get { return this.wideNarrowRatio; }
-      set
-      {
-        if (value > 3 || value < 2)
-          throw new ArgumentOutOfRangeException("value", BcgSR.Invalid2of5Relation);
-        this.wideNarrowRatio = value;
-      }
-    }
-    internal double wideNarrowRatio = 2.6;
+		/// <summary>
+		///     Renders a thick or thin line for the bar code.
+		/// </summary>
+		/// <param name="info"></param>
+		/// <param name="isThick">Determines whether a thick or a thin line is about to be rendered.</param>
+		internal void RenderBar(BarCodeRenderInfo info, bool isThick)
+		{
+			double barWidth = GetBarWidth(info, isThick);
+			double height = Size.Height;
+			if (TextLocation != TextLocation.None)
+				height *= 4.0/5;
+			XRect rect = new XRect(info.CurrPos.X, info.CurrPos.Y, barWidth, height);
+			info.Gfx.DrawRectangle(info.Brush, rect);
+			info.CurrPos.X += barWidth;
+		}
 
-    /// <summary>
-    /// Renders a thick or thin line for the bar code.
-    /// </summary>
-    /// <param name="info"></param>
-    /// <param name="isThick">Determines whether a thick or a thin line is about to be rendered.</param>
-    internal void RenderBar(BarCodeRenderInfo info, bool isThick)
-    {
-      double barWidth = GetBarWidth(info, isThick);
-      double height = Size.Height;
-      if (TextLocation != TextLocation.None)
-        height *= 4.0 / 5;
-      XRect rect = new XRect(info.CurrPos.X, info.CurrPos.Y, barWidth, height);
-      info.Gfx.DrawRectangle(info.Brush, rect);
-      info.CurrPos.X += barWidth;
-    }
+		/// <summary>
+		///     Renders a thick or thin gap for the bar code.
+		/// </summary>
+		/// <param name="info"></param>
+		/// <param name="isThick">Determines whether a thick or a thin gap is about to be rendered.</param>
+		internal void RenderGap(BarCodeRenderInfo info, bool isThick)
+		{
+			info.CurrPos.X += GetBarWidth(info, isThick);
+		}
 
-    /// <summary>
-    /// Renders a thick or thin gap for the bar code.
-    /// </summary>
-    /// <param name="info"></param>
-    /// <param name="isThick">Determines whether a thick or a thin gap is about to be rendered.</param>
-    internal void RenderGap(BarCodeRenderInfo info, bool isThick)
-    {
-      info.CurrPos.X += GetBarWidth(info, isThick);
-    }
+		/// <summary>
+		///     Renders a thick bar before or behind the code.
+		/// </summary>
+		internal void RenderTurboBit(BarCodeRenderInfo info, bool startBit)
+		{
+			if (startBit)
+				info.CurrPos.X -= 0.5 + GetBarWidth(info, true);
+			else
+				info.CurrPos.X += 0.5; //GetBarWidth(info, true);
 
-    /// <summary>
-    /// Renders a thick bar before or behind the code.
-    /// </summary>
-    internal void RenderTurboBit(BarCodeRenderInfo info, bool startBit)
-    {
-      if (startBit)
-        info.CurrPos.X -= 0.5 + GetBarWidth(info, true);
-      else
-        info.CurrPos.X += 0.5; //GetBarWidth(info, true);
+			RenderBar(info, true);
 
-      RenderBar(info, true);
+			if (startBit)
+				info.CurrPos.X += 0.5; //GetBarWidth(info, true);
+		}
 
-      if (startBit)
-        info.CurrPos.X += 0.5; //GetBarWidth(info, true);
-    }
+		internal void RenderText(BarCodeRenderInfo info)
+		{
+			if (info.Font == null)
+				info.Font = new XFont("Courier New", Size.Height/6);
+			XPoint center = info.Position + CalcDistance(anchor, AnchorType.TopLeft, size);
+			//center.Y += info.Font.Size;
+			info.Gfx.DrawString(text, info.Font, info.Brush, new XRect(center, Size), XStringFormats.BottomCenter);
+		}
 
-    internal void RenderText(BarCodeRenderInfo info)
-    {
-      if (info.Font == null)
-        info.Font = new XFont("Courier New", Size.Height / 6);
-      XPoint center = info.Position + CodeBase.CalcDistance(this.anchor, AnchorType.TopLeft, this.size);
-      //center.Y += info.Font.Size;
-      info.Gfx.DrawString(this.text, info.Font, info.Brush, new XRect(center, Size), XStringFormats.BottomCenter);
-    }
+		/// <summary>
+		///     Gets the width of a thick or a thin line (or gap). CalcLineWidth must have been called before.
+		/// </summary>
+		/// <param name="info"></param>
+		/// <param name="isThick">Determines whether a thick line's with shall be returned.</param>
+		internal double GetBarWidth(BarCodeRenderInfo info, bool isThick)
+		{
+			if (isThick)
+				return info.ThinBarWidth*wideNarrowRatio;
+			else
+				return info.ThinBarWidth;
+		}
 
-    /// <summary>
-    /// Gets the width of a thick or a thin line (or gap). CalcLineWidth must have been called before.
-    /// </summary>
-    /// <param name="info"></param>
-    /// <param name="isThick">Determines whether a thick line's with shall be returned.</param>
-    internal double GetBarWidth(BarCodeRenderInfo info, bool isThick)
-    {
-      if (isThick)
-        return info.ThinBarWidth * this.wideNarrowRatio;
-      else
-        return info.ThinBarWidth;
-    }
-
-    internal abstract void CalcThinBarWidth(BarCodeRenderInfo info);
-  }
+		internal abstract void CalcThinBarWidth(BarCodeRenderInfo info);
+	}
 }

@@ -1,4 +1,5 @@
 #region PDFsharp - A .NET library for processing PDF
+
 //
 // Authors:
 //   Stefan Lange (mailto:Stefan.Lange@pdfsharp.com)
@@ -25,6 +26,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 using System;
@@ -32,106 +34,111 @@ using System.Runtime.InteropServices;
 
 namespace PdfSharp.Internal
 {
-  /// <summary>
-  /// Required native Win32 calls. Don't know what to do under Mono.
-  /// </summary>
-  static class NativeMethods
-  {
-    /// <summary>
-    /// Reflected from System.Drawing.SafeNativeMethods+LOGFONT
-    /// </summary>
-    //[SuppressUnmanagedCodeSecurity]
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-    public class LOGFONT
-    {
-      // Preserve us for warning CS0649...
-      LOGFONT(int dummy)
-      {
-        this.lfHeight = 0;
-        this.lfWidth = 0;
-        this.lfEscapement = 0;
-        this.lfOrientation = 0;
-        this.lfWeight = 0;
-        this.lfItalic = 0;
-        this.lfUnderline = 0;
-        this.lfStrikeOut = 0;
-        this.lfCharSet = 0;
-        this.lfOutPrecision = 0;
-        this.lfClipPrecision = 0;
-        this.lfQuality = 0;
-        this.lfPitchAndFamily = 0;
-        this.lfFaceName = "";
-      }
-      public int lfHeight;
-      public int lfWidth;
-      public int lfEscapement;
-      public int lfOrientation;
-      public int lfWeight;
-      public byte lfItalic;
-      public byte lfUnderline;
-      public byte lfStrikeOut;
-      public byte lfCharSet;
-      public byte lfOutPrecision;
-      public byte lfClipPrecision;
-      public byte lfQuality;
-      public byte lfPitchAndFamily;
-      [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
-      public string lfFaceName;
-      public override string ToString()
-      {
-        object[] objArray1 = new object[0x1c] 
-        { 
-          "lfHeight=", this.lfHeight, 
-          ", lfWidth=", this.lfWidth, 
-          ", lfEscapement=", this.lfEscapement, 
-          ", lfOrientation=", this.lfOrientation, 
-          ", lfWeight=", this.lfWeight, 
-          ", lfItalic=", this.lfItalic, 
-          ", lfUnderline=", this.lfUnderline, 
-          ", lfStrikeOut=", this.lfStrikeOut, 
-          ", lfCharSet=", this.lfCharSet, 
-          ", lfOutPrecision=", this.lfOutPrecision, 
-          ", lfClipPrecision=", this.lfClipPrecision, 
-          ", lfQuality=", this.lfQuality, 
-          ", lfPitchAndFamily=", this.lfPitchAndFamily, 
-          ", lfFaceName=", this.lfFaceName
-        };
-        return string.Concat(objArray1);
-      }
-      public LOGFONT() { }
-    }
+	/// <summary>
+	///     Required native Win32 calls. Don't know what to do under Mono.
+	/// </summary>
+	internal static class NativeMethods
+	{
+		public const int HORZSIZE = 4; // Horizontal size in millimeters
+		public const int VERTSIZE = 6; // Vertical size in millimeters
+		public const int HORZRES = 8; // Horizontal width in pixels
+		public const int VERTRES = 10; // Vertical height in pixels
+		public const int LOGPIXELSX = 88; // Logical pixels/inch in X
+		public const int LOGPIXELSY = 90; // Logical pixels/inch in Y
 
-    [DllImport("user32.dll")]
-    public static extern IntPtr GetDC(IntPtr hwnd);
+		[DllImport("user32.dll")]
+		public static extern IntPtr GetDC(IntPtr hwnd);
 
-    [DllImport("user32.dll")]
-    public static extern IntPtr ReleaseDC(IntPtr hwnd, IntPtr hdc);
+		[DllImport("user32.dll")]
+		public static extern IntPtr ReleaseDC(IntPtr hwnd, IntPtr hdc);
 
-    [DllImport("gdi32.dll", SetLastError = true)]
-    public static extern int GetFontData(
-      IntPtr hdc, // handle to DC
-      uint dwTable, // metric table name
-      uint dwOffset, // offset into table
-      byte[] lpvBuffer, // buffer for returned data
-      int cbData // length of data
-      );
+		[DllImport("gdi32.dll", SetLastError = true)]
+		public static extern int GetFontData(
+			IntPtr hdc, // handle to DC
+			uint dwTable, // metric table name
+			uint dwOffset, // offset into table
+			byte[] lpvBuffer, // buffer for returned data
+			int cbData // length of data
+			);
 
-    [DllImport("gdi32.dll", EntryPoint = "CreateFontIndirectW")]
-    public static extern IntPtr CreateFontIndirect(LOGFONT lpLogFont);
+		[DllImport("gdi32.dll", EntryPoint = "CreateFontIndirectW")]
+		public static extern IntPtr CreateFontIndirect(LOGFONT lpLogFont);
 
-    [DllImport("gdi32.dll")]
-    public static extern IntPtr SelectObject(IntPtr hdc, IntPtr hgdiobj);
+		[DllImport("gdi32.dll")]
+		public static extern IntPtr SelectObject(IntPtr hdc, IntPtr hgdiobj);
 
-    [DllImport("gdi32.dll")]
-    public static extern bool DeleteObject(IntPtr hgdiobj);
+		[DllImport("gdi32.dll")]
+		public static extern bool DeleteObject(IntPtr hgdiobj);
 
-    public const int HORZSIZE = 4; // Horizontal size in millimeters
-    public const int VERTSIZE = 6; // Vertical size in millimeters
-    public const int HORZRES = 8; // Horizontal width in pixels
-    public const int VERTRES = 10; // Vertical height in pixels
-    public const int LOGPIXELSX = 88; // Logical pixels/inch in X
-    public const int LOGPIXELSY = 90; // Logical pixels/inch in Y
-    [DllImport("gdi32.dll")]
-    public static extern int GetDeviceCaps(IntPtr hdc, int nIndex);
-  }
+		[DllImport("gdi32.dll")]
+		public static extern int GetDeviceCaps(IntPtr hdc, int nIndex);
+
+		/// <summary>
+		///     Reflected from System.Drawing.SafeNativeMethods+LOGFONT
+		/// </summary>
+		//[SuppressUnmanagedCodeSecurity]
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+		public class LOGFONT
+		{
+			// Preserve us for warning CS0649...
+			private LOGFONT(int dummy)
+			{
+				lfHeight = 0;
+				lfWidth = 0;
+				lfEscapement = 0;
+				lfOrientation = 0;
+				lfWeight = 0;
+				lfItalic = 0;
+				lfUnderline = 0;
+				lfStrikeOut = 0;
+				lfCharSet = 0;
+				lfOutPrecision = 0;
+				lfClipPrecision = 0;
+				lfQuality = 0;
+				lfPitchAndFamily = 0;
+				lfFaceName = "";
+			}
+
+			public int lfHeight;
+			public int lfWidth;
+			public int lfEscapement;
+			public int lfOrientation;
+			public int lfWeight;
+			public byte lfItalic;
+			public byte lfUnderline;
+			public byte lfStrikeOut;
+			public byte lfCharSet;
+			public byte lfOutPrecision;
+			public byte lfClipPrecision;
+			public byte lfQuality;
+			public byte lfPitchAndFamily;
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)] public string lfFaceName;
+
+			public override string ToString()
+			{
+				object[] objArray1 = new object[0x1c]
+					{
+						"lfHeight=", lfHeight,
+						", lfWidth=", lfWidth,
+						", lfEscapement=", lfEscapement,
+						", lfOrientation=", lfOrientation,
+						", lfWeight=", lfWeight,
+						", lfItalic=", lfItalic,
+						", lfUnderline=", lfUnderline,
+						", lfStrikeOut=", lfStrikeOut,
+						", lfCharSet=", lfCharSet,
+						", lfOutPrecision=", lfOutPrecision,
+						", lfClipPrecision=", lfClipPrecision,
+						", lfQuality=", lfQuality,
+						", lfPitchAndFamily=", lfPitchAndFamily,
+						", lfFaceName=", lfFaceName
+					};
+				return string.Concat(objArray1);
+			}
+
+			public LOGFONT()
+			{
+			}
+		}
+	}
 }

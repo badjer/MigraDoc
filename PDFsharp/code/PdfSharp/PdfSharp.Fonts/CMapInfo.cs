@@ -1,4 +1,5 @@
 #region PDFsharp - A .NET library for processing PDF
+
 //
 // Authors:
 //   Stefan Lange (mailto:Stefan.Lange@pdfsharp.com)
@@ -25,119 +26,120 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 using System;
-using System.Diagnostics;
 using System.Collections.Generic;
+using System.Diagnostics;
 using PdfSharp.Fonts.OpenType;
 using PdfSharp.Pdf.Internal;
 
 namespace PdfSharp.Fonts
 {
-  /// <summary>
-  /// Helper class that determines the characters used in a particular font.
-  /// </summary>
-  internal class CMapInfo
-  {
-    public CMapInfo(OpenTypeDescriptor descriptor)
-    {
-      Debug.Assert(descriptor != null);
-      this.descriptor = descriptor;
-    }
-    internal OpenTypeDescriptor descriptor;
+	/// <summary>
+	///     Helper class that determines the characters used in a particular font.
+	/// </summary>
+	internal class CMapInfo
+	{
+		public Dictionary<char, int> CharacterToGlyphIndex = new Dictionary<char, int>();
+		public Dictionary<int, object> GlyphIndices = new Dictionary<int, object>();
+		public char MaxChar = Char.MinValue;
+		public char MinChar = Char.MaxValue;
+		internal OpenTypeDescriptor descriptor;
 
-    /// <summary>
-    /// Adds the characters of the specified string to the hashtable.
-    /// </summary>
-    public void AddChars(string text)
-    {
-      if (text != null)
-      {
-        bool symbol = this.descriptor.fontData.cmap.symbol;
-        int length = text.Length;
-        for (int idx = 0; idx < length; idx++)
-        {
-          char ch = text[idx];
-          if (!CharacterToGlyphIndex.ContainsKey(ch))
-          {
-            int glyphIndex = 0;
-            if (this.descriptor != null)
-            {
-              if (symbol)
-              {
-                glyphIndex = ch + (descriptor.fontData.os2.usFirstCharIndex & 0xFF00); // @@@
-                glyphIndex = descriptor.CharCodeToGlyphIndex((char)glyphIndex);
-              }
-              else
-                glyphIndex = descriptor.CharCodeToGlyphIndex(ch);
-            }
+		public CMapInfo(OpenTypeDescriptor descriptor)
+		{
+			Debug.Assert(descriptor != null);
+			this.descriptor = descriptor;
+		}
 
-            CharacterToGlyphIndex.Add(ch, glyphIndex);
-            //GlyphIndices.Add(glyphIndex, null);
-            GlyphIndices[glyphIndex] = null;
-            this.MinChar = (char)Math.Min(this.MinChar, ch);
-            this.MaxChar = (char)Math.Max(this.MaxChar, ch);
-          }
-        }
-      }
-    }
+		public char[] Chars
+		{
+			get
+			{
+				char[] chars = new char[CharacterToGlyphIndex.Count];
+				CharacterToGlyphIndex.Keys.CopyTo(chars, 0);
+				Array.Sort(chars);
+				return chars;
+			}
+		}
 
-    /// <summary>
-    /// Adds the glyphIndices to the hashtable.
-    /// </summary>
-    public void AddGlyphIndices(string glyphIndices)
-    {
-      if (glyphIndices != null)
-      {
-        int length = glyphIndices.Length;
-        for (int idx = 0; idx < length; idx++)
-        {
-          int glyphIndex = glyphIndices[idx];
-          GlyphIndices[glyphIndex] = null;
-        }
-      }
-    }
+		/// <summary>
+		///     Adds the characters of the specified string to the hashtable.
+		/// </summary>
+		public void AddChars(string text)
+		{
+			if (text != null)
+			{
+				bool symbol = descriptor.fontData.cmap.symbol;
+				int length = text.Length;
+				for (int idx = 0; idx < length; idx++)
+				{
+					char ch = text[idx];
+					if (!CharacterToGlyphIndex.ContainsKey(ch))
+					{
+						int glyphIndex = 0;
+						if (descriptor != null)
+						{
+							if (symbol)
+							{
+								glyphIndex = ch + (descriptor.fontData.os2.usFirstCharIndex & 0xFF00); // @@@
+								glyphIndex = descriptor.CharCodeToGlyphIndex((char) glyphIndex);
+							}
+							else
+								glyphIndex = descriptor.CharCodeToGlyphIndex(ch);
+						}
 
-    /// <summary>
-    /// Adds a ANSI characters.
-    /// </summary>
-    internal void AddAnsiChars()
-    {
-      byte[] ansi = new byte[256 - 32];
-      for (int idx = 0; idx < 256 - 32; idx++)
-        ansi[idx] = (byte)(idx + 32);
-      string text = PdfEncoders.WinAnsiEncoding.GetString(ansi, 0, ansi.Length);  // AGHACK
-      AddChars(text);
-    }
+						CharacterToGlyphIndex.Add(ch, glyphIndex);
+						//GlyphIndices.Add(glyphIndex, null);
+						GlyphIndices[glyphIndex] = null;
+						MinChar = (char) Math.Min(MinChar, ch);
+						MaxChar = (char) Math.Max(MaxChar, ch);
+					}
+				}
+			}
+		}
 
-    internal bool Contains(char ch)
-    {
-      return CharacterToGlyphIndex.ContainsKey(ch);
-    }
+		/// <summary>
+		///     Adds the glyphIndices to the hashtable.
+		/// </summary>
+		public void AddGlyphIndices(string glyphIndices)
+		{
+			if (glyphIndices != null)
+			{
+				int length = glyphIndices.Length;
+				for (int idx = 0; idx < length; idx++)
+				{
+					int glyphIndex = glyphIndices[idx];
+					GlyphIndices[glyphIndex] = null;
+				}
+			}
+		}
 
-    public char[] Chars
-    {
-      get
-      {
-        char[] chars = new char[CharacterToGlyphIndex.Count];
-        CharacterToGlyphIndex.Keys.CopyTo(chars, 0);
-        Array.Sort(chars);
-        return chars;
-      }
-    }
+		/// <summary>
+		///     Adds a ANSI characters.
+		/// </summary>
+		internal void AddAnsiChars()
+		{
+			byte[] ansi = new byte[256 - 32];
+			for (int idx = 0; idx < 256 - 32; idx++)
+				ansi[idx] = (byte) (idx + 32);
+			string text = PdfEncoders.WinAnsiEncoding.GetString(ansi, 0, ansi.Length); // AGHACK
+			AddChars(text);
+		}
 
-    public int[] GetGlyphIndices()
-    {
-      int[] indices = new int[GlyphIndices.Count];
-      GlyphIndices.Keys.CopyTo(indices, 0);
-      Array.Sort(indices);
-      return indices;
-    }
+		internal bool Contains(char ch)
+		{
+			return CharacterToGlyphIndex.ContainsKey(ch);
+		}
 
-    public char MinChar = Char.MaxValue;
-    public char MaxChar = Char.MinValue;
-    public Dictionary<char, int> CharacterToGlyphIndex = new Dictionary<char, int>();
-    public Dictionary<int, object> GlyphIndices = new Dictionary<int, object>();
-  }
+		public int[] GetGlyphIndices()
+		{
+			int[] indices = new int[GlyphIndices.Count];
+			GlyphIndices.Keys.CopyTo(indices, 0);
+			Array.Sort(indices);
+			return indices;
+		}
+	}
 }

@@ -1,4 +1,5 @@
 #region PDFsharp - A .NET library for processing PDF
+
 //
 // Authors:
 //   Stefan Lange (mailto:Stefan.Lange@pdfsharp.com)
@@ -25,6 +26,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 //
@@ -32,22 +34,13 @@
 // Checks correct settings and obsolete conditional compilation symbols.
 //
 
+
 #if MIGRADOC
 // empira internal only: Some hacks that make PDFsharp behave like PDFlib when used with Asc.RenderContext.
 // Applies to MigraDoc 1.2 only. The Open Source MigraDoc lite does not need this define.
 #endif
 
-#if NET_ZIP  // obsolete
-// In .NET 2.0 GZipStream is used instead of SharpZipLib
-// This does not work.
-#error Undefine 'NET_ZIP' because it has no effect anymore
-#endif
-
-#if NET_2_0  // obsolete
-#error Undefine 'NET_2_0' because earlier versions are not supported anymore
-#endif
-
-#if Gdip  // obsolete
+#if Gdip // obsolete
 #error Conditional compilation symbol 'Gdip' was renamed to 'GDI'
 #endif
 

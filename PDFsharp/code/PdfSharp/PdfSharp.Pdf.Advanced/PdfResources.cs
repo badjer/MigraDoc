@@ -1,4 +1,5 @@
 #region PDFsharp - A .NET library for processing PDF
+
 //
 // Authors:
 //   Stefan Lange (mailto:Stefan.Lange@pdfsharp.com)
@@ -25,6 +26,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 using System;
@@ -32,459 +34,463 @@ using System.Collections.Generic;
 
 namespace PdfSharp.Pdf.Advanced
 {
-  /// <summary>
-  /// Represents a PDF resource object.
-  /// </summary>
-  public sealed class PdfResources : PdfDictionary
-  {
-    // Resource management works roughly like this:
-    // When the user creates an XFont and uses it in the XGraphics of a PdfPage, then at the first time
-    // a PdfFont is created and cached in the document global font table. If the user creates a new
-    // XFont object for an exisisting PdfFont, the PdfFont object is reused. When the PdfFont is added
-    // to the resources of a PdfPage for the first time, it is added to the page local PdfResourceMap for 
-    // fonts and automatically associated with a local resource name.
+	/// <summary>
+	///     Represents a PDF resource object.
+	/// </summary>
+	public sealed class PdfResources : PdfDictionary
+	{
+		// Resource management works roughly like this:
+		// When the user creates an XFont and uses it in the XGraphics of a PdfPage, then at the first time
+		// a PdfFont is created and cached in the document global font table. If the user creates a new
+		// XFont object for an exisisting PdfFont, the PdfFont object is reused. When the PdfFont is added
+		// to the resources of a PdfPage for the first time, it is added to the page local PdfResourceMap for 
+		// fonts and automatically associated with a local resource name.
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="PdfResources"/> class.
-    /// </summary>
-    /// <param name="document">The document.</param>
-    public PdfResources(PdfDocument document)
-      : base(document)
-    {
-      Elements[Keys.ProcSet] = new PdfLiteral("[/PDF/Text/ImageB/ImageC/ImageI]");
-    }
+		/// <summary>
+		///     Maps all PDFsharp resources to their local resource names.
+		/// </summary>
+		private readonly Dictionary<PdfObject, string> resources = new Dictionary<PdfObject, string>();
 
-    internal PdfResources(PdfDictionary dict)
-      : base(dict)
-    { }
+		private int ExtGStateNumber;
+		private int PatternNumber;
+		private int ShadingNumber;
+		private PdfResourceMap colorSpaces;
+		private PdfResourceMap extGStates;
+		private int fontNumber;
+		private PdfResourceMap fonts;
+		private int formNumber;
+		private int imageNumber;
 
-    /// <summary>
-    /// Adds the specified font to this resource dictionary and returns its local resource name.
-    /// </summary>
-    public string AddFont(PdfFont font)
-    {
-      string name;
-      if (!this.resources.TryGetValue(font, out name))
-      {
-        name = NextFontName;
-        this.resources[font] = name;
-        if (font.Reference == null)
-          Owner.irefTable.Add(font);
-        Fonts.Elements[name] = font.Reference;
-      }
-      return name;
-    }
+		/// <summary>
+		///     All the names of imported resources.
+		/// </summary>
+		private Dictionary<string, object> importedResourceNames;
 
-    /// <summary>
-    /// Adds the specified image to this resource dictionary
-    /// and returns its local resource name.
-    /// </summary>
-    public string AddImage(PdfImage image)
-    {
-      string name;
-      if (!this.resources.TryGetValue(image, out name))
-      {
-        name = NextImageName;
-        this.resources[image] = name;
-        if (image.Reference == null)
-          Owner.irefTable.Add(image);
-        XObjects.Elements[name] = image.Reference;
-      }
-      return name;
-    }
+		private PdfResourceMap patterns;
+		private PdfResourceMap properties;
+		private PdfResourceMap shadings;
+		private PdfResourceMap xObjects;
 
-    /// <summary>
-    /// Adds the specified form object to this resource dictionary
-    /// and returns its local resource name.
-    /// </summary>
-    public string AddForm(PdfFormXObject form)
-    {
-      string name;
-      if (!this.resources.TryGetValue(form, out name))
-      {
-        name = NextFormName;
-        this.resources[form] = name;
-        if (form.Reference == null)
-          Owner.irefTable.Add(form);
-        XObjects.Elements[name] = form.Reference;
-      }
-      return name;
-    }
+		/// <summary>
+		///     Initializes a new instance of the <see cref="PdfResources" /> class.
+		/// </summary>
+		/// <param name="document">The document.</param>
+		public PdfResources(PdfDocument document)
+			: base(document)
+		{
+			Elements[Keys.ProcSet] = new PdfLiteral("[/PDF/Text/ImageB/ImageC/ImageI]");
+		}
 
-    /// <summary>
-    /// Adds the specified graphics state to this resource dictionary
-    /// and returns its local resource name.
-    /// </summary>
-    public string AddExtGState(PdfExtGState extGState)
-    {
-      string name;
-      if (!this.resources.TryGetValue(extGState, out name))
-      {
-        name = NextExtGStateName;
-        this.resources[extGState] = name;
-        if (extGState.Reference == null)
-          Owner.irefTable.Add(extGState);
-        ExtGStates.Elements[name] = extGState.Reference;
-      }
-      return name;
-    }
+		internal PdfResources(PdfDictionary dict)
+			: base(dict)
+		{
+		}
 
-    /// <summary>
-    /// Adds the specified pattern to this resource dictionary
-    /// and returns its local resource name.
-    /// </summary>
-    public string AddPattern(PdfShadingPattern pattern)
-    {
-      string name;
-      if (!this.resources.TryGetValue(pattern, out name))
-      {
-        name = NextPatternName;
-        this.resources[pattern] = name;
-        if (pattern.Reference == null)
-          Owner.irefTable.Add(pattern);
-        Patterns.Elements[name] = pattern.Reference;
-      }
-      return name;
-    }
+		/// <summary>
+		///     Gets the fonts map.
+		/// </summary>
+		internal PdfResourceMap Fonts
+		{
+			get
+			{
+				if (fonts == null)
+					fonts = (PdfResourceMap) Elements.GetValue(Keys.Font, VCF.Create);
+				return fonts;
+			}
+		}
 
-    /// <summary>
-    /// Adds the specified pattern to this resource dictionary
-    /// and returns its local resource name.
-    /// </summary>
-    public string AddPattern(PdfTilingPattern pattern)
-    {
-      string name;
-      if (!this.resources.TryGetValue(pattern, out name))
-      {
-        name = NextPatternName;
-        this.resources[pattern] = name;
-        if (pattern.Reference == null)
-          Owner.irefTable.Add(pattern);
-        Patterns.Elements[name] = pattern.Reference;
-      }
-      return name;
-    }
+		/// <summary>
+		///     Gets the external objects map.
+		/// </summary>
+		internal PdfResourceMap XObjects
+		{
+			get
+			{
+				if (xObjects == null)
+					xObjects = (PdfResourceMap) Elements.GetValue(Keys.XObject, VCF.Create);
+				return xObjects;
+			}
+		}
 
-    /// <summary>
-    /// Adds the specified shading to this resource dictionary
-    /// and returns its local resource name.
-    /// </summary>
-    public string AddShading(PdfShading shading)
-    {
-      string name;
-      if (!this.resources.TryGetValue(shading, out name))
-      {
-        name = NextShadingName;
-        this.resources[shading] = name;
-        if (shading.Reference == null)
-          Owner.irefTable.Add(shading);
-        Shadings.Elements[name] = shading.Reference;
-      }
-      return name;
-    }
+		// TODO: make own class
+		internal PdfResourceMap ExtGStates
+		{
+			get
+			{
+				if (extGStates == null)
+					extGStates = (PdfResourceMap) Elements.GetValue(Keys.ExtGState, VCF.Create);
+				return extGStates;
+			}
+		}
 
-    /// <summary>
-    /// Gets the fonts map.
-    /// </summary>
-    internal PdfResourceMap Fonts
-    {
-      get
-      {
-        if (this.fonts == null)
-          this.fonts = (PdfResourceMap)Elements.GetValue(Keys.Font, VCF.Create);
-        return this.fonts;
-      }
-    }
-    PdfResourceMap fonts;
+		// TODO: make own class
+		internal PdfResourceMap ColorSpaces
+		{
+			get
+			{
+				if (colorSpaces == null)
+					colorSpaces = (PdfResourceMap) Elements.GetValue(Keys.ColorSpace, VCF.Create);
+				return colorSpaces;
+			}
+		}
 
-    /// <summary>
-    /// Gets the external objects map.
-    /// </summary>
-    internal PdfResourceMap XObjects
-    {
-      get
-      {
-        if (this.xObjects == null)
-          this.xObjects = (PdfResourceMap)Elements.GetValue(Keys.XObject, VCF.Create);
-        return this.xObjects;
-      }
-    }
-    PdfResourceMap xObjects;
+		// TODO: make own class
+		internal PdfResourceMap Patterns
+		{
+			get
+			{
+				if (patterns == null)
+					patterns = (PdfResourceMap) Elements.GetValue(Keys.Pattern, VCF.Create);
+				return patterns;
+			}
+		}
 
-    // TODO: make own class
-    internal PdfResourceMap ExtGStates
-    {
-      get
-      {
-        if (this.extGStates == null)
-          this.extGStates = (PdfResourceMap)Elements.GetValue(Keys.ExtGState, VCF.Create);
-        return this.extGStates;
-      }
-    }
-    PdfResourceMap extGStates;
+		// TODO: make own class
+		internal PdfResourceMap Shadings
+		{
+			get
+			{
+				if (shadings == null)
+					shadings = (PdfResourceMap) Elements.GetValue(Keys.Shading, VCF.Create);
+				return shadings;
+			}
+		}
 
-    // TODO: make own class
-    internal PdfResourceMap ColorSpaces
-    {
-      get
-      {
-        if (this.colorSpaces == null)
-          this.colorSpaces = (PdfResourceMap)Elements.GetValue(Keys.ColorSpace, VCF.Create);
-        return this.colorSpaces;
-      }
-    }
-    PdfResourceMap colorSpaces;
+		// TODO: make own class
+		internal PdfResourceMap Properties
+		{
+			get
+			{
+				if (properties == null)
+					properties = (PdfResourceMap) Elements.GetValue(Keys.Properties, VCF.Create);
+				return properties;
+			}
+		}
 
-    // TODO: make own class
-    internal PdfResourceMap Patterns
-    {
-      get
-      {
-        if (this.patterns == null)
-          this.patterns = (PdfResourceMap)Elements.GetValue(Keys.Pattern, VCF.Create);
-        return this.patterns;
-      }
-    }
-    PdfResourceMap patterns;
+		/// <summary>
+		///     Gets a new local name for this resource.
+		/// </summary>
+		private string NextFontName
+		{
+			get
+			{
+				string name;
+				while (ExistsResourceNames(name = String.Format("/F{0}", fontNumber++)))
+				{
+				}
+				return name;
+			}
+		}
 
-    // TODO: make own class
-    internal PdfResourceMap Shadings
-    {
-      get
-      {
-        if (this.shadings == null)
-          this.shadings = (PdfResourceMap)Elements.GetValue(Keys.Shading, VCF.Create);
-        return this.shadings;
-      }
-    }
-    PdfResourceMap shadings;
+		/// <summary>
+		///     Gets a new local name for this resource.
+		/// </summary>
+		private string NextImageName
+		{
+			get
+			{
+				string name;
+				while (ExistsResourceNames(name = String.Format("/I{0}", imageNumber++)))
+				{
+				}
+				return name;
+			}
+		}
 
-    // TODO: make own class
-    internal PdfResourceMap Properties
-    {
-      get
-      {
-        if (this.properties == null)
-          this.properties = (PdfResourceMap)Elements.GetValue(Keys.Properties, VCF.Create);
-        return this.properties;
-      }
-    }
-    PdfResourceMap properties;
+		/// <summary>
+		///     Gets a new local name for this resource.
+		/// </summary>
+		private string NextFormName
+		{
+			get
+			{
+				string name;
+				while (ExistsResourceNames(name = String.Format("/Fm{0}", formNumber++)))
+				{
+				}
+				return name;
+			}
+		}
 
-    /// <summary>
-    /// Gets a new local name for this resource.
-    /// </summary>
-    string NextFontName
-    {
-      get
-      {
-        string name;
-        while (ExistsResourceNames(name = String.Format("/F{0}", this.fontNumber++))) { }
-        return name;
-      }
-    }
-    int fontNumber;
+		/// <summary>
+		///     Gets a new local name for this resource.
+		/// </summary>
+		private string NextExtGStateName
+		{
+			get
+			{
+				string name;
+				while (ExistsResourceNames(name = String.Format("/GS{0}", ExtGStateNumber++)))
+				{
+				}
+				return name;
+			}
+		}
 
-    /// <summary>
-    /// Gets a new local name for this resource.
-    /// </summary>
-    string NextImageName
-    {
-      get
-      {
-        string name;
-        while (ExistsResourceNames(name = String.Format("/I{0}", this.imageNumber++))) { }
-        return name;
-      }
-    }
-    int imageNumber;
+		/// <summary>
+		///     Gets a new local name for this resource.
+		/// </summary>
+		private string NextPatternName
+		{
+			get
+			{
+				string name;
+				while (ExistsResourceNames(name = String.Format("/Pa{0}", PatternNumber++))) ;
+				return name;
+			}
+		}
 
-    /// <summary>
-    /// Gets a new local name for this resource.
-    /// </summary>
-    string NextFormName
-    {
-      get
-      {
-        string name;
-        while (ExistsResourceNames(name = String.Format("/Fm{0}", this.formNumber++))) { }
-        return name;
-      }
-    }
-    int formNumber;
+		/// <summary>
+		///     Gets a new local name for this resource.
+		/// </summary>
+		private string NextShadingName
+		{
+			get
+			{
+				string name;
+				while (ExistsResourceNames(name = String.Format("/Sh{0}", ShadingNumber++))) ;
+				return name;
+			}
+		}
 
-    /// <summary>
-    /// Gets a new local name for this resource.
-    /// </summary>
-    string NextExtGStateName
-    {
-      get
-      {
-        string name;
-        while (ExistsResourceNames(name = String.Format("/GS{0}", this.ExtGStateNumber++))) { }
-        return name;
-      }
-    }
-    int ExtGStateNumber;
+		/// <summary>
+		///     Gets the KeysMeta of this dictionary type.
+		/// </summary>
+		internal override DictionaryMeta Meta
+		{
+			get { return Keys.Meta; }
+		}
 
-    /// <summary>
-    /// Gets a new local name for this resource.
-    /// </summary>
-    string NextPatternName
-    {
-      get
-      {
-        string name;
-        while (ExistsResourceNames(name = String.Format("/Pa{0}", this.PatternNumber++))) ;
-        return name;
-      }
-    }
-    int PatternNumber;
+		/// <summary>
+		///     Adds the specified font to this resource dictionary and returns its local resource name.
+		/// </summary>
+		public string AddFont(PdfFont font)
+		{
+			string name;
+			if (!resources.TryGetValue(font, out name))
+			{
+				name = NextFontName;
+				resources[font] = name;
+				if (font.Reference == null)
+					Owner.irefTable.Add(font);
+				Fonts.Elements[name] = font.Reference;
+			}
+			return name;
+		}
 
-    /// <summary>
-    /// Gets a new local name for this resource.
-    /// </summary>
-    string NextShadingName
-    {
-      get
-      {
-        string name;
-        while (ExistsResourceNames(name = String.Format("/Sh{0}", this.ShadingNumber++))) ;
-        return name;
-      }
-    }
-    int ShadingNumber;
+		/// <summary>
+		///     Adds the specified image to this resource dictionary
+		///     and returns its local resource name.
+		/// </summary>
+		public string AddImage(PdfImage image)
+		{
+			string name;
+			if (!resources.TryGetValue(image, out name))
+			{
+				name = NextImageName;
+				resources[image] = name;
+				if (image.Reference == null)
+					Owner.irefTable.Add(image);
+				XObjects.Elements[name] = image.Reference;
+			}
+			return name;
+		}
 
-    /// <summary>
-    /// Check whether a resource name is already used in the context of this resource dictionary.
-    /// PDF4NET uses GUIDs as resource names, but I think this weapon is to heavy.
-    /// </summary>
-    internal bool ExistsResourceNames(string name)
-    {
-      // TODO: more precise: is this page imported and is PageOptions != Replace
-      // BUG: 
-      //if (!this.Owner.IsImported)
-      //  return false;
+		/// <summary>
+		///     Adds the specified form object to this resource dictionary
+		///     and returns its local resource name.
+		/// </summary>
+		public string AddForm(PdfFormXObject form)
+		{
+			string name;
+			if (!resources.TryGetValue(form, out name))
+			{
+				name = NextFormName;
+				resources[form] = name;
+				if (form.Reference == null)
+					Owner.irefTable.Add(form);
+				XObjects.Elements[name] = form.Reference;
+			}
+			return name;
+		}
 
-      // Collect all resouce names of all imported resources.
-      if (this.importedResourceNames == null)
-      {
-        this.importedResourceNames = new Dictionary<string, object>();
+		/// <summary>
+		///     Adds the specified graphics state to this resource dictionary
+		///     and returns its local resource name.
+		/// </summary>
+		public string AddExtGState(PdfExtGState extGState)
+		{
+			string name;
+			if (!resources.TryGetValue(extGState, out name))
+			{
+				name = NextExtGStateName;
+				resources[extGState] = name;
+				if (extGState.Reference == null)
+					Owner.irefTable.Add(extGState);
+				ExtGStates.Elements[name] = extGState.Reference;
+			}
+			return name;
+		}
 
-        if (Elements[Keys.Font] != null)
-          Fonts.CollectResourceNames(this.importedResourceNames);
+		/// <summary>
+		///     Adds the specified pattern to this resource dictionary
+		///     and returns its local resource name.
+		/// </summary>
+		public string AddPattern(PdfShadingPattern pattern)
+		{
+			string name;
+			if (!resources.TryGetValue(pattern, out name))
+			{
+				name = NextPatternName;
+				resources[pattern] = name;
+				if (pattern.Reference == null)
+					Owner.irefTable.Add(pattern);
+				Patterns.Elements[name] = pattern.Reference;
+			}
+			return name;
+		}
 
-        if (Elements[Keys.XObject] != null)
-          XObjects.CollectResourceNames(this.importedResourceNames);
+		/// <summary>
+		///     Adds the specified pattern to this resource dictionary
+		///     and returns its local resource name.
+		/// </summary>
+		public string AddPattern(PdfTilingPattern pattern)
+		{
+			string name;
+			if (!resources.TryGetValue(pattern, out name))
+			{
+				name = NextPatternName;
+				resources[pattern] = name;
+				if (pattern.Reference == null)
+					Owner.irefTable.Add(pattern);
+				Patterns.Elements[name] = pattern.Reference;
+			}
+			return name;
+		}
 
-        if (Elements[Keys.ExtGState] != null)
-          ExtGStates.CollectResourceNames(this.importedResourceNames);
+		/// <summary>
+		///     Adds the specified shading to this resource dictionary
+		///     and returns its local resource name.
+		/// </summary>
+		public string AddShading(PdfShading shading)
+		{
+			string name;
+			if (!resources.TryGetValue(shading, out name))
+			{
+				name = NextShadingName;
+				resources[shading] = name;
+				if (shading.Reference == null)
+					Owner.irefTable.Add(shading);
+				Shadings.Elements[name] = shading.Reference;
+			}
+			return name;
+		}
 
-        if (Elements[Keys.ColorSpace] != null)
-          ColorSpaces.CollectResourceNames(this.importedResourceNames);
+		/// <summary>
+		///     Check whether a resource name is already used in the context of this resource dictionary.
+		///     PDF4NET uses GUIDs as resource names, but I think this weapon is to heavy.
+		/// </summary>
+		internal bool ExistsResourceNames(string name)
+		{
+			// TODO: more precise: is this page imported and is PageOptions != Replace
+			// BUG: 
+			//if (!this.Owner.IsImported)
+			//  return false;
 
-        if (Elements[Keys.Pattern] != null)
-          Patterns.CollectResourceNames(this.importedResourceNames);
+			// Collect all resouce names of all imported resources.
+			if (importedResourceNames == null)
+			{
+				importedResourceNames = new Dictionary<string, object>();
 
-        if (Elements[Keys.Shading] != null)
-          Shadings.CollectResourceNames(this.importedResourceNames);
+				if (Elements[Keys.Font] != null)
+					Fonts.CollectResourceNames(importedResourceNames);
 
-        if (Elements[Keys.Properties] != null)
-          Properties.CollectResourceNames(this.importedResourceNames);
-      }
-      return this.importedResourceNames.ContainsKey(name);
-      // This is superfluous because PDFsharp resource names cannot be double.
-      // this.importedResourceNames.Add(name, null);
-    }
+				if (Elements[Keys.XObject] != null)
+					XObjects.CollectResourceNames(importedResourceNames);
 
-    /// <summary>
-    /// All the names of imported resources.
-    /// </summary>
-    Dictionary<string, object> importedResourceNames;
+				if (Elements[Keys.ExtGState] != null)
+					ExtGStates.CollectResourceNames(importedResourceNames);
 
-    /// <summary>
-    /// Maps all PDFsharp resources to their local resource names.
-    /// </summary>
-    readonly Dictionary<PdfObject, string> resources = new Dictionary<PdfObject, string>();
+				if (Elements[Keys.ColorSpace] != null)
+					ColorSpaces.CollectResourceNames(importedResourceNames);
 
-    /// <summary>
-    /// Predefined keys of this dictionary.
-    /// </summary>
-    public sealed class Keys : KeysBase
-    {
-      /// <summary>
-      /// (Optional) A dictionary that maps resource names to graphics state 
-      /// parameter dictionaries.
-      /// </summary>
-      [KeyInfo(KeyType.Dictionary | KeyType.Optional, typeof(PdfResourceMap))]
-      public const string ExtGState = "/ExtGState";
+				if (Elements[Keys.Pattern] != null)
+					Patterns.CollectResourceNames(importedResourceNames);
 
-      /// <summary>
-      /// (Optional) A dictionary that maps each resource name to either the name of a
-      /// device-dependent color space or an array describing a color space.
-      /// </summary>
-      [KeyInfo(KeyType.Dictionary | KeyType.Optional, typeof(PdfResourceMap))]
-      public const string ColorSpace = "/ColorSpace";
+				if (Elements[Keys.Shading] != null)
+					Shadings.CollectResourceNames(importedResourceNames);
 
-      /// <summary>
-      /// (Optional) A dictionary that maps each resource name to either the name of a
-      /// device-dependent color space or an array describing a color space.
-      /// </summary>
-      [KeyInfo(KeyType.Dictionary | KeyType.Optional, typeof(PdfResourceMap))]
-      public const string Pattern = "/Pattern";
+				if (Elements[Keys.Properties] != null)
+					Properties.CollectResourceNames(importedResourceNames);
+			}
+			return importedResourceNames.ContainsKey(name);
+			// This is superfluous because PDFsharp resource names cannot be double.
+			// this.importedResourceNames.Add(name, null);
+		}
 
-      /// <summary>
-      /// (Optional; PDF 1.3) A dictionary that maps resource names to shading dictionaries.
-      /// </summary>
-      [KeyInfo("1.3", KeyType.Dictionary | KeyType.Optional, typeof(PdfResourceMap))]
-      public const string Shading = "/Shading";
+		/// <summary>
+		///     Predefined keys of this dictionary.
+		/// </summary>
+		public sealed class Keys : KeysBase
+		{
+			/// <summary>
+			///     (Optional) A dictionary that maps resource names to graphics state
+			///     parameter dictionaries.
+			/// </summary>
+			[KeyInfo(KeyType.Dictionary | KeyType.Optional, typeof (PdfResourceMap))] public const string ExtGState = "/ExtGState";
 
-      /// <summary>
-      /// (Optional) A dictionary that maps resource names to external objects.
-      /// </summary>
-      [KeyInfo(KeyType.Dictionary | KeyType.Optional, typeof(PdfResourceMap))]
-      public const string XObject = "/XObject";
+			/// <summary>
+			///     (Optional) A dictionary that maps each resource name to either the name of a
+			///     device-dependent color space or an array describing a color space.
+			/// </summary>
+			[KeyInfo(KeyType.Dictionary | KeyType.Optional, typeof (PdfResourceMap))] public const string ColorSpace = "/ColorSpace";
 
-      /// <summary>
-      /// (Optional) A dictionary that maps resource names to font dictionaries.
-      /// </summary>
-      [KeyInfo(KeyType.Dictionary | KeyType.Optional, typeof(PdfResourceMap))]
-      public const string Font = "/Font";
+			/// <summary>
+			///     (Optional) A dictionary that maps each resource name to either the name of a
+			///     device-dependent color space or an array describing a color space.
+			/// </summary>
+			[KeyInfo(KeyType.Dictionary | KeyType.Optional, typeof (PdfResourceMap))] public const string Pattern = "/Pattern";
 
-      /// <summary>
-      /// (Optional) An array of predefined procedure set names.
-      /// </summary>
-      [KeyInfo(KeyType.Array | KeyType.Optional)]
-      public const string ProcSet = "/ProcSet";
+			/// <summary>
+			///     (Optional; PDF 1.3) A dictionary that maps resource names to shading dictionaries.
+			/// </summary>
+			[KeyInfo("1.3", KeyType.Dictionary | KeyType.Optional, typeof (PdfResourceMap))] public const string Shading = "/Shading";
 
-      /// <summary>
-      /// (Optional; PDF 1.2) A dictionary that maps resource names to property list
-      /// dictionaries for marked content.
-      /// </summary>
-      [KeyInfo(KeyType.Dictionary | KeyType.Optional, typeof(PdfResourceMap))]
-      public const string Properties = "/Properties";
+			/// <summary>
+			///     (Optional) A dictionary that maps resource names to external objects.
+			/// </summary>
+			[KeyInfo(KeyType.Dictionary | KeyType.Optional, typeof (PdfResourceMap))] public const string XObject = "/XObject";
 
-      /// <summary>
-      /// Gets the KeysMeta for these keys.
-      /// </summary>
-      internal static DictionaryMeta Meta
-      {
-        get
-        {
-          if (Keys.meta == null)
-            Keys.meta = CreateMeta(typeof(Keys));
-          return Keys.meta;
-        }
-      }
-      static DictionaryMeta meta;
-    }
+			/// <summary>
+			///     (Optional) A dictionary that maps resource names to font dictionaries.
+			/// </summary>
+			[KeyInfo(KeyType.Dictionary | KeyType.Optional, typeof (PdfResourceMap))] public const string Font = "/Font";
 
-    /// <summary>
-    /// Gets the KeysMeta of this dictionary type.
-    /// </summary>
-    internal override DictionaryMeta Meta
-    {
-      get { return Keys.Meta; }
-    }
-  }
+			/// <summary>
+			///     (Optional) An array of predefined procedure set names.
+			/// </summary>
+			[KeyInfo(KeyType.Array | KeyType.Optional)] public const string ProcSet = "/ProcSet";
+
+			/// <summary>
+			///     (Optional; PDF 1.2) A dictionary that maps resource names to property list
+			///     dictionaries for marked content.
+			/// </summary>
+			[KeyInfo(KeyType.Dictionary | KeyType.Optional, typeof (PdfResourceMap))] public const string Properties = "/Properties";
+
+			private static DictionaryMeta meta;
+
+			/// <summary>
+			///     Gets the KeysMeta for these keys.
+			/// </summary>
+			internal static DictionaryMeta Meta
+			{
+				get
+				{
+					if (meta == null)
+						meta = CreateMeta(typeof (Keys));
+					return meta;
+				}
+			}
+		}
+	}
 }

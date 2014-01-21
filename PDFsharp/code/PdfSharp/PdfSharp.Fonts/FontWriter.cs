@@ -1,4 +1,5 @@
 #region PDFsharp - A .NET library for processing PDF
+
 //
 // Authors:
 //   Stefan Lange (mailto:Stefan.Lange@pdfsharp.com)
@@ -25,147 +26,148 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 using System.IO;
 
 namespace PdfSharp.Fonts
 {
-  /// <summary>
-  /// Represents a writer for generation of font file streams. 
-  /// </summary>
-  internal class FontWriter
-  {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="FontWriter"/> class.
-    /// </summary>
-    public FontWriter(Stream stream)
-    {
-      this.stream = stream;
-    }
+	/// <summary>
+	///     Represents a writer for generation of font file streams.
+	/// </summary>
+	internal class FontWriter
+	{
+		private readonly Stream stream;
 
-    /// <summary>
-    /// Closes the writer and, if specified, the underlying stream.
-    /// </summary>
-    public void Close(bool closeUnderlyingStream)
-    {
-      if (this.stream != null && closeUnderlyingStream)
-        this.stream.Close();
-      //this.stream = null;
-    }
+		/// <summary>
+		///     Initializes a new instance of the <see cref="FontWriter" /> class.
+		/// </summary>
+		public FontWriter(Stream stream)
+		{
+			this.stream = stream;
+		}
 
-    /// <summary>
-    /// Closes the writer and the underlying stream.
-    /// </summary>
-    public void Close()
-    {
-      Close(true);
-    }
+		/// <summary>
+		///     Gets or sets the position within the stream.
+		/// </summary>
+		public int Position
+		{
+			get { return (int) stream.Position; }
+			set { stream.Position = value; }
+		}
 
-    /// <summary>
-    /// Gets or sets the position within the stream.
-    /// </summary>
-    public int Position
-    {
-      get { return (int)this.stream.Position; }
-      set { this.stream.Position = value; }
-    }
+		/// <summary>
+		///     Gets the underlying stream.
+		/// </summary>
+		internal Stream Stream
+		{
+			get { return stream; }
+		}
 
-    /// <summary>
-    /// Writes the specified value to the font stream.
-    /// </summary>
-    public void WriteByte(byte value)
-    {
-      this.stream.WriteByte(value);
-    }
+		/// <summary>
+		///     Closes the writer and, if specified, the underlying stream.
+		/// </summary>
+		public void Close(bool closeUnderlyingStream)
+		{
+			if (stream != null && closeUnderlyingStream)
+				stream.Close();
+			//this.stream = null;
+		}
 
-    /// <summary>
-    /// Writes the specified value to the font stream.
-    /// </summary>
-    public void WriteByte(int value)
-    {
-      this.stream.WriteByte((byte)value);
-    }
+		/// <summary>
+		///     Closes the writer and the underlying stream.
+		/// </summary>
+		public void Close()
+		{
+			Close(true);
+		}
 
-    /// <summary>
-    /// Writes the specified value to the font stream using big-endian.
-    /// </summary>
-    public void WriteShort(short value)
-    {
-      this.stream.WriteByte((byte)(value >> 8));
-      this.stream.WriteByte((byte)value);
-    }
+		/// <summary>
+		///     Writes the specified value to the font stream.
+		/// </summary>
+		public void WriteByte(byte value)
+		{
+			stream.WriteByte(value);
+		}
 
-    /// <summary>
-    /// Writes the specified value to the font stream using big-endian.
-    /// </summary>
-    public void WriteShort(int value)
-    {
-      WriteShort((short)value);
-    }
+		/// <summary>
+		///     Writes the specified value to the font stream.
+		/// </summary>
+		public void WriteByte(int value)
+		{
+			stream.WriteByte((byte) value);
+		}
 
-    /// <summary>
-    /// Writes the specified value to the font stream using big-endian.
-    /// </summary>
-    public void WriteUShort(ushort value)
-    {
-      this.stream.WriteByte((byte)(value >> 8));
-      this.stream.WriteByte((byte)value);
-    }
+		/// <summary>
+		///     Writes the specified value to the font stream using big-endian.
+		/// </summary>
+		public void WriteShort(short value)
+		{
+			stream.WriteByte((byte) (value >> 8));
+			stream.WriteByte((byte) value);
+		}
 
-    /// <summary>
-    /// Writes the specified value to the font stream using big-endian.
-    /// </summary>
-    public void WriteUShort(int value)
-    {
-      WriteUShort((ushort)value);
-    }
+		/// <summary>
+		///     Writes the specified value to the font stream using big-endian.
+		/// </summary>
+		public void WriteShort(int value)
+		{
+			WriteShort((short) value);
+		}
 
-    /// <summary>
-    /// Writes the specified value to the font stream using big-endian.
-    /// </summary>
-    public void WriteInt(int value)
-    {
-      this.stream.WriteByte((byte)(value >> 24));
-      this.stream.WriteByte((byte)(value >> 16));
-      this.stream.WriteByte((byte)(value >> 8));
-      this.stream.WriteByte((byte)value);
-    }
+		/// <summary>
+		///     Writes the specified value to the font stream using big-endian.
+		/// </summary>
+		public void WriteUShort(ushort value)
+		{
+			stream.WriteByte((byte) (value >> 8));
+			stream.WriteByte((byte) value);
+		}
 
-    /// <summary>
-    /// Writes the specified value to the font stream using big-endian.
-    /// </summary>
-    public void WriteUInt(uint value)
-    {
-      this.stream.WriteByte((byte)(value >> 24));
-      this.stream.WriteByte((byte)(value >> 16));
-      this.stream.WriteByte((byte)(value >> 8));
-      this.stream.WriteByte((byte)value);
-    }
+		/// <summary>
+		///     Writes the specified value to the font stream using big-endian.
+		/// </summary>
+		public void WriteUShort(int value)
+		{
+			WriteUShort((ushort) value);
+		}
 
-    //public short ReadFWord()
-    //public ushort ReadUFWord()
-    //public long ReadLongDate()
-    //public string ReadString(int size)
+		/// <summary>
+		///     Writes the specified value to the font stream using big-endian.
+		/// </summary>
+		public void WriteInt(int value)
+		{
+			stream.WriteByte((byte) (value >> 24));
+			stream.WriteByte((byte) (value >> 16));
+			stream.WriteByte((byte) (value >> 8));
+			stream.WriteByte((byte) value);
+		}
 
-    public void Write(byte[] buffer)
-    {
-      this.stream.Write(buffer, 0, buffer.Length);
-    }
+		/// <summary>
+		///     Writes the specified value to the font stream using big-endian.
+		/// </summary>
+		public void WriteUInt(uint value)
+		{
+			stream.WriteByte((byte) (value >> 24));
+			stream.WriteByte((byte) (value >> 16));
+			stream.WriteByte((byte) (value >> 8));
+			stream.WriteByte((byte) value);
+		}
 
-    public void Write(byte[] buffer, int offset, int count)
-    {
-      this.stream.Write(buffer, offset, count);
-    }
+		//public short ReadFWord()
+		//public ushort ReadUFWord()
+		//public long ReadLongDate()
+		//public string ReadString(int size)
 
-    /// <summary>
-    /// Gets the underlying stream.
-    /// </summary>
-    internal Stream Stream
-    {
-      get { return this.stream; }
-    }
-    
-    readonly Stream stream;
-  }
+		public void Write(byte[] buffer)
+		{
+			stream.Write(buffer, 0, buffer.Length);
+		}
+
+		public void Write(byte[] buffer, int offset, int count)
+		{
+			stream.Write(buffer, offset, count);
+		}
+	}
 }

@@ -1,4 +1,5 @@
 #region PDFsharp - A .NET library for processing PDF
+
 //
 // Authors:
 //   Stefan Lange (mailto:Stefan.Lange@pdfsharp.com)
@@ -25,6 +26,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 using System;
@@ -36,289 +38,291 @@ using PdfSharp.Fonts.OpenType;
 namespace PdfSharp.Fonts
 {
 #if true
-  /// <summary>
-  /// Global table of TrueType fontdescriptor objects.
-  /// </summary>
-  class FontDescriptorStock
-  {
-    FontDescriptorStock()
-    {
-      this.table = new Dictionary<FontSelector, FontDescriptor>();
-    }
+	/// <summary>
+	///     Global table of TrueType fontdescriptor objects.
+	/// </summary>
+	internal class FontDescriptorStock
+	{
+		private static FontDescriptorStock global;
 
-    /// <summary>
-    /// Gets the FontDescriptor identified by the specified FontSelector. Returns null if no
-    /// such objects exists.
-    /// </summary>
-    public FontDescriptor FindDescriptor(FontSelector selector)
-    {
-      if (selector == null)
-        return null;
+		private readonly Dictionary<FontSelector, FontDescriptor> table;
 
-      FontDescriptor descriptor = this.table[selector] as FontDescriptor;
-      return descriptor;
-    }
+		private FontDescriptorStock()
+		{
+			table = new Dictionary<FontSelector, FontDescriptor>();
+		}
 
-    ///// <summary>
-    ///// Gets the FontDescriptor identified by the specified FontSelector. If no such objects 
-    ///// exists, a new FontDescriptor is created and added to the stock.
-    ///// </summary>
-    //public FontDescriptor CreateDescriptor(FontSelector selector)
-    //{
-    //  if (selector == null)
-    //    throw new ArgumentNullException("selector");
+		public static FontDescriptorStock Global
+		{
+			get
+			{
+				if (global == null)
+				{
+					lock (typeof (FontDescriptorStock))
+					{
+						if (global == null)
+							global = new FontDescriptorStock();
+					}
+				}
+				return global;
+			}
+		}
 
-    //  FontDescriptor descriptor = this.table[selector] as FontDescriptor;
-    //  if (descriptor == null)
-    //  {
-    //    descriptor = new TrueTypeDescriptor(selector);
-    //    this.table.Add(selector, descriptor);
-    //  }
-    //  return descriptor;
-    //}
+		/// <summary>
+		///     Gets the FontDescriptor identified by the specified FontSelector. Returns null if no
+		///     such objects exists.
+		/// </summary>
+		public FontDescriptor FindDescriptor(FontSelector selector)
+		{
+			if (selector == null)
+				return null;
 
-    /// <summary>
-    /// Gets the FontDescriptor identified by the specified FontSelector. If no such objects 
-    /// exists, a new FontDescriptor is created and added to the stock.
-    /// </summary>
-    public FontDescriptor CreateDescriptor(XFont font)
-    {
-      if (font == null)
-        throw new ArgumentNullException("font");
+			FontDescriptor descriptor = table[selector];
+			return descriptor;
+		}
 
-      FontSelector selector = new FontSelector(font);
-      FontDescriptor descriptor;
-      if (!this.table.TryGetValue(selector, out descriptor))
-      {
-        lock (typeof(FontDescriptorStock))
-        {
-          // may be created by other thread meanwhile
-          if (!this.table.TryGetValue(selector, out descriptor))
-          {
-            descriptor = new OpenTypeDescriptor(font);
-            this.table.Add(selector, descriptor);
-          }
-        }
-      }
-      return descriptor;
-    }
+		///// <summary>
+		///// Gets the FontDescriptor identified by the specified FontSelector. If no such objects 
+		///// exists, a new FontDescriptor is created and added to the stock.
+		///// </summary>
+		//public FontDescriptor CreateDescriptor(FontSelector selector)
+		//{
+		//  if (selector == null)
+		//    throw new ArgumentNullException("selector");
 
-    /// <summary>
-    /// Gets the FontDescriptor identified by the specified FontSelector. If no such objects 
-    /// exists, a new FontDescriptor is created and added to the stock.
-    /// </summary>
-    public FontDescriptor CreateDescriptor(XFontFamily family, XFontStyle style)
-    {
-      if (family == null)
-        throw new ArgumentNullException("family");
+		//  FontDescriptor descriptor = this.table[selector] as FontDescriptor;
+		//  if (descriptor == null)
+		//  {
+		//    descriptor = new TrueTypeDescriptor(selector);
+		//    this.table.Add(selector, descriptor);
+		//  }
+		//  return descriptor;
+		//}
 
-      FontSelector selector = new FontSelector(family, style);
-      FontDescriptor descriptor;
-      if (!this.table.TryGetValue(selector, out descriptor))
-      {
-        lock (typeof(FontDescriptorStock))
-        {
-          // may be created by other thread meanwhile
-          if (!this.table.TryGetValue(selector, out descriptor))
-          {
-            XFont font = new XFont(family.Name, 10, style);
-            descriptor = new OpenTypeDescriptor(font);
-            if (this.table.ContainsKey(selector))
-              GetType();
-            else
-              this.table.Add(selector, descriptor);
-          }
-        }
-      }
-      return descriptor;
-    }
+		/// <summary>
+		///     Gets the FontDescriptor identified by the specified FontSelector. If no such objects
+		///     exists, a new FontDescriptor is created and added to the stock.
+		/// </summary>
+		public FontDescriptor CreateDescriptor(XFont font)
+		{
+			if (font == null)
+				throw new ArgumentNullException("font");
 
-    public FontDescriptor CreateDescriptor(string idName, byte[] fontData)
-    {
-      FontSelector selector = new FontSelector(idName);
-      FontDescriptor descriptor;
-      if (!this.table.TryGetValue(selector, out descriptor))
-      {
-        lock (typeof(FontDescriptorStock))
-        {
-          // may be created by other thread meanwhile
-          if (!this.table.TryGetValue(selector, out descriptor))
-          {
-            descriptor = new OpenTypeDescriptor(idName, fontData);
-            this.table.Add(selector, descriptor);
-          }
-        }
-      }
-      return descriptor;
-    }
+			FontSelector selector = new FontSelector(font);
+			FontDescriptor descriptor;
+			if (!table.TryGetValue(selector, out descriptor))
+			{
+				lock (typeof (FontDescriptorStock))
+				{
+					// may be created by other thread meanwhile
+					if (!table.TryGetValue(selector, out descriptor))
+					{
+						descriptor = new OpenTypeDescriptor(font);
+						table.Add(selector, descriptor);
+					}
+				}
+			}
+			return descriptor;
+		}
 
-    //public FontDescriptor RegisterFontDate(byte[] fontData)
-    //{
-    //  uint checksum = CalcChecksum(fontData);
-    //  string name = String.Format("??{0:X}", checksum);
-    //  FontSelector selector = new FontSelector(name); // HACK: font data distinguished only by checksum
-    //  FontDescriptor descriptor = this.table[selector] as FontDescriptor;
-    //  if (descriptor == null)
-    //  {
-    //    lock (typeof(FontDescriptorStock))
-    //    {
-    //      // may be created by other thread meanwhile
-    //      descriptor = this.table[selector] as FontDescriptor;
-    //      if (descriptor == null)
-    //      {
-    //        descriptor = new TrueTypeDescriptor(fontData);
-    //        this.table.Add(selector, descriptor);
-    //      }
-    //    }
-    //  }
-    //  return descriptor;
-    //}
+		/// <summary>
+		///     Gets the FontDescriptor identified by the specified FontSelector. If no such objects
+		///     exists, a new FontDescriptor is created and added to the stock.
+		/// </summary>
+		public FontDescriptor CreateDescriptor(XFontFamily family, XFontStyle style)
+		{
+			if (family == null)
+				throw new ArgumentNullException("family");
 
-    ///// <summary>
-    ///// Calculates an Adler32 checksum.
-    ///// </summary>
-    //uint CalcChecksum(byte[] buffer)
-    //{
-    //  if (buffer == null)
-    //    throw new ArgumentNullException("buffer");
+			FontSelector selector = new FontSelector(family, style);
+			FontDescriptor descriptor;
+			if (!table.TryGetValue(selector, out descriptor))
+			{
+				lock (typeof (FontDescriptorStock))
+				{
+					// may be created by other thread meanwhile
+					if (!table.TryGetValue(selector, out descriptor))
+					{
+						XFont font = new XFont(family.Name, 10, style);
+						descriptor = new OpenTypeDescriptor(font);
+						if (table.ContainsKey(selector))
+							GetType();
+						else
+							table.Add(selector, descriptor);
+					}
+				}
+			}
+			return descriptor;
+		}
 
-    //  const uint BASE = 65521; // largest prime smaller than 65536
-    //  uint s1 = 0;
-    //  uint s2 = 0;
-    //  int length = buffer.Length;
-    //  int offset = 0;
-    //  while (length > 0)
-    //  {
-    //    int n = 3800;
-    //    if (n > length)
-    //      n = length;
-    //    length -= n;
-    //    while (--n >= 0)
-    //    {
-    //      s1 = s1 + (uint)(buffer[offset++] & 0xFF);
-    //      s2 = s2 + s1;
-    //    }
-    //    s1 %= BASE;
-    //    s2 %= BASE;
-    //  }
-    //  return (s2 << 16) | s1;
-    //}
+		public FontDescriptor CreateDescriptor(string idName, byte[] fontData)
+		{
+			FontSelector selector = new FontSelector(idName);
+			FontDescriptor descriptor;
+			if (!table.TryGetValue(selector, out descriptor))
+			{
+				lock (typeof (FontDescriptorStock))
+				{
+					// may be created by other thread meanwhile
+					if (!table.TryGetValue(selector, out descriptor))
+					{
+						descriptor = new OpenTypeDescriptor(idName, fontData);
+						table.Add(selector, descriptor);
+					}
+				}
+			}
+			return descriptor;
+		}
 
-    public static FontDescriptorStock Global
-    {
-      get
-      {
-        if (global == null)
-        {
-          lock (typeof(FontDescriptorStock))
-          {
-            if (global == null)
-              global = new FontDescriptorStock();
-          }
-        }
-        return global;
-      }
-    }
-    static FontDescriptorStock global;
+		//public FontDescriptor RegisterFontDate(byte[] fontData)
+		//{
+		//  uint checksum = CalcChecksum(fontData);
+		//  string name = String.Format("??{0:X}", checksum);
+		//  FontSelector selector = new FontSelector(name); // HACK: font data distinguished only by checksum
+		//  FontDescriptor descriptor = this.table[selector] as FontDescriptor;
+		//  if (descriptor == null)
+		//  {
+		//    lock (typeof(FontDescriptorStock))
+		//    {
+		//      // may be created by other thread meanwhile
+		//      descriptor = this.table[selector] as FontDescriptor;
+		//      if (descriptor == null)
+		//      {
+		//        descriptor = new TrueTypeDescriptor(fontData);
+		//        this.table.Add(selector, descriptor);
+		//      }
+		//    }
+		//  }
+		//  return descriptor;
+		//}
 
-    Dictionary<FontSelector, FontDescriptor> table;
+		///// <summary>
+		///// Calculates an Adler32 checksum.
+		///// </summary>
+		//uint CalcChecksum(byte[] buffer)
+		//{
+		//  if (buffer == null)
+		//    throw new ArgumentNullException("buffer");
 
-    /// <summary>
-    /// A collection of information that uniquely identifies a particular font.
-    /// Used to map XFont to PdfFont.
-    /// There is a one to one relationship between a FontSelector and a TrueType/OpenType file.
-    /// </summary>
-    internal class FontSelector
-    {
-      public FontSelector(XFont font)
-      {
-        this.name = font.Name;
-        this.style = font.Style;
-      }
+		//  const uint BASE = 65521; // largest prime smaller than 65536
+		//  uint s1 = 0;
+		//  uint s2 = 0;
+		//  int length = buffer.Length;
+		//  int offset = 0;
+		//  while (length > 0)
+		//  {
+		//    int n = 3800;
+		//    if (n > length)
+		//      n = length;
+		//    length -= n;
+		//    while (--n >= 0)
+		//    {
+		//      s1 = s1 + (uint)(buffer[offset++] & 0xFF);
+		//      s2 = s2 + s1;
+		//    }
+		//    s1 %= BASE;
+		//    s2 %= BASE;
+		//  }
+		//  return (s2 << 16) | s1;
+		//}
 
-      public FontSelector(XFontFamily family, XFontStyle style)
-      {
-        this.name = family.Name;
-        this.style = style;
-      }
+		/// <summary>
+		///     A collection of information that uniquely identifies a particular font.
+		///     Used to map XFont to PdfFont.
+		///     There is a one to one relationship between a FontSelector and a TrueType/OpenType file.
+		/// </summary>
+		internal class FontSelector
+		{
+			private readonly string name;
+			private readonly XFontStyle style;
 
-      public FontSelector(string idName)
-      {
-        this.name = idName;
-        this.style = XFontStyle.Regular;
-      }
+			public FontSelector(XFont font)
+			{
+				name = font.Name;
+				style = font.Style;
+			}
 
-      public string Name
-      {
-        get { return this.name; }
-      }
-      string name;
+			public FontSelector(XFontFamily family, XFontStyle style)
+			{
+				name = family.Name;
+				this.style = style;
+			}
 
-      public XFontStyle Style
-      {
-        get { return this.style; }
-      }
-      XFontStyle style;
+			public FontSelector(string idName)
+			{
+				name = idName;
+				style = XFontStyle.Regular;
+			}
 
-      public static bool operator ==(FontSelector selector1, FontSelector selector2)
-      {
-        if (!Equals(selector1, null))
-          selector1.Equals(selector2);
-        return Equals(selector2, null);
-      }
+			public string Name
+			{
+				get { return name; }
+			}
 
-      public static bool operator !=(FontSelector selector1, FontSelector selector2)
-      {
-        return !(selector1 == selector2);
-      }
+			public XFontStyle Style
+			{
+				get { return style; }
+			}
 
-      public override bool Equals(object obj)
-      {
-        if (obj == null)  // removing this can lead to stack overflow
-          return false;
-        FontSelector selector = obj as FontSelector;
-        if (!Equals(selector, null))
-          return this.name == selector.name && this.style == selector.style;
-        return false;
-      }
+			public static bool operator ==(FontSelector selector1, FontSelector selector2)
+			{
+				if (!Equals(selector1, null))
+					selector1.Equals(selector2);
+				return Equals(selector2, null);
+			}
 
-      public override int GetHashCode()
-      {
-        return this.name.GetHashCode() ^ this.style.GetHashCode();
-      }
+			public static bool operator !=(FontSelector selector1, FontSelector selector2)
+			{
+				return !(selector1 == selector2);
+			}
 
-      /// <summary>
-      /// Returns a string for diagnostic purposes only.
-      /// </summary>
-      public override string ToString()
-      {
-        string variation = "";
-        switch (this.style)
-        {
-          case XFontStyle.Regular:
-            variation = "(Regular)";
-            break;
+			public override bool Equals(object obj)
+			{
+				if (obj == null) // removing this can lead to stack overflow
+					return false;
+				FontSelector selector = obj as FontSelector;
+				if (!Equals(selector, null))
+					return name == selector.name && style == selector.style;
+				return false;
+			}
 
-          case XFontStyle.Bold:
-            variation = "(Bold)";
-            break;
+			public override int GetHashCode()
+			{
+				return name.GetHashCode() ^ style.GetHashCode();
+			}
 
-          case XFontStyle.Italic:
-            variation = "(Italic)";
-            break;
+			/// <summary>
+			///     Returns a string for diagnostic purposes only.
+			/// </summary>
+			public override string ToString()
+			{
+				string variation = "";
+				switch (style)
+				{
+					case XFontStyle.Regular:
+						variation = "(Regular)";
+						break;
 
-          case XFontStyle.Bold | XFontStyle.Italic:
-            variation = "(BoldItalic)";
-            break;
-        }
-        return this.name + variation;
-      }
-    }
-  }
+					case XFontStyle.Bold:
+						variation = "(Bold)";
+						break;
+
+					case XFontStyle.Italic:
+						variation = "(Italic)";
+						break;
+
+					case XFontStyle.Bold | XFontStyle.Italic:
+						variation = "(BoldItalic)";
+						break;
+				}
+				return name + variation;
+			}
+		}
+	}
 #else
-  /// <summary>
-  /// Global table of TrueType fontdescriptor objects.
-  /// </summary>
+	/// <summary>
+	/// Global table of TrueType fontdescriptor objects.
+	/// </summary>
   class FontDescriptorStock
   {
     private FontDescriptorStock()
