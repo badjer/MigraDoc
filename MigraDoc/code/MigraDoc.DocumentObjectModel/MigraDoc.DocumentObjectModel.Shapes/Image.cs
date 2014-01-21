@@ -102,37 +102,37 @@ namespace MigraDoc.DocumentObjectModel.Shapes
     /// Gets or sets the ScaleWidth of the image.
     /// If the Width is set to, the resulting image width is ScaleWidth * Width.
     /// </summary>
-    public double ScaleWidth
+    public double? ScaleWidth
     {
-		get { return this.scaleWidth.GetValueOrDefault(); }
+		get { return scaleWidth; }
       set { this.scaleWidth = value; }
     }
 
-	internal double? scaleWidth;
+	private double? scaleWidth;
 
     /// <summary>
     /// Gets or sets the ScaleHeight of the image.
     /// If the Height is set too, the resulting image height is ScaleHeight * Height.
     /// </summary>
-    public double ScaleHeight
+    public double? ScaleHeight
     {
-		get { return this.scaleHeight.GetValueOrDefault(); }
+		get { return this.scaleHeight; }
       set { this.scaleHeight = value; }
     }
 
-	internal double? scaleHeight;
+	private double? scaleHeight;
 
     /// <summary>
     /// Gets or sets whether the AspectRatio of the image is kept unchanged.
     /// If both Width and Height are set, this property is ignored.
     /// </summary>
-    public bool LockAspectRatio
+    public bool? LockAspectRatio
     {
-		get { return this.lockAspectRatio.GetValueOrDefault(); }
+		get { return this.lockAspectRatio; }
       set { this.lockAspectRatio = value; }
     }
 
-	internal bool? lockAspectRatio;
+	private bool? lockAspectRatio;
 
     /// <summary>
     /// Gets or sets the PictureFormat for the image

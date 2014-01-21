@@ -159,7 +159,7 @@ namespace MigraDoc.Rendering
 
     private void CalculateImageDimensions()
     {
-      ImageFormatInfo formatInfo = (ImageFormatInfo)this.renderInfo.FormatInfo;
+      ImageFormatInfo formatInfo = (ImageFormatInfo)renderInfo.FormatInfo;
 
       if (formatInfo.failure == ImageFailure.None)
       {
@@ -193,12 +193,12 @@ namespace MigraDoc.Rendering
           double vertRes = usrResolutionSet ? (double)image.Resolution : xImage.VerticalResolution;
           XUnit inherentHeight = XUnit.FromInch(yPixels / vertRes);
 
-          bool lockRatio = !this.image.lockAspectRatio.HasValue ? true : image.LockAspectRatio;
+	      bool lockRatio = image.LockAspectRatio.GetValueOrDefault(true);
 
-          double scaleHeight = this.image.ScaleHeight;
-          double scaleWidth = this.image.ScaleWidth;
-		  bool scaleHeightSet = this.image.scaleHeight.HasValue;
-		  bool scaleWidthSet = this.image.scaleWidth.HasValue;
+		  bool scaleHeightSet = this.image.ScaleHeight.HasValue;
+		  bool scaleWidthSet = this.image.ScaleWidth.HasValue;
+		  double scaleHeight = this.image.ScaleHeight.GetValueOrDefault();
+		  double scaleWidth = this.image.ScaleWidth.GetValueOrDefault();
 
           if (lockRatio && !(scaleHeightSet && scaleWidthSet))
           {

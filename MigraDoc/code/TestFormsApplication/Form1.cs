@@ -14,12 +14,7 @@ namespace TestFormsApplication
             InitializeComponent();
         }
 
-        private void RenderRtf(object sender, EventArgs e)
-        {
-			throw new NotImplementedException("No longer implemented");
-        }
-
-        private void RenderPdf(object sender, EventArgs e)
+	    private void RenderPdf(object sender, EventArgs e)
         {
             var doc = CreateHelloWorld();
             OpenPdf(doc);
@@ -31,7 +26,9 @@ namespace TestFormsApplication
             var section = doc.AddSection();
             var p = section.AddParagraph("Hello World");
             p = section.AddParagraph();
-            p.AddImage(System.IO.Path.Combine(Environment.CurrentDirectory, "Diagram.png"));
+            var image = p.AddImage(System.IO.Path.Combine(Environment.CurrentDirectory, @"images\logo.png"));
+	        image.ScaleWidth = 0.50;
+			image.ScaleHeight = 0.50;
 
             DefineCharts(doc);
 
