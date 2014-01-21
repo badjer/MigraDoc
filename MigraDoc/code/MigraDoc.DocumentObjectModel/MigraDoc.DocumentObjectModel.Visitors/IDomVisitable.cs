@@ -30,8 +30,6 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
-
 namespace MigraDoc.DocumentObjectModel.Visitors
 {
   internal interface IVisitable

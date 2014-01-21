@@ -88,17 +88,17 @@ namespace MigraDoc.DocumentObjectModel.Shapes
     /// <summary>
     /// Adds a new paragraph with the specified text to the text frame.
     /// </summary>
-    public Paragraph AddParagraph(string _paragraphText)
+    public Paragraph AddParagraph(string paragraphText)
     {
-      return this.Elements.AddParagraph(_paragraphText);
+      return this.Elements.AddParagraph(paragraphText);
     }
 
     /// <summary>
     /// Adds a new chart with the specified type to the text frame.
     /// </summary>
-    public Chart AddChart(ChartType _type)
+    public Chart AddChart(ChartType type)
     {
-      return this.Elements.AddChart(_type);
+      return this.Elements.AddChart(type);
     }
 
     /// <summary>
@@ -120,9 +120,9 @@ namespace MigraDoc.DocumentObjectModel.Shapes
     /// <summary>
     /// Adds a new Image to the text frame.
     /// </summary>
-    public Image AddImage(string _fileName)
+    public Image AddImage(string fileName)
     {
-      return this.Elements.AddImage(_fileName);
+      return this.Elements.AddImage(fileName);
     }
 
     /// <summary>
@@ -208,7 +208,7 @@ namespace MigraDoc.DocumentObjectModel.Shapes
     /// </summary>
     public TextOrientation? Orientation
     {
-      get { return (TextOrientation)this.orientation; }
+      get { return this.orientation; }
       set { this.orientation = value; }
     }
     
@@ -219,17 +219,11 @@ namespace MigraDoc.DocumentObjectModel.Shapes
     /// </summary>
     public DocumentElements Elements
     {
-      get
-      {
-        if (this.elements == null)
-          this.elements = new DocumentElements(this);
-
-        return this.elements;
-      }
-      set
+      get { return elements ?? (elements = new DocumentElements(this)); }
+	    set
       {
         SetParent(value);
-        this.elements = value;
+        elements = value;
       }
     }
     
@@ -239,12 +233,12 @@ namespace MigraDoc.DocumentObjectModel.Shapes
     /// <summary>
     /// Allows the visitor object to visit the document object and it's child objects.
     /// </summary>
-    void IVisitable.AcceptVisitor(DocumentObjectVisitor visitor, bool visitChildren)
+    public void AcceptVisitor(DocumentObjectVisitor visitor, bool visitChildren)
     {
       visitor.VisitTextFrame(this);
 
-      if (visitChildren && this.elements != null)
-        ((IVisitable)this.elements).AcceptVisitor(visitor, visitChildren);
+      if (visitChildren && elements != null)
+        ((IVisitable)elements).AcceptVisitor(visitor, true);
     }
 
     #region Internal
