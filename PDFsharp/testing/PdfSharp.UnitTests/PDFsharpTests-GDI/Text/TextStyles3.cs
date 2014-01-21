@@ -12,6 +12,7 @@ using System.Windows;
 using System.Windows.Media;
 #endif
 using PdfSharp;
+using PdfSharp.Core.Enums;
 using PdfSharp.Drawing;
 using PdfSharp.Pdf;
 using PdfSharp.UnitTests.Helpers;

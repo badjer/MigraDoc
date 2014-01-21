@@ -32,6 +32,7 @@ using System;
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.DocumentObjectModel.Shapes;
 using MigraDoc.DocumentObjectModel.Fields;
+using PdfSharp.Core.Enums;
 
 namespace HelloMigraDoc
 {

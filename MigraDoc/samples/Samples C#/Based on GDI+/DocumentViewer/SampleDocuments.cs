@@ -33,6 +33,7 @@ using System.Diagnostics;
 using System.Text;
 using MigraDoc.DocumentObjectModel;
 using HelloMigraDoc;
+using PdfSharp.Core.Enums;
 
 namespace DocumentViewer
 {

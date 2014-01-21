@@ -33,6 +33,7 @@ using System;
 using System.Diagnostics;
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.Rendering;
+using PdfSharp.Core.Enums;
 
 namespace HelloMigraDoc
 {
@@ -46,7 +47,7 @@ namespace HelloMigraDoc
       // Create a MigraDoc document
       Document document = Documents.CreateDocument();
 
-      PdfDocumentRenderer renderer = new PdfDocumentRenderer(true, PdfSharp.Pdf.PdfFontEmbedding.Always);
+      PdfDocumentRenderer renderer = new PdfDocumentRenderer(true, PdfFontEmbedding.Always);
       renderer.Document = document;
 
       renderer.RenderDocument();

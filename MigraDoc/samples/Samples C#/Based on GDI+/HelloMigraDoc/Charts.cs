@@ -28,10 +28,9 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
 using MigraDoc.DocumentObjectModel;
-using MigraDoc.DocumentObjectModel.Shapes;
 using MigraDoc.DocumentObjectModel.Shapes.Charts;
+using PdfSharp.Core.Enums;
 
 namespace HelloMigraDoc
 {

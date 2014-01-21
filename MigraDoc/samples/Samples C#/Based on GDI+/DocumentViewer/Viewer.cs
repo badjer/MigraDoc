@@ -36,6 +36,7 @@ using System.Drawing.Printing;
 using System.ComponentModel;
 using System.Windows.Forms;
 using System.IO;
+using PdfSharp.Core.Enums;
 using PdfSharp.Drawing;
 using PdfSharp.Forms;
 using MigraDoc.DocumentObjectModel;
@@ -433,7 +434,7 @@ namespace DocumentViewer
       this.pagePreview.PrivateFonts = null;
       this.pagePreview.Size = new System.Drawing.Size(760, 491);
       this.pagePreview.TabIndex = 3;
-      this.pagePreview.Zoom = MigraDoc.Rendering.Forms.Zoom.FullPage;
+      this.pagePreview.Zoom = Zoom.FullPage;
       this.pagePreview.ZoomPercent = 41;
       this.pagePreview.PageChanged += new MigraDoc.Rendering.Forms.PagePreviewEventHandler(this.pagePreview_Changed);
       this.pagePreview.ZoomChanged += new MigraDoc.Rendering.Forms.PagePreviewEventHandler(this.pagePreview_Changed);
@@ -528,19 +529,19 @@ namespace DocumentViewer
 
     private void miBestFit_Click(object sender, System.EventArgs e)
     {
-      this.pagePreview.Zoom = MigraDoc.Rendering.Forms.Zoom.BestFit;
+      this.pagePreview.Zoom = Zoom.BestFit;
       UpdateStatusBar();
     }
 
     private void miFullPage_Click(object sender, System.EventArgs e)
     {
-      this.pagePreview.Zoom = MigraDoc.Rendering.Forms.Zoom.FullPage;
+      this.pagePreview.Zoom = Zoom.FullPage;
       UpdateStatusBar();
     }
 
     private void miOriginalSize_Click(object sender, EventArgs e)
     {
-      this.pagePreview.Zoom = MigraDoc.Rendering.Forms.Zoom.OriginalSize;
+      this.pagePreview.Zoom = Zoom.OriginalSize;
       UpdateStatusBar();
     }
 
@@ -605,7 +606,7 @@ namespace DocumentViewer
       // Create an image
       int dpi = 150;
       int dx, dy;
-      if (info.Orientation == PdfSharp.PageOrientation.Portrait)
+      if (info.Orientation == PageOrientation.Portrait)
       {
         dx = (int)(info.Width.Inch * dpi);
         dy = (int)(info.Height.Inch * dpi);
@@ -646,7 +647,7 @@ namespace DocumentViewer
 
       // Create an image
       float dx, dy;
-      if (info.Orientation == PdfSharp.PageOrientation.Portrait)
+      if (info.Orientation == PageOrientation.Portrait)
       {
         dx = (float)(info.Width.Inch * 72);
         dy = (float)(info.Height.Inch * 72);

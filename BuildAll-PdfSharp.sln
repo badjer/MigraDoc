@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfSharp.Charting", "PDFsha
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExtractFontData", "PDFsharp\code\ExtractFontData\ExtractFontData.csproj", "{667CF7EE-3EE9-4D66-9C65-2DBBB3AEAD72}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfSharp.Core", "PdfSharp.Core\PdfSharp.Core.csproj", "{9E4D41E8-4B14-4718-8626-19BD27350AF1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,16 @@ Global
 		{667CF7EE-3EE9-4D66-9C65-2DBBB3AEAD72}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{667CF7EE-3EE9-4D66-9C65-2DBBB3AEAD72}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{667CF7EE-3EE9-4D66-9C65-2DBBB3AEAD72}.Release|Win32.ActiveCfg = Release|Any CPU
+		{9E4D41E8-4B14-4718-8626-19BD27350AF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E4D41E8-4B14-4718-8626-19BD27350AF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E4D41E8-4B14-4718-8626-19BD27350AF1}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{9E4D41E8-4B14-4718-8626-19BD27350AF1}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{9E4D41E8-4B14-4718-8626-19BD27350AF1}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{9E4D41E8-4B14-4718-8626-19BD27350AF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E4D41E8-4B14-4718-8626-19BD27350AF1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E4D41E8-4B14-4718-8626-19BD27350AF1}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{9E4D41E8-4B14-4718-8626-19BD27350AF1}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{9E4D41E8-4B14-4718-8626-19BD27350AF1}.Release|Win32.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

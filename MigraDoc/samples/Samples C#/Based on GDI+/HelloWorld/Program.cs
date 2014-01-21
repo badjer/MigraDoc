@@ -31,6 +31,7 @@
 using System.Diagnostics;
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.Rendering;
+using PdfSharp.Core.Enums;
 using PdfSharp.Pdf;
 
 namespace HelloWorld

@@ -36,6 +36,7 @@ using System.Drawing;
 #endif
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.Rendering;
+using PdfSharp.Core.Enums;
 using PdfSharp.Pdf;
 using PdfSharp.Drawing;
 

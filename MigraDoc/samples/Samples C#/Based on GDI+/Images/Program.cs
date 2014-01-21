@@ -30,6 +30,7 @@
 
 using System;
 using System.Diagnostics;
+using PdfSharp.Core.Enums;
 using PdfSharp.Pdf;
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.Rendering;

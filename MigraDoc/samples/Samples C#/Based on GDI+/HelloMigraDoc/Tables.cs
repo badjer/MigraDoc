@@ -31,6 +31,7 @@
 using System;
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.DocumentObjectModel.Tables;
+using PdfSharp.Core.Enums;
 
 namespace HelloMigraDoc
 {

@@ -36,6 +36,7 @@ using MigraDoc.DocumentObjectModel;
 using MigraDoc.DocumentObjectModel.Tables;
 using MigraDoc.DocumentObjectModel.Shapes;
 using System.Diagnostics;
+using PdfSharp.Core.Enums;
 
 namespace Invoice
 {
