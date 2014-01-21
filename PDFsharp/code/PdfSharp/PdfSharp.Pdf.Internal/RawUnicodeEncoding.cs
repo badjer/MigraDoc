@@ -1,4 +1,5 @@
 #region PDFsharp - A .NET library for processing PDF
+
 //
 // Authors:
 //   Stefan Lange (mailto:Stefan.Lange@pdfsharp.com)
@@ -25,59 +26,56 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
-using System;
 using System.Text;
 
 namespace PdfSharp.Pdf.Internal
 {
-  /// <summary>
-  /// An encoder for Unicode strings.
-  /// </summary>
-  internal sealed class RawUnicodeEncoding : Encoding
-  {
-    public RawUnicodeEncoding()
-    { }
+	/// <summary>
+	///     An encoder for Unicode strings.
+	/// </summary>
+	internal sealed class RawUnicodeEncoding : Encoding
+	{
+		public override int GetByteCount(char[] chars, int index, int count)
+		{
+			return 2*count;
+		}
 
-    public override int GetByteCount(char[] chars, int index, int count)
-    {
-      return 2 * count;
-    }
+		public override int GetBytes(char[] chars, int charIndex, int charCount, byte[] bytes, int byteIndex)
+		{
+			for (int count = charCount; count > 0; charIndex++, count--)
+			{
+				char ch = chars[charIndex];
+				bytes[byteIndex++] = (byte) (ch >> 8);
+				bytes[byteIndex++] = (byte) ch;
+			}
+			return charCount*2;
+		}
 
-    public override int GetBytes(char[] chars, int charIndex, int charCount, byte[] bytes, int byteIndex)
-    {
-      for (int count = charCount; count > 0; charIndex++, count--)
-      {
-        char ch = chars[charIndex];
-        bytes[byteIndex++] = (byte)(ch >> 8);
-        bytes[byteIndex++] = (byte)ch;
-      }
-      return charCount * 2;
-    }
+		public override int GetCharCount(byte[] bytes, int index, int count)
+		{
+			return count/2;
+		}
 
-    public override int GetCharCount(byte[] bytes, int index, int count)
-    {
-      return count / 2;
-    }
+		public override int GetChars(byte[] bytes, int byteIndex, int byteCount, char[] chars, int charIndex)
+		{
+			for (int count = byteCount; count > 0; byteIndex += 2, charIndex++, count--)
+			{
+				chars[charIndex] = (char) (bytes[byteIndex] << 8 + bytes[byteIndex + 1]);
+			}
+			return byteCount;
+		}
 
-    public override int GetChars(byte[] bytes, int byteIndex, int byteCount, char[] chars, int charIndex)
-    {
-      for (int count = byteCount; count > 0; byteIndex += 2, charIndex++, count--)
-      {
-        chars[charIndex] = (char)((int)bytes[byteIndex] << 8 + (int)bytes[byteIndex + 1]);
-      }
-      return byteCount;
-    }
+		public override int GetMaxByteCount(int charCount)
+		{
+			return charCount*2;
+		}
 
-    public override int GetMaxByteCount(int charCount)
-    {
-      return charCount * 2;
-    }
-
-    public override int GetMaxCharCount(int byteCount)
-    {
-      return byteCount / 2;
-    }
-  }
+		public override int GetMaxCharCount(int byteCount)
+		{
+			return byteCount/2;
+		}
+	}
 }

@@ -5,6 +5,7 @@ using System.Collections;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
+using PdfSharp.Core.Enums;
 using PdfSharp.Pdf;
 using PdfSharp.Pdf.IO;
 using PdfSharp.Pdf.Advanced;
@@ -26,7 +27,7 @@ namespace PdfSharp.Explorer
       try
       {
         this.filename = Path.GetFullPath(path);
-        this.document = PdfReader.Open(this.filename, PdfDocumentOpenMode.Modify, new PdfPasswordProvider(ProvidePassword));
+        this.document = PdfReader.Open(this.filename, PdfDocumentOpenMode.Modify, ProvidePassword);
       }
       finally
       {

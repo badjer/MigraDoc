@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XGraphicsLab-WPF", "PdfShar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfSharp-Hybrid", "PdfSharp\code\PdfSharp\PdfSharp-Hybrid.csproj", "{4C6B899E-D8F5-439E-ACA1-6C9D4CF79407}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfSharp.Core", "PdfSharp.Core\PdfSharp.Core.csproj", "{9E4D41E8-4B14-4718-8626-19BD27350AF1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,6 +21,10 @@ Global
 		{4C6B899E-D8F5-439E-ACA1-6C9D4CF79407}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C6B899E-D8F5-439E-ACA1-6C9D4CF79407}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4C6B899E-D8F5-439E-ACA1-6C9D4CF79407}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E4D41E8-4B14-4718-8626-19BD27350AF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E4D41E8-4B14-4718-8626-19BD27350AF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E4D41E8-4B14-4718-8626-19BD27350AF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E4D41E8-4B14-4718-8626-19BD27350AF1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,4 +1,5 @@
 #region PDFsharp - A .NET library for processing PDF
+
 //
 // Authors:
 //   Stefan Lange (mailto:Stefan.Lange@pdfsharp.com)
@@ -25,198 +26,197 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 using System;
-using System.Diagnostics;
 using System.Collections;
-using System.Text;
-using System.IO;
-using PdfSharp.Pdf.Advanced;
-using PdfSharp.Pdf.IO;
 using System.Collections.Generic;
+using System.Diagnostics;
+using PdfSharp.Pdf.Advanced;
 
 namespace PdfSharp.Pdf.Annotations
 {
-  /// <summary>
-  /// Represents the annotations array of a page.
-  /// </summary>
-  public sealed class PdfAnnotations : PdfArray
-  {
-    internal PdfAnnotations(PdfDocument document)
-      : base(document)
-    {
-    }
+	/// <summary>
+	///     Represents the annotations array of a page.
+	/// </summary>
+	public sealed class PdfAnnotations : PdfArray
+	{
+		private PdfPage page;
 
-    internal PdfAnnotations(PdfArray array)
-      : base(array)
-    {
-    }
+		internal PdfAnnotations(PdfDocument document)
+			: base(document)
+		{
+		}
 
-    /// <summary>
-    /// Adds the specified annotation.
-    /// </summary>
-    /// <param name="annotation">The annotation.</param>
-    public void Add(PdfAnnotation annotation)
-    {
-      annotation.Document = this.Owner;
-      this.Owner.irefTable.Add(annotation);
-      Elements.Add(annotation.Reference);
-    }
+		internal PdfAnnotations(PdfArray array)
+			: base(array)
+		{
+		}
 
-    /// <summary>
-    /// Removes an annotation from the document.
-    /// </summary>
-    public void Remove(PdfAnnotation annotation)
-    {
-      if (annotation.Owner != Owner)
-        throw new InvalidOperationException("The annotation does not belong to this document.");
+		//public void Insert(int index, PdfAnnotation annotation)
+		//{
+		//  annotation.Document = this.Document;
+		//  this.annotations.Insert(index, annotation);
+		//}
 
-      Owner.Internals.RemoveObject(annotation);
-      Elements.Remove(annotation.Reference);
-    }
+		/// <summary>
+		///     Gets the number of annotations in this collection.
+		/// </summary>
+		public int Count
+		{
+			get { return Elements.Count; }
+		}
 
-    /// <summary>
-    /// Removes all the annotations from the current page.
-    /// </summary>
-    public void Clear()
-    {
-      for (int idx = Count - 1; idx >= 0; idx--)
-        Page.Annotations.Remove(page.Annotations[idx]);
-    }
+		/// <summary>
+		///     Gets the <see cref="PdfSharp.Pdf.Annotations.PdfAnnotation" /> at the specified index.
+		/// </summary>
+		public PdfAnnotation this[int index]
+		{
+			get
+			{
+				PdfReference iref = null;
+				PdfDictionary dict = null;
+				PdfItem item = Elements[index];
+				if ((iref = item as PdfReference) != null)
+				{
+					Debug.Assert(iref.Value is PdfDictionary, "Reference to dictionary expected.");
+					dict = (PdfDictionary) iref.Value;
+				}
+				else
+				{
+					Debug.Assert(item is PdfDictionary, "Dictionary expected.");
+					dict = (PdfDictionary) item;
+				}
+				PdfAnnotation annotation = dict as PdfAnnotation;
+				if (annotation == null)
+				{
+					annotation = new PdfGenericAnnotation(dict);
+					if (iref == null)
+						Elements[index] = annotation;
+				}
+				return annotation;
+			}
+		}
 
-    //public void Insert(int index, PdfAnnotation annotation)
-    //{
-    //  annotation.Document = this.Document;
-    //  this.annotations.Insert(index, annotation);
-    //}
+		//public PdfAnnotation this[int index]
+		//{
+		//  get 
+		//  {
+		//      //DMH 6/7/06
+		//      //Broke this out to simplfy debugging
+		//      //Use a generic annotation to access the Meta data
+		//      //Assign this as the parent of the annotation
+		//      PdfReference r = Elements[index] as PdfReference;
+		//      PdfDictionary d = r.Value as PdfDictionary;
+		//      PdfGenericAnnotation a = new PdfGenericAnnotation(d);
+		//      a.Collection = this;
+		//      return a;
+		//  }
+		//}
 
-    /// <summary>
-    /// Gets the number of annotations in this collection.
-    /// </summary>
-    public int Count
-    {
-      get { return Elements.Count; }
-    }
+		/// <summary>
+		///     Gets the page the annotations belongs to.
+		/// </summary>
+		internal PdfPage Page
+		{
+			get { return page; }
+			set { page = value; }
+		}
 
-    /// <summary>
-    /// Gets the <see cref="PdfSharp.Pdf.Annotations.PdfAnnotation"/> at the specified index.
-    /// </summary>
-    public PdfAnnotation this[int index]
-    {
-      get
-      {
-        PdfReference iref = null;
-        PdfDictionary dict = null;
-        PdfItem item = Elements[index];
-        if ((iref = item as PdfReference) != null)
-        {
-          Debug.Assert(iref.Value is PdfDictionary, "Reference to dictionary expected.");
-          dict = (PdfDictionary)iref.Value;
-        }
-        else
-        {
-          Debug.Assert(item is PdfDictionary, "Dictionary expected.");
-          dict = (PdfDictionary)item;
-        }
-        PdfAnnotation annotation = dict as PdfAnnotation;
-        if (annotation == null)
-        {
-          annotation = new PdfGenericAnnotation(dict);
-          if (iref == null)
-            Elements[index] = annotation;
-        }
-        return annotation;
-      }
-    }
+		/// <summary>
+		///     Adds the specified annotation.
+		/// </summary>
+		/// <param name="annotation">The annotation.</param>
+		public void Add(PdfAnnotation annotation)
+		{
+			annotation.Document = Owner;
+			Owner.irefTable.Add(annotation);
+			Elements.Add(annotation.Reference);
+		}
 
-    //public PdfAnnotation this[int index]
-    //{
-    //  get 
-    //  {
-    //      //DMH 6/7/06
-    //      //Broke this out to simplfy debugging
-    //      //Use a generic annotation to access the Meta data
-    //      //Assign this as the parent of the annotation
-    //      PdfReference r = Elements[index] as PdfReference;
-    //      PdfDictionary d = r.Value as PdfDictionary;
-    //      PdfGenericAnnotation a = new PdfGenericAnnotation(d);
-    //      a.Collection = this;
-    //      return a;
-    //  }
-    //}
+		/// <summary>
+		///     Removes an annotation from the document.
+		/// </summary>
+		public void Remove(PdfAnnotation annotation)
+		{
+			if (annotation.Owner != Owner)
+				throw new InvalidOperationException("The annotation does not belong to this document.");
 
-    /// <summary>
-    /// Gets the page the annotations belongs to.
-    /// </summary>
-    internal PdfPage Page
-    {
-      get { return this.page; }
-      set { this.page = value; }
-    }
-    PdfPage page;
+			Owner.Internals.RemoveObject(annotation);
+			Elements.Remove(annotation.Reference);
+		}
 
-    /// <summary>
-    /// Fixes the /P element in imported annotation.
-    /// </summary>
-    internal static void FixImportedAnnotation(PdfPage page)
-    {
-      PdfArray annots = page.Elements.GetArray(PdfPage.Keys.Annots);
-      if (annots != null)
-      {
-        int count = annots.Elements.Count;
-        for (int idx = 0; idx < count; idx++)
-        {
-          PdfDictionary annot = annots.Elements.GetDictionary(idx);
-          if (annot != null && annot.Elements.ContainsKey("/P"))
-            annot.Elements["/P"] = page.Reference;
-        }
-      }
-    }
+		/// <summary>
+		///     Removes all the annotations from the current page.
+		/// </summary>
+		public void Clear()
+		{
+			for (int idx = Count - 1; idx >= 0; idx--)
+				Page.Annotations.Remove(page.Annotations[idx]);
+		}
 
-    /// <summary>
-    /// Returns an enumerator that iterates through a collection.
-    /// </summary>
-    public override IEnumerator<PdfItem> GetEnumerator()
-    {
-      return (IEnumerator<PdfItem>)new AnnotationsIterator(this);
-    }
+		/// <summary>
+		///     Fixes the /P element in imported annotation.
+		/// </summary>
+		internal static void FixImportedAnnotation(PdfPage page)
+		{
+			PdfArray annots = page.Elements.GetArray(PdfPage.Keys.Annots);
+			if (annots != null)
+			{
+				int count = annots.Elements.Count;
+				for (int idx = 0; idx < count; idx++)
+				{
+					PdfDictionary annot = annots.Elements.GetDictionary(idx);
+					if (annot != null && annot.Elements.ContainsKey("/P"))
+						annot.Elements["/P"] = page.Reference;
+				}
+			}
+		}
 
-    class AnnotationsIterator : IEnumerator<PdfAnnotation>
-    {
-      PdfAnnotations annotations;
-      int index;
+		/// <summary>
+		///     Returns an enumerator that iterates through a collection.
+		/// </summary>
+		public override IEnumerator<PdfItem> GetEnumerator()
+		{
+			return new AnnotationsIterator(this);
+		}
 
-      public AnnotationsIterator(PdfAnnotations annotations)
-      {
-        this.annotations = annotations;
-        this.index = -1;
-      }
+		private class AnnotationsIterator : IEnumerator<PdfAnnotation>
+		{
+			private readonly PdfAnnotations annotations;
+			private int index;
 
-      public PdfAnnotation Current
-      {
-        get { return this.annotations[this.index]; }
-      }
+			public AnnotationsIterator(PdfAnnotations annotations)
+			{
+				this.annotations = annotations;
+				index = -1;
+			}
 
-      object IEnumerator.Current
-      {
-        get { return Current; }
-      }
+			public PdfAnnotation Current
+			{
+				get { return annotations[index]; }
+			}
 
-      public bool MoveNext()
-      {
-        return ++this.index < this.annotations.Count;
-      }
+			object IEnumerator.Current
+			{
+				get { return Current; }
+			}
 
-      public void Reset()
-      {
-        this.index = -1;
-      }
+			public bool MoveNext()
+			{
+				return ++index < annotations.Count;
+			}
 
-      public void Dispose()
-      {
-        //throw new NotImplementedException();
-      }
-    }
-  }
+			public void Reset()
+			{
+				index = -1;
+			}
+
+			public void Dispose()
+			{
+				//throw new NotImplementedException();
+			}
+		}
+	}
 }

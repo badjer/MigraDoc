@@ -28,11 +28,7 @@
 #endregion
 
 using System;
-using System.Collections;
-using System.Text;
-using System.IO;
 using PdfSharp.Core.Enums;
-using PdfSharp.Internal;
 using PdfSharp.Pdf.IO;
 using PdfSharp.Pdf.AcroForms;
 

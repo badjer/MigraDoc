@@ -1,4 +1,5 @@
 #region PDFsharp - A .NET library for processing PDF
+
 //
 // Authors:
 //   David Stephensen (mailto:David.Stephensen@pdfsharp.com)
@@ -25,161 +26,160 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 using System;
-using System.Diagnostics;
-using System.Text;
 using System.IO;
 
 namespace PdfSharp.Pdf.Filters
 {
-  /// <summary>
-  /// Implements the LzwDecode filter.
-  /// </summary>
-  public class LzwDecode : Filter
-  {
-    /// <summary>
-    /// Throws a NotImplementedException because the obsolete LZW encoding is not supported by PDFsharp.
-    /// </summary>
-    public override byte[] Encode(byte[] data)
-    {
-      throw new NotImplementedException("PDFsharp does not support LZW encoding.");
-    }
+	/// <summary>
+	///     Implements the LzwDecode filter.
+	/// </summary>
+	public class LzwDecode : Filter
+	{
+		private readonly int[] andTable = {511, 1023, 2047, 4095};
+		private int bitsToGet = 9;
+		private int bytePointer;
+		private byte[] data;
+		private int nextBits;
+		private int nextData;
+		private byte[][] stringTable;
+		private int tableIndex;
 
-    /// <summary>
-    /// Decodes the specified data.
-    /// </summary>
-    public override byte[] Decode(byte[] data, FilterParms parms)
-    {
-      if (data[0] == 0x00 && data[1] == 0x01)
-        throw new Exception("LZW flavour not supported.");
+		/// <summary>
+		///     Returns the next set of bits.
+		/// </summary>
+		private int NextCode
+		{
+			get
+			{
+				try
+				{
+					nextData = (nextData << 8) | (data[bytePointer++] & 0xff);
+					nextBits += 8;
 
-      MemoryStream outputStream = new MemoryStream();
+					if (nextBits < bitsToGet)
+					{
+						nextData = (nextData << 8) | (data[bytePointer++] & 0xff);
+						nextBits += 8;
+					}
 
-      InitializeDictionary();
+					int code = (nextData >> (nextBits - bitsToGet)) & andTable[bitsToGet - 9];
+					nextBits -= bitsToGet;
 
-      this.data = data;
-      bytePointer = 0;
-      nextData = 0;
-      nextBits = 0;
-      int code, oldCode = 0;
-      byte[] str;
+					return code;
+				}
+				catch
+				{
+					return 257;
+				}
+			}
+		}
 
-      while ((code = NextCode) != 257)
-      {
-        if (code == 256)
-        {
-          InitializeDictionary();
-          code = NextCode;
-          if (code == 257)
-          {
-            break;
-          }
-          outputStream.Write(stringTable[code], 0, stringTable[code].Length);
-          oldCode = code;
+		/// <summary>
+		///     Throws a NotImplementedException because the obsolete LZW encoding is not supported by PDFsharp.
+		/// </summary>
+		public override byte[] Encode(byte[] data)
+		{
+			throw new NotImplementedException("PDFsharp does not support LZW encoding.");
+		}
 
-        }
-        else
-        {
-          if (code < tableIndex)
-          {
-            str = stringTable[code];
-            outputStream.Write(str, 0, str.Length);
-            AddEntry(stringTable[oldCode], str[0]);
-            oldCode = code;
-          }
-          else
-          {
-            str = stringTable[oldCode];
-            outputStream.Write(str, 0, str.Length);
-            AddEntry(str, str[0]);
-            oldCode = code;
-          }
-        }
-      }
+		/// <summary>
+		///     Decodes the specified data.
+		/// </summary>
+		public override byte[] Decode(byte[] data, FilterParms parms)
+		{
+			if (data[0] == 0x00 && data[1] == 0x01)
+				throw new Exception("LZW flavour not supported.");
 
-      if (outputStream.Length >= 0)
-      {
-        outputStream.Capacity = (int)outputStream.Length;
-        return outputStream.GetBuffer();
-      }
-      return null;
-    }
+			MemoryStream outputStream = new MemoryStream();
 
-    /// <summary>
-    /// Initialize the dictionary.
-    /// </summary>
-    void InitializeDictionary()
-    {
-      stringTable = new byte[8192][];
+			InitializeDictionary();
 
-      for (int i = 0; i < 256; i++)
-      {
-        stringTable[i] = new byte[1];
-        stringTable[i][0] = (byte)i;
-      }
+			this.data = data;
+			bytePointer = 0;
+			nextData = 0;
+			nextBits = 0;
+			int code, oldCode = 0;
+			byte[] str;
 
-      tableIndex = 258;
-      bitsToGet = 9;
-    }
+			while ((code = NextCode) != 257)
+			{
+				if (code == 256)
+				{
+					InitializeDictionary();
+					code = NextCode;
+					if (code == 257)
+					{
+						break;
+					}
+					outputStream.Write(stringTable[code], 0, stringTable[code].Length);
+					oldCode = code;
+				}
+				else
+				{
+					if (code < tableIndex)
+					{
+						str = stringTable[code];
+						outputStream.Write(str, 0, str.Length);
+						AddEntry(stringTable[oldCode], str[0]);
+						oldCode = code;
+					}
+					else
+					{
+						str = stringTable[oldCode];
+						outputStream.Write(str, 0, str.Length);
+						AddEntry(str, str[0]);
+						oldCode = code;
+					}
+				}
+			}
 
-    /// <summary>
-    /// Add a new entry to the Dictionary.
-    /// </summary>
-    void AddEntry(byte[] oldstring, byte newstring)
-    {
-      int length = oldstring.Length;
-      byte[] str = new byte[length + 1];
-      Array.Copy(oldstring, 0, str, 0, length);
-      str[length] = newstring;
+			if (outputStream.Length >= 0)
+			{
+				outputStream.Capacity = (int) outputStream.Length;
+				return outputStream.GetBuffer();
+			}
+			return null;
+		}
 
-      stringTable[tableIndex++] = str;
+		/// <summary>
+		///     Initialize the dictionary.
+		/// </summary>
+		private void InitializeDictionary()
+		{
+			stringTable = new byte[8192][];
 
-      if (tableIndex == 511)
-        bitsToGet = 10;
-      else if (tableIndex == 1023)
-        bitsToGet = 11;
-      else if (tableIndex == 2047)
-        bitsToGet = 12;
-    }
+			for (int i = 0; i < 256; i++)
+			{
+				stringTable[i] = new byte[1];
+				stringTable[i][0] = (byte) i;
+			}
 
-    /// <summary>
-    /// Returns the next set of bits.
-    /// </summary>
-    int NextCode
-    {
-      get
-      {
-        try
-        {
-          nextData = (nextData << 8) | (data[bytePointer++] & 0xff);
-          nextBits += 8;
+			tableIndex = 258;
+			bitsToGet = 9;
+		}
 
-          if (nextBits < bitsToGet)
-          {
-            nextData = (nextData << 8) | (data[bytePointer++] & 0xff);
-            nextBits += 8;
-          }
+		/// <summary>
+		///     Add a new entry to the Dictionary.
+		/// </summary>
+		private void AddEntry(byte[] oldstring, byte newstring)
+		{
+			int length = oldstring.Length;
+			byte[] str = new byte[length + 1];
+			Array.Copy(oldstring, 0, str, 0, length);
+			str[length] = newstring;
 
-          int code = (nextData >> (nextBits - bitsToGet)) & andTable[bitsToGet - 9];
-          nextBits -= bitsToGet;
+			stringTable[tableIndex++] = str;
 
-          return code;
-        }
-        catch
-        {
-          return 257;
-        }
-      }
-    }
-
-    readonly int[] andTable = { 511, 1023, 2047, 4095 };
-    byte[][] stringTable;
-    byte[] data;
-    int tableIndex, bitsToGet = 9;
-    int bytePointer;
-    int nextData = 0;
-    int nextBits = 0;
-  }
+			if (tableIndex == 511)
+				bitsToGet = 10;
+			else if (tableIndex == 1023)
+				bitsToGet = 11;
+			else if (tableIndex == 2047)
+				bitsToGet = 12;
+		}
+	}
 }

@@ -139,6 +139,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\PdfSharp.Core\PdfSharp.Core.csproj">
+      <Project>{9E4D41E8-4B14-4718-8626-19BD27350AF1}</Project>
+      <Name>PdfSharp.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\code\PdfSharp.Charting\PdfSharp.Charting.csproj">
       <Project>{CFDB7D46-EA8D-47DE-B10A-9E755A1B48BA}</Project>
       <Name>PdfSharp.Charting</Name>

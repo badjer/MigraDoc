@@ -1,6 +1,4 @@
-﻿using System;
-using System.Drawing;
-using System.Drawing.Drawing2D;
+﻿using PdfSharp.Core.Enums;
 using PdfSharp.Drawing;
 
 namespace XDrawing.TestLab.Tester
@@ -10,11 +8,7 @@ namespace XDrawing.TestLab.Tester
   /// </summary>
   public class Acro8Bug : TesterBase
   {
-    public Acro8Bug()
-    {
-    }
-
-    public override void RenderPage(XGraphics gfx)
+	  public override void RenderPage(XGraphics gfx)
     {
       //base.RenderPage(gfx);
 

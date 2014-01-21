@@ -1,4 +1,5 @@
 #region PDFsharp - A .NET library for processing PDF
+
 //
 // Authors:
 //   Stefan Lange (mailto:Stefan.Lange@pdfsharp.com)
@@ -25,60 +26,56 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
-using System;
 using System.Diagnostics;
 using System.Text;
 
 namespace PdfSharp.Pdf.Internal
 {
-  /// <summary>
-  /// An encoder for raw strings. The raw encoding is simply the identity relation between
-  /// charachters and bytes. PDFsharp internally works with raw encoded strings instead of
-  /// byte arrays because strings are much more handy than byte arrays.
-  /// </summary>
-  internal sealed class RawEncoding : Encoding
-  {
-    public RawEncoding()
-    {
-    }
+	/// <summary>
+	///     An encoder for raw strings. The raw encoding is simply the identity relation between
+	///     charachters and bytes. PDFsharp internally works with raw encoded strings instead of
+	///     byte arrays because strings are much more handy than byte arrays.
+	/// </summary>
+	internal sealed class RawEncoding : Encoding
+	{
+		public override int GetByteCount(char[] chars, int index, int count)
+		{
+			return count;
+		}
 
-    public override int GetByteCount(char[] chars, int index, int count)
-    {
-      return count;
-    }
+		public override int GetBytes(char[] chars, int charIndex, int charCount, byte[] bytes, int byteIndex)
+		{
+			for (int count = charCount; count > 0; charIndex++, byteIndex++, count--)
+			{
+				Debug.Assert((uint) chars[charIndex] < 256, "Raw string contains invalid character with a value > 255.");
+				bytes[byteIndex] = (byte) chars[charIndex];
+			}
+			return charCount;
+		}
 
-    public override int GetBytes(char[] chars, int charIndex, int charCount, byte[] bytes, int byteIndex)
-    {
-      for (int count = charCount; count > 0; charIndex++, byteIndex++, count--)
-      {
-        Debug.Assert((uint)chars[charIndex] < 256, "Raw string contains invalid character with a value > 255.");
-        bytes[byteIndex] = (byte)chars[charIndex];
-      }
-      return charCount;
-    }
+		public override int GetCharCount(byte[] bytes, int index, int count)
+		{
+			return count;
+		}
 
-    public override int GetCharCount(byte[] bytes, int index, int count)
-    {
-      return count;
-    }
+		public override int GetChars(byte[] bytes, int byteIndex, int byteCount, char[] chars, int charIndex)
+		{
+			for (int count = byteCount; count > 0; byteIndex++, charIndex++, count--)
+				chars[charIndex] = (char) bytes[byteIndex];
+			return byteCount;
+		}
 
-    public override int GetChars(byte[] bytes, int byteIndex, int byteCount, char[] chars, int charIndex)
-    {
-      for (int count = byteCount; count > 0; byteIndex++, charIndex++, count--)
-        chars[charIndex] = (char)bytes[byteIndex];
-      return byteCount;
-    }
+		public override int GetMaxByteCount(int charCount)
+		{
+			return charCount;
+		}
 
-    public override int GetMaxByteCount(int charCount)
-    {
-      return charCount;
-    }
-
-    public override int GetMaxCharCount(int byteCount)
-    {
-      return byteCount;
-    }
-  }
+		public override int GetMaxCharCount(int byteCount)
+		{
+			return byteCount;
+		}
+	}
 }

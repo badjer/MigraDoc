@@ -1,4 +1,5 @@
 #region PDFsharp - A .NET library for processing PDF
+
 //
 // Authors:
 //   Stefan Lange (mailto:Stefan.Lange@pdfsharp.com)
@@ -25,62 +26,61 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
-using System;
-using System.Diagnostics;
-using System.Text;
 using System.IO;
+using PdfSharp.SharpZipLib.Zip.Compression;
+using PdfSharp.SharpZipLib.Zip.Compression.Streams;
 #if NET_ZIP
 using System.IO.Compression;
 #else
-using PdfSharp.SharpZipLib.Zip.Compression;
-using PdfSharp.SharpZipLib.Zip.Compression.Streams;
+
 #endif
 
 namespace PdfSharp.Pdf.Filters
 {
-  /// <summary>
-  /// Implements the FlateDecode filter by wrapping SharpZipLib.
-  /// </summary>
-  public class FlateDecode : Filter
-  {
-    /// <summary>
-    /// Encodes the specified data.
-    /// </summary>
-    public override byte[] Encode(byte[] data)
-    {
-      MemoryStream ms = new MemoryStream();
+	/// <summary>
+	///     Implements the FlateDecode filter by wrapping SharpZipLib.
+	/// </summary>
+	public class FlateDecode : Filter
+	{
+		/// <summary>
+		///     Encodes the specified data.
+		/// </summary>
+		public override byte[] Encode(byte[] data)
+		{
+			MemoryStream ms = new MemoryStream();
 
-      // DeflateStream/GZipStream does not work immediately and I have not the leisure to work it out.
-      // So I keep on using SharpZipLib even with .NET 2.0.
+			// DeflateStream/GZipStream does not work immediately and I have not the leisure to work it out.
+			// So I keep on using SharpZipLib even with .NET 2.0.
 #if NET_ZIP
-      // See http://connect.microsoft.com/VisualStudio/feedback/ViewFeedback.aspx?FeedbackID=97064
-      // 
-      // Excerpt from the RFC 1950 specs for first byte:
-      //
-      // CMF (Compression Method and flags)
-      //    This byte is divided into a 4-bit compression method and a 4-
-      //    bit information field depending on the compression method.
-      //
-      //      bits 0 to 3  CM     Compression method
-      //      bits 4 to 7  CINFO  Compression info
-      //
-      // CM (Compression method)
-      //    This identifies the compression method used in the file. CM = 8
-      //    denotes the "deflate" compression method with a window size up
-      //    to 32K.  This is the method used by gzip and PNG (see
-      //    references [1] and [2] in Chapter 3, below, for the reference
-      //    documents).  CM = 15 is reserved.  It might be used in a future
-      //    version of this specification to indicate the presence of an
-      //    extra field before the compressed data.
-      //
-      // CINFO (Compression info)
-      //    For CM = 8, CINFO is the base-2 logarithm of the LZ77 window
-      //    size, minus eight (CINFO=7 indicates a 32K window size). Values
-      //    of CINFO above 7 are not allowed in this version of the
-      //    specification.  CINFO is not defined in this specification for
-      //    CM not equal to 8.
+	// See http://connect.microsoft.com/VisualStudio/feedback/ViewFeedback.aspx?FeedbackID=97064
+	// 
+	// Excerpt from the RFC 1950 specs for first byte:
+	//
+	// CMF (Compression Method and flags)
+	//    This byte is divided into a 4-bit compression method and a 4-
+	//    bit information field depending on the compression method.
+	//
+	//      bits 0 to 3  CM     Compression method
+	//      bits 4 to 7  CINFO  Compression info
+	//
+	// CM (Compression method)
+	//    This identifies the compression method used in the file. CM = 8
+	//    denotes the "deflate" compression method with a window size up
+	//    to 32K.  This is the method used by gzip and PNG (see
+	//    references [1] and [2] in Chapter 3, below, for the reference
+	//    documents).  CM = 15 is reserved.  It might be used in a future
+	//    version of this specification to indicate the presence of an
+	//    extra field before the compressed data.
+	//
+	// CINFO (Compression info)
+	//    For CM = 8, CINFO is the base-2 logarithm of the LZ77 window
+	//    size, minus eight (CINFO=7 indicates a 32K window size). Values
+	//    of CINFO above 7 are not allowed in this version of the
+	//    specification.  CINFO is not defined in this specification for
+	//    CM not equal to 8.
       ms.WriteByte(0x78);
 
       // Excerpt from the RFC 1950 specs for second byte:
@@ -123,24 +123,24 @@ namespace PdfSharp.Pdf.Filters
       zip.Write(data, 0, data.Length);
       zip.Close();
 #else
-      DeflaterOutputStream zip = new DeflaterOutputStream(ms, new Deflater(Deflater.DEFAULT_COMPRESSION, false));
-      zip.Write(data, 0, data.Length);
-      zip.Finish();
+			DeflaterOutputStream zip = new DeflaterOutputStream(ms, new Deflater(Deflater.DEFAULT_COMPRESSION, false));
+			zip.Write(data, 0, data.Length);
+			zip.Finish();
 #endif
-      ms.Capacity = (int)ms.Length;
-      return ms.GetBuffer();
-    }
+			ms.Capacity = (int) ms.Length;
+			return ms.GetBuffer();
+		}
 
-    /// <summary>
-    /// Decodes the specified data.
-    /// </summary>
-    public override byte[] Decode(byte[] data, FilterParms parms)
-    {
-      MemoryStream msInput = new MemoryStream(data);
-      MemoryStream msOutput = new MemoryStream();
+		/// <summary>
+		///     Decodes the specified data.
+		/// </summary>
+		public override byte[] Decode(byte[] data, FilterParms parms)
+		{
+			MemoryStream msInput = new MemoryStream(data);
+			MemoryStream msOutput = new MemoryStream();
 #if NET_ZIP
-      // See http://connect.microsoft.com/VisualStudio/feedback/ViewFeedback.aspx?FeedbackID=97064
-      // It seems to work when skipping the first two bytes.
+	// See http://connect.microsoft.com/VisualStudio/feedback/ViewFeedback.aspx?FeedbackID=97064
+	// It seems to work when skipping the first two bytes.
       byte header;   // 0x30 0x59
       header = (byte)msInput.ReadByte();
       //Debug.Assert(header == 48);
@@ -165,25 +165,24 @@ namespace PdfSharp.Pdf.Filters
       }
       return null;
 #else
-      InflaterInputStream iis = new InflaterInputStream(msInput, new Inflater(false));
-      int cbRead;
-      byte[] abResult = new byte[32768];
-      do
-      {
-        cbRead = iis.Read(abResult, 0, abResult.Length);
-        if (cbRead > 0)
-          msOutput.Write(abResult, 0, cbRead);
-      }
-      while (cbRead > 0);
-      iis.Close();
-      msOutput.Flush();
-      if (msOutput.Length >= 0)
-      {
-        msOutput.Capacity = (int)msOutput.Length;
-        return msOutput.GetBuffer();
-      }
-      return null;
+			InflaterInputStream iis = new InflaterInputStream(msInput, new Inflater(false));
+			int cbRead;
+			byte[] abResult = new byte[32768];
+			do
+			{
+				cbRead = iis.Read(abResult, 0, abResult.Length);
+				if (cbRead > 0)
+					msOutput.Write(abResult, 0, cbRead);
+			} while (cbRead > 0);
+			iis.Close();
+			msOutput.Flush();
+			if (msOutput.Length >= 0)
+			{
+				msOutput.Capacity = (int) msOutput.Length;
+				return msOutput.GetBuffer();
+			}
+			return null;
 #endif
-    }
-  }
+		}
+	}
 }

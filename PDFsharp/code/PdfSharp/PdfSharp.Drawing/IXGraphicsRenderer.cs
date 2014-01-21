@@ -27,18 +27,7 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
-using System.Text;
-using System.IO;
-#if GDI
-using System.Drawing;
-using System.Drawing.Drawing2D;
-#endif
-#if WPF
-using System.Windows.Media;
-#endif
 using PdfSharp.Core.Enums;
-using PdfSharp.Internal;
 
 namespace PdfSharp.Drawing
 {

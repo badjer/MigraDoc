@@ -1,4 +1,5 @@
 #region PDFsharp - A .NET library for processing PDF
+
 //
 // Authors:
 //   Stefan Lange (mailto:Stefan.Lange@pdfsharp.com)
@@ -25,41 +26,43 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
-using System;
 using PdfSharp.Pdf.Content.Objects;
 
 namespace PdfSharp.Pdf.Content
 {
-  /// <summary>
-  /// Represents the functionality for reading PDF content streams.
-  /// </summary>
-  public sealed class ContentReader
-  {
-    // Makes this class static
-    ContentReader() { }
+	/// <summary>
+	///     Represents the functionality for reading PDF content streams.
+	/// </summary>
+	public sealed class ContentReader
+	{
+		// Makes this class static
+		private ContentReader()
+		{
+		}
 
-    /// <summary>
-    /// Reads the content stream(s) of the specified page.
-    /// </summary>
-    /// <param name="page">The page.</param>
-    static public CSequence ReadContent(PdfPage page)
-    {
-      CParser parser = new CParser(page);
-      CSequence sequence = parser.ReadContent();
-      return sequence;
-    }
+		/// <summary>
+		///     Reads the content stream(s) of the specified page.
+		/// </summary>
+		/// <param name="page">The page.</param>
+		public static CSequence ReadContent(PdfPage page)
+		{
+			CParser parser = new CParser(page);
+			CSequence sequence = parser.ReadContent();
+			return sequence;
+		}
 
-    /// <summary>
-    /// Reads the specified content.
-    /// </summary>
-    /// <param name="content">The content.</param>
-    static public CSequence ReadContent(byte[] content)
-    {
-      CParser parser = new CParser(content);
-      CSequence sequence = parser.ReadContent();
-      return sequence;
-    }
-  }
+		/// <summary>
+		///     Reads the specified content.
+		/// </summary>
+		/// <param name="content">The content.</param>
+		public static CSequence ReadContent(byte[] content)
+		{
+			CParser parser = new CParser(content);
+			CSequence sequence = parser.ReadContent();
+			return sequence;
+		}
+	}
 }

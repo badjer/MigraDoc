@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Data;
 using System.Windows.Forms;
+using PdfSharp.Core.Enums;
 using PdfSharp.Drawing;
 
 namespace XDrawing.TestLab.FormPages

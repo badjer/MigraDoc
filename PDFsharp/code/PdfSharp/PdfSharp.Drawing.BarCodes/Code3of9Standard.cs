@@ -28,7 +28,6 @@
 #endregion
 
 using System;
-using System.Diagnostics;
 using PdfSharp.Core.Enums;
 
 namespace PdfSharp.Drawing.BarCodes

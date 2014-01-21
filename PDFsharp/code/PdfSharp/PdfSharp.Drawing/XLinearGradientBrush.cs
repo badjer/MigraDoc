@@ -29,7 +29,6 @@
 
 using System;
 using System.ComponentModel;
-using System.IO;
 #if GDI
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -38,9 +37,7 @@ using System.Drawing.Drawing2D;
 using System.Windows;
 using System.Windows.Media;
 #endif
-using PdfSharp;
 using PdfSharp.Core.Enums;
-using PdfSharp.Internal;
 
 namespace PdfSharp.Drawing
 {

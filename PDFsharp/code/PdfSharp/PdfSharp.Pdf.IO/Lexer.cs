@@ -1,4 +1,5 @@
 #region PDFsharp - A .NET library for processing PDF
+
 //
 // Authors:
 //   Stefan Lange (mailto:Stefan.Lange@pdfsharp.com)
@@ -25,464 +26,536 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 using System;
-using System.Globalization;
 using System.Diagnostics;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
+using System.Globalization;
 using System.IO;
+using System.Text;
 using PdfSharp.Core.Enums;
 using PdfSharp.Pdf.Internal;
 
 namespace PdfSharp.Pdf.IO
 {
-  /// <summary>
-  /// Lexical analyzer for PDF files. Technically a PDF file is a stream of bytes. Some chunks
-  /// of bytes represent strings in several encodings. The actual encoding depends on the
-  /// context where the string is used. Therefore the bytes are 'raw encoded' into characters,
-  /// i.e. a character or token read by the lexer has always character values in the range from
-  /// 0 to 255.
-  /// </summary>
-  internal class Lexer
-  {
-    /// <summary>
-    /// Initializes a new instance of the Lexer class.
-    /// </summary>
-    public Lexer(Stream pdfInputStream)
-    {
-      this.pdf = pdfInputStream;
-      this.pdfLength = (int)pdf.Length;
-      this.idxChar = 0;
-      Position = 0;
-    }
+	/// <summary>
+	///     Lexical analyzer for PDF files. Technically a PDF file is a stream of bytes. Some chunks
+	///     of bytes represent strings in several encodings. The actual encoding depends on the
+	///     context where the string is used. Therefore the bytes are 'raw encoded' into characters,
+	///     i.e. a character or token read by the lexer has always character values in the range from
+	///     0 to 255.
+	/// </summary>
+	internal class Lexer
+	{
+		private readonly Stream pdf;
+		private readonly int pdfLength;
+		private char currChar;
+		private int idxChar;
+		private char nextChar;
+		private Symbol symbol = Symbol.None;
+		private StringBuilder token;
 
-    /// <summary>
-    /// Initializes fields after position has changed.
-    /// </summary>
-    void Initialize()
-    {
-      this.currChar = (char)this.pdf.ReadByte();
-      this.nextChar = (char)this.pdf.ReadByte();
-      this.token = new StringBuilder();
-      //this.symbol = Symbol.None;
-    }
+		/// <summary>
+		///     Initializes a new instance of the Lexer class.
+		/// </summary>
+		public Lexer(Stream pdfInputStream)
+		{
+			pdf = pdfInputStream;
+			pdfLength = (int) pdf.Length;
+			idxChar = 0;
+			Position = 0;
+		}
 
-    /// <summary>
-    /// Gets or sets the position within the PDF stream.
-    /// </summary>
-    public int Position
-    {
-      get { return this.idxChar; }
-      set
-      {
-        this.idxChar = value;
-        this.pdf.Position = value;
-        Initialize();
-      }
-    }
+		/// <summary>
+		///     Gets or sets the position within the PDF stream.
+		/// </summary>
+		public int Position
+		{
+			get { return idxChar; }
+			set
+			{
+				idxChar = value;
+				pdf.Position = value;
+				Initialize();
+			}
+		}
 
-    /// <summary>
-    /// Reads the next token and returns its type. If the token starts with a digit, the parameter
-    /// testReference specifies how to treat it. If it is false, the lexer scans for a single integer.
-    /// If it is true, the lexer checks if the digit is the prefix of a reference. If it is a reference,
-    /// the token is set to the object ID followed by the generation number separated by a blank
-    /// (the 'R' is omitted from the token).
-    /// </summary>
-    // /// <param name="testReference">Indicates whether to test the next token if it is a reference.</param>
-    public Symbol ScanNextToken()
-    {
-    Again:
-      this.token = new StringBuilder();
-      char ch = MoveToNonWhiteSpace();
-      switch (ch)
-      {
-        case '%':
-          // Eat comments, the parser doesn't handle them
-          //return this.symbol = ScanComment();
-          ScanComment();
-          goto Again;
+		/// <summary>
+		///     Gets the current symbol.
+		/// </summary>
+		public Symbol Symbol
+		{
+			get { return symbol; }
+			set { symbol = value; }
+		}
 
-        case '/':
-          return this.symbol = ScanName();
+		/// <summary>
+		///     Gets the current token.
+		/// </summary>
+		internal string Token
+		{
+			get { return token.ToString(); }
+		}
 
-        //case 'R':
-        //  if (Lexer.IsWhiteSpace(this.nextChar))
-        //  {
-        //    ScanNextChar();
-        //    return Symbol.R;
-        //  }
-        //  break;
+		/// <summary>
+		///     Interprets current token as boolean literal.
+		/// </summary>
+		internal bool TokenToBoolean
+		{
+			get
+			{
+				Debug.Assert(token.ToString() == "true" || token.ToString() == "false");
+				return token.ToString()[0] == 't';
+			}
+		}
 
-        case '+': //TODO is it so easy?
-        case '-':
-          return this.symbol = ScanNumber();
+		/// <summary>
+		///     Interprets current token as integer literal.
+		/// </summary>
+		internal int TokenToInteger
+		{
+			get
+			{
+				//Debug.Assert(this.token.ToString().IndexOf('.') == -1);
+				return Int32.Parse(token.ToString(), CultureInfo.InvariantCulture);
+			}
+		}
 
-        case '(':
-          return this.symbol = ScanLiteralString();
+		/// <summary>
+		///     Interprets current token as unsigned integer literal.
+		/// </summary>
+		internal uint TokenToUInteger
+		{
+			get
+			{
+				//Debug.Assert(this.token.ToString().IndexOf('.') == -1);
+				return UInt32.Parse(token.ToString(), CultureInfo.InvariantCulture);
+			}
+		}
 
-        case '[':
-          ScanNextChar();
-          return this.symbol = Symbol.BeginArray;
+		/// <summary>
+		///     Interpret current token as real or integer literal.
+		/// </summary>
+		internal double TokenToReal
+		{
+			get { return double.Parse(token.ToString(), CultureInfo.InvariantCulture); }
+		}
 
-        case ']':
-          ScanNextChar();
-          return this.symbol = Symbol.EndArray;
+		public int PdfLength
+		{
+			get { return pdfLength; }
+		}
 
-        case '<':
-          if (this.nextChar == '<')
-          {
-            ScanNextChar();
-            ScanNextChar();
-            return this.symbol = Symbol.BeginDictionary;
-          }
-          return this.symbol = ScanHexadecimalString();
+		/// <summary>
+		///     Initializes fields after position has changed.
+		/// </summary>
+		private void Initialize()
+		{
+			currChar = (char) pdf.ReadByte();
+			nextChar = (char) pdf.ReadByte();
+			token = new StringBuilder();
+			//this.symbol = Symbol.None;
+		}
 
-        case '>':
-          if (this.nextChar == '>')
-          {
-            ScanNextChar();
-            ScanNextChar();
-            return this.symbol = Symbol.EndDictionary;
-          }
-          Debug.Assert(false, ">???");
-          break;
+		/// <summary>
+		///     Reads the next token and returns its type. If the token starts with a digit, the parameter
+		///     testReference specifies how to treat it. If it is false, the lexer scans for a single integer.
+		///     If it is true, the lexer checks if the digit is the prefix of a reference. If it is a reference,
+		///     the token is set to the object ID followed by the generation number separated by a blank
+		///     (the 'R' is omitted from the token).
+		/// </summary>
+		// /// <param name="testReference">Indicates whether to test the next token if it is a reference.</param>
+		public Symbol ScanNextToken()
+		{
+			Again:
+			token = new StringBuilder();
+			char ch = MoveToNonWhiteSpace();
+			switch (ch)
+			{
+				case '%':
+					// Eat comments, the parser doesn't handle them
+					//return this.symbol = ScanComment();
+					ScanComment();
+					goto Again;
 
-        case '.':
-          return this.symbol = ScanNumber();
-      }
-      if (Char.IsDigit(ch))
-        return this.symbol = ScanNumber();
+				case '/':
+					return symbol = ScanName();
 
-      if (Char.IsLetter(ch))
-        return this.symbol = ScanKeyword();
+					//case 'R':
+					//  if (Lexer.IsWhiteSpace(this.nextChar))
+					//  {
+					//    ScanNextChar();
+					//    return Symbol.R;
+					//  }
+					//  break;
 
-      if (ch == Chars.EOF)
-        return this.symbol = Symbol.Eof;
-      Debug.Assert(false, "not implemented");
-      return this.symbol = Symbol.None;
-    }
+				case '+': //TODO is it so easy?
+				case '-':
+					return symbol = ScanNumber();
 
-    ////public Symbol ScanNextToken(bool x)
-    ////{
-    ////  throw new NotImplementedException();
-    ////}
+				case '(':
+					return symbol = ScanLiteralString();
 
-    /// <summary>
-    /// Reads the raw content of a stream.
-    /// </summary>
-    public byte[] ReadStream(int length)
-    {
-      int pos = 0;
-      // Skip new line behind «stream»
-      if (this.currChar == Chars.CR)
-      {
-        if (this.nextChar == Chars.LF)
-          pos = this.idxChar + 2;
-        else
-          pos = this.idxChar + 1;
-      }
-      else
-        pos = this.idxChar + 1;
+				case '[':
+					ScanNextChar();
+					return symbol = Symbol.BeginArray;
 
-      this.pdf.Position = pos;
-      byte[] bytes = new byte[length];
-      int read = this.pdf.Read(bytes, 0, length);
-      Debug.Assert(read == length);
-      // synchronize idxChar etc.
-      this.Position = pos + length;
-      return bytes;
-    }
+				case ']':
+					ScanNextChar();
+					return symbol = Symbol.EndArray;
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public String ReadRawString(int position, int length)
-    {
-      this.pdf.Position = position;
-      byte[] bytes = new byte[length];
-      this.pdf.Read(bytes, 0, length);
-      return PdfEncoders.RawEncoding.GetString(bytes, 0, bytes.Length);
-    }
+				case '<':
+					if (nextChar == '<')
+					{
+						ScanNextChar();
+						ScanNextChar();
+						return symbol = Symbol.BeginDictionary;
+					}
+					return symbol = ScanHexadecimalString();
 
-    /// <summary>
-    /// Scans a comment line.
-    /// </summary>
-    public Symbol ScanComment()
-    {
-      Debug.Assert(this.currChar == Chars.Percent);
+				case '>':
+					if (nextChar == '>')
+					{
+						ScanNextChar();
+						ScanNextChar();
+						return symbol = Symbol.EndDictionary;
+					}
+					Debug.Assert(false, ">???");
+					break;
 
-      this.token = new StringBuilder();
-      while (AppendAndScanNextChar() != Chars.LF) ;
-      // TODO: not correct
-      if (this.token.ToString().StartsWith("%%EOF"))
-        return Symbol.Eof;
-      return this.symbol = Symbol.Comment;
-    }
+				case '.':
+					return symbol = ScanNumber();
+			}
+			if (Char.IsDigit(ch))
+				return symbol = ScanNumber();
 
-    /// <summary>
-    /// Scans a name.
-    /// </summary>
-    public Symbol ScanName()
-    {
-      Debug.Assert(this.currChar == Chars.Slash);
+			if (Char.IsLetter(ch))
+				return symbol = ScanKeyword();
 
-      this.token = new StringBuilder();
-      while (true)
-      {
-        char ch = AppendAndScanNextChar();
-        if (IsWhiteSpace(ch) || IsDelimiter(ch))
-          return this.symbol = Symbol.Name;
+			if (ch == Chars.EOF)
+				return symbol = Symbol.Eof;
+			Debug.Assert(false, "not implemented");
+			return symbol = Symbol.None;
+		}
 
-        if (ch == '#')
-        {
-          ScanNextChar();
-          char[] hex = new char[2];
-          hex[0] = this.currChar;
-          hex[1] = this.nextChar;
-          ScanNextChar();
-          // TODO Check syntax
-          ch = (char)(ushort)int.Parse(new string(hex), NumberStyles.AllowHexSpecifier);
-          this.currChar = ch;
-        }
-      }
-    }
+		////public Symbol ScanNextToken(bool x)
+		////{
+		////  throw new NotImplementedException();
+		////}
 
-    public Symbol ScanNumber()
-    {
-      // I found a PDF file created with Acrobat 7 with this entry 
-      //   /Checksum 2996984786
-      // What is this? It is neither an integer nor a real.
-      // I introduced an UInteger...
-      bool period = false;
-      bool sign = false;
-      period.GetType();
-      sign.GetType();
+		/// <summary>
+		///     Reads the raw content of a stream.
+		/// </summary>
+		public byte[] ReadStream(int length)
+		{
+			int pos = 0;
+			// Skip new line behind «stream»
+			if (currChar == Chars.CR)
+			{
+				if (nextChar == Chars.LF)
+					pos = idxChar + 2;
+				else
+					pos = idxChar + 1;
+			}
+			else
+				pos = idxChar + 1;
 
-      this.token = new StringBuilder();
-      char ch = this.currChar;
-      if (ch == '+' || ch == '-')
-      {
-        sign = true;
-        this.token.Append(ch);
-        ch = ScanNextChar();
-      }
-      while (true)
-      {
-        if (char.IsDigit(ch))
-        {
-          this.token.Append(ch);
-        }
-        else if (ch == '.')
-        {
-          if (period)
-            throw new PdfReaderException("More than one period in number.");
-          period = true;
-          this.token.Append(ch);
-        }
-        else
-          break;
-        ch = ScanNextChar();
-      }
+			pdf.Position = pos;
+			byte[] bytes = new byte[length];
+			int read = pdf.Read(bytes, 0, length);
+			Debug.Assert(read == length);
+			// synchronize idxChar etc.
+			Position = pos + length;
+			return bytes;
+		}
 
-      if (period)
-        return Symbol.Real;
-      long l = Int64.Parse(this.token.ToString(), CultureInfo.InvariantCulture);
-      if (l >= Int32.MinValue && l <= Int32.MaxValue)
-        return Symbol.Integer;
-      if (l > 0 && l <= UInt32.MaxValue)
-        return Symbol.UInteger;
-      throw new PdfReaderException("Number exceeds integer range.");
-    }
+		/// <summary>
+		/// </summary>
+		public String ReadRawString(int position, int length)
+		{
+			pdf.Position = position;
+			byte[] bytes = new byte[length];
+			pdf.Read(bytes, 0, length);
+			return PdfEncoders.RawEncoding.GetString(bytes, 0, bytes.Length);
+		}
 
-    public Symbol ScanKeyword()
-    {
-      this.token = new StringBuilder();
-      char ch = this.currChar;
-      // Scan token
-      while (true)
-      {
-        if (char.IsLetter(ch))
-        {
-          this.token.Append(ch);
-        }
-        else
-          break;
-        ch = ScanNextChar();
-      }
+		/// <summary>
+		///     Scans a comment line.
+		/// </summary>
+		public Symbol ScanComment()
+		{
+			Debug.Assert(currChar == Chars.Percent);
 
-      // Check known tokens
-      switch (this.token.ToString())
-      {
-        case "obj":
-          return this.symbol = Symbol.Obj;
+			token = new StringBuilder();
+			while (AppendAndScanNextChar() != Chars.LF) ;
+			// TODO: not correct
+			if (token.ToString().StartsWith("%%EOF"))
+				return Symbol.Eof;
+			return symbol = Symbol.Comment;
+		}
 
-        case "endobj":
-          return this.symbol = Symbol.EndObj;
+		/// <summary>
+		///     Scans a name.
+		/// </summary>
+		public Symbol ScanName()
+		{
+			Debug.Assert(currChar == Chars.Slash);
 
-        case "null":
-          return this.symbol = Symbol.Null;
+			token = new StringBuilder();
+			while (true)
+			{
+				char ch = AppendAndScanNextChar();
+				if (IsWhiteSpace(ch) || IsDelimiter(ch))
+					return symbol = Symbol.Name;
 
-        case "true":
-        case "false":
-          return this.symbol = Symbol.Boolean;
+				if (ch == '#')
+				{
+					ScanNextChar();
+					char[] hex = new char[2];
+					hex[0] = currChar;
+					hex[1] = nextChar;
+					ScanNextChar();
+					// TODO Check syntax
+					ch = (char) (ushort) int.Parse(new string(hex), NumberStyles.AllowHexSpecifier);
+					currChar = ch;
+				}
+			}
+		}
 
-        case "R":
-          return this.symbol = Symbol.R;
+		public Symbol ScanNumber()
+		{
+			// I found a PDF file created with Acrobat 7 with this entry 
+			//   /Checksum 2996984786
+			// What is this? It is neither an integer nor a real.
+			// I introduced an UInteger...
+			bool period = false;
+			bool sign = false;
+			period.GetType();
+			sign.GetType();
 
-        case "stream":
-          return this.symbol = Symbol.BeginStream;
+			token = new StringBuilder();
+			char ch = currChar;
+			if (ch == '+' || ch == '-')
+			{
+				sign = true;
+				token.Append(ch);
+				ch = ScanNextChar();
+			}
+			while (true)
+			{
+				if (char.IsDigit(ch))
+				{
+					token.Append(ch);
+				}
+				else if (ch == '.')
+				{
+					if (period)
+						throw new PdfReaderException("More than one period in number.");
+					period = true;
+					token.Append(ch);
+				}
+				else
+					break;
+				ch = ScanNextChar();
+			}
 
-        case "endstream":
-          return this.symbol = Symbol.EndStream;
+			if (period)
+				return Symbol.Real;
+			long l = Int64.Parse(token.ToString(), CultureInfo.InvariantCulture);
+			if (l >= Int32.MinValue && l <= Int32.MaxValue)
+				return Symbol.Integer;
+			if (l > 0 && l <= UInt32.MaxValue)
+				return Symbol.UInteger;
+			throw new PdfReaderException("Number exceeds integer range.");
+		}
 
-        case "xref":
-          return this.symbol = Symbol.XRef;
+		public Symbol ScanKeyword()
+		{
+			token = new StringBuilder();
+			char ch = currChar;
+			// Scan token
+			while (true)
+			{
+				if (char.IsLetter(ch))
+				{
+					token.Append(ch);
+				}
+				else
+					break;
+				ch = ScanNextChar();
+			}
 
-        case "trailer":
-          return this.symbol = Symbol.Trailer;
+			// Check known tokens
+			switch (token.ToString())
+			{
+				case "obj":
+					return symbol = Symbol.Obj;
 
-        case "startxref":
-          return this.symbol = Symbol.StartXRef;
-      }
+				case "endobj":
+					return symbol = Symbol.EndObj;
 
-      // Anything else is treated as a keyword. Samples are f or n in iref.
-      return this.symbol = Symbol.Keyword;
-    }
+				case "null":
+					return symbol = Symbol.Null;
 
-    public Symbol ScanLiteralString()
-    {
-      Debug.Assert(this.currChar == Chars.ParenLeft);
+				case "true":
+				case "false":
+					return symbol = Symbol.Boolean;
+
+				case "R":
+					return symbol = Symbol.R;
+
+				case "stream":
+					return symbol = Symbol.BeginStream;
+
+				case "endstream":
+					return symbol = Symbol.EndStream;
+
+				case "xref":
+					return symbol = Symbol.XRef;
+
+				case "trailer":
+					return symbol = Symbol.Trailer;
+
+				case "startxref":
+					return symbol = Symbol.StartXRef;
+			}
+
+			// Anything else is treated as a keyword. Samples are f or n in iref.
+			return symbol = Symbol.Keyword;
+		}
+
+		public Symbol ScanLiteralString()
+		{
+			Debug.Assert(currChar == Chars.ParenLeft);
 
 #if DEBUG
-      if (this.idxChar == 0x1b67aa)
-        GetType();
+			if (idxChar == 0x1b67aa)
+				GetType();
 #endif
 
-      this.token = new StringBuilder();
-      int parenLevel = 0;
-      char ch = ScanNextChar();
-      // Test UNICODE string
-      if (ch == '\xFE' && this.nextChar == '\xFF')
-      {
-        // I'm not sure if the code is correct in any case.
-        // ? Can a UNICODE character not start with ')' as hibyte
-        // ? What about \# escape sequences
+			token = new StringBuilder();
+			int parenLevel = 0;
+			char ch = ScanNextChar();
+			// Test UNICODE string
+			if (ch == '\xFE' && nextChar == '\xFF')
+			{
+				// I'm not sure if the code is correct in any case.
+				// ? Can a UNICODE character not start with ')' as hibyte
+				// ? What about \# escape sequences
 
-        // BUG: The code is not correct. I got a file containing the following sting:
-        // (þÿñùãfØÚ\rÞF`:7.2.5 Acceptable daily intake \(ADI\) and other guideline levels)
-        // It starts as unicode but ends as Ascii. No idea how to parse.
+				// BUG: The code is not correct. I got a file containing the following sting:
+				// (þÿñùãfØÚ\rÞF`:7.2.5 Acceptable daily intake \(ADI\) and other guideline levels)
+				// It starts as unicode but ends as Ascii. No idea how to parse.
 #if true
-        //List<byte> bytes = new List<byte>();
-        while (true)
-        {
-        SkipChar:
-          switch (ch)
-          {
-            case '(':  // is this possible in a Unicode string?
-              parenLevel++;
-              break;
+				//List<byte> bytes = new List<byte>();
+				while (true)
+				{
+					SkipChar:
+					switch (ch)
+					{
+						case '(': // is this possible in a Unicode string?
+							parenLevel++;
+							break;
 
-            case ')':
-              if (parenLevel == 0)
-              {
-                ScanNextChar();
-                return this.symbol = Symbol.String;
-              }
-              else
-                parenLevel--;
-              break;
+						case ')':
+							if (parenLevel == 0)
+							{
+								ScanNextChar();
+								return symbol = Symbol.String;
+							}
+							else
+								parenLevel--;
+							break;
 
-            case '\\':
-              {
-                ch = ScanNextChar();
-                switch (ch)
-                {
-                  case 'n':
-                    ch = Chars.LF;
-                    break;
+						case '\\':
+							{
+								ch = ScanNextChar();
+								switch (ch)
+								{
+									case 'n':
+										ch = Chars.LF;
+										break;
 
-                  case 'r':
-                    ch = Chars.CR;
-                    break;
+									case 'r':
+										ch = Chars.CR;
+										break;
 
-                  case 't':
-                    ch = Chars.HT;
-                    break;
+									case 't':
+										ch = Chars.HT;
+										break;
 
-                  case 'b':
-                    ch = Chars.BS;
-                    break;
+									case 'b':
+										ch = Chars.BS;
+										break;
 
-                  case 'f':
-                    ch = Chars.FF;
-                    break;
+									case 'f':
+										ch = Chars.FF;
+										break;
 
-                  case '(':
-                    ch = Chars.ParenLeft;
-                    break;
+									case '(':
+										ch = Chars.ParenLeft;
+										break;
 
-                  case ')':
-                    ch = Chars.ParenRight;
-                    break;
+									case ')':
+										ch = Chars.ParenRight;
+										break;
 
-                  case '\\':
-                    ch = Chars.BackSlash;
-                    break;
+									case '\\':
+										ch = Chars.BackSlash;
+										break;
 
-                  case Chars.LF:
-                    ch = ScanNextChar();
-                    goto SkipChar;
+									case Chars.LF:
+										ch = ScanNextChar();
+										goto SkipChar;
 
-                  default:
-                    if (Char.IsDigit(ch))
-                    {
-                      // Octal character code
-                      Debug.Assert(ch < '8', "Illegal octal digit.");
-                      int n = ch - '0';
-                      if (Char.IsDigit(this.nextChar))
-                      {
-                        Debug.Assert(this.nextChar < '8', "Illegal octal digit.");
-                        n = n * 8 + ScanNextChar() - '0';
-                        if (Char.IsDigit(this.nextChar))
-                        {
-                          Debug.Assert(this.nextChar < '8', "Illegal octal digit.");
-                          n = n * 8 + ScanNextChar() - '0';
-                        }
-                      }
-                      ch = (char)n;
-                    }
-                    else
-                    {
-                      //TODO
-                      Debug.Assert(false, "Not implemented; unknown escape character.");
-                    }
-                    break;
-                }
-                break;
-              }
+									default:
+										if (Char.IsDigit(ch))
+										{
+											// Octal character code
+											Debug.Assert(ch < '8', "Illegal octal digit.");
+											int n = ch - '0';
+											if (Char.IsDigit(nextChar))
+											{
+												Debug.Assert(nextChar < '8', "Illegal octal digit.");
+												n = n*8 + ScanNextChar() - '0';
+												if (Char.IsDigit(nextChar))
+												{
+													Debug.Assert(nextChar < '8', "Illegal octal digit.");
+													n = n*8 + ScanNextChar() - '0';
+												}
+											}
+											ch = (char) n;
+										}
+										else
+										{
+											//TODO
+											Debug.Assert(false, "Not implemented; unknown escape character.");
+										}
+										break;
+								}
+								break;
+							}
 
-            // TODO ???
-            //case '#':
-            //  Debug.Assert(false, "Not yet implemented");
-            //  break;
+							// TODO ???
+							//case '#':
+							//  Debug.Assert(false, "Not yet implemented");
+							//  break;
 
-            default:
-              break;
-          }
-          this.token.Append(ch);
-          //chHi = ScanNextChar();
-          //if (chHi == ')')
-          //{
-          //  ScanNextChar();
-          //  return this.symbol = Symbol.String;
-          //}
-          //chLo = ScanNextChar();
-          //ch = (char)((int)chHi * 256 + (int)chLo);
-          ch = ScanNextChar();
-        }
+						default:
+							break;
+					}
+					token.Append(ch);
+					//chHi = ScanNextChar();
+					//if (chHi == ')')
+					//{
+					//  ScanNextChar();
+					//  return this.symbol = Symbol.String;
+					//}
+					//chLo = ScanNextChar();
+					//ch = (char)((int)chHi * 256 + (int)chLo);
+					ch = ScanNextChar();
+				}
 #else
         char chHi, chLo;
         ScanNextChar();
@@ -603,341 +676,266 @@ namespace PdfSharp.Pdf.IO
           ch = (char)((int)chHi * 256 + (int)chLo);
         }
 #endif
-      }
-      else
-      {
-        // 8-bit characters
-        while (true)
-        {
-        SkipChar:
-          switch (ch)
-          {
-            case '(':
-              parenLevel++;
-              break;
+			}
+			else
+			{
+				// 8-bit characters
+				while (true)
+				{
+					SkipChar:
+					switch (ch)
+					{
+						case '(':
+							parenLevel++;
+							break;
 
-            case ')':
-              if (parenLevel == 0)
-              {
-                ScanNextChar();
-                return this.symbol = Symbol.String;
-              }
-              else
-                parenLevel--;
-              break;
+						case ')':
+							if (parenLevel == 0)
+							{
+								ScanNextChar();
+								return symbol = Symbol.String;
+							}
+							else
+								parenLevel--;
+							break;
 
-            case '\\':
-              {
-                ch = ScanNextChar();
-                switch (ch)
-                {
-                  case 'n':
-                    ch = Chars.LF;
-                    break;
+						case '\\':
+							{
+								ch = ScanNextChar();
+								switch (ch)
+								{
+									case 'n':
+										ch = Chars.LF;
+										break;
 
-                  case 'r':
-                    ch = Chars.CR;
-                    break;
+									case 'r':
+										ch = Chars.CR;
+										break;
 
-                  case 't':
-                    ch = Chars.HT;
-                    break;
+									case 't':
+										ch = Chars.HT;
+										break;
 
-                  case 'b':
-                    ch = Chars.BS;
-                    break;
+									case 'b':
+										ch = Chars.BS;
+										break;
 
-                  case 'f':
-                    ch = Chars.FF;
-                    break;
+									case 'f':
+										ch = Chars.FF;
+										break;
 
-                  case '(':
-                    ch = Chars.ParenLeft;
-                    break;
+									case '(':
+										ch = Chars.ParenLeft;
+										break;
 
-                  case ')':
-                    ch = Chars.ParenRight;
-                    break;
+									case ')':
+										ch = Chars.ParenRight;
+										break;
 
-                  case '\\':
-                    ch = Chars.BackSlash;
-                    break;
+									case '\\':
+										ch = Chars.BackSlash;
+										break;
 
-                  case Chars.LF:
-                    ch = ScanNextChar();
-                    goto SkipChar;
+									case Chars.LF:
+										ch = ScanNextChar();
+										goto SkipChar;
 
-                  default:
-                    if (char.IsDigit(ch))
-                    {
-                      // Octal character code
-                      Debug.Assert(ch < '8', "Illegal octal digit.");
-                      int n = ch - '0';
-                      if (Char.IsDigit(this.nextChar))
-                      {
-                        Debug.Assert(this.nextChar < '8', "Illegal octal digit.");
-                        n = n * 8 + ScanNextChar() - '0';
-                        if (Char.IsDigit(this.nextChar))
-                        {
-                          Debug.Assert(this.nextChar < '8', "Illegal octal digit.");
-                          n = n * 8 + ScanNextChar() - '0';
-                        }
-                      }
-                      ch = (char)n;
-                    }
-                    else
-                    {
-                      //TODO
-                      Debug.Assert(false, "Not implemented; unknown escape character.");
-                    }
-                    break;
-                }
-                break;
-              }
+									default:
+										if (char.IsDigit(ch))
+										{
+											// Octal character code
+											Debug.Assert(ch < '8', "Illegal octal digit.");
+											int n = ch - '0';
+											if (Char.IsDigit(nextChar))
+											{
+												Debug.Assert(nextChar < '8', "Illegal octal digit.");
+												n = n*8 + ScanNextChar() - '0';
+												if (Char.IsDigit(nextChar))
+												{
+													Debug.Assert(nextChar < '8', "Illegal octal digit.");
+													n = n*8 + ScanNextChar() - '0';
+												}
+											}
+											ch = (char) n;
+										}
+										else
+										{
+											//TODO
+											Debug.Assert(false, "Not implemented; unknown escape character.");
+										}
+										break;
+								}
+								break;
+							}
 
-            // TODO ???
-            //case '#':
-            //  Debug.Assert(false, "Not yet implemented");
-            //  break;
+							// TODO ???
+							//case '#':
+							//  Debug.Assert(false, "Not yet implemented");
+							//  break;
 
-            default:
-              break;
-          }
-          this.token.Append(ch);
-          ch = ScanNextChar();
-        }
-      }
-      //      Debug.Assert(false, "Must never come here:");
-    }
+						default:
+							break;
+					}
+					token.Append(ch);
+					ch = ScanNextChar();
+				}
+			}
+			//      Debug.Assert(false, "Must never come here:");
+		}
 
-    public Symbol ScanHexadecimalString()
-    {
-      Debug.Assert(this.currChar == Chars.Less);
+		public Symbol ScanHexadecimalString()
+		{
+			Debug.Assert(currChar == Chars.Less);
 
-      this.token = new StringBuilder();
-      char[] hex = new char[2];
-      ScanNextChar();
-      while (true)
-      {
-        MoveToNonWhiteSpace();
-        if (this.currChar == '>')
-        {
-          ScanNextChar();
-          break;
-        }
-        if (char.IsLetterOrDigit(this.currChar))
-        {
-          hex[0] = char.ToUpper(this.currChar);
-          hex[1] = char.ToUpper(this.nextChar);
-          int ch = int.Parse(new string(hex), NumberStyles.AllowHexSpecifier);
-          this.token.Append(Convert.ToChar(ch));
-          ScanNextChar();
-          ScanNextChar();
-        }
-      }
-      string chars = this.token.ToString();
-      int count = chars.Length;
-      if (count > 2 && chars[0] == (char)0xFE && chars[1] == (char)0xFF)
-      {
-        Debug.Assert(count % 2 == 0);
-        this.token.Length = 0;
-        for (int idx = 2; idx < count; idx += 2)
-          this.token.Append((char)(chars[idx] * 256 + chars[idx + 1]));
-      }
-      return this.symbol = Symbol.HexString;
-    }
+			token = new StringBuilder();
+			char[] hex = new char[2];
+			ScanNextChar();
+			while (true)
+			{
+				MoveToNonWhiteSpace();
+				if (currChar == '>')
+				{
+					ScanNextChar();
+					break;
+				}
+				if (char.IsLetterOrDigit(currChar))
+				{
+					hex[0] = char.ToUpper(currChar);
+					hex[1] = char.ToUpper(nextChar);
+					int ch = int.Parse(new string(hex), NumberStyles.AllowHexSpecifier);
+					token.Append(Convert.ToChar(ch));
+					ScanNextChar();
+					ScanNextChar();
+				}
+			}
+			string chars = token.ToString();
+			int count = chars.Length;
+			if (count > 2 && chars[0] == (char) 0xFE && chars[1] == (char) 0xFF)
+			{
+				Debug.Assert(count%2 == 0);
+				token.Length = 0;
+				for (int idx = 2; idx < count; idx += 2)
+					token.Append((char) (chars[idx]*256 + chars[idx + 1]));
+			}
+			return symbol = Symbol.HexString;
+		}
 
-    /// <summary>
-    /// Move current position one character further in PDF stream.
-    /// </summary>
-    internal char ScanNextChar()
-    {
-      if (this.pdfLength <= this.idxChar)
-      {
-        this.currChar = Chars.EOF;
-        this.nextChar = Chars.EOF;
-      }
-      else
-      {
-        this.currChar = this.nextChar;
-        this.nextChar = (char)this.pdf.ReadByte();
-        this.idxChar++;
-        if (this.currChar == Chars.CR)
-        {
-          if (this.nextChar == Chars.LF)
-          {
-            // Treat CR LF as LF
-            this.currChar = this.nextChar;
-            this.nextChar = (char)this.pdf.ReadByte();
-            this.idxChar++;
-          }
-          else
-          {
-            // Treat single CR as LF
-            this.currChar = Chars.LF;
-          }
-        }
-      }
-      return currChar;
-    }
+		/// <summary>
+		///     Move current position one character further in PDF stream.
+		/// </summary>
+		internal char ScanNextChar()
+		{
+			if (pdfLength <= idxChar)
+			{
+				currChar = Chars.EOF;
+				nextChar = Chars.EOF;
+			}
+			else
+			{
+				currChar = nextChar;
+				nextChar = (char) pdf.ReadByte();
+				idxChar++;
+				if (currChar == Chars.CR)
+				{
+					if (nextChar == Chars.LF)
+					{
+						// Treat CR LF as LF
+						currChar = nextChar;
+						nextChar = (char) pdf.ReadByte();
+						idxChar++;
+					}
+					else
+					{
+						// Treat single CR as LF
+						currChar = Chars.LF;
+					}
+				}
+			}
+			return currChar;
+		}
 
-    /// <summary>
-    /// Resets the current token to the empty string.
-    /// </summary>
-    void ClearToken()
-    {
-      this.token.Length = 0;
-    }
+		/// <summary>
+		///     Resets the current token to the empty string.
+		/// </summary>
+		private void ClearToken()
+		{
+			token.Length = 0;
+		}
 
-    /// <summary>
-    /// Appends current character to the token and reads next one.
-    /// </summary>
-    internal char AppendAndScanNextChar()
-    {
-      token.Append(this.currChar);
-      return ScanNextChar();
-    }
+		/// <summary>
+		///     Appends current character to the token and reads next one.
+		/// </summary>
+		internal char AppendAndScanNextChar()
+		{
+			token.Append(currChar);
+			return ScanNextChar();
+		}
 
-    /// <summary>
-    /// If the current character is not a white space, the function immediately returns it.
-    /// Otherwise the PDF cursor is moved forward to the first non-white space or EOF.
-    /// White spaces are NUL, HT, LF, FF, CR, and SP.
-    /// </summary>
-    public char MoveToNonWhiteSpace()
-    {
-      while (this.currChar != Chars.EOF)
-      {
-        switch (this.currChar)
-        {
-          case Chars.NUL:
-          case Chars.HT:
-          case Chars.LF:
-          case Chars.FF:
-          case Chars.CR:
-          case Chars.SP:
-            ScanNextChar();
-            break;
+		/// <summary>
+		///     If the current character is not a white space, the function immediately returns it.
+		///     Otherwise the PDF cursor is moved forward to the first non-white space or EOF.
+		///     White spaces are NUL, HT, LF, FF, CR, and SP.
+		/// </summary>
+		public char MoveToNonWhiteSpace()
+		{
+			while (currChar != Chars.EOF)
+			{
+				switch (currChar)
+				{
+					case Chars.NUL:
+					case Chars.HT:
+					case Chars.LF:
+					case Chars.FF:
+					case Chars.CR:
+					case Chars.SP:
+						ScanNextChar();
+						break;
 
-          default:
-            return currChar;
-        }
-      }
-      return currChar;
-    }
+					default:
+						return currChar;
+				}
+			}
+			return currChar;
+		}
 
-    /// <summary>
-    /// Gets the current symbol.
-    /// </summary>
-    public Symbol Symbol
-    {
-      get { return this.symbol; }
-      set { this.symbol = value; }
-    }
+		/// <summary>
+		///     Indicates whether the specified character is a PDF white-space character.
+		/// </summary>
+		internal static bool IsWhiteSpace(char ch)
+		{
+			switch (ch)
+			{
+				case Chars.NUL: // 0 Null
+				case Chars.HT: // 9 Tab
+				case Chars.LF: // 10 Line feed
+				case Chars.FF: // 12 Form feed
+				case Chars.CR: // 13 Carriage return
+				case Chars.SP: // 32 Space
+					return true;
+			}
+			return false;
+		}
 
-    /// <summary>
-    /// Gets the current token.
-    /// </summary>
-    internal string Token
-    {
-      get { return this.token.ToString(); }
-    }
-
-    /// <summary>
-    /// Interprets current token as boolean literal.
-    /// </summary>
-    internal bool TokenToBoolean
-    {
-      get
-      {
-        Debug.Assert(this.token.ToString() == "true" || this.token.ToString() == "false");
-        return this.token.ToString()[0] == 't';
-      }
-    }
-
-    /// <summary>
-    /// Interprets current token as integer literal.
-    /// </summary>
-    internal int TokenToInteger
-    {
-      get
-      {
-        //Debug.Assert(this.token.ToString().IndexOf('.') == -1);
-        return Int32.Parse(this.token.ToString(), CultureInfo.InvariantCulture);
-      }
-    }
-
-    /// <summary>
-    /// Interprets current token as unsigned integer literal.
-    /// </summary>
-    internal uint TokenToUInteger
-    {
-      get
-      {
-        //Debug.Assert(this.token.ToString().IndexOf('.') == -1);
-        return UInt32.Parse(this.token.ToString(), CultureInfo.InvariantCulture);
-      }
-    }
-
-    /// <summary>
-    /// Interpret current token as real or integer literal.
-    /// </summary>
-    internal double TokenToReal
-    {
-      get { return double.Parse(token.ToString(), CultureInfo.InvariantCulture); }
-    }
-
-    /// <summary>
-    /// Indicates whether the specified character is a PDF white-space character.
-    /// </summary>
-    internal static bool IsWhiteSpace(char ch)
-    {
-      switch (ch)
-      {
-        case Chars.NUL:  // 0 Null
-        case Chars.HT:   // 9 Tab
-        case Chars.LF:   // 10 Line feed
-        case Chars.FF:   // 12 Form feed
-        case Chars.CR:   // 13 Carriage return
-        case Chars.SP:   // 32 Space
-          return true;
-      }
-      return false;
-    }
-
-    /// <summary>
-    /// Indicates whether the specified character is a PDF delimiter character.
-    /// </summary>
-    internal static bool IsDelimiter(char ch)
-    {
-      switch (ch)
-      {
-        case '(':
-        case ')':
-        case '<':
-        case '>':
-        case '[':
-        case ']':
-        case '{':
-        case '}':
-        case '/':
-        case '%':
-          return true;
-      }
-      return false;
-    }
-
-    public int PdfLength
-    {
-      get { return this.pdfLength; }
-    }
-
-    int pdfLength;
-    int idxChar;
-    char currChar;
-    char nextChar;
-    StringBuilder token;
-    Symbol symbol = Symbol.None;
-
-    private Stream pdf;
-  }
+		/// <summary>
+		///     Indicates whether the specified character is a PDF delimiter character.
+		/// </summary>
+		internal static bool IsDelimiter(char ch)
+		{
+			switch (ch)
+			{
+				case '(':
+				case ')':
+				case '<':
+				case '>':
+				case '[':
+				case ']':
+				case '{':
+				case '}':
+				case '/':
+				case '%':
+					return true;
+			}
+			return false;
+		}
+	}
 }

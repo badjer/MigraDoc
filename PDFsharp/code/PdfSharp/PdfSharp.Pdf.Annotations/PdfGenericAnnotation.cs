@@ -1,4 +1,5 @@
 #region PDFsharp - A .NET library for processing PDF
+
 //
 // Authors:
 //   Stefan Lange (mailto:Stefan.Lange@pdfsharp.com)
@@ -25,55 +26,47 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
-#endregion
 
-using System;
-using System.Globalization;
-using System.Diagnostics;
-using System.Collections;
-using PdfSharp.Internal;
-using PdfSharp.Drawing;
-using PdfSharp.Pdf;
-using PdfSharp.Pdf.IO;
-using PdfSharp.Pdf.Internal;
+#endregion
 
 namespace PdfSharp.Pdf.Annotations
 {
-  /// <summary>
-  /// Represents a generic annotation. Used for annotation dictionaries unknown to PDFsharp.
-  /// </summary>
-  internal sealed class PdfGenericAnnotation : PdfAnnotation
-  {
-      //DMH 6/7/06
-      //Make this public so we can use it in PdfAnnotations to
-      //get the Meta data from existings annotations.
-    public PdfGenericAnnotation(PdfDictionary dict) : base(dict)
-    {
-    }
+	/// <summary>
+	///     Represents a generic annotation. Used for annotation dictionaries unknown to PDFsharp.
+	/// </summary>
+	internal sealed class PdfGenericAnnotation : PdfAnnotation
+	{
+		//DMH 6/7/06
+		//Make this public so we can use it in PdfAnnotations to
+		//get the Meta data from existings annotations.
+		public PdfGenericAnnotation(PdfDictionary dict) : base(dict)
+		{
+		}
 
-    /// <summary>
-    /// Predefined keys of this dictionary.
-    /// </summary>
-    internal new class Keys : PdfAnnotation.Keys
-    {
-      public static DictionaryMeta Meta
-      {
-        get
-        {
-          if (Keys.meta == null)
-            Keys.meta = CreateMeta(typeof(Keys));
-          return Keys.meta;
-        }
-      }
-      static DictionaryMeta meta;
-    }
+		/// <summary>
+		///     Gets the KeysMeta of this dictionary type.
+		/// </summary>
+		internal override DictionaryMeta Meta
+		{
+			get { return Keys.Meta; }
+		}
 
-    /// <summary>
-    /// Gets the KeysMeta of this dictionary type.
-    /// </summary>
-    internal override DictionaryMeta Meta
-    {
-      get { return Keys.Meta; }
-    }
-  }
+		/// <summary>
+		///     Predefined keys of this dictionary.
+		/// </summary>
+		internal new class Keys : PdfAnnotation.Keys
+		{
+			private static DictionaryMeta meta;
+
+			public static DictionaryMeta Meta
+			{
+				get
+				{
+					if (meta == null)
+						meta = CreateMeta(typeof (Keys));
+					return meta;
+				}
+			}
+		}
+	}
 }

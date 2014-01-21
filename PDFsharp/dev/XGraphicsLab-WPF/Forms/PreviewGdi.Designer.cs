@@ -1,4 +1,6 @@
-﻿namespace XDrawing.Forms
+﻿using PdfSharp.Core.Enums;
+
+namespace XDrawing.Forms
 {
   partial class PreviewGdi
   {
@@ -44,7 +46,7 @@
       this.Preview.PageSize = new System.Drawing.Size(595, 842);
       this.Preview.Size = new System.Drawing.Size(599, 420);
       this.Preview.TabIndex = 0;
-      this.Preview.Zoom = PdfSharp.Forms.Zoom.FullPage;
+      this.Preview.Zoom = Zoom.FullPage;
       this.Preview.ZoomPercent = 35;
       // 
       // PreviewGdi

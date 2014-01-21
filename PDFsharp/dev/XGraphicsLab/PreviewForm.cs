@@ -5,6 +5,7 @@ using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
 using PdfSharp;
+using PdfSharp.Core.Enums;
 using PdfSharp.Pdf;
 using PdfSharp.Drawing;
 using PdfSharp.Forms;
@@ -452,7 +453,7 @@ namespace XDrawing.TestLab
       this.pagePreview.PageSize = new System.Drawing.Size(595, 842);
       this.pagePreview.Size = new System.Drawing.Size(638, 412);
       this.pagePreview.TabIndex = 4;
-      this.pagePreview.Zoom = PdfSharp.Forms.Zoom.FullPage;
+      this.pagePreview.Zoom = Zoom.FullPage;
       this.pagePreview.ZoomPercent = 34;
       // 
       // PreviewForm

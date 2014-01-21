@@ -27,12 +27,9 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
 #if GDI
-using System.Drawing;
 using System.Drawing.Drawing2D;
 using PdfSharp.Core.Enums;
-
 #endif
 #if WPF
 using System.Windows.Media;

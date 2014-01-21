@@ -29,9 +29,7 @@
 
 using System;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Security;
-using System.Security.Permissions;
 
 namespace PdfSharp.Forms
 {

@@ -1,4 +1,5 @@
 #region PDFsharp - A .NET library for processing PDF
+
 //
 // Authors:
 //   Stefan Lange (mailto:Stefan.Lange@pdfsharp.com)
@@ -25,82 +26,79 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Collections;
-using System.Globalization;
-using System.Text;
 using System.IO;
-using PdfSharp.Pdf.Internal;
 using PdfSharp.Pdf.Content.Objects;
+using PdfSharp.Pdf.Internal;
 
 namespace PdfSharp.Pdf.Content
 {
-  /// <summary>
-  /// Represents a writer for generation of PDF streams. 
-  /// </summary>
-  internal class ContentWriter
-  {
-    public ContentWriter(Stream contentStream)
-    {
-      this.stream = contentStream;
+	/// <summary>
+	///     Represents a writer for generation of PDF streams.
+	/// </summary>
+	internal class ContentWriter
+	{
+		public ContentWriter(Stream contentStream)
+		{
+			stream = contentStream;
 #if DEBUG
-      //layout = PdfWriterLayout.Verbose;
+			//layout = PdfWriterLayout.Verbose;
 #endif
-    }
+		}
 
-    public void Close(bool closeUnderlyingStream)
-    {
-      if (this.stream != null && closeUnderlyingStream)
-      {
-        this.stream.Close();
-        this.stream = null;
-      }
-    }
+		public void Close(bool closeUnderlyingStream)
+		{
+			if (stream != null && closeUnderlyingStream)
+			{
+				stream.Close();
+				stream = null;
+			}
+		}
 
-    public void Close()
-    {
-      Close(true);
-    }
+		public void Close()
+		{
+			Close(true);
+		}
 
-    public int Position
-    {
-      get { return (int)this.stream.Position; }
-    }
+		public int Position
+		{
+			get { return (int) stream.Position; }
+		}
 
-    //public PdfWriterLayout Layout
-    //{
-    //  get { return this.layout; }
-    //  set { this.layout = value; }
-    //}
-    //PdfWriterLayout layout;
+		//public PdfWriterLayout Layout
+		//{
+		//  get { return this.layout; }
+		//  set { this.layout = value; }
+		//}
+		//PdfWriterLayout layout;
 
-    //public PdfWriterOptions Options
-    //{
-    //  get { return this.options; }
-    //  set { this.options = value; }
-    //}
-    //PdfWriterOptions options;
+		//public PdfWriterOptions Options
+		//{
+		//  get { return this.options; }
+		//  set { this.options = value; }
+		//}
+		//PdfWriterOptions options;
 
-    // -----------------------------------------------------------
+		// -----------------------------------------------------------
 
-    /// <summary>
-    /// Writes the specified value to the PDF stream.
-    /// </summary>
-    public void Write(bool value)
-    {
-      //WriteSeparator(CharCat.Character);
-      //WriteRaw(value ? bool.TrueString : bool.FalseString);
-      //this.lastCat = CharCat.Character;
-    }
+		/// <summary>
+		///     Writes the specified value to the PDF stream.
+		/// </summary>
+		public void Write(bool value)
+		{
+			//WriteSeparator(CharCat.Character);
+			//WriteRaw(value ? bool.TrueString : bool.FalseString);
+			//this.lastCat = CharCat.Character;
+		}
 
 #if old
-    /// <summary>
-    /// Writes the specified value to the PDF stream.
-    /// </summary>
+	/// <summary>
+	/// Writes the specified value to the PDF stream.
+	/// </summary>
     public void Write(PdfBoolean value)
     {
       WriteSeparator(CharCat.Character);
@@ -474,151 +472,155 @@ namespace PdfSharp.Pdf.Content
     }
 #endif
 
-    public void WriteRaw(string rawString)
-    {
-      if (rawString == null || rawString.Length == 0)
-        return;
-      //AppendBlank(rawString[0]);
-      byte[] bytes = PdfEncoders.RawEncoding.GetBytes(rawString);
-      this.stream.Write(bytes, 0, bytes.Length);
-      this.lastCat = GetCategory((char)bytes[bytes.Length - 1]);
-    }
+		public void WriteRaw(string rawString)
+		{
+			if (rawString == null || rawString.Length == 0)
+				return;
+			//AppendBlank(rawString[0]);
+			byte[] bytes = PdfEncoders.RawEncoding.GetBytes(rawString);
+			stream.Write(bytes, 0, bytes.Length);
+			lastCat = GetCategory((char) bytes[bytes.Length - 1]);
+		}
 
-    public void WriteLineRaw(string rawString)
-    {
-      if (rawString == null || rawString.Length == 0)
-        return;
-      //AppendBlank(rawString[0]);
-      byte[] bytes = PdfEncoders.RawEncoding.GetBytes(rawString);
-      this.stream.Write(bytes, 0, bytes.Length);
-      this.stream.Write(new byte[] { (byte)'\n' }, 0, 1);
-      this.lastCat = GetCategory((char)bytes[bytes.Length - 1]);
-    }
+		public void WriteLineRaw(string rawString)
+		{
+			if (rawString == null || rawString.Length == 0)
+				return;
+			//AppendBlank(rawString[0]);
+			byte[] bytes = PdfEncoders.RawEncoding.GetBytes(rawString);
+			stream.Write(bytes, 0, bytes.Length);
+			stream.Write(new byte[] {(byte) '\n'}, 0, 1);
+			lastCat = GetCategory((char) bytes[bytes.Length - 1]);
+		}
 
-    public void WriteRaw(char ch)
-    {
-      Debug.Assert((int)ch < 256, "Raw character greater than 255 dedected.");
-      //AppendBlank(ch);
-      this.stream.WriteByte((byte)ch);
-      this.lastCat = GetCategory(ch);
-    }
+		public void WriteRaw(char ch)
+		{
+			Debug.Assert(ch < 256, "Raw character greater than 255 dedected.");
+			//AppendBlank(ch);
+			stream.WriteByte((byte) ch);
+			lastCat = GetCategory(ch);
+		}
 
-    /// <summary>
-    /// Gets or sets the indentation for a new indentation level.
-    /// </summary>
-    internal int Indent
-    {
-      get { return this.indent; }
-      set { this.indent = value; }
-    }
-    protected int indent = 2;
-    protected int writeIndent = 0;
+		/// <summary>
+		///     Gets or sets the indentation for a new indentation level.
+		/// </summary>
+		internal int Indent
+		{
+			get { return indent; }
+			set { indent = value; }
+		}
 
-    /// <summary>
-    /// Increases indent level.
-    /// </summary>
-    void IncreaseIndent()
-    {
-      this.writeIndent += indent;
-    }
+		protected int indent = 2;
+		protected int writeIndent = 0;
 
-    /// <summary>
-    /// Decreases indent level.
-    /// </summary>
-    void DecreaseIndent()
-    {
-      this.writeIndent -= indent;
-    }
+		/// <summary>
+		///     Increases indent level.
+		/// </summary>
+		private void IncreaseIndent()
+		{
+			writeIndent += indent;
+		}
 
-    /// <summary>
-    /// Gets an indent string of current indent.
-    /// </summary>
-    string IndentBlanks
-    {
-      get { return new string(' ', this.writeIndent); }
-    }
+		/// <summary>
+		///     Decreases indent level.
+		/// </summary>
+		private void DecreaseIndent()
+		{
+			writeIndent -= indent;
+		}
 
-    void WriteIndent()
-    {
-      this.WriteRaw(IndentBlanks);
-    }
+		/// <summary>
+		///     Gets an indent string of current indent.
+		/// </summary>
+		private string IndentBlanks
+		{
+			get { return new string(' ', writeIndent); }
+		}
 
-    void WriteSeparator(CharCat cat, char ch)
-    {
-      switch (this.lastCat)
-      {
-        //case CharCat.NewLine:
-        //  if (this.layout == PdfWriterLayout.Verbose)
-        //    WriteIndent();
-        //  break;
+		private void WriteIndent()
+		{
+			WriteRaw(IndentBlanks);
+		}
 
-        case CharCat.Delimiter:
-          break;
+		private void WriteSeparator(CharCat cat, char ch)
+		{
+			switch (lastCat)
+			{
+					//case CharCat.NewLine:
+					//  if (this.layout == PdfWriterLayout.Verbose)
+					//    WriteIndent();
+					//  break;
 
-        //case CharCat.Character:
-        //  if (this.layout == PdfWriterLayout.Verbose)
-        //  {
-        //    //if (cat == CharCat.Character || ch == '/')
-        //    this.stream.WriteByte((byte)' ');
-        //  }
-        //  else
-        //  {
-        //    if (cat == CharCat.Character)
-        //      this.stream.WriteByte((byte)' ');
-        //  }
-        //  break;
-      }
-    }
+				case CharCat.Delimiter:
+					break;
 
-    void WriteSeparator(CharCat cat)
-    {
-      WriteSeparator(cat, '\0');
-    }
+					//case CharCat.Character:
+					//  if (this.layout == PdfWriterLayout.Verbose)
+					//  {
+					//    //if (cat == CharCat.Character || ch == '/')
+					//    this.stream.WriteByte((byte)' ');
+					//  }
+					//  else
+					//  {
+					//    if (cat == CharCat.Character)
+					//      this.stream.WriteByte((byte)' ');
+					//  }
+					//  break;
+			}
+		}
 
-    public void NewLine()
-    {
-      if (lastCat != CharCat.NewLine)
-        WriteRaw('\n');
-    }
+		private void WriteSeparator(CharCat cat)
+		{
+			WriteSeparator(cat, '\0');
+		}
 
-    CharCat GetCategory(char ch)
-    {
-      //if (Lexer.IsDelimiter(ch))
-      //  return CharCat.Delimiter;
-      //if (ch == Chars.LF)
-      //  return CharCat.NewLine;
-      return CharCat.Character;
-    }
+		public void NewLine()
+		{
+			if (lastCat != CharCat.NewLine)
+				WriteRaw('\n');
+		}
 
-    enum CharCat
-    {
-      NewLine,
-      Character,
-      Delimiter,
-    };
-    CharCat lastCat;
+		private CharCat GetCategory(char ch)
+		{
+			//if (Lexer.IsDelimiter(ch))
+			//  return CharCat.Delimiter;
+			//if (ch == Chars.LF)
+			//  return CharCat.NewLine;
+			return CharCat.Character;
+		}
 
-    /// <summary>
-    /// Gets the underlying stream.
-    /// </summary>
-    internal Stream Stream
-    {
-      get { return this.stream; }
-    }
-    Stream stream;
+		private enum CharCat
+		{
+			NewLine,
+			Character,
+			Delimiter,
+		};
+
+		private CharCat lastCat;
+
+		/// <summary>
+		///     Gets the underlying stream.
+		/// </summary>
+		internal Stream Stream
+		{
+			get { return stream; }
+		}
+
+		private Stream stream;
 
 
-    class StackItem
-    {
-      public StackItem(CObject value)
-      {
-        Object = value;
-      }
+		private class StackItem
+		{
+			public CObject Object;
 
-      public CObject Object;
-      //public bool HasStream;
-    }
+			public StackItem(CObject value)
+			{
+				Object = value;
+			}
 
-    List<CObject> stack = new List<CObject>();
-  }
+			//public bool HasStream;
+		}
+
+		private List<CObject> stack = new List<CObject>();
+	}
 }

@@ -1,4 +1,5 @@
 #region PDFsharp - A .NET library for processing PDF
+
 //
 // Authors:
 //   Stefan Lange (mailto:Stefan.Lange@pdfsharp.com)
@@ -25,88 +26,78 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
-#endregion
 
-using System;
-using System.Globalization;
-using System.Diagnostics;
-using System.Collections;
-using PdfSharp.Internal;
-using PdfSharp.Drawing;
-using PdfSharp.Pdf;
-using PdfSharp.Pdf.IO;
-using PdfSharp.Pdf.Internal;
+#endregion
 
 namespace PdfSharp.Pdf.Annotations
 {
-  /// <summary>
-  /// Represents a text annotation.
-  /// </summary>
-  internal sealed class PdfWidgetAnnotation : PdfAnnotation
-  {
-    public PdfWidgetAnnotation()
-    {
-      Initialize();
-    }
+	/// <summary>
+	///     Represents a text annotation.
+	/// </summary>
+	internal sealed class PdfWidgetAnnotation : PdfAnnotation
+	{
+		public PdfWidgetAnnotation()
+		{
+			Initialize();
+		}
 
-    public PdfWidgetAnnotation(PdfDocument document)
-      : base(document)
-    {
-      Initialize();
-    }
+		public PdfWidgetAnnotation(PdfDocument document)
+			: base(document)
+		{
+			Initialize();
+		}
 
-    void Initialize()
-    {
-      Elements.SetName(Keys.Subtype, "/Widget");
-    }
+		/// <summary>
+		///     Gets the KeysMeta of this dictionary type.
+		/// </summary>
+		internal override DictionaryMeta Meta
+		{
+			get { return Keys.Meta; }
+		}
 
-    /// <summary>
-    /// Predefined keys of this dictionary.
-    /// </summary>
-    internal new class Keys : PdfAnnotation.Keys
-    {
-      /// <summary>
-      /// (Optional) The annotation’s highlighting mode, the visual effect to be used when
-      /// the mouse button is pressed or held down inside its active area:
-      ///   N (None) No highlighting.
-      ///   I (Invert) Invert the contents of the annotation rectangle.
-      ///   O (Outline) Invert the annotation’s border.
-      ///   P (Push) Display the annotation’s down appearance, if any. If no down appearance is defined,
-      ///     offset the contents of the annotation rectangle to appear as if it were being pushed below
-      ///     the surface of the page.
-      ///   T (Toggle) Same as P (which is preferred).
-      /// A highlighting mode other than P overrides any down appearance defined for the annotation. 
-      /// Default value: I.
-      /// </summary>
-      [KeyInfo(KeyType.Name | KeyType.Optional)]
-      public const string H = "/H";
+		private void Initialize()
+		{
+			Elements.SetName(PdfAnnotation.Keys.Subtype, "/Widget");
+		}
 
-      /// <summary>
-      /// (Optional) An appearance characteristics dictionary to be used in constructing a dynamic 
-      /// appearance stream specifying the annotation’s visual presentation on the page.
-      /// The name MK for this entry is of historical significance only and has no direct meaning.
-      /// </summary>
-      [KeyInfo(KeyType.Dictionary | KeyType.Optional)]
-      public const string MK = "/MK";
+		/// <summary>
+		///     Predefined keys of this dictionary.
+		/// </summary>
+		internal new class Keys : PdfAnnotation.Keys
+		{
+			/// <summary>
+			///     (Optional) The annotation’s highlighting mode, the visual effect to be used when
+			///     the mouse button is pressed or held down inside its active area:
+			///     N (None) No highlighting.
+			///     I (Invert) Invert the contents of the annotation rectangle.
+			///     O (Outline) Invert the annotation’s border.
+			///     P (Push) Display the annotation’s down appearance, if any. If no down appearance is defined,
+			///     offset the contents of the annotation rectangle to appear as if it were being pushed below
+			///     the surface of the page.
+			///     T (Toggle) Same as P (which is preferred).
+			///     A highlighting mode other than P overrides any down appearance defined for the annotation.
+			///     Default value: I.
+			/// </summary>
+			[KeyInfo(KeyType.Name | KeyType.Optional)] public const string H = "/H";
 
-      public static DictionaryMeta Meta
-      {
-        get
-        {
-          if (Keys.meta == null)
-            Keys.meta = CreateMeta(typeof(Keys));
-          return Keys.meta;
-        }
-      }
-      static DictionaryMeta meta;
-    }
+			/// <summary>
+			///     (Optional) An appearance characteristics dictionary to be used in constructing a dynamic
+			///     appearance stream specifying the annotation’s visual presentation on the page.
+			///     The name MK for this entry is of historical significance only and has no direct meaning.
+			/// </summary>
+			[KeyInfo(KeyType.Dictionary | KeyType.Optional)] public const string MK = "/MK";
 
-    /// <summary>
-    /// Gets the KeysMeta of this dictionary type.
-    /// </summary>
-    internal override DictionaryMeta Meta
-    {
-      get { return Keys.Meta; }
-    }
-  }
+			private static DictionaryMeta meta;
+
+			public static DictionaryMeta Meta
+			{
+				get
+				{
+					if (meta == null)
+						meta = CreateMeta(typeof (Keys));
+					return meta;
+				}
+			}
+		}
+	}
 }

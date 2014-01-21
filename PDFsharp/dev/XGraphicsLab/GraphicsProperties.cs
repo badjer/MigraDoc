@@ -2,6 +2,7 @@ using System;
 using System.Globalization;
 using System.Drawing;
 using System.Xml.Serialization;
+using PdfSharp.Core.Enums;
 using PdfSharp.Pdf;
 using PdfSharp.Drawing;
 

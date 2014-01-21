@@ -1,4 +1,5 @@
 #region PDFsharp - A .NET library for processing PDF
+
 //
 // Authors:
 //   Stefan Lange (mailto:Stefan.Lange@pdfsharp.com)
@@ -25,111 +26,106 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Collections;
-using System.Globalization;
-using System.Text;
 using System.IO;
 using PdfSharp.Core.Enums;
-using PdfSharp.Internal;
-using PdfSharp.Pdf;
-using PdfSharp.Pdf.Advanced;
 using PdfSharp.Pdf.IO;
 
 namespace PdfSharp.Pdf.Internal
 {
-  /// <summary>
-  /// Provides a thread-local cache for large objects.
-  /// </summary>
-  internal class ThreadLocalStorage
-  {
-    public ThreadLocalStorage()
-    {
-      this.importedDocuments = new Dictionary<string, PdfDocument.DocumentHandle>(StringComparer.InvariantCultureIgnoreCase);
-    }
+	/// <summary>
+	///     Provides a thread-local cache for large objects.
+	/// </summary>
+	internal class ThreadLocalStorage
+	{
+		/// <summary>
+		///     Maps path to document handle.
+		/// </summary>
+		private readonly Dictionary<string, PdfDocument.DocumentHandle> importedDocuments;
 
-    public void AddDocument(string path, PdfDocument document)
-    {
-      this.importedDocuments.Add(path, document.Handle);
-    }
+		public ThreadLocalStorage()
+		{
+			importedDocuments = new Dictionary<string, PdfDocument.DocumentHandle>(StringComparer.InvariantCultureIgnoreCase);
+		}
 
-    public void RemoveDocument(string path)
-    {
-      this.importedDocuments.Remove(path);
-    }
+		public PdfDocument[] Documents
+		{
+			get
+			{
+				List<PdfDocument> list = new List<PdfDocument>();
+				foreach (PdfDocument.DocumentHandle handle in importedDocuments.Values)
+				{
+					if (handle.IsAlive)
+						list.Add(handle.Target);
+				}
+				return list.ToArray();
+			}
+		}
 
-    public PdfDocument GetDocument(string path)
-    {
-      Debug.Assert(path.StartsWith("*") || Path.IsPathRooted(path), "Path must be full qualified.");
+		public void AddDocument(string path, PdfDocument document)
+		{
+			importedDocuments.Add(path, document.Handle);
+		}
 
-      PdfDocument document = null;
-      PdfDocument.DocumentHandle handle;
-      if (this.importedDocuments.TryGetValue(path, out handle))
-      {
-        document = handle.Target;
-        if (document == null)
-          RemoveDocument(path);
-      }
-      if (document == null)
-      {
-        document = PdfReader.Open(path, PdfDocumentOpenMode.Import);
-        this.importedDocuments.Add(path, document.Handle);
-      }
-      return document;
-    }
+		public void RemoveDocument(string path)
+		{
+			importedDocuments.Remove(path);
+		}
 
-    public PdfDocument[] Documents
-    {
-      get
-      {
-        List<PdfDocument> list = new List<PdfDocument>();
-        foreach (PdfDocument.DocumentHandle handle in this.importedDocuments.Values)
-        {
-          if (handle.IsAlive)
-            list.Add(handle.Target);
-        }
-        return list.ToArray();
-      }
-    }
+		public PdfDocument GetDocument(string path)
+		{
+			Debug.Assert(path.StartsWith("*") || Path.IsPathRooted(path), "Path must be full qualified.");
 
-    public void DetachDocument(PdfDocument.DocumentHandle handle)
-    {
-      if (handle.IsAlive)
-      {
-        foreach (String path in this.importedDocuments.Keys)
-        {
-          if (this.importedDocuments[path] == handle)
-          {
-            this.importedDocuments.Remove(path);
-            break;
-          }
-        }
-      }
+			PdfDocument document = null;
+			PdfDocument.DocumentHandle handle;
+			if (importedDocuments.TryGetValue(path, out handle))
+			{
+				document = handle.Target;
+				if (document == null)
+					RemoveDocument(path);
+			}
+			if (document == null)
+			{
+				document = PdfReader.Open(path, PdfDocumentOpenMode.Import);
+				importedDocuments.Add(path, document.Handle);
+			}
+			return document;
+		}
 
-      // Clean table
-      bool itemRemoved = true;
-      while (itemRemoved)
-      {
-        itemRemoved = false;
-        foreach (String path in this.importedDocuments.Keys)
-        {
-          if (!this.importedDocuments[path].IsAlive)
-          {
-            this.importedDocuments.Remove(path);
-            itemRemoved = true;
-            break;
-          }
-        }
-      }
-    }
+		public void DetachDocument(PdfDocument.DocumentHandle handle)
+		{
+			if (handle.IsAlive)
+			{
+				foreach (String path in importedDocuments.Keys)
+				{
+					if (importedDocuments[path] == handle)
+					{
+						importedDocuments.Remove(path);
+						break;
+					}
+				}
+			}
 
-    /// <summary>
-    /// Maps path to document handle.
-    /// </summary>
-    readonly Dictionary<string, PdfDocument.DocumentHandle> importedDocuments;
-  }
+			// Clean table
+			bool itemRemoved = true;
+			while (itemRemoved)
+			{
+				itemRemoved = false;
+				foreach (String path in importedDocuments.Keys)
+				{
+					if (!importedDocuments[path].IsAlive)
+					{
+						importedDocuments.Remove(path);
+						itemRemoved = true;
+						break;
+					}
+				}
+			}
+		}
+	}
 }

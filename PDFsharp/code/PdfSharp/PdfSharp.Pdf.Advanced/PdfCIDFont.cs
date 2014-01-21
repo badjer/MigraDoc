@@ -27,18 +27,10 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
-using System.Diagnostics;
-using System.Collections;
-using System.Text;
-using System.IO;
 using PdfSharp.Core.Enums;
-using PdfSharp.Pdf;
-using PdfSharp.Pdf.Advanced;
 using PdfSharp.Drawing;
 using PdfSharp.Fonts.OpenType;
 using PdfSharp.Pdf.Filters;
-using PdfSharp.Internal;
 
 namespace PdfSharp.Pdf.Advanced
 {

@@ -31,15 +31,8 @@
 
 using System;
 using System.Diagnostics;
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.IO;
 using System.Text;
 using PdfSharp.Core;
-using PdfSharp.Drawing;
-using PdfSharp.Internal;
-
 using Fixed = System.Int32;
 using FWord = System.Int16;
 using UFWord = System.UInt16;

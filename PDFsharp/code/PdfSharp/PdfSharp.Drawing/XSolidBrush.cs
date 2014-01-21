@@ -29,15 +29,12 @@
 
 using System;
 using System.Diagnostics;
-using System.IO;
 #if GDI
 using System.Drawing;
 #endif
 #if WPF
-using System.Windows;
 using System.Windows.Media;
 #endif
-using PdfSharp.Internal;
 
 namespace PdfSharp.Drawing
 {

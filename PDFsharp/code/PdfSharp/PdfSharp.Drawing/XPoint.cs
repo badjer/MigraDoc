@@ -35,9 +35,6 @@ using System.Runtime.InteropServices;
 #if GDI
 using System.Drawing;
 #endif
-#if WPF
-using System.Windows;
-#endif
 using PdfSharp.Internal;
 
 namespace PdfSharp.Drawing

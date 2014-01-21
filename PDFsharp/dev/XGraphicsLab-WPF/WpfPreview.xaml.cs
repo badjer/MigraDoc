@@ -10,6 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using PdfSharp.Core.Enums;
 using PdfSharp.Drawing;
 using System.Windows.Forms;
 

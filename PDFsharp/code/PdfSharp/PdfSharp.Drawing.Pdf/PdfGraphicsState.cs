@@ -31,14 +31,7 @@ using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.Text;
-#if GDI
-using System.Drawing;
-using System.Drawing.Drawing2D;
-#endif
-#if WPF
-#endif
 using PdfSharp.Core.Enums;
-using PdfSharp.Pdf;
 using PdfSharp.Pdf.Advanced;
 using PdfSharp.Pdf.Internal;
 

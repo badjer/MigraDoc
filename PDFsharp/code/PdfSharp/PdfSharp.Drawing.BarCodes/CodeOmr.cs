@@ -27,11 +27,7 @@
 // DEALINGS IN THE SOFTWARE.
 #endregion
 
-using System;
-using System.Diagnostics;
-using System.ComponentModel;
 using PdfSharp.Core.Enums;
-using PdfSharp.Drawing;
 
 namespace PdfSharp.Drawing.BarCodes
 {

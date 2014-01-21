@@ -1,4 +1,5 @@
 #region PDFsharp - A .NET library for processing PDF
+
 //
 // Authors:
 //   Stefan Lange (mailto:Stefan.Lange@pdfsharp.com)
@@ -25,116 +26,103 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
+
 #endregion
 
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Collections;
-using System.Globalization;
-using System.Text;
-using System.IO;
-using PdfSharp.Internal;
-using PdfSharp.Pdf;
-using PdfSharp.Pdf.Advanced;
-using PdfSharp.Pdf.IO;
 
 namespace PdfSharp.Pdf.Internal
 {
-  /// <summary>
-  /// Provides a thread-local cache for large objects.
-  /// </summary>
-  internal class GlobalObjectTable
-  {
-    public GlobalObjectTable()
-    {
-    }
+	/// <summary>
+	///     Provides a thread-local cache for large objects.
+	/// </summary>
+	internal class GlobalObjectTable
+	{
+		/// <summary>
+		///     Array of handles to all documents.
+		/// </summary>
+		private readonly List<object> documentHandles = new List<object>();
 
-    public void AttatchDocument(PdfDocument.DocumentHandle handle)
-    {
-      lock (this.documentHandles)
-      {
-        this.documentHandles.Add(handle);
-      }
+		public void AttatchDocument(PdfDocument.DocumentHandle handle)
+		{
+			lock (documentHandles)
+			{
+				documentHandles.Add(handle);
+			}
 
-      //WeakReference weakRef = new WeakReference(document);
-      //lock (this.documents)
-      //{
-      //  this.documents.Add(weakRef);
-      //}
-    }
+			//WeakReference weakRef = new WeakReference(document);
+			//lock (this.documents)
+			//{
+			//  this.documents.Add(weakRef);
+			//}
+		}
 
-    public void DetatchDocument(PdfDocument.DocumentHandle handle)
-    {
-      lock (this.documentHandles)
-      {
-        // Notify other documents about detach
-        int count = this.documentHandles.Count;
-        for (int idx = 0; idx < count; idx++)
-        {
-          if (((PdfDocument.DocumentHandle)this.documentHandles[idx]).IsAlive)
-          {
-            PdfDocument target = ((PdfDocument.DocumentHandle)this.documentHandles[idx]).Target;
-            if (target != null)
-              target.OnExternalDocumentFinalized(handle);
-          }
-        }
+		public void DetatchDocument(PdfDocument.DocumentHandle handle)
+		{
+			lock (documentHandles)
+			{
+				// Notify other documents about detach
+				int count = documentHandles.Count;
+				for (int idx = 0; idx < count; idx++)
+				{
+					if (((PdfDocument.DocumentHandle) documentHandles[idx]).IsAlive)
+					{
+						PdfDocument target = ((PdfDocument.DocumentHandle) documentHandles[idx]).Target;
+						if (target != null)
+							target.OnExternalDocumentFinalized(handle);
+					}
+				}
 
-        // Clean up table
-        for (int idx = 0; idx < this.documentHandles.Count; idx++)
-        {
-          PdfDocument target = ((PdfDocument.DocumentHandle)this.documentHandles[idx]).Target;
-          if (target == null)
-          {
-            this.documentHandles.RemoveAt(idx);
-            idx--;
-          }
-        }
-      }
+				// Clean up table
+				for (int idx = 0; idx < documentHandles.Count; idx++)
+				{
+					PdfDocument target = ((PdfDocument.DocumentHandle) documentHandles[idx]).Target;
+					if (target == null)
+					{
+						documentHandles.RemoveAt(idx);
+						idx--;
+					}
+				}
+			}
 
-      //lock (this.documents)
-      //{
-      //  int index = IndexOf(document);
-      //  if (index != -1)
-      //  {
-      //    this.documents.RemoveAt(index);
-      //    int count = this.documents.Count;
-      //    for (int idx = 0; idx < count; idx++)
-      //    {
-      //      PdfDocument target = ((WeakReference)this.documents[idx]).Target as PdfDocument;
-      //      if (target != null)
-      //        target.OnExternalDocumentFinalized(document);
-      //    }
+			//lock (this.documents)
+			//{
+			//  int index = IndexOf(document);
+			//  if (index != -1)
+			//  {
+			//    this.documents.RemoveAt(index);
+			//    int count = this.documents.Count;
+			//    for (int idx = 0; idx < count; idx++)
+			//    {
+			//      PdfDocument target = ((WeakReference)this.documents[idx]).Target as PdfDocument;
+			//      if (target != null)
+			//        target.OnExternalDocumentFinalized(document);
+			//    }
 
-      //    for (int idx = 0; idx < this.documents.Count; idx++)
-      //    {
-      //      PdfDocument target = ((WeakReference)this.documents[idx]).Target as PdfDocument;
-      //      if (target == null)
-      //      {
-      //        this.documents.RemoveAt(idx);
-      //        idx--;
-      //      }
-      //    }
-      //  }
-      //}
-    }
+			//    for (int idx = 0; idx < this.documents.Count; idx++)
+			//    {
+			//      PdfDocument target = ((WeakReference)this.documents[idx]).Target as PdfDocument;
+			//      if (target == null)
+			//      {
+			//        this.documents.RemoveAt(idx);
+			//        idx--;
+			//      }
+			//    }
+			//  }
+			//}
+		}
 
-    //int IndexOf(PdfDocument.Handle handle)
-    //{
-    //  int count = this.documents.Count;
-    //  for (int idx = 0; idx < count; idx++)
-    //  {
-    //    if ((PdfDocument.Handle)this.documents[idx] == handle)
-    //      return idx;
-    //    //if (Object.ReferenceEquals(((WeakReference)this.documents[idx]).Target, document))
-    //    //  return idx;
-    //  }
-    //  return -1;
-    //}
-
-    /// <summary>
-    /// Array of handles to all documents.
-    /// </summary>
-    List<object> documentHandles = new List<object>();
-  }
+		//int IndexOf(PdfDocument.Handle handle)
+		//{
+		//  int count = this.documents.Count;
+		//  for (int idx = 0; idx < count; idx++)
+		//  {
+		//    if ((PdfDocument.Handle)this.documents[idx] == handle)
+		//      return idx;
+		//    //if (Object.ReferenceEquals(((WeakReference)this.documents[idx]).Target, document))
+		//    //  return idx;
+		//  }
+		//  return -1;
+		//}
+	}
 }

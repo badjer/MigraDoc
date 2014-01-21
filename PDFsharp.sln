@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfSharp.Charting.Demo", "P
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrivateFonts", "PdfSharp\samples\Samples C#\Based on GDI+\PrivateFonts\PrivateFonts.csproj", "{5047322B-A990-4FBE-BF8B-6181075DC93F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfSharp.Core", "PdfSharp.Core\PdfSharp.Core.csproj", "{9E4D41E8-4B14-4718-8626-19BD27350AF1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +45,10 @@ Global
 		{5047322B-A990-4FBE-BF8B-6181075DC93F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5047322B-A990-4FBE-BF8B-6181075DC93F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5047322B-A990-4FBE-BF8B-6181075DC93F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E4D41E8-4B14-4718-8626-19BD27350AF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E4D41E8-4B14-4718-8626-19BD27350AF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E4D41E8-4B14-4718-8626-19BD27350AF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E4D41E8-4B14-4718-8626-19BD27350AF1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

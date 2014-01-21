@@ -34,6 +34,7 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using System.Data;
 using PdfSharp;
+using PdfSharp.Core.Enums;
 using PdfSharp.Pdf;
 using PdfSharp.Drawing;
 using PdfSharp.Forms;
@@ -186,7 +187,7 @@ namespace PdfSharp.Charting.Demo
       this.pagePreview.PageSize = new System.Drawing.Size(595, 842);
       this.pagePreview.Size = new System.Drawing.Size(583, 482);
       this.pagePreview.TabIndex = 4;
-      this.pagePreview.Zoom = PdfSharp.Forms.Zoom.BestFit;
+      this.pagePreview.Zoom = Zoom.BestFit;
       this.pagePreview.ZoomPercent = 70;
       // 
       // splitter
