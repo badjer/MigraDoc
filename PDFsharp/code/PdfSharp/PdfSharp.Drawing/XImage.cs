@@ -94,11 +94,6 @@ namespace PdfSharp.Drawing
 
 			this.path = path;
 
-			//FileStream file = new FileStream(filename, FileMode.Open);
-			//BitsLength = (int)file.Length;
-			//Bits = new byte[BitsLength];
-			//file.Read(Bits, 0, BitsLength);
-			//file.Close();
 #if GDI
 			gdiImage = Image.FromFile(path);
 #endif

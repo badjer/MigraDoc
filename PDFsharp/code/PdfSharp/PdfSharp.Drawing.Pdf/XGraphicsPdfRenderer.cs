@@ -131,7 +131,7 @@ namespace PdfSharp.Drawing.Pdf
 
 		public void Clear(XColor color)
 		{
-			if (!gfx.transform.IsIdentity)
+			if (!gfx._transform.IsIdentity)
 				throw new NotImplementedException("Transform must be identity to clear the canvas.");
 
 			// TODO: this is implementation is bogus. Reset transformation to identity an then fill

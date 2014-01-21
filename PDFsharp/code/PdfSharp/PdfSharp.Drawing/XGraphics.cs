@@ -49,10 +49,6 @@ using Matrix = System.Windows.Media.Matrix;
 using Pen = System.Windows.Media.Pen;
 using Point = System.Drawing.Point;
 using Size = System.Drawing.Size;
-#if GDI
-#endif
-#if WPF
-#endif
 
 // ReSharper disable RedundantNameQualifier
 
@@ -663,7 +659,7 @@ namespace PdfSharp.Drawing
 				matrix.TranslatePrepend(trimOffset.x, trimOffset.y);
 
 			defaultViewMatrix = matrix;
-			transform = new XMatrix(); //XMatrix.Identity;
+			_transform = new XMatrix(); //XMatrix.Identity;
 		}
 
 		/// <summary>
@@ -3948,7 +3944,7 @@ namespace PdfSharp.Drawing
 			{
 				xState = new XGraphicsState(gfx.Save());
 				InternalGraphicsState iState = new InternalGraphicsState(this, xState);
-				iState.Transform = transform;
+				iState.Transform = _transform;
 				gsStack.Push(iState);
 			}
 #endif
@@ -3957,7 +3953,7 @@ namespace PdfSharp.Drawing
 			{
 				xState = new XGraphicsState();
 				InternalGraphicsState iState = new InternalGraphicsState(this, xState);
-				iState.Transform = transform;
+				iState.Transform = _transform;
 				gsStack.Push(iState);
 			}
 #endif
@@ -3981,14 +3977,14 @@ namespace PdfSharp.Drawing
 			{
 				gsStack.Restore(state.InternalState);
 				gfx.Restore(state.GdiState);
-				transform = state.InternalState.Transform;
+				_transform = state.InternalState.Transform;
 			}
 #endif
 #if WPF
 			if (targetContext == XGraphicTargetContext.WPF)
 			{
 				gsStack.Restore(state.InternalState);
-				transform = state.InternalState.Transform;
+				_transform = state.InternalState.Transform;
 			}
 #endif
 
@@ -4068,7 +4064,7 @@ namespace PdfSharp.Drawing
 				xContainer = new XGraphicsContainer();
 #endif
 			InternalGraphicsState iState = new InternalGraphicsState(this, xContainer);
-			iState.Transform = transform;
+			iState.Transform = _transform;
 
 			gsStack.Push(iState);
 
@@ -4109,7 +4105,7 @@ namespace PdfSharp.Drawing
 #if WPF
 			// nothing to do
 #endif
-			transform = container.InternalState.Transform;
+			_transform = container.InternalState.Transform;
 
 			if (renderer != null)
 				renderer.EndContainer(container);
@@ -4369,11 +4365,11 @@ namespace PdfSharp.Drawing
 		{
 			//if (!this.transform.Equals(value))
 			{
-				XMatrix matrix = this.transform;
+				XMatrix matrix = _transform;
 				matrix.Multiply(transform, order);
-				this.transform = matrix;
+				_transform = matrix;
 				matrix = defaultViewMatrix;
-				matrix.Multiply(this.transform, XMatrixOrder.Prepend);
+				matrix.Multiply(_transform, XMatrixOrder.Prepend);
 #if GDI
 				if (targetContext == XGraphicTargetContext.GDI)
 				{
@@ -4400,7 +4396,7 @@ namespace PdfSharp.Drawing
 				}
 #endif
 				if (renderer != null)
-					renderer.Transform = this.transform;
+					renderer.Transform = _transform;
 			}
 		}
 
@@ -4883,7 +4879,7 @@ namespace PdfSharp.Drawing
 		/// <summary>
 		///     The transformation matrix from XGraphics world space to page unit space.
 		/// </summary>
-		internal XMatrix transform;
+		internal XMatrix _transform;
 
 		/// <summary>
 		///     The graphics state stack.
@@ -4970,7 +4966,7 @@ namespace PdfSharp.Drawing
 				points[2] = new XPoint(rect.x, rect.y + rect.height);
 				points[3] = new XPoint(rect.x + rect.width, rect.y + rect.height);
 
-				XMatrix matrix = gfx.transform;
+				XMatrix matrix = gfx._transform;
 				matrix.TransformPoints(points);
 
 				double height = gfx.PageSize.height;

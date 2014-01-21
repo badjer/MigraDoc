@@ -37,10 +37,6 @@ using System.IO;
 using System.Windows.Media.Imaging;
 using PdfSharp.Drawing;
 using PdfSharp.Pdf.Filters;
-#if GDI
-#endif
-#if WPF
-#endif
 
 namespace PdfSharp.Pdf.Advanced
 {

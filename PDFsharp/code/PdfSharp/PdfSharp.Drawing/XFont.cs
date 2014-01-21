@@ -40,10 +40,6 @@ using PdfSharp.Fonts;
 using PdfSharp.Internal;
 using PdfSharp.Pdf.Advanced;
 using FontFamily = System.Drawing.FontFamily;
-#if GDI
-#endif
-#if WPF
-#endif
 
 // WPFHACK
 #pragma warning disable 162
