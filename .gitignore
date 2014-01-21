@@ -1,6 +1,7 @@
 obj
 bin
 *.csproj.user
+*.DotSettings.user
 *.suo
 *.nupkg
 /MigraDoc/code/BuildAll-MigraDoc.sdf
