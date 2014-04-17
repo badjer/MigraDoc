@@ -62,7 +62,7 @@ namespace MigraDoc.Rendering
     {
       this.imageFilePath = image.GetFilePath(this.documentRenderer.WorkingDirectory);
       //if (!File.Exists(this.imageFilePath))
-      if (!XImage.ExistsFile(this.imageFilePath))
+      if (!image.IsStreamBased && !XImage.ExistsFile(this.imageFilePath))
       {
         this.failure = ImageFailure.FileNotFound;
         Trace.WriteLine(Messages.ImageNotFound(this.image.Name), "warning");
@@ -105,8 +105,13 @@ namespace MigraDoc.Rendering
         XImage xImage = null;
         try
         {
+            if (image.IsStreamBased)
+                xImage = XImage.FromStream(image.Stream);
+            else
+                xImage = XImage.FromFile(formatInfo.ImagePath);
+
           XRect srcRect = new XRect(formatInfo.CropX, formatInfo.CropY, formatInfo.CropWidth, formatInfo.CropHeight);
-          xImage = XImage.FromFile(formatInfo.ImagePath);
+          
           this.gfx.DrawImage(xImage, destRect, srcRect, XGraphicsUnit.Point); //Pixel.
         }
         catch (Exception)
@@ -165,7 +170,10 @@ namespace MigraDoc.Rendering
         XImage xImage = null;
         try
         {
-          xImage = XImage.FromFile(this.imageFilePath);
+            if (image.IsStreamBased)
+                xImage = XImage.FromStream(image.Stream);
+            else
+                xImage = XImage.FromFile(this.imageFilePath);
         }
         catch (InvalidOperationException ex)
         {

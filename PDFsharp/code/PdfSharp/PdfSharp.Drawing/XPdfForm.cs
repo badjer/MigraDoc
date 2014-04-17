@@ -111,7 +111,7 @@ namespace PdfSharp.Drawing
     /// <summary>
     /// Creates an XPdfForm from a stream.
     /// </summary>
-    public static XPdfForm FromStream(Stream stream)
+    public new static XPdfForm FromStream(Stream stream)
     {
       return new XPdfForm(stream);
     }

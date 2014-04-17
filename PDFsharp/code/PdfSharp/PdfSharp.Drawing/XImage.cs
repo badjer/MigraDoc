@@ -174,39 +174,49 @@ namespace PdfSharp.Drawing
 #endif
 
 #if WPF && !SILVERLIGHT
-    /// <summary>
-    /// Conversion from BitmapSource to XImage.
-    /// </summary>
-    public static XImage FromBitmapSource(BitmapSource image)
-    {
-      return new XImage(image);
-    }
+		/// <summary>
+		///     Conversion from BitmapSource to XImage.
+		/// </summary>
+		public static XImage FromBitmapSource(BitmapSource image)
+		{
+			return new XImage(image);
+		}
 #endif
 
-    /// <summary>
-    /// Creates an image from the specified file.
-    /// </summary>
-    /// <param name="path">The path to a BMP, PNG, GIF, JPEG, TIFF, or PDF file.</param>
-    public static XImage FromFile(string path)
-    {
-      if (PdfReader.TestPdfFile(path) > 0)
-        return new XPdfForm(path);
-      return new XImage(path);
-    }
+		/// <summary>
+		///     Creates an image from the specified file.
+		/// </summary>
+		/// <param name="path">The path to a BMP, PNG, GIF, JPEG, TIFF, or PDF file.</param>
+		public static XImage FromFile(string path)
+		{
+			if (PdfReader.TestPdfFile(path) > 0)
+				return new XPdfForm(path);
+			return new XImage(path);
+		}
 
-    /// <summary>
-    /// Tests if a file exist. Supports PDF files with page number suffix.
-    /// </summary>
-    /// <param name="path">The path to a BMP, PNG, GIF, JPEG, TIFF, or PDF file.</param>
-    public static bool ExistsFile(string path)
-    {
-      if (PdfReader.TestPdfFile(path) > 0)
-        return true;
-      return File.Exists(path);
-    }
+      /// <summary>
+      /// 
+      /// </summary>
+      /// <param name="stream"></param>
+      /// <returns></returns>
+	    public static XImage FromStream(Stream stream)
+	    {
+	        return new XImage(stream);
+	    }
 
-    void Initialize()
-    {
+	    /// <summary>
+		///     Tests if a file exist. Supports PDF files with page number suffix.
+		/// </summary>
+		/// <param name="path">The path to a BMP, PNG, GIF, JPEG, TIFF, or PDF file.</param>
+		public static bool ExistsFile(string path)
+		{
+			if (PdfReader.TestPdfFile(path) > 0)
+				return true;
+			return File.Exists(path);
+		}
+
+		private void Initialize()
+		{
 #if GDI
       if (this.gdiImage != null)
       {

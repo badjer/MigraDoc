@@ -64,6 +64,22 @@ namespace MigraDoc.DocumentObjectModel.Shapes
       Name = name;
     }
 
+      public Image(Stream stream)
+      {
+          Name = "";
+          Stream = stream;
+      }
+
+      public Stream Stream;
+
+      public bool IsStreamBased
+      {
+          get
+          {
+              return Stream != null;
+          }
+      }
+
     //#region Methods
     /// <summary>
     /// Creates a deep copy of this object.
